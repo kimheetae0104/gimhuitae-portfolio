@@ -1,3 +1,13 @@
 .vercel
 .DS_Store
 **/.DS_Store
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.secret
+secrets.json
+credentials.json
+uploads/
