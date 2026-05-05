@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<title>김희태 — Portfolio 2026</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="shared/tokens.css"/>
+<link rel="stylesheet" href="shared/index.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- ═══ COVER ═══ -->
+<section class="cover">
+  <div class="cover-glow"></div>
+  <div class="cover-glow-2"></div>
+
+  <div class="cover-top">
+    <a href="/" class="mark" style="text-decoration:none;color:inherit;">
+      <svg width="88" height="66" viewBox="0 0 88 66" fill="currentColor">
+        <!-- H: left stem (thick) -->
+        <rect x="0"  y="4"  width="9" height="58"/>
+        <!-- H: right stem (thick) -->
+        <rect x="34" y="4"  width="9" height="58"/>
+        <!-- H: crossbar (thin) -->
+        <rect x="0"  y="29" width="43" height="2"/>
+        <!-- H: top serifs -->
+        <rect x="-3" y="4"  width="15" height="2.5"/>
+        <rect x="31" y="4"  width="15" height="2.5"/>
+        <!-- H: bottom serifs -->
+        <rect x="-3" y="59.5" width="15" height="2.5"/>
+        <rect x="31" y="59.5" width="15" height="2.5"/>
+
+        <!-- K: stem (thick) -->
+        <rect x="51" y="4"  width="9" height="58"/>
+        <!-- K: top serif -->
+        <rect x="48" y="4"  width="15" height="2.5"/>
+        <!-- K: bottom serif -->
+        <rect x="48" y="59.5" width="15" height="2.5"/>
+        <!-- K: upper arm (thin diagonal) -->
+        <polygon points="60,30 60,33 88,4 85,4"/>
+        <!-- K: lower leg (slightly thicker diagonal) -->
+        <polygon points="60,33 60,36 88,66 84,66"/>
+      </svg>
+    </a>
+    <nav>
+      <a href="#projects">PROJECTS</a>
+      <a href="#about">ABOUT</a>
+      <a href="mailto:heetae104@gmail.com">CONTACT</a>
+    </nav>
+  </div>
+
+  <div class="hero">
+    <div class="tag-line"><span class="dot"></span> 김희태 · ML ENGINEERING & DATA · 2026</div>
+    <h1>현장의 문제를<br/>모델로 풀어낸다.</h1>
+    <p class="sub">
+      <strong>제조 AI</strong>, <strong>수요예측 모델링</strong>, <strong>ML 파이프라인</strong>, <strong>로컬 LLM 자동화</strong> —
+      현장의 문제를 데이터로 정의하고, 모델로 풀어내는 일을 합니다.
+    </p>
+    <div class="cta-row">
+      <a href="#projects" class="cta cta-primary">VIEW PROJECTS <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></a>
+      <a href="#about" class="cta cta-ghost">ABOUT ME</a>
+    </div>
+  </div>
+
+</section>
+
+<div class="stats-strip">
+  <div class="sstat"><span class="sv">04</span><div class="sk">PROJECTS</div></div>
+  <div class="sstat"><span class="sv">14</span><div class="sk">SCREENS DESIGNED</div></div>
+  <div class="sstat"><span class="sv">36k</span><div class="sk">FLAVOR PAIRS</div></div>
+  <div class="sstat"><span class="sv">$0</span><div class="sk">CLOUD COST</div></div>
+</div>
+
+<!-- ═══ PROJECTS ═══ -->
+<section class="projects-section" id="projects">
+  <div class="section-head">
+    <div class="label">SELECTED PROJECTS</div>
+    <div class="count">04 WORKS</div>
+  </div>
+
+  <div class="cards">
+    <a class="card" href="JANN.html">
+      <div class="thumb thumb-jann">
+        <div class="phones">
+          <div class="ph"><img src="jann/img/scan.png" alt="JANN 스캔 화면"></div>
+          <div class="ph"><img src="jann/img/splash.jpg" alt="JANN 스플래시"></div>
+          <div class="ph"><img src="jann/img/home.png" alt="JANN 홈 화면"></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="num">№ 01 · iOS APP · 2026</div>
+        <h2>JANN — 재료가 이야기가 되는 순간</h2>
+        <div class="pdesc">분자 미식학 기반 iOS 레시피 앱. 향미 화합물 분석으로 최적 조합 제안.</div>
+        <div class="tags">SWIFTUI · PYTHON · COREML · FLAVOR NETWORK</div>
+      </div>
+    </a>
+
+    <a class="card" href="LHV.html">
+      <div class="thumb thumb-lhv">
+        <div class="big">1.24M</div>
+        <div class="unit">Nm³ / YEAR</div>
+      </div>
+      <div class="info">
+        <div class="num">№ 02 · 제조 AI · 2026.03</div>
+        <h2>LHV — 열풍로 발열량을 5분마다 예측한다</h2>
+        <div class="pdesc">고로 부대 설비 LHV 실시간 예측. COG 과잉 투입 패턴 발견.</div>
+        <div class="tags">RIDGE · XGBOOST · SHAP · SCIKIT-LEARN</div>
+      </div>
+    </a>
+
+    <a class="card" href="Skinpass.html">
+      <div class="thumb thumb-skin">
+        <div class="ring-wrap">
+          <div class="ring"><div class="pct">40.8%</div></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="num">№ 03 · SCM · 수요예측 · 2026.04</div>
+        <h2>Skinpass — 비계획 발생을 코일이 들어오기 전에 본다</h2>
+        <div class="pdesc">냉연 코일 4,000건의 물성·공정 실적으로 예외 공정 사전 판별.</div>
+        <div class="tags">LOGISTIC REGRESSION · LIGHTGBM · SMOTE · SHAP</div>
+      </div>
+    </a>
+
+    <a class="card" href="LocalAI.html">
+      <div class="thumb thumb-ai">
+        <div class="term">
+          <div><span class="p">$</span> <span class="c">ollama run llama3.2</span></div>
+          <div><span class="o">✓ Model loaded (3.2B)</span></div>
+          <div><span class="o">✓ Context: vault/notes/</span></div>
+          <div><span class="o">✓ Response: 2.1s</span></div>
+          <div><span class="p">$</span> <span class="blink"></span></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="num">№ 04 · LOCAL AI · 2026.04</div>
+        <h2>Local AI Agent — 클라우드 없이, 로컬에서 완결되는 AI</h2>
+        <div class="pdesc">Obsidian + Ollama + AntiGravity 통합 지식 관리 자동화 파이프라인.</div>
+        <div class="tags">PYTHON · OLLAMA · OBSIDIAN · ANTIGRAVITY</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section class="about-section" id="about">
+  <div class="section-head">
+    <div class="label">ABOUT</div>
+    <div class="count">김희태</div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-wordmark">김희태</div>
+      <div class="footer-desc">ML Engineering · Data · Local AI · iOS</div>
+    </div>
+
+    <div class="footer-contacts">
+      <a href="mailto:heetae104@gmail.com" class="footer-link">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="14" height="10" rx="1.5"/><path d="M1 4l7 5 7-5"/></svg>
+        heetae104@gmail.com
+      </a>
+      <a href="https://github.com/kimheetae0104" target="_blank" rel="noopener" class="footer-link">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        github.com/kimheetae0104
+      </a>
+    </div>
+
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 김희태 — Portfolio</span>
+    </div>
+  </div>
+</footer>
+
+<script src="shared/scroll-anim.js"></script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+/* =========================================================
+   Heetae Kim — Portfolio Design System
+   colors_and_type.css
+   ========================================================= */
+
+/* ---------- Fonts ---------- */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("./fonts/PlusJakartaSans.ttf") format("truetype-variations");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("./fonts/PlusJakartaSans-Italic.ttf") format("truetype-variations");
+  font-weight: 200 800;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Space Mono";
+  src: url("./fonts/SpaceMono-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Space Mono";
+  src: url("./fonts/SpaceMono-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Space Mono";
+  src: url("./fonts/SpaceMono-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Space Mono";
+  src: url("./fonts/SpaceMono-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* ---------- Color Primitives ---------- */
+  /* Paper — clean white, very faintly cool */
+  --paper-50:  #FFFFFF;
+  --paper-100: #F7F7F8;
+  --paper-200: #EFEFF1;
+  --paper-300: #E2E2E5;
+
+  /* Ink — neutral near-black grays for text & surfaces */
+  --ink-900: #0E0E10;
+  --ink-800: #1A1A1D;
+  --ink-700: #2F2F33;
+  --ink-600: #4A4A50;
+  --ink-500: #6B6B72;
+  --ink-400: #94949C;
+  --ink-300: #BCBCC2;
+
+  /* Accent — ink-blue. Used sparingly: metric highlights, links, focus, selected. */
+  --accent-600: #1E3A8A;
+  --accent-500: #2647B8;
+  --accent-400: #4F6FE0;
+  --accent-100: #DCE3F6;
+
+  /* Semantic statuses — quiet, paper-toned */
+  --positive: #4F7A3D;
+  --warn:     #B58A1F;
+  --danger:   #B5331E;
+
+  /* ---------- Semantic Foreground / Background ---------- */
+  --bg:        var(--paper-50);
+  --bg-soft:   var(--paper-100);
+  --bg-mute:   var(--paper-200);
+  --surface:   #FFFFFF;
+  --overlay:   rgba(14, 14, 16, 0.62);
+
+  --fg:        var(--ink-900);
+  --fg-1:      var(--ink-900);   /* primary text */
+  --fg-2:      var(--ink-700);   /* secondary text */
+  --fg-3:      var(--ink-500);   /* tertiary / metadata */
+  --fg-4:      var(--ink-400);   /* hint / placeholder */
+  --fg-on-accent: var(--paper-50);
+
+  --link:      var(--accent-600);
+  --link-hover:var(--accent-500);
+  --selection-bg: var(--accent-100);
+  --selection-fg: var(--ink-900);
+
+  /* ---------- Borders & Rules ---------- */
+  --rule:      var(--ink-900);                 /* hairline 1px on paper */
+  --rule-soft: rgba(14, 14, 16, 0.14);
+  --rule-mute: rgba(14, 14, 16, 0.07);
+
+  /* ---------- Type Families ---------- */
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system,
+               "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif;
+  --font-mono: "Space Mono", ui-monospace, "JetBrains Mono", Menlo, monospace;
+
+  /* ---------- Type Scale (modular, 1.25) ---------- */
+  --fs-xs:   12px;
+  --fs-sm:   14px;
+  --fs-base: 16px;
+  --fs-md:   18px;
+  --fs-lg:   22px;
+  --fs-xl:   28px;
+  --fs-2xl:  36px;
+  --fs-3xl:  48px;
+  --fs-4xl:  64px;
+  --fs-5xl:  88px;
+  --fs-6xl:  120px;
+
+  --lh-tight:  1.05;
+  --lh-snug:   1.18;
+  --lh-normal: 1.45;
+  --lh-loose:  1.65;
+
+  --tracking-tight:  -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide:   0.04em;
+  --tracking-mono:   -0.01em;
+
+  /* ---------- Spacing (4px base) ---------- */
+  --s-0:  0px;
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3:  12px;
+  --s-4:  16px;
+  --s-5:  24px;
+  --s-6:  32px;
+  --s-7:  48px;
+  --s-8:  64px;
+  --s-9:  96px;
+  --s-10: 128px;
+  --s-11: 192px;
+
+  /* ---------- Radii ---------- */
+  --r-0: 0px;
+  --r-1: 2px;
+  --r-2: 4px;
+  --r-3: 8px;
+  --r-pill: 999px;
+
+  /* ---------- Shadows (subtle, paper-on-paper) ---------- */
+  --shadow-1: 0 1px 0 rgba(14,14,16,0.05);
+  --shadow-2: 0 1px 2px rgba(14,14,16,0.05), 0 2px 8px rgba(14,14,16,0.04);
+  --shadow-3: 0 2px 4px rgba(14,14,16,0.06), 0 12px 32px rgba(14,14,16,0.07);
+  --shadow-inset: inset 0 0 0 1px rgba(14,14,16,0.08);
+
+  /* ---------- Motion ---------- */
+  --ease-out:    cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast:    140ms;
+  --dur-base:    220ms;
+  --dur-slow:    420ms;
+
+  /* ---------- Layout ---------- */
+  --container:   1280px;
+  --gutter:      var(--s-5);
+  --col:        12;
+}
+
+/* Dark variant — "after hours". Toggle with [data-theme="dark"]. */
+[data-theme="dark"] {
+  --bg:      #0B0B0D;
+  --bg-soft: #111114;
+  --bg-mute: #18181C;
+  --surface: #15151A;
+  --fg-1:    #F4F4F6;
+  --fg-2:    #C2C2C8;
+  --fg-3:    #87878F;
+  --fg-4:    #5A5A62;
+  --rule:    #F4F4F6;
+  --rule-soft: rgba(244,244,246,0.16);
+  --rule-mute: rgba(244,244,246,0.08);
+  --link:    var(--accent-400);
+  --link-hover: var(--accent-500);
+}
+
+/* ---------- Base reset & defaults ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--fg-1);
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+::selection { background: var(--selection-bg); color: var(--selection-fg); }
+
+/* ---------- Semantic typography ---------- */
+.display, h1.display {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: clamp(56px, 8vw, var(--fs-6xl));
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-mono);
+  margin: 0;
+}
+h1, .h1 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: clamp(40px, 5vw, var(--fs-3xl));
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+}
+h2, .h2 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--fs-2xl);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+}
+h3, .h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--fs-xl);
+  line-height: var(--lh-snug);
+  margin: 0;
+}
+h4, .h4 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--fs-lg);
+  line-height: var(--lh-snug);
+  margin: 0;
+}
+p, .body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: var(--lh-loose);
+  color: var(--fg-2);
+  text-wrap: pretty;
+  margin: 0;
+}
+.lead {
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  line-height: var(--lh-loose);
+  color: var(--fg-2);
+}
+.caption {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-normal);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.meta, .label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.numeric {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+code, kbd, pre, .mono {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  letter-spacing: var(--tracking-mono);
+}
+code {
+  background: var(--bg-mute);
+  padding: 0.12em 0.4em;
+  border-radius: var(--r-2);
+  color: var(--fg-1);
+}
+a {
+  color: var(--link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+a:hover { color: var(--link-hover); }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: var(--s-6) 0;
+}

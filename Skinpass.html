@@ -1,0 +1,870 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Skinpass — 비계획 발생률 예측</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="shared/tokens.css" />
+  <script src="shared/deck-stage.js"></script>
+  <style>
+    body {
+      background: #0a0a0c;
+    }
+
+    deck-stage {
+      background: var(--bg);
+    }
+
+    section.slide {
+      background: var(--bg);
+      color: var(--fg-1);
+      font-family: var(--font-sans);
+      padding: 80px 100px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    section.slide.dark {
+      background: var(--ink-900);
+      color: #F4F4F6;
+    }
+
+    section.slide.soft {
+      background: var(--paper-100);
+    }
+
+    .top-rule {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--rule);
+      font-family: var(--font-mono);
+      font-size: 26px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+    }
+
+    .s-title .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-bottom: 24px;
+    }
+
+    .dark .top-rule {
+      border-color: rgba(244, 244, 246, 0.2);
+      color: rgba(244, 244, 246, 0.5);
+    }
+
+    .meta-cap {
+      font-family: var(--font-mono);
+      font-size: 26px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+    }
+
+    .dark .meta-cap {
+      color: rgba(244, 244, 246, 0.55);
+    }
+
+    h1.slide-title {
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 84px;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--fg-1);
+      margin: 0;
+    }
+
+    h2.slide-h2 {
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 64px;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: var(--fg-1);
+      margin: 0;
+    }
+
+    .dark h2.slide-h2 {
+      color: #F4F4F6;
+    }
+
+    p.slide-body {
+      font-family: var(--font-sans);
+      font-size: 32px;
+      line-height: 1.6;
+      color: var(--fg-2);
+      margin: 0;
+    }
+
+    .dark p.slide-body {
+      color: rgba(244, 244, 246, 0.78);
+    }
+
+    /* page no */
+    .pageno {
+      position: absolute;
+      bottom: 36px;
+      right: 100px;
+      font-family: var(--font-mono);
+      font-size: 24px;
+      color: var(--fg-3);
+      letter-spacing: 0.16em;
+    }
+
+    .dark .pageno {
+      color: rgba(244, 244, 246, 0.45);
+    }
+
+    .pageno-mark {
+      position: absolute;
+      bottom: 36px;
+      left: 100px;
+      font-family: var(--font-mono);
+      font-size: 24px;
+      color: var(--fg-3);
+      letter-spacing: 0.16em;
+    }
+
+    .dark .pageno-mark {
+      color: rgba(244, 244, 246, 0.45);
+    }
+
+    /* slide 1 — title */
+    .s-title .hero h1 {
+      font-size: 120px;
+      line-height: 1.0;
+      max-width: 22ch;
+    }
+
+    .s-title .hero .ko-sub {
+      font-size: 36px;
+      color: var(--fg-2);
+      margin-top: 24px;
+      max-width: 36ch;
+      line-height: 1.45;
+    }
+
+    .s-title .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      padding-top: 36px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .s-title .meta-grid .col {
+      padding-right: 24px;
+    }
+
+    .s-title .meta-grid .k {
+      font-family: var(--font-mono);
+      font-size: 24px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+      margin-bottom: 12px;
+    }
+
+    .s-title .meta-grid .v {
+      font-family: var(--font-sans);
+      font-size: 28px;
+      color: var(--fg-1);
+      line-height: 1.4;
+    }
+
+    /* slide 2 */
+    .s-summary .quote {
+      font-family: var(--font-sans);
+      font-weight: 500;
+      font-size: 64px;
+      line-height: 1.18;
+      letter-spacing: -0.015em;
+      max-width: 24ch;
+      color: var(--fg-1);
+    }
+
+    .s-summary .quote em {
+      font-style: normal;
+      color: var(--accent-600);
+      background: linear-gradient(180deg, transparent 64%, var(--accent-100) 64%);
+      padding: 0 4px;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      padding-top: 36px;
+      border-top: 1px solid var(--rule);
+      overflow: visible;
+    }
+
+    .stat-row .col {
+      padding: 16px 32px 0 20px;
+      border-right: 1px solid var(--rule-soft);
+      overflow: visible;
+    }
+
+    .stat-row .col:first-child {
+      padding-left: 0;
+    }
+
+    .stat-row .col:last-child {
+      border-right: 0;
+      padding-right: 0;
+    }
+
+    .stat-row .v {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 64px;
+      line-height: 1.3;
+      letter-spacing: -0.03em;
+      color: var(--fg-1);
+      padding: 8px 0;
+    }
+
+    .stat-row .k {
+      font-family: var(--font-mono);
+      font-size: 24px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+      margin-bottom: 14px;
+    }
+
+    .stat-row .u {
+      font-family: var(--font-sans);
+      font-size: 26px;
+      color: var(--fg-2);
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    /* table */
+    table.slide-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-sans);
+      font-size: 28px;
+      line-height: 1.5;
+      color: var(--fg-2);
+    }
+
+    table.slide-table th,
+    table.slide-table td {
+      padding: 22px 20px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--rule-soft);
+    }
+
+    table.slide-table thead th {
+      font-family: var(--font-mono);
+      font-size: 24px;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 16px;
+    }
+
+    table.slide-table tr.highlight td {
+      background: rgba(30, 58, 138, 0.06);
+      color: var(--fg-1);
+      font-weight: 500;
+    }
+
+    table.slide-table .num {
+      font-family: var(--font-mono);
+      font-feature-settings: "tnum";
+    }
+
+    /* hypothesis chips */
+    .hyp-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 56px;
+    }
+
+    .hyp-card {
+      padding: 28px 24px;
+      border-top: 2px solid var(--accent-600);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .hyp-card .tag {
+      font-family: var(--font-mono);
+      font-size: 24px;
+      letter-spacing: 0.14em;
+      color: var(--fg-3);
+    }
+
+    .hyp-card .q {
+      font-family: var(--font-sans);
+      font-size: 24px;
+      line-height: 1.5;
+      color: var(--fg-1);
+      min-height: 120px;
+    }
+
+    .hyp-card .verdict {
+      font-family: var(--font-mono);
+      font-size: 24px;
+      letter-spacing: 0.06em;
+      padding-top: 12px;
+      border-top: 1px solid var(--rule-soft);
+      color: var(--positive);
+    }
+
+    /* gate diagram */
+    .gate-flow {
+      display: grid;
+      grid-template-columns: 1fr 80px 1.4fr;
+      align-items: stretch;
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .gate-box {
+      background: var(--paper-50);
+      border: 1px solid var(--rule);
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .gate-box .tag {
+      font-family: var(--font-mono);
+      font-size: 22px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-600);
+    }
+
+    .gate-box h3 {
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 32px;
+      line-height: 1.18;
+      margin: 0;
+      color: var(--fg-1);
+    }
+
+    .gate-box .desc {
+      font-family: var(--font-sans);
+      font-size: 22px;
+      line-height: 1.5;
+      color: var(--fg-2);
+    }
+
+    .gate-box .rule {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      background: var(--paper-200);
+      padding: 12px 14px;
+      line-height: 1.5;
+      color: var(--ink-900);
+    }
+
+    .gate-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--fg-3);
+    }
+
+    .gate-arrow svg {
+      width: 80px;
+      height: 24px;
+    }
+
+    /* shap rows */
+    .shap-list {
+      display: grid;
+      gap: 16px;
+      margin-top: 36px;
+    }
+
+    .shap-list .row {
+      display: grid;
+      grid-template-columns: 60px 1fr 1.6fr 220px;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .shap-list .rank {
+      font-family: var(--font-mono);
+      font-size: 24px;
+      color: var(--fg-3);
+    }
+
+    .shap-list .label {
+      font-family: var(--font-sans);
+      font-size: 26px;
+      color: var(--fg-1);
+    }
+
+    .shap-list .label .src {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      color: var(--accent-600);
+      margin-left: 8px;
+      letter-spacing: 0.1em;
+    }
+
+    .shap-list .bar {
+      height: 14px;
+      background: var(--paper-200);
+      position: relative;
+    }
+
+    .shap-list .bar>div {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      background: var(--accent-600);
+    }
+
+    .shap-list .meta {
+      font-family: var(--font-mono);
+      font-size: 22px;
+      color: var(--fg-3);
+      text-align: right;
+    }
+
+    .footnote {
+      font-family: var(--font-sans);
+      font-size: 26px;
+      color: var(--fg-3);
+      font-style: italic;
+      margin-top: 56px;
+      max-width: 64ch;
+      line-height: 1.5;
+    }
+
+    /* close */
+    .s-close .pull {
+      font-family: var(--font-sans);
+      font-weight: 500;
+      font-size: 80px;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      color: #F4F4F6;
+      max-width: 22ch;
+    }
+
+    .s-close .pull em {
+      font-style: normal;
+      color: #F5B556;
+    }
+
+    .s-close .attrib {
+      font-family: var(--font-mono);
+      font-size: 24px;
+      letter-spacing: 0.14em;
+      color: rgba(244, 244, 246, 0.5);
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(244, 244, 246, 0.16);
+    }
+
+    /* phase grid */
+    .phase-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 56px;
+    }
+
+    .phase {
+      padding: 32px 28px;
+      background: var(--paper-50);
+      border: 1px solid var(--rule);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .phase .num {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 80px;
+      line-height: 0.95;
+      color: var(--accent-600);
+      letter-spacing: -0.04em;
+    }
+
+    .phase .name {
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 30px;
+      line-height: 1.2;
+      color: var(--fg-1);
+    }
+
+    .phase .desc {
+      font-family: var(--font-sans);
+      font-size: 22px;
+      line-height: 1.5;
+      color: var(--fg-2);
+    }
+
+    .phase .target {
+      font-family: var(--font-mono);
+      font-size: 22px;
+      letter-spacing: 0.1em;
+      color: var(--accent-600);
+      padding-top: 12px;
+      border-top: 1px solid var(--rule-soft);
+    }
+    /* dark overrides for title slide meta-grid */
+    .dark .s-title .meta-grid .k { color: rgba(244,244,246,0.45); }
+    .dark .s-title .meta-grid .v { color: #F4F4F6; }
+    .dark .s-title .ko-sub { color: rgba(244,244,246,0.7); }
+    .dark .s-title h1 { color: #F4F4F6; }
+    .dark .s-title .meta-cap { color: rgba(244,244,246,0.45); }
+  </style>
+</head>
+
+<body>
+
+  <deck-stage width="1920" height="1080">
+
+    <!-- ═══ Slide 1 — Title ═══ -->
+    <section class="slide s-title" data-label="01 Title">
+      <div class="top-rule">
+        <span>김희태 · PORTFOLIO</span>
+        <span>2026</span>
+      </div>
+      <div class="hero">
+        <div class="meta-cap" style="margin-bottom: 32px;">SeSAC SCM · 수요예측 부트캠프</div>
+        <h1>비계획 Skinpass를<br />코일이 들어오기 전에 본다.</h1>
+        <p class="ko-sub">냉연 코일 4,000건의 물성·공정 실적으로, 소둔 이후 발생하는 예외 공정을 사전 판별한다.</p>
+      </div>
+      <div class="meta-grid">
+        <div class="col">
+          <div class="k">TYPE</div>
+          <div class="v">개인프로젝트</div>
+        </div>
+        <div class="col">
+          <div class="k">DATA</div>
+          <div class="v">코일 4,000건<br />22 변수 (원천 13 + 파생 10)</div>
+        </div>
+        <div class="col">
+          <div class="k">METHOD</div>
+          <div class="v">Material Quality Gate +<br />Logistic Regression</div>
+        </div>
+        <div class="col">
+          <div class="k">OUTCOME</div>
+          <div class="v">Recall 0.595 (★최고)<br />FN −24건 (vs baseline)</div>
+        </div>
+      </div>
+      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+      <div class="pageno">01 / 07</div>
+    </section>
+
+    <!-- ═══ Slide 2 — Problem · 한 줄 요약 ═══ -->
+    <section class="slide s-summary" data-label="02 Problem">
+      <div class="top-rule">
+        <span>02 · PROBLEM</span>
+        <span>WHY THIS MATTERS</span>
+      </div>
+      <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 80px;">
+        <div class="quote">
+          코일 10개 중 4개는<br />
+          소둔 후에 <em>예외 공정</em>으로 빠진다.<br />
+          그 절반은 미리 알 수 있었다.
+        </div>
+        <p class="slide-body" style="max-width: 52ch; font-size: 26px; color: var(--fg-2); margin-top: -40px;">
+          비계획 Skinpass는 소둔 완료 후 품질 검사에서 표면·형상·재질이 기준 미달인 코일에 긴급 투입되는 예외 공정이다.
+          현장 판단 기준이 담당자마다 달라 일관성이 흔들리고, 설비 가동률 저하·납기 지연·에너지 추가 소비를 동시에 유발한다.
+        </p>
+        <div class="stat-row">
+          <div class="col">
+            <div class="k">발생률</div>
+            <div class="v" style="color: var(--accent-600);">40.8%</div>
+            <div class="u">전체 4,000건 중 비계획 발생</div>
+          </div>
+          <div class="col">
+            <div class="k">C 등급 발생률</div>
+            <div class="v">48.8%</div>
+            <div class="u">A등급 대비 +12.5%p</div>
+          </div>
+          <div class="col">
+            <div class="k">리드타임 영향</div>
+            <div class="v">+4–8h</div>
+            <div class="u">소둔→재검사 추가 시간 / 코일</div>
+          </div>
+        </div>
+      </div>
+      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+      <div class="pageno">02 / 07</div>
+    </section>
+
+    <!-- ═══ Slide 3 — EDA ═══ -->
+    <section class="slide" data-label="03 EDA">
+      <div class="top-rule">
+        <span>03 · EDA</span>
+        <span>DATA EXPLORATION</span>
+      </div>
+      <div
+        style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; flex: 1; padding-top: 48px; align-items: start;">
+        <div>
+          <div class="meta-cap" style="margin-bottom: 16px;">변수 간 상관관계 — 히트맵</div>
+          <img src="skinpass/img/image1.png" alt="상관관계 히트맵" style="width: 100%; border: 1px solid var(--rule);" />
+          <p style="margin-top: 10px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
+            Fig. 3-1 — 변수 간 상관관계 히트맵. 항복강도 × 표면조도 r=0.48로 핵심 교호작용 발견. 형상불량지수·Skinpass발생 r=+0.07로 단독 변수 효과 제한.
+          </p>
+        </div>
+        <div>
+          <div class="meta-cap" style="margin-bottom: 16px;">클래스별 변수 분포 — 히스토그램</div>
+          <img src="skinpass/img/image4.png" alt="클래스별 변수 분포" style="width: 100%; border: 1px solid var(--rule);" />
+          <p style="margin-top: 10px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
+            Fig. 3-2 — 클래스별 변수 분포 히스토그램. 항복강도 DP590 고강도 구간에서 분리 확인. 이전공정경과시간 분포 차이 없음 → 모델 제거.
+          </p>
+        </div>
+      </div>
+      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+      <div class="pageno">03 / 07</div>
+    </section>
+
+    <!-- ═══ Slide 4 — Hypotheses ═══ -->
+    <section class="slide soft" data-label="03 Hypotheses">
+      <div class="top-rule">
+        <span>04 · 4 HYPOTHESES</span>
+        <span>ALL ACCEPTED</span>
+      </div>
+      <h2 class="slide-h2" style="margin-top: 56px; max-width: 28ch;">
+        가설 4개를 먼저 세우고,<br />그 논리를 모델 구조에 직접 녹였다.</h2>
+
+      <div class="hyp-row">
+        <div class="hyp-card">
+          <div class="tag">H1 · 재질등급</div>
+          <div class="q">재질등급 C가 구조적 비계획 발생 신호인가?</div>
+          <div class="verdict">✓ Kruskal-Wallis p &lt; 0.001</div>
+          <div
+            style="margin-top:16px;padding-top:12px;border-top:1px solid var(--rule-soft);font-size:15px;color:var(--fg-2);">
+            → Material Gate 1차 조건</div>
+        </div>
+        <div class="hyp-card">
+          <div class="tag">H2 · 항복강도</div>
+          <div class="q">항복강도·강종이 발생 위험 구조를 만드는가?</div>
+          <div class="verdict">✓ 강종 차이 p &lt; 0.001</div>
+          <div
+            style="margin-top:16px;padding-top:12px;border-top:1px solid var(--rule-soft);font-size:15px;color:var(--fg-2);">
+            → Material Gate 2차 조건</div>
+        </div>
+        <div class="hyp-card">
+          <div class="tag">H3 · 형상×표면</div>
+          <div class="q">형상·표면 복합이 비선형 급증을 일으키는가?</div>
+          <div class="verdict">✓ 복합 구간 +24%p</div>
+          <div
+            style="margin-top:16px;padding-top:12px;border-top:1px solid var(--rule-soft);font-size:15px;color:var(--fg-2);">
+            → surface_shape_composite 파생변수</div>
+        </div>
+        <div class="hyp-card">
+          <div class="tag">H4 · 강종×등급</div>
+          <div class="q">강종과 재질등급의 교호작용이 핵심인가?</div>
+          <div class="verdict">✓ F1 +0.031 향상</div>
+          <div
+            style="margin-top:16px;padding-top:12px;border-top:1px solid var(--rule-soft);font-size:15px;color:var(--fg-2);">
+            → grade_steel_interaction 파생변수</div>
+        </div>
+      </div>
+
+      <p class="slide-body" style="margin-top: 48px; max-width: 64ch; font-style: italic;
+                                font-size: 28px;">
+        가설은 검증 도구가 아니라 모델 설계도였다. 4개 모두 채택됐고, 그 4개가 그대로 변수가 됐다.
+      </p>
+      <p class="slide-body" style="margin-top: 16px; max-width: 64ch; font-size: 22px; color: var(--fg-3);">
+        SHAP 상위 8개 변수 중 4개가 가설 기반 파생변수 — 도메인 지식을 변수로 변환하는 작업이
+        단순 부스팅 모델 튜닝보다 더 큰 성능 개선을 가져왔다.
+      </p>
+      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+      <div class="pageno">04 / 07</div>
+    </section>
+
+    <!-- ═══ Slide 4 — Gate Architecture ═══ -->
+    <section class="slide" data-label="04 Architecture">
+      <div class="top-rule">
+        <span>05 · ARCHITECTURE</span>
+        <span>2-STAGE DECISION</span>
+      </div>
+      <h2 class="slide-h2" style="margin-top: 56px; max-width: 26ch;">
+        현장의 코일을 보는 순서를<br />그대로 모델에 옮겼다.</h2>
+
+      <div class="gate-flow">
+        <div class="gate-box">
+          <div class="tag">STAGE 1 · MATERIAL QUALITY GATE</div>
+          <h3>명백한 고위험은<br />규칙으로 즉시 차단</h3>
+          <div class="rule">IF 재질등급 == C<br />OR 항복강도 ≥ 임계값<br />→ 고위험 분류</div>
+          <div class="desc">H1 + H2 검증 결과를 결합한 하드 필터.<br />Gate=1 → 담당자 경보 발령.</div>
+        </div>
+        <div class="gate-arrow">
+          <svg viewBox="0 0 80 24" fill="none">
+            <path d="M0 12 L72 12 M64 4 L72 12 L64 20" stroke="currentColor" stroke-width="1.5" />
+          </svg>
+        </div>
+        <div class="gate-box" style="background: rgba(30, 58, 138, 0.04);
+                                  border-color: var(--accent-600);">
+          <div class="tag">STAGE 2 · LOGISTIC REGRESSION</div>
+          <h3>나머지는<br />확률 모델로 세부 위험도 추정</h3>
+          <div class="rule">파생변수 6종 입력 ·<br />quality_risk_score · process_risk_composite ·<br />surface_shape_composite
+            · grade_steel_interaction</div>
+          <div class="desc">H3 + H4가 만든 교호작용·복합 변수가 SHAP 상위 8개 중 4개를 차지.</div>
+        </div>
+      </div>
+      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+      <div class="pageno">05 / 07</div>
+    </section>
+
+    <!-- ═══ Slide 5 — Models + SHAP ═══ -->
+    <section class="slide" data-label="05 Results">
+      <div class="top-rule">
+        <span>06 · 6 MODELS · SHAP</span>
+        <span>RECALL OVER ACCURACY</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1.1fr; gap: 80px;
+              margin-top: 48px; flex: 1; align-items: start;">
+        <div>
+          <h2 class="slide-h2" style="font-size: 56px;">미탐지의 비용이<br />오탐의 비용보다 크다.</h2>
+          <p class="slide-body" style="margin-top: 32px; max-width: 24ch; font-size: 28px;">
+            Recall을 1순위 지표로 잡은 결과, Material Gate + LR이 6개 비교군 중 단독 1위.
+          </p>
+          <table class="slide-table" style="margin-top: 32px; font-size: 24px;">
+            <thead>
+              <tr>
+                <th>MODEL</th>
+                <th class="num" style="text-align:right;">RECALL</th>
+                <th class="num" style="text-align:right;">F1</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="highlight">
+                <td>★ Gate + LR</td>
+                <td class="num" style="text-align:right;">0.595</td>
+                <td class="num" style="text-align:right;">0.487</td>
+              </tr>
+              <tr>
+                <td>LR (원천)</td>
+                <td class="num" style="text-align:right;">0.543</td>
+                <td class="num" style="text-align:right;">0.501</td>
+              </tr>
+              <tr>
+                <td>LR + 파생</td>
+                <td class="num" style="text-align:right;">0.466</td>
+                <td class="num" style="text-align:right;">0.469</td>
+              </tr>
+              <tr>
+                <td>LightGBM</td>
+                <td class="num" style="text-align:right;">0.420</td>
+                <td class="num" style="text-align:right;">0.427</td>
+              </tr>
+              <tr>
+                <td>XGBoost</td>
+                <td class="num" style="text-align:right;">0.407</td>
+                <td class="num" style="text-align:right;">0.416</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="padding-top: 100px;">
+          <div class="meta-cap" style="margin-bottom: 12px;">SHAP FEATURE IMPORTANCE · LIGHTGBM</div>
+          <img src="skinpass/img/image3.png" alt="SHAP 기반 변수 중요도"
+               style="width: 100%; max-height: 520px; object-fit: contain; border-radius: 8px; border: 1px solid var(--rule);" />
+          <p style="margin-top: 10px; font-size: 18px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
+            Fig. 6 — SHAP 변수 중요도 (LightGBM). ★ 가설 파생변수가 상위 1·2위 차지.
+          </p>
+        </div>
+      </div>
+      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+      <div class="pageno">06 / 07</div>
+    </section>
+
+    <!-- ═══ Slide 6 — Deployment ═══ -->
+    <section class="slide dark s-close" data-label="06 Deployment">
+      <div class="top-rule">
+        <span>07 · DEPLOYMENT</span>
+        <span>3-PHASE ROLLOUT</span>
+      </div>
+      <div style="margin-top: 64px;">
+        <div class="pull">
+          전면 자동화가 아니라,<br />
+          운영자 신뢰를 <em>단계적으로</em> 사는 일이다.
+        </div>
+      </div>
+
+      <div class="phase-grid">
+        <div class="phase" style="background: rgba(244,244,246,0.04);
+                                border-color: rgba(244,244,246,0.18);">
+          <div class="num">01</div>
+          <div class="name" style="color: #F4F4F6;">경보 시스템</div>
+          <div class="desc" style="color: rgba(244,244,246,0.72);">
+            Gate=1 코일에 소둔 투입 전 자동 경보 — 운영자 최종 판단 유지.
+          </div>
+          <div class="target" style="color: #F5B556; border-top-color: rgba(244,244,246,0.16);">
+            고위험 포착 ≥ 80% · 1–2개월
+          </div>
+        </div>
+        <div class="phase" style="background: rgba(244,244,246,0.04);
+                                border-color: rgba(244,244,246,0.18);">
+          <div class="num">02</div>
+          <div class="name" style="color: #F4F4F6;">의사결정 지원</div>
+          <div class="desc" style="color: rgba(244,244,246,0.72);">
+            전 코일에 발생 확률 + SHAP 원인 3가지를 함께 제시.
+          </div>
+          <div class="target" style="color: #F5B556; border-top-color: rgba(244,244,246,0.16);">
+            발생률 −10% · 2–4개월
+          </div>
+        </div>
+        <div class="phase" style="background: rgba(244,244,246,0.04);
+                                border-color: rgba(244,244,246,0.18);">
+          <div class="num">03</div>
+          <div class="name" style="color: #F4F4F6;">반자동 제어</div>
+          <div class="desc" style="color: rgba(244,244,246,0.72);">
+            소둔 파라미터 자동 조정 권고. 운영자 승인 후 실행.
+          </div>
+          <div class="target" style="color: #F5B556; border-top-color: rgba(244,244,246,0.16);">
+            발생률 −25% · 4–8개월
+          </div>
+        </div>
+      </div>
+
+      <div class="attrib">
+        SeSAC SCM 부트캠프 · PYTHON · LIGHTGBM · XGBOOST · SMOTE · SHAP
+      </div>
+      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:rgba(244,244,246,0.45);">김희태</a>
+      <div class="pageno" style="color: rgba(244,244,246,0.45);">07 / 07</div>
+    </section>
+
+  </deck-stage>
+
+  <a href="index.html"
+    style="position:fixed;top:22px;left:22px;z-index:2147483647;display:flex;align-items:center;gap:6px;padding:8px 16px 8px 12px;border-radius:999px;background:rgba(20,20,24,0.85);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.12);color:#fff;text-decoration:none;font-family:var(--font-mono);font-size:13px;letter-spacing:0.08em;transition:background 180ms ease,border-color 180ms ease;"
+    onmouseenter="this.style.background='rgba(40,40,48,0.95)';this.style.borderColor='rgba(255,255,255,0.28)'"
+    onmouseleave="this.style.background='rgba(20,20,24,0.85)';this.style.borderColor='rgba(255,255,255,0.12)'"><svg
+      width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 3L5 8l5 5" />
+    </svg>PORTFOLIO</a>
+
+</body>
+
+</html>

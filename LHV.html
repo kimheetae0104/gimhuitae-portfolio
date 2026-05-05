@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>LHV — 열풍로 발열량 예측</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="shared/tokens.css" />
+<script src="shared/deck-stage.js"></script>
+<style>
+  :root {
+    --slide-pad-x: 100px;
+    --slide-pad-top: 80px;
+    --slide-pad-bottom: 80px;
+  }
+  body { background: #0a0a0c; }
+  deck-stage { background: var(--bg); }
+
+  /* Slide base */
+  section.slide {
+    background: var(--bg);
+    color: var(--fg-1);
+    font-family: var(--font-sans);
+    padding: var(--slide-pad-top) var(--slide-pad-x) var(--slide-pad-bottom);
+    box-sizing: border-box;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+  }
+  section.slide.dark { background: var(--ink-900); color: #F4F4F6; }
+  section.slide.soft { background: var(--paper-100); }
+
+  /* common parts */
+  .top-rule { display: flex; justify-content: space-between;
+              padding-bottom: 28px; border-bottom: 1px solid var(--rule);
+              font-family: var(--font-mono); font-size: 26px;
+              letter-spacing: 0.16em; text-transform: uppercase;
+              color: var(--fg-3); }
+  .s-title .hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 24px;
+  }
+  .dark .top-rule { border-color: rgba(244,244,246,0.2); color: rgba(244,244,246,0.5); }
+
+  .meta-cap { font-family: var(--font-mono); font-size: 26px;
+              letter-spacing: 0.16em; text-transform: uppercase;
+              color: var(--fg-3); }
+  .dark .meta-cap { color: rgba(244,244,246,0.55); }
+
+  h1.slide-title {
+    font-family: var(--font-sans); font-weight: 600;
+    font-size: 84px; line-height: 1.05; letter-spacing: -0.025em;
+    color: var(--fg-1); margin: 0;
+  }
+  .dark h1.slide-title { color: #F4F4F6; }
+
+  h2.slide-h2 {
+    font-family: var(--font-sans); font-weight: 600;
+    font-size: 64px; line-height: 1.08; letter-spacing: -0.02em;
+    color: var(--fg-1); margin: 0;
+  }
+  .dark h2.slide-h2 { color: #F4F4F6; }
+
+  p.slide-body { font-family: var(--font-sans); font-size: 32px;
+                 line-height: 1.6; color: var(--fg-2); margin: 0; }
+  .dark p.slide-body { color: rgba(244,244,246,0.78); }
+
+  .num-display { font-family: var(--font-sans); font-weight: 700;
+                 font-size: 240px; line-height: 0.95;
+                 letter-spacing: -0.04em; color: var(--fg-1); }
+  .dark .num-display { color: #F4F4F6; }
+
+  /* slide 1: title */
+  .s-title { justify-content: flex-start; }
+  .s-title .hero h1 { font-size: 120px; line-height: 1.0; max-width: 22ch; }
+  .s-title .hero .ko-sub { font-size: 36px; color: var(--fg-2);
+                            margin-top: 24px; max-width: 36ch; line-height: 1.45; }
+  .s-title .meta-grid { display: grid; grid-template-columns: repeat(4, 1fr);
+                        gap: 0; padding-top: 36px; border-top: 1px solid var(--rule); }
+  .s-title .meta-grid .col { padding-right: 24px; }
+  .s-title .meta-grid .k { font-family: var(--font-mono); font-size: 24px;
+                            letter-spacing: 0.16em; text-transform: uppercase;
+                            color: var(--fg-3); margin-bottom: 12px; }
+  .s-title .meta-grid .v { font-family: var(--font-sans); font-size: 28px;
+                            color: var(--fg-1); line-height: 1.4; }
+
+  /* slide 2: one-line + big stat */
+  .s-summary { display: grid; grid-template-rows: auto 1fr; gap: 48px; }
+  .s-summary .quote { font-family: var(--font-sans); font-weight: 500;
+                      font-size: 64px; line-height: 1.18; letter-spacing: -0.015em;
+                      max-width: 22ch; color: var(--fg-1); }
+  .s-summary .quote em { font-style: normal; color: var(--accent-600);
+                          background: linear-gradient(180deg, transparent 64%, var(--accent-100) 64%);
+                          padding: 0 4px; }
+  .s-summary .grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 64px;
+                     align-items: end; padding-top: 36px;
+                     border-top: 1px solid var(--rule); }
+  .s-summary .stat-block { font-family: var(--font-sans); }
+  .s-summary .stat-block .big { font-weight: 700; font-size: 200px; line-height: 0.92;
+                                 letter-spacing: -0.04em; }
+  .s-summary .stat-block .unit { font-size: 22px; letter-spacing: 0.14em;
+                                  text-transform: uppercase; color: var(--fg-3);
+                                  margin-top: 16px; }
+
+  /* table */
+  table.slide-table { width: 100%; border-collapse: collapse;
+                      font-family: var(--font-sans); font-size: 28px; line-height: 1.5;
+                      color: var(--fg-2); }
+  table.slide-table th, table.slide-table td {
+    padding: 24px 20px; text-align: left; vertical-align: top;
+    border-bottom: 1px solid var(--rule-soft); }
+  table.slide-table thead th {
+    font-family: var(--font-mono); font-size: 24px; font-weight: 400;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg-3);
+    border-bottom: 1px solid var(--rule); padding-bottom: 16px; }
+  table.slide-table tr.highlight td { background: rgba(30, 58, 138, 0.05);
+                                       color: var(--fg-1); font-weight: 500; }
+  table.slide-table .num { font-family: var(--font-mono); font-feature-settings: "tnum"; }
+  table.slide-table .check { color: var(--positive); font-weight: 600; }
+  table.slide-table .reject { color: var(--danger); }
+
+  /* footer page no */
+  .pageno { position: absolute; bottom: 36px; right: 100px;
+            font-family: var(--font-mono); font-size: 24px; color: var(--fg-3);
+            letter-spacing: 0.16em; }
+  .dark .pageno { color: rgba(244,244,246,0.45); }
+  .pageno-mark { position: absolute; bottom: 36px; left: 100px;
+                  font-family: var(--font-mono); font-size: 24px; color: var(--fg-3);
+                  letter-spacing: 0.16em; }
+  .dark .pageno-mark { color: rgba(244,244,246,0.45); }
+
+  /* hypothesis cards */
+  .hyp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .hyp-card { padding: 32px 28px; border-top: 2px solid var(--rule);
+              display: flex; flex-direction: column; gap: 16px; }
+  .hyp-card .tag { font-family: var(--font-mono); font-size: 24px;
+                    letter-spacing: 0.14em; color: var(--fg-3); }
+  .hyp-card .q { font-family: var(--font-sans); font-size: 26px;
+                  line-height: 1.35; color: var(--fg-1); flex: 1; min-height: 130px; }
+  .hyp-card .verdict { font-family: var(--font-mono); font-size: 26px;
+                        letter-spacing: 0.06em; padding-top: 16px;
+                        border-top: 1px solid var(--rule-soft); }
+  .hyp-card.reject { border-top-color: var(--danger); }
+  .hyp-card.reject .verdict { color: var(--danger); }
+  .hyp-card.accept { border-top-color: var(--accent-600); }
+  .hyp-card.accept .verdict { color: var(--accent-600); }
+  .hyp-card.partial { border-top-color: var(--warn); }
+  .hyp-card.partial .verdict { color: var(--warn); }
+
+  /* impact highlights */
+  .impact { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+            padding-top: 36px; border-top: 1px solid var(--rule); }
+  .impact .col { padding: 0 32px 0 0; border-right: 1px solid var(--rule-soft); }
+  .impact .col:last-child { border-right: 0; padding-right: 0; }
+  .impact .col .v { font-family: var(--font-sans); font-weight: 700;
+                     font-size: 64px; line-height: 1.3; letter-spacing: -0.03em;
+                     color: var(--fg-1); padding: 8px 0; }
+  .impact .col .k { font-family: var(--font-mono); font-size: 24px;
+                     letter-spacing: 0.14em; text-transform: uppercase;
+                     color: var(--fg-3); margin-bottom: 14px; }
+  .impact .col .u { font-family: var(--font-sans); font-size: 26px;
+                     color: var(--fg-2); margin-top: 12px; line-height: 1.4; }
+
+  /* closing slide */
+  .s-close .pull { font-family: var(--font-sans); font-weight: 500;
+                    font-size: 80px; line-height: 1.18; letter-spacing: -0.02em;
+                    color: var(--fg-1); max-width: 22ch; }
+  .s-close .pull em { font-style: normal; color: var(--accent-600); }
+  .s-close .attrib { font-family: var(--font-mono); font-size: 24px;
+                      letter-spacing: 0.14em; color: var(--fg-3);
+                      margin-top: 48px; padding-top: 24px;
+                      border-top: 1px solid var(--rule); }
+  /* dark overrides for title slide meta-grid */
+  .dark .s-title .meta-grid .k { color: rgba(244,244,246,0.45); }
+  .dark .s-title .meta-grid .v { color: #F4F4F6; }
+  .dark .s-title .ko-sub { color: rgba(244,244,246,0.7); }
+  .dark .s-title h1 { color: #F4F4F6; }
+  .dark .s-title .meta-cap { color: rgba(244,244,246,0.45); }
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+<!-- ═══ Slide 1 — Title ═══ -->
+<section class="slide s-title" data-label="01 Title">
+  <div class="top-rule">
+    <span>김희태 · PORTFOLIO</span>
+    <span>2026</span>
+  </div>
+  <div class="hero">
+    <div class="meta-cap" style="margin-bottom: 32px;">제조 AI 실습</div>
+    <h1>열풍로 발열량을<br/>5분마다 예측한다.</h1>
+    <p class="ko-sub">고로 부대 설비 LHV(저위발열량)의 실시간 예측 모델 — 그리고 데이터가 찾아낸 한 가지 낭비 패턴.</p>
+  </div>
+  <div class="meta-grid">
+    <div class="col">
+      <div class="k">TYPE</div>
+      <div class="v">개인프로젝트</div>
+    </div>
+    <div class="col">
+      <div class="k">DATA</div>
+      <div class="v">17,280행 × 12 태그<br/>60일 · 5분 주기</div>
+    </div>
+    <div class="col">
+      <div class="k">METHOD</div>
+      <div class="v">Ridge / RF / XGBoost<br/>+ Feature Importance · SHAP</div>
+    </div>
+    <div class="col">
+      <div class="k">OUTCOME</div>
+      <div class="v">MAE 11.99 kcal/Nm³<br/>연 1.24M Nm³ 절감 시나리오</div>
+    </div>
+  </div>
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">01 / 07</div>
+</section>
+
+<!-- ═══ Slide 2 — One-line + Big Stat ═══ -->
+<section class="slide s-summary" data-label="02 Summary">
+  <div class="top-rule">
+    <span>02 · ONE LINE</span>
+    <span>SUMMARY</span>
+  </div>
+  <div style="display: flex; flex-direction: column; justify-content: center; gap: 64px; flex: 1;">
+    <div class="quote">
+      LHV 예측 모델을 만들었고,<br/>
+      그 과정에서 <em>"전환대기 직후 COG 과잉 투입"</em>이라는<br/>
+      구조적 낭비 구간을 발견했다.
+    </div>
+    <p class="slide-body" style="max-width: 52ch; font-size: 26px; color: var(--fg-2); margin-top: -28px;">
+      60일간 5분 간격 17,280행의 실시간 조업 데이터를 기반으로, Ridge 회귀 모델(MAE 11.99)과
+      SHAP 분석으로 COG·BFG 유량이 LHV의 핵심 결정 변수임을 검증했다.
+    </p>
+    <div class="grid">
+      <div class="stat-block">
+        <div class="big" style="color: var(--accent-600);">1.24M</div>
+        <div class="unit">Nm³ / YEAR — 연간 COG 절감 시나리오</div>
+      </div>
+      <div class="stat-block" style="text-align: right;">
+        <div class="big" style="font-size: 140px; color: var(--fg-1);">±0.2</div>
+        <div class="unit">LHV 변화 · 허용 범위 내</div>
+      </div>
+    </div>
+  </div>
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">02 / 07</div>
+</section>
+
+<!-- ═══ Slide 3 — Problem ═══ -->
+<section class="slide" data-label="03 Problem">
+  <div class="top-rule">
+    <span>03 · PROBLEM</span>
+    <span>WHY THIS MATTERS</span>
+  </div>
+  <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; flex: 1; padding-top: 64px;">
+    <div>
+      <h2 class="slide-h2">운전원이 본 것은 결과였고,<br/>
+        원인은 5분 뒤에 도착했다.</h2>
+      <p class="slide-body" style="margin-top: 36px; max-width: 28ch;">
+        목표 LHV는 1,012 kcal/Nm³ (±15). 기존엔 운전원이 Dome 온도를 보고
+        연료를 조절했지만 — Dome 온도와 LHV의 상관계수는 사실상 <strong style="color:var(--fg-1);">0</strong>이었다.
+      </p>
+      <p class="slide-body" style="margin-top: 24px; max-width: 28ch; color: var(--fg-3);">
+        결과를 보고 원인을 추측하는 역방향 접근.
+      </p>
+    </div>
+    <div style="display: flex; flex-direction: column; justify-content: flex-end;">
+      <div class="meta-cap" style="margin-bottom: 28px;">상관계수 r — vs LHV</div>
+      <div style="display: grid; gap: 18px;">
+        <div style="display: grid; grid-template-columns: 240px 1fr 100px; align-items: center; gap: 24px; font-family: var(--font-mono);">
+          <span style="font-size: 24px; color: var(--fg-2);">COG 유량</span>
+          <div style="position: relative; height: 14px; background: var(--paper-200);">
+            <div style="position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: var(--rule);"></div>
+            <div style="position: absolute; top: 0; bottom: 0; left: 50%; width: 24.5%; background: var(--accent-600);"></div>
+          </div>
+          <span style="font-size: 26px; font-weight: 700; text-align: right; color: var(--accent-600);">+0.49</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 240px 1fr 100px; align-items: center; gap: 24px; font-family: var(--font-mono);">
+          <span style="font-size: 24px; color: var(--fg-2);">BFG 유량</span>
+          <div style="position: relative; height: 14px; background: var(--paper-200);">
+            <div style="position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: var(--rule);"></div>
+            <div style="position: absolute; top: 0; bottom: 0; right: 50%; width: 22%; background: var(--danger);"></div>
+          </div>
+          <span style="font-size: 26px; font-weight: 700; text-align: right; color: var(--danger);">−0.44</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 240px 1fr 100px; align-items: center; gap: 24px; font-family: var(--font-mono);">
+          <span style="font-size: 24px; color: var(--fg-2);">Dome 온도</span>
+          <div style="position: relative; height: 14px; background: var(--paper-200);">
+            <div style="position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: var(--rule);"></div>
+            <div style="position: absolute; top: 0; bottom: 0; left: 50%; width: 1%; background: var(--fg-3);"></div>
+          </div>
+          <span style="font-size: 26px; font-weight: 700; text-align: right; color: var(--fg-3);">+0.02</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 240px 1fr 100px; align-items: center; gap: 24px; font-family: var(--font-mono);">
+          <span style="font-size: 24px; color: var(--fg-2);">공정 단계</span>
+          <div style="position: relative; height: 14px; background: var(--paper-200);">
+            <div style="position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: var(--rule);"></div>
+            <div style="position: absolute; top: 0; bottom: 0; left: 50%; width: 1%; background: var(--fg-3);"></div>
+          </div>
+          <span style="font-size: 26px; font-weight: 700; text-align: right; color: var(--fg-3);">+0.01</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">03 / 07</div>
+</section>
+
+<!-- ═══ Slide 4 — EDA ═══ -->
+<section class="slide" data-label="04 EDA">
+  <div class="top-rule">
+    <span>04 · EDA</span>
+    <span>DATA EXPLORATION</span>
+  </div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; flex: 1; padding-top: 48px; align-items: start;">
+    <div>
+      <div class="meta-cap" style="margin-bottom: 16px;">공정단계별 핵심 변수 분포 — 박스플롯</div>
+      <img src="lhv/img/image1-33.png" alt="공정단계별 박스플롯" style="width: 100%; border: 1px solid var(--rule);" />
+      <p style="margin-top: 10px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
+        Fig. 4-1 — 공정단계별 핵심 변수 분포 박스플롯. 전환대기 직후 구간 COG 과잉 투입 패턴 확인.
+      </p>
+    </div>
+    <div>
+      <div class="meta-cap" style="margin-bottom: 16px;">변수 간 상관행렬 — 히트맵</div>
+      <img src="lhv/img/image4-35.png" alt="상관관계 히트맵" style="width: 100%; border: 1px solid var(--rule);" />
+      <p style="margin-top: 10px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
+        Fig. 4-2 — 변수 간 상관행렬. COG유량 r=+0.49, BFG유량 r=−0.44. Dome온도 r≈0으로 LHV 무관.
+      </p>
+    </div>
+  </div>
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">04 / 07</div>
+</section>
+
+<!-- ═══ Slide 5 — Hypotheses ═══ -->
+<section class="slide soft" data-label="05 Hypotheses">
+  <div class="top-rule">
+    <span>05 · 4 HYPOTHESES</span>
+    <span>3 REJECTED · 1 ACCEPTED</span>
+  </div>
+  <h2 class="slide-h2" style="margin-top: 56px; max-width: 24ch;">
+    가설 4개 중 3개가 기각됐다.<br/>그게 가장 큰 발견이었다.</h2>
+
+  <div class="hyp-grid" style="margin-top: 56px;">
+    <div class="hyp-card reject">
+      <div class="tag">H1 · BFG CO 함량</div>
+      <div class="q">CO 함량 1% 증가 → LHV +20 kcal?</div>
+      <div class="verdict">✕ 기각 · p = 0.41</div>
+      <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--rule-soft);font-size:15px;color:var(--fg-3);">→ 성분 변수의 예측력 한계 확인</div>
+    </div>
+    <div class="hyp-card reject">
+      <div class="tag">H2 · DOME 온도</div>
+      <div class="q">Dome 온도가 높을수록 LHV가 상승한다?</div>
+      <div class="verdict">✕ 기각 · r ≈ 0</div>
+      <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--rule-soft);font-size:15px;color:var(--fg-3);">→ 운전원 경험적 지표 무효 확인</div>
+    </div>
+    <div class="hyp-card partial">
+      <div class="tag">H3 · 파생변수</div>
+      <div class="q">COG/BFG 비율 파생변수가 예측력을 높인다?</div>
+      <div class="verdict">△ 부분기각 · R² 동일</div>
+      <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--rule-soft);font-size:15px;color:var(--fg-3);">→ COG_per_Air 파생변수 생성</div>
+    </div>
+    <div class="hyp-card accept">
+      <div class="tag">H4 · 전환대기 직후</div>
+      <div class="q">전환대기 직후 구간에서 COG가 과잉 투입된다?</div>
+      <div class="verdict">✓ 채택</div>
+      <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--rule-soft);font-size:15px;color:var(--fg-2);">→ is_post_standby 이진 플래그 → 절감 시나리오</div>
+    </div>
+  </div>
+
+  <p class="slide-body" style="margin-top: 48px; max-width: 64ch; color: var(--fg-2);
+                                font-style: italic; font-size: 28px;">
+    기각된 가설 3개는 운전원의 경험적 패러다임을 데이터로 재검토하라는 가장 강한 메시지였다.
+  </p>
+  <p class="slide-body" style="margin-top: 16px; max-width: 64ch; font-size: 22px; color: var(--fg-3);">
+    채택된 H4는 is_post_standby 파생변수로 직접 모델에 반영 — 전환대기 직후 구간의
+    COG 2% 절감 시나리오(연 1.24M Nm³)의 근거가 되었다.
+  </p>
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">05 / 07</div>
+</section>
+
+<!-- ═══ Slide 5 — Models ═══ -->
+<section class="slide" data-label="05 Models">
+  <div class="top-rule">
+    <span>06 · 5 MODELS</span>
+    <span>RIDGE WON</span>
+  </div>
+  <div style="display: grid; grid-template-columns: 1.1fr 1.4fr; gap: 96px;
+              margin-top: 56px; flex: 1;">
+    <div>
+      <h2 class="slide-h2">XGBoost가 아니라<br/>Ridge가 1위였다.</h2>
+      <p class="slide-body" style="margin-top: 32px; max-width: 22ch;">
+        COG · BFG 유량과 LHV 사이의 강한 선형 관계가 비선형 트리의 복잡도를 무력화했다.
+      </p>
+      <p class="slide-body" style="margin-top: 24px; max-width: 22ch; color: var(--fg-3);
+                                    font-size: 26px;">
+        모델 복잡도가 아니라 변수 간 관계의 본질을 이해하는 게 우선이라는 걸 체감.
+      </p>
+    </div>
+
+    <table class="slide-table">
+      <thead>
+        <tr>
+          <th>RANK</th><th>MODEL</th>
+          <th class="num" style="text-align:right;">MAE</th>
+          <th class="num" style="text-align:right;">R²</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td class="num">★ 1</td><td>Ridge (α=1)</td>
+          <td class="num" style="text-align:right;">11.99</td>
+          <td class="num" style="text-align:right;">0.428</td>
+        </tr>
+        <tr>
+          <td class="num">2</td><td>Linear Regression</td>
+          <td class="num" style="text-align:right;">11.99</td>
+          <td class="num" style="text-align:right;">0.428</td>
+        </tr>
+        <tr>
+          <td class="num">3</td><td>XGBoost</td>
+          <td class="num" style="text-align:right;">12.12</td>
+          <td class="num" style="text-align:right;">0.417</td>
+        </tr>
+        <tr>
+          <td class="num">4</td><td>Random Forest</td>
+          <td class="num" style="text-align:right;">12.36</td>
+          <td class="num" style="text-align:right;">0.389</td>
+        </tr>
+        <tr>
+          <td class="num">5</td><td>Decision Tree</td>
+          <td class="num" style="text-align:right;">12.53</td>
+          <td class="num" style="text-align:right;">0.363</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">06 / 07</div>
+</section>
+
+<!-- ═══ Slide 6 — Impact / Close ═══ -->
+<section class="slide dark s-close" data-label="06 Impact">
+  <div class="top-rule">
+    <span>07 · IMPACT</span>
+    <span>WHAT IT BUYS US</span>
+  </div>
+  <div style="margin-top: 80px;">
+    <div class="pull" style="color: #F4F4F6;">
+      H4가 가리킨 그 좁은 구간에서<br/>
+      COG를 <em style="color: #F5B556;">2%만</em> 줄이면 —<br/>
+      연간 1.24백만 Nm³가 사라진다.
+    </div>
+  </div>
+
+  <div class="impact" style="margin-top: 64px; border-top-color: rgba(244,244,246,0.18);">
+    <div class="col" style="border-right-color: rgba(244,244,246,0.10);">
+      <div class="k" style="color: rgba(244,244,246,0.55);">절감률</div>
+      <div class="v" style="color: #F5B556;">2%</div>
+      <div class="u" style="color: rgba(244,244,246,0.7);">전환대기 직후 구간 한정</div>
+    </div>
+    <div class="col" style="border-right-color: rgba(244,244,246,0.10);">
+      <div class="k" style="color: rgba(244,244,246,0.55);">LHV 영향</div>
+      <div class="v" style="color: #F4F4F6;">±0.2</div>
+      <div class="u" style="color: rgba(244,244,246,0.7);">목표 ±15 허용 범위 내</div>
+    </div>
+    <div class="col">
+      <div class="k" style="color: rgba(244,244,246,0.55);">연간 절감</div>
+      <div class="v" style="color: #F4F4F6;">1.24M</div>
+      <div class="u" style="color: rgba(244,244,246,0.7);">Nm³ COG / year</div>
+    </div>
+  </div>
+
+  <div class="attrib" style="border-top-color: rgba(244,244,246,0.16);
+                              color: rgba(244,244,246,0.5);">
+    제조 AI 실습 · PYTHON · SCIKIT-LEARN · XGBOOST · SHAP
+  </div>
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:rgba(244,244,246,0.45);">김희태</a>
+  <div class="pageno" style="color: rgba(244,244,246,0.45);">07 / 07</div>
+</section>
+
+</deck-stage>
+
+<a href="index.html" style="position:fixed;top:22px;left:22px;z-index:2147483647;display:flex;align-items:center;gap:6px;padding:8px 16px 8px 12px;border-radius:999px;background:rgba(20,20,24,0.85);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.12);color:#fff;text-decoration:none;font-family:var(--font-mono);font-size:13px;letter-spacing:0.08em;transition:background 180ms ease,border-color 180ms ease;" onmouseenter="this.style.background='rgba(40,40,48,0.95)';this.style.borderColor='rgba(255,255,255,0.28)'" onmouseleave="this.style.background='rgba(20,20,24,0.85)';this.style.borderColor='rgba(255,255,255,0.12)'"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>PORTFOLIO</a>
+
+</body>
+</html>
