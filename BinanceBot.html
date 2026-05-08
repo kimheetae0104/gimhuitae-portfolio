@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>Binance ML Bot — 단일 지표가 못 본 신호를 본다</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="shared/tokens.css" />
+<script src="shared/deck-stage.js"></script>
+<style>
+  body { background: #0a0a0c; }
+  deck-stage { background: var(--bg); }
+
+  section.slide {
+    background: var(--bg); color: var(--fg-1);
+    font-family: var(--font-sans);
+    padding: 80px 100px; box-sizing: border-box;
+    display: flex; flex-direction: column; overflow: hidden;
+    height: 100%;
+  }
+  section.slide.dark { background: var(--ink-900); color: #F4F4F6; }
+  section.slide.soft { background: var(--paper-100); }
+  section.slide.terminal { background: #0c0c10; color: #e0e0e8; }
+
+  .top-rule { display: flex; justify-content: space-between;
+              padding-bottom: 28px; border-bottom: 1px solid var(--rule);
+              font-family: var(--font-mono); font-size: 26px;
+              letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg-3); }
+  .dark .top-rule { border-color: rgba(244,244,246,0.2); color: rgba(244,244,246,0.5); }
+  .terminal .top-rule { border-color: rgba(91,141,239,0.25); color: rgba(91,141,239,0.55); }
+
+  .meta-cap { font-family: var(--font-mono); font-size: 26px;
+              letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg-3); }
+  .dark .meta-cap { color: rgba(244,244,246,0.55); }
+
+  h1.slide-title { font-family: var(--font-sans); font-weight: 600;
+                   font-size: 84px; line-height: 1.05; letter-spacing: -0.025em;
+                   color: var(--fg-1); margin: 0; }
+  h2.slide-h2 { font-family: var(--font-sans); font-weight: 600;
+                font-size: 64px; line-height: 1.08; letter-spacing: -0.02em;
+                color: var(--fg-1); margin: 0; }
+  .dark h2.slide-h2 { color: #F4F4F6; }
+  p.slide-body { font-family: var(--font-sans); font-size: 32px;
+                 line-height: 1.6; color: var(--fg-2); margin: 0; }
+  .dark p.slide-body { color: rgba(244,244,246,0.78); }
+
+  .pageno { position: absolute; bottom: 36px; right: 100px;
+            font-family: var(--font-mono); font-size: 24px; color: var(--fg-3);
+            letter-spacing: 0.16em; }
+  .dark .pageno { color: rgba(244,244,246,0.45); }
+  .pageno-mark { position: absolute; bottom: 36px; left: 100px;
+                  font-family: var(--font-mono); font-size: 24px; color: var(--fg-3);
+                  letter-spacing: 0.16em; }
+  .dark .pageno-mark { color: rgba(244,244,246,0.45); }
+
+  /* ── title slide ── */
+  .s-title { justify-content: flex-start; }
+  .s-title .hero { flex: 1; display: flex; flex-direction: column;
+                    justify-content: center; padding-bottom: 24px; }
+  .s-title .hero h1 { font-size: 110px; line-height: 1.0; max-width: 22ch; }
+  .s-title .hero .ko-sub { font-size: 36px; color: var(--fg-2);
+                            margin-top: 24px; max-width: 48ch; line-height: 1.45; }
+  .s-title .meta-grid { display: grid; grid-template-columns: repeat(4, 1fr);
+                        gap: 0; padding-top: 36px; border-top: 1px solid var(--rule); }
+  .s-title .meta-grid .col { padding-right: 24px; }
+  .s-title .meta-grid .k { font-family: var(--font-mono); font-size: 24px;
+                            letter-spacing: 0.16em; text-transform: uppercase;
+                            color: var(--fg-3); margin-bottom: 12px; }
+  .s-title .meta-grid .v { font-family: var(--font-sans); font-size: 28px;
+                            color: var(--fg-1); line-height: 1.4; }
+  .dark .s-title .meta-grid .k { color: rgba(244,244,246,0.45); }
+  .dark .s-title .meta-grid .v { color: #F4F4F6; }
+  .dark .s-title .ko-sub { color: rgba(244,244,246,0.7); }
+  .dark .s-title h1 { color: #F4F4F6; }
+  .dark .s-title .meta-cap { color: rgba(244,244,246,0.45); }
+
+  /* ── filter / 2-stage flow ── */
+  .filter-stage { display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+                  margin-top: 32px; align-items: stretch; }
+  .stage-card { padding: 32px 28px; background: var(--paper-50);
+                border-top: 2px solid var(--rule); display: flex;
+                flex-direction: column; gap: 14px; }
+  .stage-card.s1 { border-top-color: var(--accent-600); }
+  .stage-card.s2 { border-top-color: var(--positive); }
+  .stage-card .stag { font-family: var(--font-mono); font-size: 22px;
+                       letter-spacing: 0.14em; text-transform: uppercase;
+                       color: var(--fg-3); }
+  .stage-card.s1 .stag { color: var(--accent-600); }
+  .stage-card.s2 .stag { color: var(--positive); }
+  .stage-card h3 { font-family: var(--font-sans); font-weight: 600;
+                    font-size: 30px; line-height: 1.2; color: var(--fg-1); margin: 0; }
+  .stage-card .filt-list { display: flex; flex-direction: column; gap: 0;
+                            margin-top: 10px; }
+  .stage-card .filt-row { display: grid; grid-template-columns: 36px 1fr auto;
+                          gap: 16px; padding: 14px 0;
+                          border-top: 1px solid var(--rule-soft);
+                          font-family: var(--font-sans); font-size: 22px;
+                          color: var(--fg-2); align-items: baseline; }
+  .stage-card .filt-row .idx { font-family: var(--font-mono); font-size: 18px;
+                                color: var(--fg-3); }
+  .stage-card .filt-row .v { font-family: var(--font-mono); font-size: 18px;
+                              color: var(--accent-600); white-space: nowrap; }
+  .stage-card.s2 .filt-row .v { color: var(--positive); }
+
+  /* ── feature category cards ── */
+  .feat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+                margin-top: 32px; }
+  .feat-card { padding: 26px 22px; background: var(--paper-50);
+                border-top: 2px solid var(--accent-600);
+                display: flex; flex-direction: column; gap: 12px; }
+  .feat-card .ftag { font-family: var(--font-mono); font-size: 18px;
+                      letter-spacing: 0.12em; text-transform: uppercase;
+                      color: var(--accent-600); }
+  .feat-card h3 { font-family: var(--font-sans); font-weight: 600;
+                   font-size: 26px; line-height: 1.2; color: var(--fg-1); margin: 0; }
+  .feat-card .flist { font-family: var(--font-mono); font-size: 17px;
+                       line-height: 1.7; color: var(--fg-2); margin: 0; padding: 0;
+                       list-style: none; }
+  .feat-card .flist li { padding: 4px 0; }
+
+  /* ── ensemble table ── */
+  table.ens-table { width: 100%; border-collapse: collapse;
+                    font-family: var(--font-sans); font-size: 24px; line-height: 1.5;
+                    color: var(--fg-2); margin-top: 24px; }
+  table.ens-table th, table.ens-table td {
+    padding: 18px 16px; text-align: left; vertical-align: top;
+    border-bottom: 1px solid var(--rule-soft); }
+  table.ens-table thead th {
+    font-family: var(--font-mono); font-size: 18px; font-weight: 400;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3);
+    border-bottom: 1px solid var(--rule); padding-bottom: 14px; }
+  table.ens-table .num { font-family: var(--font-mono);
+                          font-feature-settings: "tnum"; color: var(--fg-1); }
+  table.ens-table .role { color: var(--fg-2); }
+
+  /* ── lesson callout ── */
+  .lesson-box { padding: 28px 32px; background: rgba(181, 51, 30, 0.05);
+                 border-left: 3px solid var(--danger); margin-top: 24px; }
+  .lesson-box .lab { font-family: var(--font-mono); font-size: 18px;
+                      letter-spacing: 0.14em; text-transform: uppercase;
+                      color: var(--danger); margin-bottom: 10px; }
+  .lesson-box .lq { font-family: var(--font-sans); font-size: 28px;
+                     line-height: 1.4; color: var(--fg-1); font-weight: 500; }
+  .lesson-box .lq strong { color: var(--danger); }
+  .lesson-box .ldetail { font-family: var(--font-sans); font-size: 22px;
+                          color: var(--fg-2); margin-top: 10px; line-height: 1.5; }
+
+  /* ── strategy split visual ── */
+  .strat-split { display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+                  margin-top: 28px; }
+  .strat-card { padding: 32px 28px; background: var(--paper-50);
+                 border-top: 2px solid var(--accent-600);
+                 display: flex; flex-direction: column; gap: 12px; }
+  .strat-card .scap { font-family: var(--font-mono); font-size: 20px;
+                       letter-spacing: 0.14em; text-transform: uppercase;
+                       color: var(--accent-600); }
+  .strat-card .smode { font-family: var(--font-sans); font-weight: 700;
+                        font-size: 56px; letter-spacing: -0.02em;
+                        line-height: 1; color: var(--fg-1); margin-top: 8px; }
+  .strat-card .scond { font-family: var(--font-mono); font-size: 22px;
+                        color: var(--fg-2); margin-top: 8px; }
+  .strat-card .sdesc { font-family: var(--font-sans); font-size: 23px;
+                        color: var(--fg-2); line-height: 1.5; margin-top: 14px; }
+
+  /* ── risk matrix table ── */
+  table.risk-table { width: 100%; border-collapse: collapse;
+                     font-family: var(--font-sans); font-size: 22px;
+                     line-height: 1.5; color: var(--fg-2); margin-top: 22px; }
+  table.risk-table td { padding: 14px 14px; vertical-align: top;
+                         border-bottom: 1px solid var(--rule-soft); }
+  table.risk-table thead th { font-family: var(--font-mono); font-size: 18px;
+                               font-weight: 400; letter-spacing: 0.14em;
+                               text-transform: uppercase; color: var(--fg-3);
+                               text-align: left; padding: 0 14px 14px;
+                               border-bottom: 1px solid var(--rule); }
+  table.risk-table .v { font-family: var(--font-mono); color: var(--accent-600);
+                         font-feature-settings: "tnum"; white-space: nowrap; }
+
+  /* ── phase timeline ── */
+  .phase-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+                margin-top: 32px; }
+  .phase-card { padding: 28px 24px; border-top: 2px solid rgba(244,244,246,0.2);
+                 display: flex; flex-direction: column; gap: 12px; }
+  .phase-card .pn { font-family: var(--font-mono); font-size: 18px;
+                     letter-spacing: 0.14em; color: rgba(244,244,246,0.45); }
+  .phase-card .py { font-family: var(--font-mono); font-size: 18px;
+                     color: rgba(244,244,246,0.6); }
+  .phase-card h3 { font-family: var(--font-sans); font-weight: 600;
+                    font-size: 26px; line-height: 1.2; color: #F4F4F6; margin: 0; }
+  .phase-card .pdesc { font-family: var(--font-sans); font-size: 20px;
+                        line-height: 1.5; color: rgba(244,244,246,0.65); }
+  .phase-card.now { border-top-color: rgba(91,141,239,0.85); }
+  .phase-card.now .pn { color: rgba(91,141,239,0.85); }
+
+  /* ── close ── */
+  .s-close .pull { font-family: var(--font-sans); font-weight: 500;
+                    font-size: 80px; line-height: 1.18; letter-spacing: -0.02em;
+                    color: #F4F4F6; max-width: 22ch; }
+  .s-close .pull em { font-style: normal; color: rgba(91,141,239,0.85); }
+  .s-close .attrib { font-family: var(--font-mono); font-size: 24px;
+                      letter-spacing: 0.14em; color: rgba(244,244,246,0.5);
+                      margin-top: 48px; padding-top: 24px;
+                      border-top: 1px solid rgba(244,244,246,0.16); }
+
+  /* ── candlestick decoration on slide 2 ── */
+  .candle-row { display: flex; align-items: flex-end; gap: 10px; height: 220px;
+                 margin-top: 8px; }
+  .candle { width: 18px; border-radius: 1px; position: relative; }
+  .candle.up { background: rgba(80,180,120,0.55); }
+  .candle.down { background: rgba(200,80,80,0.55); }
+  .candle.up.surge { background: linear-gradient(180deg,
+                       rgba(91,141,239,0.95), rgba(91,141,239,0.45)); }
+  .candle::before { content: ''; position: absolute; left: 50%;
+                     top: -12px; width: 1.5px; height: 24px;
+                     background: rgba(244,244,246,0.18);
+                     transform: translateX(-50%); }
+  .candle::after { content: ''; position: absolute; left: 50%;
+                    bottom: -10px; width: 1.5px; height: 16px;
+                    background: rgba(244,244,246,0.14);
+                    transform: translateX(-50%); }
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+<!-- ═══ Slide 1 — Title ═══ -->
+<section class="slide s-title" data-label="01 Title">
+  <div class="top-rule">
+    <span>김희태 · PORTFOLIO</span>
+    <span>2026</span>
+  </div>
+  <div class="hero">
+    <div class="meta-cap" style="margin-bottom: 32px;">ML TRADING · CRYPTO · 2022 — 2024</div>
+    <h1>단일 지표가 놓친 신호를,<br/>ML 앙상블이 본다.</h1>
+    <p class="ko-sub">Binance USDT 마켓 500+ 종목을 비동기로 스캔하고,<br/>
+       기술적 필터 1차 + ML 앙상블 2차의 하이브리드 구조로 급등 신호를 감지하는 자동매매 봇.</p>
+  </div>
+  <div class="meta-grid">
+    <div class="col"><div class="k">TYPE</div><div class="v">개인프로젝트<br/>2년 (2022–2024)</div></div>
+    <div class="col"><div class="k">STACK</div><div class="v">Python · XGBoost<br/>LightGBM · ccxt</div></div>
+    <div class="col"><div class="k">CATEGORY</div><div class="v">ML Pipeline<br/>Algo Trading</div></div>
+    <div class="col"><div class="k">OUTCOME</div><div class="v">2-단계 하이브리드<br/>필터 시스템 구축</div></div>
+  </div>
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">01 / 07</div>
+</section>
+
+<!-- ═══ Slide 2 — Problem ═══ -->
+<section class="slide dark" data-label="02 Problem">
+  <div class="top-rule">
+    <span>02 · PROBLEM</span>
+    <span>WHY HYBRID</span>
+  </div>
+  <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 72px;
+              flex: 1; padding-top: 48px; align-items: start;">
+    <div>
+      <h2 class="slide-h2" style="color:#F4F4F6;">백테스트 80%,<br/>
+        <span style="color:rgba(244,244,246,0.5); font-weight: 400;">실전에선 51%.</span></h2>
+      <p class="slide-body" style="margin-top: 28px; max-width: 30ch; font-size: 27px;
+                                   color: rgba(244,244,246,0.78);">
+        암호화폐 시계열은 금융 데이터 중에서도 노이즈가 극단적이다.
+        규칙 기반 매매도, ML 단독 매매도 결국 같은 벽에 부딪혔다 —
+        <strong style="color:#F4F4F6;">학습 곡선과 실전 곡선의 괴리.</strong>
+      </p>
+      <p class="slide-body" style="margin-top: 20px; max-width: 30ch; font-size: 26px;
+                                   color: rgba(244,244,246,0.55);">
+        XGBoost를 처음 도입했을 때, 훈련 정확도 88%를 보고 실전에 투입했다.
+        실전 정확도는 51%였다. 동전 던지기와 같았다.
+      </p>
+      <p class="slide-body" style="margin-top: 20px; max-width: 30ch; font-size: 26px;
+                                   color: rgba(91,141,239,0.85); font-weight: 500;">
+        "지표는 거짓 신호를 만든다.<br/>ML은 노이즈를 외운다."
+      </p>
+      <p class="slide-body" style="margin-top: 16px; max-width: 30ch; font-size: 24px;
+                                   color: rgba(244,244,246,0.45);">
+        둘을 따로 쓰면 둘 다 진다. 둘을 직렬로 쌓아야 신호 품질이 살아난다 —
+        그게 이 프로젝트의 출발점이었다.
+      </p>
+    </div>
+    <div style="padding-top: 8px;">
+      <div class="meta-cap" style="margin-bottom: 20px; color: rgba(244,244,246,0.55);">
+        시장 노이즈 — 8 BARS</div>
+      <div class="candle-row">
+        <div class="candle down" style="height: 35%;"></div>
+        <div class="candle up"   style="height: 28%;"></div>
+        <div class="candle down" style="height: 42%;"></div>
+        <div class="candle down" style="height: 18%;"></div>
+        <div class="candle up"   style="height: 45%;"></div>
+        <div class="candle down" style="height: 30%;"></div>
+        <div class="candle up"   style="height: 38%;"></div>
+        <div class="candle up surge" style="height: 88%;"></div>
+      </div>
+      <p style="font-family: var(--font-mono); font-size: 18px;
+                color: rgba(244,244,246,0.4); margin-top: 32px; line-height: 1.6;">
+        ↑ 7 봉의 노이즈 속에 1 봉의 진짜 급등. <br/>
+        False Positive 60%를 줄이는 것이 모델의 핵심 목표였다.</p>
+
+      <div style="margin-top: 36px; padding-top: 24px;
+                  border-top: 1px solid rgba(244,244,246,0.16);
+                  font-family: var(--font-mono); font-size: 22px;
+                  color: rgba(244,244,246,0.65); line-height: 1.8;">
+        <div>SCAN MARKET&nbsp;&nbsp;<span style="color:#F4F4F6;">500+ pairs</span></div>
+        <div>BARS / SCAN&nbsp;&nbsp;<span style="color:#F4F4F6;">200 × 5m</span></div>
+        <div>SURGE RATE&nbsp;&nbsp;<span style="color:rgba(91,141,239,0.85);">5–10%</span></div>
+      </div>
+    </div>
+  </div>
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">02 / 07</div>
+</section>
+
+<!-- ═══ Slide 3 — Architecture ═══ -->
+<section class="slide soft" data-label="03 Architecture">
+  <div class="top-rule">
+    <span>03 · ARCHITECTURE</span>
+    <span>2-STAGE HYBRID FILTER</span>
+  </div>
+  <h2 class="slide-h2" style="margin-top: 36px; max-width: 24ch;">
+    기술 분석이 통과시킨 신호만,<br/>ML 앙상블이 한 번 더 본다.</h2>
+  <p class="slide-body" style="margin-top: 18px; max-width: 50ch; font-size: 26px;
+                                color: var(--fg-2);">
+    ML 단독은 False Positive가 너무 많고, 지표 단독은 Regime 변화에 무력하다.
+    두 시스템을 직렬로 쌓아 한쪽의 약점을 다른 쪽이 덮는 구조로 재설계했다.
+  </p>
+
+  <div class="filter-stage" style="flex: 1; align-items: stretch;">
+    <div class="stage-card s1">
+      <div class="stag">STAGE 1 · TECHNICAL FILTER</div>
+      <h3>HybridSurgeDetector</h3>
+      <p style="font-family: var(--font-sans); font-size: 21px; color: var(--fg-2);
+                line-height: 1.5; margin: 4px 0 0;">
+        500+ USDT 페어를 asyncio로 병렬 스캔.
+        5가지 멀티 필터를 통과한 종목만 다음 단계로 보낸다.</p>
+      <div class="filt-list">
+        <div class="filt-row"><span class="idx">01</span>
+          <span>5분 가격 변화</span><span class="v">≥ +1%</span></div>
+        <div class="filt-row"><span class="idx">02</span>
+          <span>1시간 가격 변화</span><span class="v">≥ +3%</span></div>
+        <div class="filt-row"><span class="idx">03</span>
+          <span>거래량 (vs 40봉 평균)</span><span class="v">≥ 1.2×</span></div>
+        <div class="filt-row"><span class="idx">04</span>
+          <span>RSI 모멘텀 구간</span><span class="v">50 — 95</span></div>
+        <div class="filt-row"><span class="idx">05</span>
+          <span>하이브리드 스코어</span><span class="v">≥ 0.25</span></div>
+      </div>
+    </div>
+
+    <div class="stage-card s2">
+      <div class="stag">STAGE 2 · ML ENSEMBLE</div>
+      <h3>MLPredictor (Soft Voting)</h3>
+      <p style="font-family: var(--font-sans); font-size: 21px; color: var(--fg-2);
+                line-height: 1.5; margin: 4px 0 0;">
+        100+ 피처 → SelectKBest로 Top 50 → 3개 모델의 평균 확률.
+        임계값 0.25를 넘은 신호만 매수 실행.</p>
+      <div class="filt-list">
+        <div class="filt-row"><span class="idx">M1</span>
+          <span>XGBoost (n_est=300, depth=4)</span><span class="v">P(↑)</span></div>
+        <div class="filt-row"><span class="idx">M2</span>
+          <span>LightGBM (Leaf-wise)</span><span class="v">P(↑)</span></div>
+        <div class="filt-row"><span class="idx">M3</span>
+          <span>RandomForest (배깅)</span><span class="v">P(↑)</span></div>
+        <div class="filt-row"><span class="idx">→</span>
+          <span>Soft Voting · 평균 확률</span><span class="v">≥ 0.25</span></div>
+        <div class="filt-row"><span class="idx">✓</span>
+          <span>두 단계 모두 통과 → 매수</span><span class="v">EXECUTE</span></div>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">03 / 07</div>
+</section>
+
+<!-- ═══ Slide 4 — Feature Engineering ═══ -->
+<section class="slide" data-label="04 Features">
+  <div class="top-rule">
+    <span>04 · FEATURE ENGINEERING</span>
+    <span>100+ INDICATORS · 4 CATEGORIES</span>
+  </div>
+  <h2 class="slide-h2" style="margin-top: 32px; max-width: 26ch;">
+    모델은 피처가 만든다.</h2>
+  <p class="slide-body" style="margin-top: 16px; max-width: 50ch; font-size: 26px;">
+    `features.py`의 <code style="background:var(--paper-100);padding:2px 8px;
+    font-family:var(--font-mono);font-size:24px;">FeatureEngineering</code> 클래스가
+    OHLCV에서 4개 카테고리, 100+ 기술 지표를 생성한다. 차원의 저주를 피하기 위해
+    SelectKBest로 통계적으로 유의한 상위 50개만 모델에 투입한다.</p>
+
+  <div class="feat-grid" style="flex: 1; align-items: stretch;">
+    <div class="feat-card">
+      <div class="ftag">CAT 01 · TREND</div>
+      <h3>추세 지표</h3>
+      <ul class="flist">
+        <li>SMA 5 / 10 / 20 / 50</li>
+        <li>EMA 5 / 10 / 20 / 50</li>
+        <li>MACD · Signal · Hist</li>
+        <li>ADX · CCI</li>
+      </ul>
+    </div>
+    <div class="feat-card">
+      <div class="ftag">CAT 02 · MOMENTUM</div>
+      <h3>모멘텀 지표</h3>
+      <ul class="flist">
+        <li>RSI 14</li>
+        <li>Stochastic %K %D</li>
+        <li>Williams %R</li>
+        <li>Awesome Oscillator</li>
+      </ul>
+    </div>
+    <div class="feat-card" style="border-top-color: var(--positive);">
+      <div class="ftag" style="color: var(--positive);">CAT 03 · VOLATILITY</div>
+      <h3>변동성 지표</h3>
+      <ul class="flist">
+        <li>Bollinger (20, ±2σ)</li>
+        <li>BB Width / Position / Squeeze</li>
+        <li>ATR 14 · ATR%</li>
+        <li>Keltner / Donchian</li>
+      </ul>
+    </div>
+    <div class="feat-card" style="border-top-color: var(--warn);">
+      <div class="ftag" style="color: var(--warn);">CAT 04 · VOLUME</div>
+      <h3>거래량 지표</h3>
+      <ul class="flist">
+        <li>OBV (실수요 동반 여부)</li>
+        <li>CMF · Chaikin Money Flow</li>
+        <li>VPT</li>
+        <li>Volume Surge (vs 40봉)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top: 24px; display: grid; grid-template-columns: repeat(3, 1fr);
+              gap: 0; padding-top: 24px; border-top: 1px solid var(--rule-soft);
+              font-family: var(--font-mono); font-size: 22px;">
+    <div><span style="color: var(--fg-3);">로그 수익률 →</span>
+      <span style="color: var(--fg-1);"> 정규성 확보</span></div>
+    <div><span style="color: var(--fg-3);">캔들 바디 비율 →</span>
+      <span style="color: var(--fg-1);"> 허매 vs 실체</span></div>
+    <div><span style="color: var(--fg-3);">SelectKBest →</span>
+      <span style="color: var(--accent-600);"> Top 50 / 100+</span></div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">04 / 07</div>
+</section>
+
+<!-- ═══ Slide 5 — ML Ensemble & Lesson ═══ -->
+<section class="slide" data-label="05 Ensemble">
+  <div class="top-rule">
+    <span>05 · ML ENSEMBLE</span>
+    <span>3-MODEL · SMOTE · DEPTH-4</span>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px;
+              margin-top: 32px; flex: 1; align-items: start;">
+    <div>
+      <h2 class="slide-h2" style="font-size: 56px;">앙상블은<br/>한 모델의 약점을 덮는다.</h2>
+      <p class="slide-body" style="margin-top: 20px; max-width: 30ch; font-size: 25px;">
+        XGBoost는 비선형 패턴을, LightGBM은 대용량 피처를, RandomForest는 과적합을
+        억제한다. 세 모델의 평균 확률이 0.25를 넘을 때만 매수 신호로 인정한다.</p>
+
+      <table class="ens-table">
+        <thead><tr><th>MODEL</th><th>PARAMS</th><th>ROLE</th></tr></thead>
+        <tbody>
+          <tr><td><strong style="color:var(--accent-600);">XGBoost</strong></td>
+              <td class="num">depth=4 · n_est=300</td>
+              <td class="role">비선형 순차 앙상블</td></tr>
+          <tr><td><strong>LightGBM</strong></td>
+              <td class="num">leaf-wise</td>
+              <td class="role">대용량 피처 빠른 학습</td></tr>
+          <tr><td><strong>RandomForest</strong></td>
+              <td class="num">parallel bagging</td>
+              <td class="role">과적합 억제 · 분산 감소</td></tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top: 24px; padding: 18px 22px; background: var(--paper-100);
+                  border-left: 3px solid var(--accent-600);
+                  font-family: var(--font-mono); font-size: 19px;
+                  color: var(--fg-2); line-height: 1.7;">
+        <span style="color: var(--accent-600);">SMOTE</span> · 급등 이벤트 5–10% (희귀)
+        → k_neighbors=5로 합성 샘플 생성 → 1:1 균형화<br/>
+        <span style="color: var(--accent-600);">scale_pos_weight=5</span> · 양성 클래스 가중 강화
+      </div>
+    </div>
+
+    <div>
+      <div class="meta-cap" style="margin-bottom: 16px;">결정적 교훈</div>
+      <div class="lesson-box">
+        <div class="lab">OVERFIT — DEPTH MATTERS</div>
+        <div class="lq">훈련 <strong>88%</strong>,<br/>실전 <strong>51%</strong>.</div>
+        <div class="ldetail">
+          <code style="background:transparent; padding:0; color:var(--fg-1);
+                       font-family:var(--font-mono); font-size:21px;">max_depth=7</code>
+          깊은 트리는 노이즈까지 외웠다. <code style="background:transparent;padding:0;
+          color:var(--fg-1); font-family:var(--font-mono); font-size:21px;">max_depth=4</code>로
+          제한하자 일반화 성능이 살아났다.
+        </div>
+      </div>
+
+      <div style="margin-top: 28px; padding: 22px 24px; background: var(--paper-50);
+                  border-top: 2px solid var(--positive);">
+        <div class="meta-cap" style="font-size: 18px; color: var(--positive);
+                                      margin-bottom: 10px;">TARGET LABEL</div>
+        <div style="font-family: var(--font-sans); font-size: 24px;
+                     color: var(--fg-1); line-height: 1.5;">
+          미래 6봉 (= 30분) 내 <strong>+3% 이상 상승</strong> 여부를 이진 분류.</div>
+        <div style="font-family: var(--font-mono); font-size: 18px;
+                     color: var(--fg-3); margin-top: 8px; line-height: 1.6;">
+          단봉 예측이 아닌 "수익 구간"을 학습 → 의미 있는 신호만 캡처</div>
+      </div>
+
+      <div style="margin-top: 22px; padding: 22px 24px; background: var(--paper-50);
+                  border-top: 2px solid var(--accent-600);">
+        <div class="meta-cap" style="font-size: 18px; color: var(--accent-600);
+                                      margin-bottom: 10px;">SCALER</div>
+        <div style="font-family: var(--font-sans); font-size: 22px;
+                     color: var(--fg-1); line-height: 1.5;">
+          RobustScaler — 이상치(spike)에 강건한 정규화.</div>
+        <div style="font-family: var(--font-mono); font-size: 18px;
+                     color: var(--fg-3); margin-top: 8px;">
+          중앙값·IQR 기반 → spike에 휘둘리지 않음</div>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">05 / 07</div>
+</section>
+
+<!-- ═══ Slide 6 — Strategy & Risk ═══ -->
+<section class="slide soft" data-label="06 Strategy">
+  <div class="top-rule">
+    <span>06 · STRATEGY &amp; RISK</span>
+    <span>CAPITAL-TIERED · ATR-DRIVEN</span>
+  </div>
+  <h2 class="slide-h2" style="margin-top: 28px; max-width: 26ch;">
+    자본이 변하면, 전략도 분기한다.</h2>
+
+  <div class="strat-split">
+    <div class="strat-card">
+      <div class="scap">MODE A · 소액 집중</div>
+      <div class="smode">ALL&#x2011;IN</div>
+      <div class="scond">balance ≤ $700</div>
+      <div class="sdesc">
+        잔고의 99.8%를 단일 종목에 집중. 복리로 자산을 빠르게 증식시키는 단계.
+        리스크는 크지만 손절을 타이트하게 잡아 회복 가능한 범위로 통제한다.</div>
+    </div>
+    <div class="strat-card" style="border-top-color: var(--positive);">
+      <div class="scap" style="color: var(--positive);">MODE B · 분산</div>
+      <div class="smode">SPLIT</div>
+      <div class="scond">balance &gt; $700</div>
+      <div class="sdesc">
+        종목당 최대 20%, 최대 5종목 분산. 일정 규모 이상에서는 단일 종목 리스크가
+        치명적이므로 자동으로 분산 모드로 전환한다.</div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 56px;
+              margin-top: 32px; flex: 1; align-items: start;">
+    <div>
+      <div class="meta-cap" style="margin-bottom: 14px;">RISK MATRIX</div>
+      <table class="risk-table">
+        <thead><tr><th>항목</th><th>설정값</th><th>의도</th></tr></thead>
+        <tbody>
+          <tr><td>손절 (Stop Loss)</td><td class="v">−3%</td>
+              <td>타이트한 단타 손절</td></tr>
+          <tr><td>익절 (Take Profit)</td><td class="v">+3%</td>
+              <td>빠른 이익 실현</td></tr>
+          <tr><td>트레일링 스탑</td><td class="v">최고가 −0.8%</td>
+              <td>이익 극대화 후 자동 청산</td></tr>
+          <tr><td>ATR 동적 손절</td><td class="v">atr_pct × 1.5</td>
+              <td>변동성 높을 때 자동 확대</td></tr>
+          <tr><td>최대 보유 시간</td><td class="v">3 hours</td>
+              <td>시간 초과 시 강제 청산</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 22px;">
+      <div style="padding: 24px 26px; background: var(--paper-50);
+                   border-top: 2px solid var(--accent-600);">
+        <div class="meta-cap" style="font-size: 18px; color: var(--accent-600);
+                                      margin-bottom: 10px;">PARALLEL SCAN</div>
+        <div style="font-family: var(--font-sans); font-weight: 700;
+                     font-size: 56px; letter-spacing: -0.02em; color: var(--fg-1);
+                     line-height: 1;">10×</div>
+        <div style="font-family: var(--font-sans); font-size: 22px;
+                     color: var(--fg-2); margin-top: 10px; line-height: 1.5;">
+          asyncio로 500+ USDT 페어 병렬 스캔. 단일 스레드 대비 10배 속도.</div>
+      </div>
+
+      <div style="padding: 24px 26px; background: var(--paper-50);
+                   border-top: 2px solid var(--positive);">
+        <div class="meta-cap" style="font-size: 18px; color: var(--positive);
+                                      margin-bottom: 10px;">PAPER TRADING</div>
+        <div style="font-family: var(--font-sans); font-size: 24px;
+                     color: var(--fg-1); line-height: 1.5;">
+          실거래 전 모의 거래 모드(<code style="font-family:var(--font-mono);
+          font-size:21px;background:transparent;color:var(--positive);padding:0;">paper_main.py</code>)로
+          전략을 검증.</div>
+        <div style="font-family: var(--font-mono); font-size: 18px;
+                     color: var(--fg-3); margin-top: 8px;">
+          실거래 라이브러리와 동일 인터페이스 → 코드 변경 0</div>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">06 / 07</div>
+</section>
+
+<!-- ═══ Slide 7 — Phases & Reflection (close) ═══ -->
+<section class="slide dark s-close" data-label="07 Reflection">
+  <div class="top-rule">
+    <span>07 · PHASES &amp; REFLECTION</span>
+    <span>2 YEARS · 4 PHASES</span>
+  </div>
+
+  <div class="phase-row">
+    <div class="phase-card">
+      <div class="pn">PHASE 01</div>
+      <div class="py">2022</div>
+      <h3>단순 지표 매매</h3>
+      <div class="pdesc">RSI 과매도 + MACD 골든크로스. 백테스트는 좋았지만 실전 False Positive 60%+.</div>
+    </div>
+    <div class="phase-card">
+      <div class="pn">PHASE 02</div>
+      <div class="py">2022 — 2023</div>
+      <h3>멀티 지표 필터링</h3>
+      <div class="pdesc">볼린저 + 거래량 + 전고점 돌파 조합. 신호 품질 개선, 그러나 Regime 변화 미적응.</div>
+    </div>
+    <div class="phase-card">
+      <div class="pn">PHASE 03</div>
+      <div class="py">2023 — 2024</div>
+      <h3>ML 도입 + LLM 보조</h3>
+      <div class="pdesc">XGBoost 첫 도입 시 88%/51% 과적합. SMOTE · depth=4 · 앙상블 전환으로 안정화.</div>
+    </div>
+    <div class="phase-card now">
+      <div class="pn">PHASE 04 · NOW</div>
+      <div class="py">현재</div>
+      <h3>하이브리드 시스템</h3>
+      <div class="pdesc">기술 필터 1차 + ML 2차의 직렬 구조. False Positive 최소화 + 페이퍼 트레이딩 검증.</div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+              margin-top: 56px; padding-top: 36px;
+              border-top: 1px solid rgba(244,244,246,0.18); flex: 1; align-items: start;">
+    <div>
+      <div class="pull">
+        지표는 거짓을 만든다.<br/>
+        ML은 노이즈를 외운다.<br/>
+        <em>둘을 직렬로 쌓아야</em><br/>
+        신호가 살아난다.
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 28px;">
+      <div>
+        <div class="meta-cap" style="color: rgba(244,244,246,0.55); margin-bottom: 14px;">
+          무엇을 배웠나</div>
+        <p class="slide-body" style="color: rgba(244,244,246,0.78); font-size: 26px;
+                                      max-width: 30ch;">
+          백테스트 정확도는 트로피가 아니라 <strong style="color:#F4F4F6;">함정</strong>이다.
+          시장이 바뀌면 모델도 바뀌어야 한다 — 학습 한 번으로 끝나는 시스템은 없다.</p>
+      </div>
+      <div>
+        <div class="meta-cap" style="color: rgba(244,244,246,0.55); margin-bottom: 14px;">
+          NEXT</div>
+        <p class="slide-body" style="color: rgba(244,244,246,0.78); font-size: 26px;
+                                      max-width: 30ch;">
+          오더북 depth 불균형 피처 추가 · 멀티 타임프레임 앙상블 ·
+          PPO/SAC 강화학습으로 동적 포지션 사이징 최적화.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="attrib">
+    Python · XGBoost · LightGBM · scikit-learn · ccxt · asyncio · APScheduler · Telegram · loguru
+  </div>
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:rgba(244,244,246,0.45);">김희태</a>
+  <div class="pageno" style="color: rgba(244,244,246,0.45);">07 / 07</div>
+</section>
+
+</deck-stage>
+
+<a href="index.html" style="position:fixed;top:22px;left:22px;z-index:2147483647;display:flex;align-items:center;gap:6px;padding:8px 16px 8px 12px;border-radius:999px;background:rgba(20,20,24,0.85);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.12);color:#fff;text-decoration:none;font-family:var(--font-mono);font-size:13px;letter-spacing:0.08em;transition:background 180ms ease,border-color 180ms ease;" onmouseenter="this.style.background='rgba(40,40,48,0.95)';this.style.borderColor='rgba(255,255,255,0.28)'" onmouseleave="this.style.background='rgba(20,20,24,0.85)';this.style.borderColor='rgba(255,255,255,0.12)'"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>PORTFOLIO</a>
+
+</body>
+</html>

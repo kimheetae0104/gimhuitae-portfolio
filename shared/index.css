@@ -158,6 +158,32 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
 .thumb-ai::before{content:'';position:absolute;inset:0;
   background:radial-gradient(ellipse at 50% 60%,rgba(80,220,120,0.06) 0%,transparent 70%)}
 
+/* Binance Bot */
+.thumb-bot{background:linear-gradient(135deg,#0a0e1a 0%,#08080a 100%);position:relative}
+.thumb-bot::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 65% 55%,rgba(91,141,239,0.08) 0%,transparent 70%)}
+.thumb-bot .bot-stage{display:flex;align-items:center;justify-content:center;gap:36px;
+  position:relative;z-index:1;
+  transition:transform 400ms cubic-bezier(.2,.8,.2,1)}
+.card:hover .thumb-bot .bot-stage{transform:translateY(-4px)}
+.thumb-bot .candles{display:flex;align-items:flex-end;gap:8px;height:140px}
+.thumb-bot .cd{width:9px;border-radius:1px;position:relative}
+.thumb-bot .cd.up{background:rgba(120,200,140,0.55)}
+.thumb-bot .cd.down{background:rgba(200,90,90,0.5)}
+.thumb-bot .cd.surge{background:linear-gradient(180deg,rgba(91,141,239,0.95),rgba(91,141,239,0.4));
+  box-shadow:0 0 12px rgba(91,141,239,0.35)}
+.thumb-bot .cd::before{content:'';position:absolute;left:50%;top:-8px;width:1px;height:14px;
+  background:rgba(244,244,246,0.18);transform:translateX(-50%)}
+.thumb-bot .cd::after{content:'';position:absolute;left:50%;bottom:-6px;width:1px;height:10px;
+  background:rgba(244,244,246,0.14);transform:translateX(-50%)}
+.thumb-bot .prob{display:flex;flex-direction:column;align-items:flex-start}
+.thumb-bot .prob-v{font-family:var(--font-sans);font-weight:700;font-size:64px;
+  letter-spacing:-0.04em;line-height:1;
+  background:linear-gradient(180deg,#9bb6f0 0%,#5b8def 60%,#1e3a8a 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.thumb-bot .prob-k{font-family:var(--font-mono);font-size:11px;letter-spacing:0.16em;
+  color:rgba(91,141,239,0.55);margin-top:8px}
+
 .card .info{padding:28px 28px 32px;flex:1;display:flex;flex-direction:column}
 .card .info .num{font-family:var(--font-mono);font-size:11px;letter-spacing:0.18em;
   text-transform:uppercase;color:rgba(24,24,27,0.35);margin-bottom:12px}
