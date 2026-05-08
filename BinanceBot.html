@@ -101,49 +101,23 @@
                               color: var(--accent-600); white-space: nowrap; }
   .stage-card.s2 .filt-row .v { color: var(--positive); }
 
-  /* ── slide 04 layout ── */
-  .feat-layout { display: grid; grid-template-columns: 0.95fr 1.55fr;
-                  gap: 64px; flex: 1; margin-top: 28px; align-items: stretch; }
-  .feat-thesis { display: flex; flex-direction: column; }
-  .feat-thesis h2 { font-size: 88px; line-height: 1.04;
-                     letter-spacing: -0.025em; }
-  .feat-thesis .slide-body { font-size: 23px; line-height: 1.6;
-                              max-width: 28ch; color: var(--fg-2);
-                              margin-top: 22px; }
-  .feat-thesis .slide-body code { background: var(--paper-100);
-                                    padding: 2px 7px; font-family: var(--font-mono);
-                                    font-size: 21px; }
-
-  .stat-reduce { margin-top: auto; padding-top: 22px;
-                  border-top: 1px solid var(--rule);
-                  display: flex; flex-direction: column; gap: 12px; }
-  .stat-num { font-family: var(--font-sans); font-weight: 700;
-               font-size: 96px; line-height: 0.95; letter-spacing: -0.04em;
-               color: var(--fg-1); }
-  .stat-num.accent { color: var(--accent-600); }
-  .stat-lab { font-family: var(--font-mono); font-size: 17px;
-               letter-spacing: 0.16em; text-transform: uppercase;
-               color: var(--fg-3); margin-top: 6px; }
-  .stat-arrow { font-family: var(--font-mono); font-size: 18px;
-                 letter-spacing: 0.04em; color: var(--fg-3);
-                 padding: 6px 0 4px; }
-  .stat-arrow strong { color: var(--fg-1); font-weight: 400; }
-
-  /* ── feature 2×2 cards ── */
-  .feat-cats { display: grid; grid-template-columns: 1fr 1fr;
-                grid-template-rows: 1fr 1fr; gap: 20px; }
-  .feat-card { padding: 26px 26px; background: var(--paper-50);
-                border-top: 2px solid var(--accent-600);
+  /* ── slide 04: minimal single-column layout ── */
+  .feat-cats { display: grid; grid-template-columns: repeat(4, 1fr);
+                gap: 32px; margin-top: 56px; flex: 1; align-items: start; }
+  .feat-card { padding: 22px 0 0;
+                border-top: 2px solid var(--rule);
                 display: flex; flex-direction: column; gap: 14px; }
-  .feat-card .ftag { font-family: var(--font-mono); font-size: 18px;
-                      letter-spacing: 0.12em; text-transform: uppercase;
-                      color: var(--accent-600); }
+  .feat-card .ftag { font-family: var(--font-mono); font-size: 17px;
+                      letter-spacing: 0.14em; text-transform: uppercase;
+                      color: var(--fg-3); }
   .feat-card h3 { font-family: var(--font-sans); font-weight: 600;
-                   font-size: 28px; line-height: 1.2; color: var(--fg-1); margin: 0; }
-  .feat-card .flist { font-family: var(--font-mono); font-size: 18px;
-                       line-height: 1.75; color: var(--fg-2); margin: 0; padding: 0;
-                       list-style: none; }
+                   font-size: 28px; line-height: 1.2;
+                   color: var(--fg-1); margin: 0; }
+  .feat-card .flist { font-family: var(--font-mono); font-size: 19px;
+                       line-height: 1.85; color: var(--fg-2); margin: 0;
+                       padding: 0; list-style: none; }
   .feat-card .flist li { padding: 2px 0; }
+  .slide-h2 .hl { color: var(--accent-600); }
 
   /* ── ensemble table ── */
   table.ens-table { width: 100%; border-collapse: collapse;
@@ -406,70 +380,58 @@
     <span>OHLCV → 100+ → TOP 50</span>
   </div>
 
-  <div class="feat-layout">
-    <!-- LEFT: thesis + dimension reduction stat -->
-    <div class="feat-thesis">
-      <h2 class="slide-h2">100+ 지표를<br/>50개로 줄인다.</h2>
-      <p class="slide-body">
-        OHLCV에서 <code>FeatureEngineering</code> 클래스가 4개 카테고리,
-        100+ 기술 지표를 만든다. 차원의 저주를 피하기 위해
-        <code>SelectKBest</code>로 통계적으로 유의한 상위 50개만 남긴다.
-      </p>
-      <div class="stat-reduce">
-        <div>
-          <div class="stat-num">100+</div>
-          <div class="stat-lab">RAW INDICATORS</div>
-        </div>
-        <div class="stat-arrow">↓ &nbsp;<strong>SelectKBest</strong> · f_classif · k=50</div>
-        <div>
-          <div class="stat-num accent">50</div>
-          <div class="stat-lab">FEATURES → ML ENSEMBLE</div>
-        </div>
-      </div>
-    </div>
+  <h2 class="slide-h2" style="margin-top: 36px; max-width: 22ch;">
+    100+ 지표를 <span class="hl">50개</span>로 줄인다.
+  </h2>
+  <p class="slide-body" style="margin-top: 22px; max-width: 56ch; font-size: 26px;">
+    OHLCV에서 <code style="background:var(--paper-100);padding:2px 8px;
+    font-family:var(--font-mono);font-size:24px;">FeatureEngineering</code>
+    클래스가 4개 카테고리, 100+ 기술 지표를 만든다. 차원의 저주를 피하기 위해
+    <code style="background:var(--paper-100);padding:2px 8px;
+    font-family:var(--font-mono);font-size:24px;">SelectKBest</code>로
+    통계적으로 유의한 상위 50개만 모델에 투입한다.
+  </p>
 
-    <!-- RIGHT: 2×2 categories -->
-    <div class="feat-cats">
-      <div class="feat-card">
-        <div class="ftag">CAT 01 · TREND</div>
-        <h3>추세 지표</h3>
-        <ul class="flist">
-          <li>SMA 5 / 10 / 20 / 50</li>
-          <li>EMA 5 / 10 / 20 / 50</li>
-          <li>MACD · Signal · Hist</li>
-          <li>ADX · CCI</li>
-        </ul>
-      </div>
-      <div class="feat-card">
-        <div class="ftag">CAT 02 · MOMENTUM</div>
-        <h3>모멘텀 지표</h3>
-        <ul class="flist">
-          <li>RSI 14</li>
-          <li>Stochastic %K %D</li>
-          <li>Williams %R</li>
-          <li>Awesome Oscillator</li>
-        </ul>
-      </div>
-      <div class="feat-card" style="border-top-color: var(--positive);">
-        <div class="ftag" style="color: var(--positive);">CAT 03 · VOLATILITY</div>
-        <h3>변동성 지표</h3>
-        <ul class="flist">
-          <li>Bollinger (20, ±2σ)</li>
-          <li>BB Width / Position / Squeeze</li>
-          <li>ATR 14 · ATR%</li>
-          <li>Keltner / Donchian</li>
-        </ul>
-      </div>
-      <div class="feat-card" style="border-top-color: var(--warn);">
-        <div class="ftag" style="color: var(--warn);">CAT 04 · VOLUME</div>
-        <h3>거래량 지표</h3>
-        <ul class="flist">
-          <li>OBV (실수요 동반 여부)</li>
-          <li>CMF · Chaikin Money Flow</li>
-          <li>VPT</li>
-          <li>Volume Surge (vs 40봉)</li>
-        </ul>
-      </div>
+  <div class="feat-cats">
+    <div class="feat-card">
+      <div class="ftag">CAT 01 · TREND</div>
+      <h3>추세 지표</h3>
+      <ul class="flist">
+        <li>SMA 5 / 10 / 20 / 50</li>
+        <li>EMA 5 / 10 / 20 / 50</li>
+        <li>MACD · Signal · Hist</li>
+        <li>ADX · CCI</li>
+      </ul>
+    </div>
+    <div class="feat-card">
+      <div class="ftag">CAT 02 · MOMENTUM</div>
+      <h3>모멘텀 지표</h3>
+      <ul class="flist">
+        <li>RSI 14</li>
+        <li>Stochastic %K %D</li>
+        <li>Williams %R</li>
+        <li>Awesome Oscillator</li>
+      </ul>
+    </div>
+    <div class="feat-card">
+      <div class="ftag">CAT 03 · VOLATILITY</div>
+      <h3>변동성 지표</h3>
+      <ul class="flist">
+        <li>Bollinger (20, ±2σ)</li>
+        <li>BB Width / Position / Squeeze</li>
+        <li>ATR 14 · ATR%</li>
+        <li>Keltner / Donchian</li>
+      </ul>
+    </div>
+    <div class="feat-card">
+      <div class="ftag">CAT 04 · VOLUME</div>
+      <h3>거래량 지표</h3>
+      <ul class="flist">
+        <li>OBV (실수요 동반 여부)</li>
+        <li>CMF · Chaikin Money Flow</li>
+        <li>VPT</li>
+        <li>Volume Surge (vs 40봉)</li>
+      </ul>
     </div>
   </div>
 
