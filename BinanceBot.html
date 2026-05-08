@@ -555,8 +555,8 @@
     </div>
   </div>
 
-  <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px;
-              margin-top: 24px; flex: 1; align-items: start;">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+              margin-top: 24px; flex: 1; align-items: stretch;">
     <div>
       <div class="meta-cap" style="margin-bottom: 10px;">RISK MATRIX</div>
       <table class="risk-table">
@@ -576,30 +576,34 @@
       </table>
     </div>
 
-    <div style="display: flex; flex-direction: column; gap: 16px;">
-      <div style="padding: 20px 24px; background: var(--paper-50);
-                   border-top: 2px solid var(--accent-600);">
+    <div style="display: flex; flex-direction: column; gap: 16px;
+                 justify-content: space-between;">
+      <div style="padding: 24px 28px; background: var(--paper-50);
+                   border-top: 2px solid var(--accent-600); flex: 1;
+                   display: flex; flex-direction: column;">
         <div class="meta-cap" style="font-size: 18px; color: var(--accent-600);
-                                      margin-bottom: 8px;">PARALLEL SCAN</div>
+                                      margin-bottom: 10px;">PARALLEL SCAN</div>
         <div style="font-family: var(--font-sans); font-weight: 700;
-                     font-size: 48px; letter-spacing: -0.02em; color: var(--fg-1);
+                     font-size: 56px; letter-spacing: -0.03em; color: var(--fg-1);
                      line-height: 1;">10×</div>
-        <div style="font-family: var(--font-sans); font-size: 21px;
-                     color: var(--fg-2); margin-top: 8px; line-height: 1.45;">
-          asyncio로 500+ USDT 페어 병렬 스캔. 단일 스레드 대비 10배 속도.</div>
+        <div style="font-family: var(--font-sans); font-size: 22px;
+                     color: var(--fg-2); margin-top: 12px; line-height: 1.5;">
+          asyncio로 500+ USDT 페어 병렬 스캔.<br/>
+          단일 스레드 대비 10배 속도.</div>
       </div>
 
-      <div style="padding: 20px 24px; background: var(--paper-50);
-                   border-top: 2px solid var(--positive);">
+      <div style="padding: 24px 28px; background: var(--paper-50);
+                   border-top: 2px solid var(--positive); flex: 1;
+                   display: flex; flex-direction: column;">
         <div class="meta-cap" style="font-size: 18px; color: var(--positive);
-                                      margin-bottom: 8px;">PAPER TRADING</div>
-        <div style="font-family: var(--font-sans); font-size: 22px;
-                     color: var(--fg-1); line-height: 1.45;">
+                                      margin-bottom: 10px;">PAPER TRADING</div>
+        <div style="font-family: var(--font-sans); font-size: 24px;
+                     color: var(--fg-1); line-height: 1.5;">
           실거래 전 모의 거래 모드(<code style="font-family:var(--font-mono);
-          font-size:20px;background:transparent;color:var(--positive);padding:0;">paper_main.py</code>)로
+          font-size:21px;background:transparent;color:var(--positive);padding:0;">paper_main.py</code>)로
           전략을 검증.</div>
-        <div style="font-family: var(--font-mono); font-size: 17px;
-                     color: var(--fg-3); margin-top: 6px;">
+        <div style="font-family: var(--font-mono); font-size: 18px;
+                     color: var(--fg-3); margin-top: 10px; line-height: 1.5;">
           실거래 라이브러리와 동일 인터페이스 → 코드 변경 0</div>
       </div>
     </div>
