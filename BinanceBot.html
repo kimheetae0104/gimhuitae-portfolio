@@ -74,11 +74,11 @@
   .dark .s-title .meta-cap { color: rgba(244,244,246,0.45); }
 
   /* ── filter / 2-stage flow ── */
-  .filter-stage { display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
-                  margin-top: 32px; align-items: stretch; }
-  .stage-card { padding: 32px 28px; background: var(--paper-50);
+  .filter-stage { display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+                  margin-top: 24px; align-items: stretch; }
+  .stage-card { padding: 26px 26px; background: var(--paper-50);
                 border-top: 2px solid var(--rule); display: flex;
-                flex-direction: column; gap: 14px; }
+                flex-direction: column; gap: 12px; }
   .stage-card.s1 { border-top-color: var(--accent-600); }
   .stage-card.s2 { border-top-color: var(--positive); }
   .stage-card .stag { font-family: var(--font-mono); font-size: 22px;
@@ -91,7 +91,7 @@
   .stage-card .filt-list { display: flex; flex-direction: column; gap: 0;
                             margin-top: 10px; }
   .stage-card .filt-row { display: grid; grid-template-columns: 36px 1fr auto;
-                          gap: 16px; padding: 14px 0;
+                          gap: 16px; padding: 11px 0;
                           border-top: 1px solid var(--rule-soft);
                           font-family: var(--font-sans); font-size: 22px;
                           color: var(--fg-2); align-items: baseline; }
@@ -145,27 +145,27 @@
                           color: var(--fg-2); margin-top: 10px; line-height: 1.5; }
 
   /* ── strategy split visual ── */
-  .strat-split { display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
-                  margin-top: 28px; }
-  .strat-card { padding: 32px 28px; background: var(--paper-50);
+  .strat-split { display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+                  margin-top: 22px; }
+  .strat-card { padding: 24px 26px; background: var(--paper-50);
                  border-top: 2px solid var(--accent-600);
-                 display: flex; flex-direction: column; gap: 12px; }
-  .strat-card .scap { font-family: var(--font-mono); font-size: 20px;
+                 display: flex; flex-direction: column; gap: 10px; }
+  .strat-card .scap { font-family: var(--font-mono); font-size: 19px;
                        letter-spacing: 0.14em; text-transform: uppercase;
                        color: var(--accent-600); }
   .strat-card .smode { font-family: var(--font-sans); font-weight: 700;
-                        font-size: 56px; letter-spacing: -0.02em;
-                        line-height: 1; color: var(--fg-1); margin-top: 8px; }
-  .strat-card .scond { font-family: var(--font-mono); font-size: 22px;
-                        color: var(--fg-2); margin-top: 8px; }
-  .strat-card .sdesc { font-family: var(--font-sans); font-size: 23px;
-                        color: var(--fg-2); line-height: 1.5; margin-top: 14px; }
+                        font-size: 48px; letter-spacing: -0.02em;
+                        line-height: 1; color: var(--fg-1); margin-top: 4px; }
+  .strat-card .scond { font-family: var(--font-mono); font-size: 21px;
+                        color: var(--fg-2); margin-top: 4px; }
+  .strat-card .sdesc { font-family: var(--font-sans); font-size: 21px;
+                        color: var(--fg-2); line-height: 1.45; margin-top: 8px; }
 
   /* ── risk matrix table ── */
   table.risk-table { width: 100%; border-collapse: collapse;
-                     font-family: var(--font-sans); font-size: 22px;
-                     line-height: 1.5; color: var(--fg-2); margin-top: 22px; }
-  table.risk-table td { padding: 14px 14px; vertical-align: top;
+                     font-family: var(--font-sans); font-size: 21px;
+                     line-height: 1.45; color: var(--fg-2); margin-top: 16px; }
+  table.risk-table td { padding: 10px 14px; vertical-align: top;
                          border-bottom: 1px solid var(--rule-soft); }
   table.risk-table thead th { font-family: var(--font-mono); font-size: 18px;
                                font-weight: 400; letter-spacing: 0.14em;
@@ -533,7 +533,7 @@
     <span>06 · STRATEGY &amp; RISK</span>
     <span>CAPITAL-TIERED · ATR-DRIVEN</span>
   </div>
-  <h2 class="slide-h2" style="margin-top: 28px; max-width: 26ch;">
+  <h2 class="slide-h2" style="margin-top: 22px; max-width: 26ch; font-size: 56px;">
     자본이 변하면, 전략도 분기한다.</h2>
 
   <div class="strat-split">
@@ -555,10 +555,10 @@
     </div>
   </div>
 
-  <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 56px;
-              margin-top: 32px; flex: 1; align-items: start;">
+  <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px;
+              margin-top: 24px; flex: 1; align-items: start;">
     <div>
-      <div class="meta-cap" style="margin-bottom: 14px;">RISK MATRIX</div>
+      <div class="meta-cap" style="margin-bottom: 10px;">RISK MATRIX</div>
       <table class="risk-table">
         <thead><tr><th>항목</th><th>설정값</th><th>의도</th></tr></thead>
         <tbody>
@@ -576,30 +576,30 @@
       </table>
     </div>
 
-    <div style="display: flex; flex-direction: column; gap: 22px;">
-      <div style="padding: 24px 26px; background: var(--paper-50);
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="padding: 20px 24px; background: var(--paper-50);
                    border-top: 2px solid var(--accent-600);">
         <div class="meta-cap" style="font-size: 18px; color: var(--accent-600);
-                                      margin-bottom: 10px;">PARALLEL SCAN</div>
+                                      margin-bottom: 8px;">PARALLEL SCAN</div>
         <div style="font-family: var(--font-sans); font-weight: 700;
-                     font-size: 56px; letter-spacing: -0.02em; color: var(--fg-1);
+                     font-size: 48px; letter-spacing: -0.02em; color: var(--fg-1);
                      line-height: 1;">10×</div>
-        <div style="font-family: var(--font-sans); font-size: 22px;
-                     color: var(--fg-2); margin-top: 10px; line-height: 1.5;">
+        <div style="font-family: var(--font-sans); font-size: 21px;
+                     color: var(--fg-2); margin-top: 8px; line-height: 1.45;">
           asyncio로 500+ USDT 페어 병렬 스캔. 단일 스레드 대비 10배 속도.</div>
       </div>
 
-      <div style="padding: 24px 26px; background: var(--paper-50);
+      <div style="padding: 20px 24px; background: var(--paper-50);
                    border-top: 2px solid var(--positive);">
         <div class="meta-cap" style="font-size: 18px; color: var(--positive);
-                                      margin-bottom: 10px;">PAPER TRADING</div>
-        <div style="font-family: var(--font-sans); font-size: 24px;
-                     color: var(--fg-1); line-height: 1.5;">
+                                      margin-bottom: 8px;">PAPER TRADING</div>
+        <div style="font-family: var(--font-sans); font-size: 22px;
+                     color: var(--fg-1); line-height: 1.45;">
           실거래 전 모의 거래 모드(<code style="font-family:var(--font-mono);
-          font-size:21px;background:transparent;color:var(--positive);padding:0;">paper_main.py</code>)로
+          font-size:20px;background:transparent;color:var(--positive);padding:0;">paper_main.py</code>)로
           전략을 검증.</div>
-        <div style="font-family: var(--font-mono); font-size: 18px;
-                     color: var(--fg-3); margin-top: 8px;">
+        <div style="font-family: var(--font-mono); font-size: 17px;
+                     color: var(--fg-3); margin-top: 6px;">
           실거래 라이브러리와 동일 인터페이스 → 코드 변경 0</div>
       </div>
     </div>
