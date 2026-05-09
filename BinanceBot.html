@@ -400,10 +400,17 @@
     클래스가 4개 카테고리, 100+ 기술 지표를 만든다. 차원의 저주를 피하기 위해
     <code style="background:var(--paper-100);padding:2px 8px;
     font-family:var(--font-mono);font-size:24px;">SelectKBest</code>로
-    통계적으로 유의한 상위 50개만 모델에 투입한다.
+    ANOVA F-value 기반 통계 검정을 거쳐 급등 예측에 가장 유의한
+    상위 50개 피처만 최종 모델에 투입한다.
+  </p>
+  <p class="slide-body" style="margin-top: 20px; max-width: 62ch; font-size: 26px; color: var(--fg-2);">
+    선별 결과 볼린저 포지션·ATR 변화율·RSI 기울기가 상위권에 반복 등장했다.
+    절대 가격보다 <strong style="color: var(--fg-1);">상대적 위치와 변화 속도</strong>가
+    급등 예측에 더 유의했으며, 피처가 50개를 초과하면 학습 시간이 선형 이상으로 늘면서
+    오히려 정확도가 떨어지는 역효과가 관찰됐다. 차원 축소 자체가 정규화 효과를 가졌다.
   </p>
 
-  <div class="feat-cats">
+  <div class="feat-cats" style="margin-top: auto; flex: 0 0 auto;">
     <div class="feat-card">
       <div class="ftag">CAT 01 · TREND</div>
       <h3>추세 지표</h3>
@@ -627,7 +634,16 @@
     <span>2 YEARS · 4 PHASES</span>
   </div>
 
-  <div class="phase-row">
+  <div class="closing-quote" style="flex: none; margin-top: 36px; padding: 0; align-items: flex-start;">
+    <div class="pull">
+      지표는 거짓을 만든다.<br/>
+      ML은 노이즈를 외운다.<br/>
+      <em>둘을 직렬로 쌓아야</em><br/>
+      신호가 살아난다.
+    </div>
+  </div>
+
+  <div class="phase-row" style="margin-top: auto;">
     <div class="phase-card">
       <div class="pn">PHASE 01</div>
       <div class="py">2022</div>
@@ -654,16 +670,7 @@
     </div>
   </div>
 
-  <div class="closing-quote">
-    <div class="pull">
-      지표는 거짓을 만든다.<br/>
-      ML은 노이즈를 외운다.<br/>
-      <em>둘을 직렬로 쌓아야</em><br/>
-      신호가 살아난다.
-    </div>
-  </div>
-
-  <div class="closing-foot">
+  <div class="closing-foot" style="margin-top: 32px;">
     <div class="next-row">
       <div class="next-cap">NEXT</div>
       <div class="next-text">오더북 depth 불균형 피처 추가 · 멀티 타임프레임 앙상블 · PPO/SAC 강화학습으로 동적 포지션 사이징.</div>
