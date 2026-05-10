@@ -371,16 +371,22 @@
         <span>02 · PROBLEM</span>
         <span>WHY THIS MATTERS</span>
       </div>
-      <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 80px;">
-        <div class="quote">
-          코일 10개 중 4개는<br />
-          소둔 후에 <em>예외 공정</em>으로 빠진다.<br />
-          그 60%는 소둔 투입 전에 포착된다.
+      <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 48px;">
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 56px; align-items: center;">
+          <div>
+            <div class="quote">
+              코일 10개 중 4개는<br />
+              소둔 후에 <em>예외 공정</em>으로 빠진다.<br />
+              그 60%는 소둔 투입 전에 포착된다.
+            </div>
+            <p class="slide-body" style="font-size: 26px; color: var(--fg-2); margin-top: 32px;">
+              비계획 Skinpass는 소둔 완료 후 품질 검사에서 기준 미달로 판정된 코일에 대해 긴급 투입되는 예외 공정 — 사전 스케줄링 없이 발생한다.
+              지금까지는 경험과 직관에 의존해왔지만, 소재 특성과 공정 조건을 함께 보면 어떤 코일에서 비계획이 발생하는지 일정한 패턴이 보인다.
+            </p>
+          </div>
+          <img src="skinpass/img/image9.png" alt="비계획 발생 분포 및 강종별 발생률"
+               style="width: 100%; object-fit: contain;" />
         </div>
-        <p class="slide-body" style="font-size: 26px; color: var(--fg-2); margin-top: -40px;">
-          비계획 Skinpass는 소둔 완료 후 품질 검사에서 기준 미달로 판정된 코일에 대해 긴급 투입되는 예외 공정 — 사전 스케줄링 없이 발생한다.
-          지금까지는 경험과 직관에 의존해왔지만, 소재 특성과 공정 조건을 함께 보면 어떤 코일에서 비계획이 발생하는지 일정한 패턴이 보인다.
-        </p>
         <div class="stat-row">
           <div class="col">
             <div class="k">발생률</div>
@@ -410,21 +416,29 @@
         <span>DATA EXPLORATION</span>
       </div>
       <div
-        style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; flex: 1; min-height: 0; padding-top: 48px; align-items: start;">
+        style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; flex: 1; min-height: 0; padding-top: 40px; align-items: start;">
         <div style="display: flex; flex-direction: column; min-height: 0;">
-          <div class="meta-cap" style="margin-bottom: 16px; flex-shrink: 0;">변수 간 상관관계 — 히트맵</div>
+          <div class="meta-cap" style="margin-bottom: 12px; flex-shrink: 0;">상관관계 — 히트맵</div>
           <img src="skinpass/img/image1.png" alt="상관관계 히트맵"
-               style="width: 100%; height: 500px; object-fit: contain; object-position: left top; border: 1px solid var(--rule); flex-shrink: 0;" />
-          <p style="margin-top: 10px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5; flex-shrink: 0;">
-            Fig. 3-1 — 변수 간 상관관계 히트맵. 항복강도 × 표면조도 r=0.48로 핵심 교호작용 발견. 형상불량지수·Skinpass발생 r=+0.07로 단독 변수 효과 제한.
+               style="width: 100%; height: 380px; object-fit: contain; object-position: left top; border: 1px solid var(--rule); flex-shrink: 0;" />
+          <p style="margin-top: 8px; font-size: 15px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5; flex-shrink: 0;">
+            Fig. 3-1 — 항복강도 × 표면조도 r=0.48 핵심 교호작용. 형상불량지수·Skinpass 발생 r=+0.07 단독 효과 제한.
           </p>
         </div>
         <div style="display: flex; flex-direction: column; min-height: 0;">
-          <div class="meta-cap" style="margin-bottom: 16px; flex-shrink: 0;">클래스별 변수 분포 — 히스토그램</div>
+          <div class="meta-cap" style="margin-bottom: 12px; flex-shrink: 0;">클래스별 분포 — 히스토그램</div>
           <img src="skinpass/img/image4.png" alt="클래스별 변수 분포"
-               style="width: 100%; height: 500px; object-fit: contain; object-position: left top; border: 1px solid var(--rule); flex-shrink: 0;" />
-          <p style="margin-top: 10px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5; flex-shrink: 0;">
-            Fig. 3-2 — 클래스별 변수 분포 히스토그램. 항복강도 DP590 고강도 구간에서 분리 확인. 이전공정경과시간 분포 차이 없음 → 모델 제거.
+               style="width: 100%; height: 380px; object-fit: contain; object-position: left top; border: 1px solid var(--rule); flex-shrink: 0;" />
+          <p style="margin-top: 8px; font-size: 15px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5; flex-shrink: 0;">
+            Fig. 3-2 — 항복강도 DP590 고강도 구간에서 클래스 분리 확인. 이전공정경과시간 분포 차이 없음 → 모델 제거.
+          </p>
+        </div>
+        <div style="display: flex; flex-direction: column; min-height: 0;">
+          <div class="meta-cap" style="margin-bottom: 12px; flex-shrink: 0;">주요 변수 박스플롯</div>
+          <img src="skinpass/img/image10.png" alt="박스플롯"
+               style="width: 100%; height: 380px; object-fit: contain; object-position: left top; border: 1px solid var(--rule); flex-shrink: 0;" />
+          <p style="margin-top: 8px; font-size: 15px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5; flex-shrink: 0;">
+            Fig. 3-3 — 항복강도·형상불량지수·표면조도 클래스별 분포. 발생(1) 집단에서 항복강도 고강도 구간 집중.
           </p>
         </div>
       </div>
@@ -438,50 +452,46 @@
         <span>04 · 4 HYPOTHESES</span>
         <span>ALL ACCEPTED</span>
       </div>
-      <h2 class="slide-h2" style="margin-top: 56px;">
-        가설 4개를 먼저 세우고, 그 논리를 모델 구조에 직접 녹였다.</h2>
-
-      <div class="hyp-row">
-        <div class="hyp-card">
-          <div class="tag">H1 · 재질등급</div>
-          <div class="q">재질등급 C가 구조적 비계획 발생 신호인가?</div>
-          <div class="verdict">✓ Kruskal-Wallis p &lt; 0.001</div>
-          <div
-            style="margin-top:16px;padding-top:12px;border-top:1px solid var(--rule-soft);font-size:15px;color:var(--fg-2);">
-            → Material Gate 1차 조건</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; flex: 1; min-height: 0; padding-top: 36px; align-items: start;">
+        <div>
+          <h2 class="slide-h2" style="font-size: 48px; margin-bottom: 32px;">
+            가설 4개를 먼저 세우고, 그 논리를 모델 구조에 직접 녹였다.</h2>
+          <div class="hyp-row" style="grid-template-columns: repeat(2, 1fr); margin-top: 0;">
+            <div class="hyp-card">
+              <div class="tag">H1 · 재질등급</div>
+              <div class="q">재질등급 C가 구조적 비계획 발생 신호인가?</div>
+              <div class="verdict">✓ Kruskal-Wallis p &lt; 0.001</div>
+              <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--rule-soft);font-size:14px;color:var(--fg-2);">→ Material Gate 1차 조건</div>
+            </div>
+            <div class="hyp-card">
+              <div class="tag">H2 · 항복강도</div>
+              <div class="q">항복강도·강종이 발생 위험 구조를 만드는가?</div>
+              <div class="verdict">✓ 강종 차이 p &lt; 0.001</div>
+              <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--rule-soft);font-size:14px;color:var(--fg-2);">→ Material Gate 2차 조건</div>
+            </div>
+            <div class="hyp-card">
+              <div class="tag">H3 · 형상×표면</div>
+              <div class="q">형상·표면 복합이 비선형 급증을 일으키는가?</div>
+              <div class="verdict">✓ 복합 구간 +24%p</div>
+              <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--rule-soft);font-size:14px;color:var(--fg-2);">→ surface_shape_composite</div>
+            </div>
+            <div class="hyp-card">
+              <div class="tag">H4 · 강종×등급</div>
+              <div class="q">강종과 재질등급의 교호작용이 핵심인가?</div>
+              <div class="verdict">✓ F1 +0.031 향상</div>
+              <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--rule-soft);font-size:14px;color:var(--fg-2);">→ grade_steel_interaction</div>
+            </div>
+          </div>
         </div>
-        <div class="hyp-card">
-          <div class="tag">H2 · 항복강도</div>
-          <div class="q">항복강도·강종이 발생 위험 구조를 만드는가?</div>
-          <div class="verdict">✓ 강종 차이 p &lt; 0.001</div>
-          <div
-            style="margin-top:16px;padding-top:12px;border-top:1px solid var(--rule-soft);font-size:15px;color:var(--fg-2);">
-            → Material Gate 2차 조건</div>
-        </div>
-        <div class="hyp-card">
-          <div class="tag">H3 · 형상×표면</div>
-          <div class="q">형상·표면 복합이 비선형 급증을 일으키는가?</div>
-          <div class="verdict">✓ 복합 구간 +24%p</div>
-          <div
-            style="margin-top:16px;padding-top:12px;border-top:1px solid var(--rule-soft);font-size:15px;color:var(--fg-2);">
-            → surface_shape_composite 파생변수</div>
-        </div>
-        <div class="hyp-card">
-          <div class="tag">H4 · 강종×등급</div>
-          <div class="q">강종과 재질등급의 교호작용이 핵심인가?</div>
-          <div class="verdict">✓ F1 +0.031 향상</div>
-          <div
-            style="margin-top:16px;padding-top:12px;border-top:1px solid var(--rule-soft);font-size:15px;color:var(--fg-2);">
-            → grade_steel_interaction 파생변수</div>
+        <div>
+          <div class="meta-cap" style="margin-bottom: 14px;">가설 검증 결과 시각화 (H1~H4)</div>
+          <img src="skinpass/img/image5.png" alt="가설 검증 결과 시각화"
+               style="width: 100%; object-fit: contain; border: 1px solid var(--rule);" />
+          <p style="margin-top: 12px; font-size: 18px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
+            H1~H4 가설 기반 파생변수 4개가 SHAP 중요도 상위 8개 이내에 모두 포함됐다. 공정위험복합·품질위험점수가 1·2위.
+          </p>
         </div>
       </div>
-
-      <p class="slide-body" style="margin-top: 48px; font-style: italic; font-size: 28px;">
-        H1~H4 가설 기반 파생변수 4개가 SHAP 중요도 상위 8개 이내에 모두 포함됐다. 분석 초기에 세운 가설이 데이터에서도 핵심 신호로 작동하고 있었다.
-      </p>
-      <p class="slide-body" style="margin-top: 16px; font-size: 22px; color: var(--fg-3);">
-        공정위험복합(H3+공정)과 품질위험점수(H1+H2)가 SHAP 전체 변수 중 1·2위를 차지 — 가설에서 예상한 현장 논리가 실제 데이터에서도 핵심 신호임을 SHAP이 사후 검증했다.
-      </p>
       <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
       <div class="pageno">04 / 08</div>
     </section>
@@ -550,8 +560,10 @@
           </div>
         </div>
         <div>
-          <div class="meta-cap" style="margin-bottom: 28px;">5가지 증강 방법 비교</div>
-          <table class="slide-table">
+          <div class="meta-cap" style="margin-bottom: 14px;">5가지 증강 방법 비교</div>
+          <img src="skinpass/img/image2.png" alt="증강 방법별 F1/AUROC 비교"
+               style="width: 100%; height: 240px; object-fit: contain; object-position: left top; margin-bottom: 16px;" />
+          <table class="slide-table" style="font-size: 22px;">
             <thead>
               <tr>
                 <th>METHOD</th>
@@ -659,13 +671,23 @@
           </table>
         </div>
 
-        <div style="padding-top: 100px;">
-          <div class="meta-cap" style="margin-bottom: 12px;">SHAP FEATURE IMPORTANCE · LIGHTGBM</div>
-          <img src="skinpass/img/image3.png" alt="SHAP 기반 변수 중요도"
-               style="width: 100%; max-height: 520px; object-fit: contain; border-radius: 8px; border: 1px solid var(--rule);" />
-          <p style="margin-top: 10px; font-size: 18px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
-            Fig. 6 — SHAP 변수 중요도 (LightGBM). ★ 가설 파생변수가 상위 1·2위 차지.
-          </p>
+        <div style="padding-top: 24px; display: flex; flex-direction: column; gap: 16px;">
+          <div>
+            <div class="meta-cap" style="margin-bottom: 10px;">ROC 곡선 비교 · 혼동행렬</div>
+            <img src="skinpass/img/image6.png" alt="ROC 곡선 및 혼동행렬"
+                 style="width: 100%; height: 260px; object-fit: contain; object-position: left top; border: 1px solid var(--rule);" />
+            <p style="margin-top: 6px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
+              Fig. — Gate+LR FN 163건 vs LR 원천 187건 — 미탐지 −24건.
+            </p>
+          </div>
+          <div>
+            <div class="meta-cap" style="margin-bottom: 10px;">SHAP FEATURE IMPORTANCE · LIGHTGBM</div>
+            <img src="skinpass/img/image3.png" alt="SHAP 기반 변수 중요도"
+                 style="width: 100%; height: 220px; object-fit: contain; object-position: left top; border: 1px solid var(--rule);" />
+            <p style="margin-top: 6px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
+              Fig. — SHAP 변수 중요도 (LightGBM). ★ 가설 파생변수 상위 1·2위 차지.
+            </p>
+          </div>
         </div>
       </div>
       <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
