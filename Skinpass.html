@@ -338,17 +338,10 @@
         <span>김희태 · PORTFOLIO</span>
         <span>2026</span>
       </div>
-      <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; min-height:0; padding-bottom:24px;">
-        <div class="hero" style="flex:unset; padding-bottom:0;">
-          <div class="meta-cap" style="margin-bottom: 32px;">SeSAC SCM · 수요예측 부트캠프</div>
-          <h1>비계획 Skinpass를<br />코일이 들어오기 전에 본다.</h1>
-          <p class="ko-sub">냉연 코일 4,000건의 물성·공정 실적으로, 소둔 이후 발생하는 예외 공정을 사전 판별한다.</p>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:12px;">
-          <div class="meta-cap">모델별 성능 지표 비교</div>
-          <img src="skinpass/img/image8.png" alt="모델별 성능 지표 비교"
-               style="width:100%; object-fit:contain; border:1px solid var(--rule);" />
-        </div>
+      <div class="hero">
+        <div class="meta-cap" style="margin-bottom: 32px;">SeSAC SCM · 수요예측 부트캠프</div>
+        <h1>비계획 Skinpass를<br />코일이 들어오기 전에 본다.</h1>
+        <p class="ko-sub">냉연 코일 4,000건의 물성·공정 실적으로, 소둔 이후 발생하는 예외 공정을 사전 판별한다.</p>
       </div>
       <div class="meta-grid">
         <div class="col">
@@ -650,47 +643,11 @@
           <p class="slide-body" style="margin-top: 32px; font-size: 28px;">
             Recall을 1순위 지표로 잡은 결과, Material Gate + LR이 6개 비교군 중 단독 1위.
           </p>
-          <table class="slide-table" style="margin-top: 32px; font-size: 24px;">
-            <thead>
-              <tr>
-                <th>MODEL</th>
-                <th class="num" style="text-align:right;">RECALL</th>
-                <th class="num" style="text-align:right;">F1</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="highlight">
-                <td>★ Gate + LR</td>
-                <td class="num" style="text-align:right;">0.595</td>
-                <td class="num" style="text-align:right;">0.487</td>
-              </tr>
-              <tr>
-                <td>LR (원천)</td>
-                <td class="num" style="text-align:right;">0.543</td>
-                <td class="num" style="text-align:right;">0.501</td>
-              </tr>
-              <tr>
-                <td>LR + 파생</td>
-                <td class="num" style="text-align:right;">0.466</td>
-                <td class="num" style="text-align:right;">0.469</td>
-              </tr>
-              <tr>
-                <td>LightGBM</td>
-                <td class="num" style="text-align:right;">0.420</td>
-                <td class="num" style="text-align:right;">0.427</td>
-              </tr>
-              <tr>
-                <td>XGBoost</td>
-                <td class="num" style="text-align:right;">0.407</td>
-                <td class="num" style="text-align:right;">0.416</td>
-              </tr>
-              <tr>
-                <td>랜덤포레스트</td>
-                <td class="num" style="text-align:right;">0.399</td>
-                <td class="num" style="text-align:right;">0.413</td>
-              </tr>
-            </tbody>
-          </table>
+          <div style="margin-top: 32px;">
+            <div class="meta-cap" style="margin-bottom: 10px;">모델별 성능 지표 비교</div>
+            <img src="skinpass/img/image8.png" alt="모델별 성능 지표 비교"
+                 style="width: 100%; object-fit: contain; object-position: left top;" />
+          </div>
         </div>
 
         <div style="padding-top: 24px; display: flex; flex-direction: column; gap: 16px;">
