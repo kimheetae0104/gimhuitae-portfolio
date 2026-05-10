@@ -532,11 +532,24 @@
               <div class="desc" style="font-size: 18px; line-height: 1.45;">H3 + H4가 만든 교호작용·복합 변수가 SHAP 상위 8개 중 4개를 차지.</div>
             </div>
           </div>
-          <!-- 오른쪽: 이미지 -->
-          <div style="display: flex; flex-direction: column; min-height: 0;">
-            <div class="meta-cap" style="flex-shrink: 0; margin-bottom: 12px;">Gate 효과 검증 · Recall–Precision 트레이드오프</div>
-            <img src="skinpass/img/image7.png" alt="Gate 발동별 발생률 및 Recall-Precision 트레이드오프"
-                 style="width: 100%; flex: 1; min-height: 0; object-fit: contain; object-position: left top; border: 1px solid var(--rule);" />
+          <!-- 오른쪽: 이미지 위아래 분할 -->
+          <div style="display: flex; flex-direction: column; gap: 14px; min-height: 0;">
+            <div style="display: flex; flex-direction: column; flex: 1; min-height: 0;">
+              <div class="meta-cap" style="flex-shrink: 0; margin-bottom: 8px; font-size: 18px;">Gate 발동별 비계획 발생률</div>
+              <div style="flex: 1; min-height: 0; border: 1px solid var(--rule);
+                          background-image: url('skinpass/img/image7.png');
+                          background-size: 200% auto;
+                          background-position: left top;
+                          background-repeat: no-repeat;"></div>
+            </div>
+            <div style="display: flex; flex-direction: column; flex: 1; min-height: 0;">
+              <div class="meta-cap" style="flex-shrink: 0; margin-bottom: 8px; font-size: 18px;">Recall–Precision 트레이드오프</div>
+              <div style="flex: 1; min-height: 0; border: 1px solid var(--rule);
+                          background-image: url('skinpass/img/image7.png');
+                          background-size: 200% auto;
+                          background-position: right top;
+                          background-repeat: no-repeat;"></div>
+            </div>
           </div>
         </div>
       </div>
