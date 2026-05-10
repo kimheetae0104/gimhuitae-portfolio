@@ -289,8 +289,8 @@
     <span>05 · 가설 4개 검증</span>
     <span>3개 기각 · 1개 채택</span>
   </div>
-  <div style="margin-top: 28px; display: grid; grid-template-columns: 1fr 1.6fr; gap: 40px; align-items: center;">
-    <div>
+  <div style="margin-top: 28px; display: grid; grid-template-columns: 1fr 1.6fr; gap: 40px; align-items: stretch; flex: 1; min-height: 0;">
+    <div style="display:flex; flex-direction:column; justify-content:center;">
       <p class="slide-body" style="color: var(--fg-2); font-style: italic; font-size: 24px; max-width: 28ch;">
         기각된 3개 가설이 더 중요한 발견이었다. 운전원의 경험적 패러다임을 데이터로 재검토하라는 가장 강한 메시지였기 때문이다.
       </p>
@@ -298,12 +298,12 @@
         채택된 H4 → is_post_standby 이진 플래그 → 전환대기 직후 COG 2% 절감 시나리오 (연 1.24M Nm³).
       </p>
     </div>
-    <div>
-      <div style="font-family:var(--font-mono);font-size:20px;letter-spacing:0.08em;text-transform:uppercase;color:var(--fg-3);margin-bottom:10px;">그림 D — H4 채택: 전환대기 직후 COG 효율·LHV·투입량</div>
-      <img src="lhv/img/image6-37.png" alt="H4 낭비구간 분석 차트" style="width:100%; max-height:240px; object-fit:contain; border:1px solid var(--rule);" />
+    <div style="display:flex; flex-direction:column; min-height:0;">
+      <div style="font-family:var(--font-mono);font-size:20px;letter-spacing:0.08em;text-transform:uppercase;color:var(--fg-3);margin-bottom:10px;flex-shrink:0;">그림 D — H4 채택: 전환대기 직후 COG 효율·LHV·투입량</div>
+      <img src="lhv/img/image6-37.png" alt="H4 낭비구간 분석 차트" style="flex:1; width:100%; min-height:0; object-fit:contain; border:1px solid var(--rule);" />
     </div>
   </div>
-  <div class="hyp-grid" style="margin-top: 28px;">
+  <div class="hyp-grid" style="margin-top: 24px; flex-shrink:0;">
     <div class="hyp-card reject">
       <div class="tag">H1 · 내가 설계한 가설 (김희태)</div>
       <div class="q">BFG CO함량 1% 증가 → LHV +20 kcal?</div>
@@ -351,9 +351,7 @@
     <div>
       <h2 class="slide-h2" style="font-size:44px;">COG를 관리하는 것이<br/>곧 LHV를 관리하는 것이다.</h2>
       <p class="slide-body" style="margin-top: 24px; max-width: 28ch; font-size: 24px;">
-        상관계수, RF Feature Importance, XGBoost SHAP —<br/>
-        세 가지 분석이 모두 같은 결론으로 수렴한 순간이 인상적이었다.
-        물리 도메인(COG 발열량 BFG의 6배)이 ML로도 1위로 확인됐다.
+        상관계수, RF Feature Importance, XGBoost SHAP — 세 가지 분석이 모두 같은 결론으로 수렴한 순간이 인상적이었다. 물리 도메인(COG 발열량 BFG의 6배)이 ML로도 1위로 확인됐다.
       </p>
       <div style="margin-top: 28px; padding: 20px 24px; background: var(--paper-100); border: 1px solid var(--rule);">
         <div class="meta-cap" style="margin-bottom: 14px;">피처 엔지니어링 · 파생변수 4종</div>
