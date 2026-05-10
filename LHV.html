@@ -95,31 +95,31 @@
   </div>
   <div class="meta-grid">
     <div class="col">
-      <div class="k">TYPE</div>
+      <div class="k">유형</div>
       <div class="v">개인프로젝트</div>
     </div>
     <div class="col">
-      <div class="k">DATA</div>
+      <div class="k">데이터</div>
       <div class="v">17,280행 × 12 태그<br/>60일 · 5분 주기</div>
     </div>
     <div class="col">
-      <div class="k">METHOD</div>
+      <div class="k">방법론</div>
       <div class="v">Ridge / RF / XGBoost<br/>+ Feature Importance · SHAP</div>
     </div>
     <div class="col">
-      <div class="k">OUTCOME</div>
+      <div class="k">결과</div>
       <div class="v">MAE 11.99 kcal/Nm³<br/>연 1.24M Nm³ 절감 시나리오</div>
     </div>
   </div>
   <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-  <div class="pageno">01 / 07</div>
+  <div class="pageno">01 / 08</div>
 </section>
 
 <!-- ═══ Slide 2 — One-line + Big Stat ═══ -->
 <section class="slide s-summary" data-label="02 Summary">
   <div class="top-rule">
     <span>02 · ONE LINE</span>
-    <span>SUMMARY</span>
+    <span>요약</span>
   </div>
   <div style="display: flex; flex-direction: column; justify-content: center; gap: 64px; flex: 1;">
     <div class="quote">
@@ -150,7 +150,7 @@
 <section class="slide" data-label="03 Problem">
   <div class="top-rule">
     <span>03 · PROBLEM</span>
-    <span>WHY THIS MATTERS</span>
+    <span>왜 중요한가</span>
   </div>
   <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; flex: 1; padding-top: 64px;">
     <div>
@@ -210,7 +210,7 @@
 <section class="slide" data-label="04 EDA">
   <div class="top-rule">
     <span>04 · EDA</span>
-    <span>DATA EXPLORATION</span>
+    <span>데이터 탐색</span>
   </div>
   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; flex: 1; padding-top: 48px; align-items: start;">
     <div>
@@ -268,14 +268,45 @@
     </div>
   </div>
 
-  <p class="slide-body" style="margin-top: 48px; max-width: 64ch; color: var(--fg-2);
-                                font-style: italic; font-size: 28px;">
-    기각된 가설 3개는 운전원의 경험적 패러다임을 데이터로 재검토하라는 가장 강한 메시지였다.
-  </p>
-  <p class="slide-body" style="margin-top: 16px; max-width: 64ch; font-size: 22px; color: var(--fg-3);">
-    채택된 H4는 is_post_standby 파생변수로 직접 모델에 반영 — 전환대기 직후 구간의
-    COG 2% 절감 시나리오(연 1.24M Nm³)의 근거가 되었다.
-  </p>
+  <div style="margin-top: 44px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start;">
+    <div>
+      <p class="slide-body" style="color: var(--fg-2); font-style: italic; font-size: 26px; max-width: 40ch;">
+        기각된 가설 3개는 운전원의 경험적 패러다임을 데이터로 재검토하라는 가장 강한 메시지였다.
+      </p>
+    </div>
+    <div>
+      <div class="meta-cap" style="margin-bottom: 14px;">H4 채택 — 전환대기 직후 구간 실측</div>
+      <table class="slide-table" style="font-size:20px;">
+        <thead>
+          <tr>
+            <th>구간</th>
+            <th class="num" style="text-align:right;">COG 투입 (Nm³/h)</th>
+            <th class="num" style="text-align:right;">COG 효율</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>연소중 (기준)</td>
+            <td class="num" style="text-align:right;">11,976</td>
+            <td class="num" style="text-align:right; color:var(--fg-3);">0.08460</td>
+          </tr>
+          <tr>
+            <td>전환대기</td>
+            <td class="num" style="text-align:right;">11,989</td>
+            <td class="num" style="text-align:right; color:var(--fg-3);">0.08459</td>
+          </tr>
+          <tr class="highlight">
+            <td>전환대기 <strong>직후</strong> ★</td>
+            <td class="num" style="text-align:right; color:var(--danger);">11,997</td>
+            <td class="num" style="text-align:right; color:var(--danger);">0.08457 ↓</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top:10px;font-size:18px;color:var(--fg-3);font-family:var(--font-sans);line-height:1.5;">
+        잔열로 LHV는 더 높음(+0.39)에도 COG는 가장 많이 투입, 효율은 최저 — 구조적 낭비 구간.
+      </p>
+    </div>
+  </div>
   <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
   <div class="pageno">05 / 08</div>
 </section>
@@ -376,44 +407,62 @@
                                     font-size: 26px;">
         모델 복잡도가 아니라 변수 간 관계의 본질을 이해하는 게 우선이라는 걸 체감.
       </p>
+      <div style="margin-top:32px; padding:20px 24px; background:var(--paper-100); border:1px solid var(--rule);">
+        <div class="meta-cap" style="margin-bottom:12px;">한계 · 향후 방향</div>
+        <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);line-height:1.8;">
+          <div>· R²≈0.43 — 성분 변수 통합 시 R²=0.60+ 가능</div>
+          <div>· 단순 랜덤 분할 → TimeSeriesSplit · LSTM 검토</div>
+          <div>· 60일 단기 데이터 → 1년+ 계절 변동 반영</div>
+          <div>· 1~4호기 통합 학습 → 호기별 개별 모델 검토</div>
+        </div>
+      </div>
     </div>
 
     <table class="slide-table">
       <thead>
         <tr>
           <th>RANK</th><th>MODEL</th>
-          <th class="num" style="text-align:right;">MAE</th>
+          <th class="num" style="text-align:right;">Train MAE</th>
+          <th class="num" style="text-align:right;">Test MAE</th>
           <th class="num" style="text-align:right;">R²</th>
         </tr>
       </thead>
       <tbody>
         <tr class="highlight">
           <td class="num">★ 1</td><td>Ridge (α=1)</td>
+          <td class="num" style="text-align:right; color:var(--fg-3);">11.84</td>
           <td class="num" style="text-align:right;">11.99</td>
           <td class="num" style="text-align:right;">0.428</td>
         </tr>
         <tr>
           <td class="num">2</td><td>Linear Regression</td>
+          <td class="num" style="text-align:right; color:var(--fg-3);">11.84</td>
           <td class="num" style="text-align:right;">11.99</td>
           <td class="num" style="text-align:right;">0.428</td>
         </tr>
         <tr>
           <td class="num">3</td><td>XGBoost</td>
+          <td class="num" style="text-align:right; color:var(--fg-3);">9.21</td>
           <td class="num" style="text-align:right;">12.12</td>
           <td class="num" style="text-align:right;">0.417</td>
         </tr>
         <tr>
           <td class="num">4</td><td>Random Forest</td>
+          <td class="num" style="text-align:right; color:var(--fg-3);">4.18</td>
           <td class="num" style="text-align:right;">12.36</td>
           <td class="num" style="text-align:right;">0.389</td>
         </tr>
         <tr>
           <td class="num">5</td><td>Decision Tree</td>
+          <td class="num" style="text-align:right; color:var(--danger);">0.00 ⚠</td>
           <td class="num" style="text-align:right;">12.53</td>
           <td class="num" style="text-align:right;">0.363</td>
         </tr>
       </tbody>
     </table>
+    <p class="slide-body" style="margin-top:16px;font-size:22px;color:var(--fg-3);font-style:italic;">
+      Decision Tree: Train MAE 0.00 → 완전 과적합. 단순 선형 모델이 최고 성능인 이유가 명확.
+    </p>
   </div>
   <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
   <div class="pageno">07 / 08</div>
@@ -451,6 +500,28 @@
     </div>
   </div>
 
+  <div style="margin-top:36px; padding:20px 28px; border:1px solid rgba(244,244,246,0.12); display:grid;
+              grid-template-columns: auto 1fr 1fr 1fr 1fr; gap:0; align-items:center;">
+    <div style="font-family:var(--font-mono);font-size:16px;letter-spacing:0.12em;color:rgba(244,244,246,0.45);
+                padding-right:24px;border-right:1px solid rgba(244,244,246,0.1);">경보 기준</div>
+    <div style="text-align:center;padding:12px 16px;border-right:1px solid rgba(244,244,246,0.08);">
+      <div style="font-family:var(--font-mono);font-size:18px;color:rgba(244,244,246,0.7);">정상</div>
+      <div style="font-size:15px;color:rgba(244,244,246,0.4);margin-top:4px;">997 ~ 1,027</div>
+    </div>
+    <div style="text-align:center;padding:12px 16px;border-right:1px solid rgba(244,244,246,0.08);">
+      <div style="font-family:var(--font-mono);font-size:18px;color:#F5B556;">주의 Yellow</div>
+      <div style="font-size:15px;color:rgba(244,244,246,0.4);margin-top:4px;">±15~28 이탈</div>
+    </div>
+    <div style="text-align:center;padding:12px 16px;border-right:1px solid rgba(244,244,246,0.08);">
+      <div style="font-family:var(--font-mono);font-size:18px;color:#E07C3A;">경계 Orange</div>
+      <div style="font-size:15px;color:rgba(244,244,246,0.4);margin-top:4px;">±28~43 이탈</div>
+    </div>
+    <div style="text-align:center;padding:12px 16px;">
+      <div style="font-family:var(--font-mono);font-size:18px;color:#B5331E;">위험 Red</div>
+      <div style="font-size:15px;color:rgba(244,244,246,0.4);margin-top:4px;">±43 이상 · 관리자 보고</div>
+    </div>
+  </div>
+
   <div class="attrib" style="border-top-color: rgba(244,244,246,0.16);
                               color: rgba(244,244,246,0.5);">
     제조 AI 실습 · PYTHON · SCIKIT-LEARN · XGBOOST · SHAP
@@ -461,7 +532,7 @@
 
 </deck-stage>
 
-<a href="index.html" style="position:fixed;top:22px;left:22px;z-index:2147483647;display:flex;align-items:center;gap:6px;padding:8px 16px 8px 12px;border-radius:999px;background:rgba(20,20,24,0.85);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.12);color:#fff;text-decoration:none;font-family:var(--font-mono);font-size:13px;letter-spacing:0.08em;transition:background 180ms ease,border-color 180ms ease;" onmouseenter="this.style.background='rgba(40,40,48,0.95)';this.style.borderColor='rgba(255,255,255,0.28)'" onmouseleave="this.style.background='rgba(20,20,24,0.85)';this.style.borderColor='rgba(255,255,255,0.12)'"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>PORTFOLIO</a>
+<a href="index.html" style="position:fixed;top:22px;left:22px;z-index:2147483647;display:flex;align-items:center;gap:6px;padding:8px 16px 8px 12px;border-radius:999px;background:rgba(20,20,24,0.85);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.12);color:#fff;text-decoration:none;font-family:var(--font-mono);font-size:13px;letter-spacing:0.08em;transition:background 180ms ease,border-color 180ms ease;" onmouseenter="this.style.background='rgba(40,40,48,0.95)';this.style.borderColor='rgba(255,255,255,0.28)'" onmouseleave="this.style.background='rgba(20,20,24,0.85)';this.style.borderColor='rgba(255,255,255,0.12)'"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>포트폴리오</a>
 
 </body>
 </html>
