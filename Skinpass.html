@@ -410,18 +410,20 @@
         <span>DATA EXPLORATION</span>
       </div>
       <div
-        style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; flex: 1; padding-top: 48px; align-items: start;">
-        <div>
-          <div class="meta-cap" style="margin-bottom: 16px;">변수 간 상관관계 — 히트맵</div>
-          <img src="skinpass/img/image1.png" alt="상관관계 히트맵" style="width: 100%; border: 1px solid var(--rule);" />
-          <p style="margin-top: 10px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
+        style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; flex: 1; min-height: 0; padding-top: 48px; align-items: start;">
+        <div style="display: flex; flex-direction: column; min-height: 0;">
+          <div class="meta-cap" style="margin-bottom: 16px; flex-shrink: 0;">변수 간 상관관계 — 히트맵</div>
+          <img src="skinpass/img/image1.png" alt="상관관계 히트맵"
+               style="width: 100%; height: 500px; object-fit: contain; object-position: left top; border: 1px solid var(--rule); flex-shrink: 0;" />
+          <p style="margin-top: 10px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5; flex-shrink: 0;">
             Fig. 3-1 — 변수 간 상관관계 히트맵. 항복강도 × 표면조도 r=0.48로 핵심 교호작용 발견. 형상불량지수·Skinpass발생 r=+0.07로 단독 변수 효과 제한.
           </p>
         </div>
-        <div>
-          <div class="meta-cap" style="margin-bottom: 16px;">클래스별 변수 분포 — 히스토그램</div>
-          <img src="skinpass/img/image4.png" alt="클래스별 변수 분포" style="width: 100%; border: 1px solid var(--rule);" />
-          <p style="margin-top: 10px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
+        <div style="display: flex; flex-direction: column; min-height: 0;">
+          <div class="meta-cap" style="margin-bottom: 16px; flex-shrink: 0;">클래스별 변수 분포 — 히스토그램</div>
+          <img src="skinpass/img/image4.png" alt="클래스별 변수 분포"
+               style="width: 100%; height: 500px; object-fit: contain; object-position: left top; border: 1px solid var(--rule); flex-shrink: 0;" />
+          <p style="margin-top: 10px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5; flex-shrink: 0;">
             Fig. 3-2 — 클래스별 변수 분포 히스토그램. 항복강도 DP590 고강도 구간에서 분리 확인. 이전공정경과시간 분포 차이 없음 → 모델 제거.
           </p>
         </div>
