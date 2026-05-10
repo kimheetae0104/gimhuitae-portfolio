@@ -162,9 +162,9 @@
     <span>03 · 배경 & 문제</span>
     <span>왜 중요한가</span>
   </div>
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 72px; flex: 1; padding-top: 48px; align-items: stretch;">
+  <div style="display: grid; grid-template-columns: 1.3fr 0.85fr; gap: 48px; flex: 1; padding-top: 48px; align-items: stretch;">
     <div style="display:flex; flex-direction:column; justify-content:space-between;">
-      <h2 class="slide-h2" style="font-size:44px;">운전원이 본 것은 결과였다.<br/>
+      <h2 class="slide-h2" style="font-size:58px;">운전원이 본 것은 결과였다.<br/>
         <span style="color:var(--fg-3);font-weight:400;">원인은 5분 뒤에 도착했다.</span></h2>
       <p class="slide-body" style="margin-top: 28px; font-size:26px;">
         열풍로는 <strong style="color:var(--fg-1);">연소중 → 축열중 → 전환대기</strong>를 반복한다. 목표 LHV는 <strong style="color:var(--fg-1);">1,012 kcal/Nm³ (±15)</strong>. 이 범위를 벗어나면 연료 과잉 소모 또는 선철 품질 저하가 발생한다.
@@ -295,12 +295,12 @@
     <span>05 · 가설 4개 검증</span>
     <span>3개 기각 · 1개 채택</span>
   </div>
-  <div style="margin-top: 28px; display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: stretch; flex: 1; min-height: 0;">
+  <div style="margin-top: 28px; display: grid; grid-template-columns: 1.7fr 0.85fr; gap: 40px; align-items: stretch; flex: 1; min-height: 0;">
     <div style="display:flex; flex-direction:column; justify-content:center; gap: 28px;">
-      <p class="slide-body" style="color: var(--fg-1); font-style: italic; font-size: 32px; line-height: 1.55;">
+      <p class="slide-body" style="color: var(--fg-1); font-style: italic; font-size: 36px; line-height: 1.55;">
         기각된 3개 가설이 더 중요한 발견이었다. 운전원의 경험적 패러다임을 데이터로 재검토하라는 가장 강한 메시지였기 때문이다.
       </p>
-      <p class="slide-body" style="font-size: 26px; color: var(--fg-2); line-height: 1.6;">
+      <p class="slide-body" style="font-size: 30px; color: var(--fg-2); line-height: 1.6;">
         채택된 H4 → <strong style="color:var(--fg-1);">is_post_standby</strong> 이진 플래그 → 전환대기 직후 COG 2% 절감 시나리오 (연 1.24M Nm³).
       </p>
     </div>
@@ -311,7 +311,7 @@
   </div>
   <div class="hyp-grid" style="margin-top: 24px; flex-shrink:0;">
     <div class="hyp-card reject">
-      <div class="tag">H1 · 내가 설계한 가설 (김희태)</div>
+      <div class="tag">H1 · BFG CO함량 가설</div>
       <div class="q">BFG CO함량 1% 증가 → LHV +20 kcal?</div>
       <div class="verdict">✕ 기각 · p = 0.41</div>
       <div style="margin-top:14px;padding-top:10px;border-top:1px solid var(--rule-soft);font-size:18px;color:var(--fg-3);flex:1;">
@@ -319,7 +319,7 @@
       </div>
     </div>
     <div class="hyp-card reject">
-      <div class="tag">H2 · Dome 온도 (우예은)</div>
+      <div class="tag">H2 · Dome 온도</div>
       <div class="q">Dome 온도가 높을수록 LHV가 상승한다?</div>
       <div class="verdict">✕ 기각 · ANOVA p=0.576</div>
       <div style="margin-top:14px;padding-top:10px;border-top:1px solid var(--rule-soft);font-size:18px;color:var(--fg-3);flex:1;">
@@ -327,7 +327,7 @@
       </div>
     </div>
     <div class="hyp-card partial">
-      <div class="tag">H3 · 파생변수 (노현수)</div>
+      <div class="tag">H3 · 파생변수</div>
       <div class="q">COG/BFG 비율 파생변수가 예측력을 높인다?</div>
       <div class="verdict">△ 부분기각 · R² 동일</div>
       <div style="margin-top:14px;padding-top:10px;border-top:1px solid var(--rule-soft);font-size:18px;color:var(--fg-3);flex:1;">
@@ -335,7 +335,7 @@
       </div>
     </div>
     <div class="hyp-card accept">
-      <div class="tag">H4 · 전환대기 직후 (김지훈)</div>
+      <div class="tag">H4 · 전환대기 직후</div>
       <div class="q">전환대기 직후 구간에서 COG가 과잉 투입된다?</div>
       <div class="verdict">✓ 채택 → 절감 시나리오</div>
       <div style="margin-top:14px;padding-top:10px;border-top:1px solid var(--rule-soft);font-size:18px;color:var(--fg-2);">
