@@ -122,23 +122,27 @@
     <span>02 · 한 줄 요약</span>
     <span>요약</span>
   </div>
-  <div style="display: flex; flex-direction: column; justify-content: center; gap: 56px; flex: 1;">
-    <div class="quote">
-      LHV 예측 모델을 만들었고,<br/>
-      그 과정에서<br/>
-      <em>"전환대기 직후 COG 투입"</em>이라는<br/>
-      구조적 낭비 구간을 직접 발견했다.
-    </div>
-    <p class="slide-body" style="max-width: 56ch; font-size: 26px; color: var(--fg-2); margin-top: -20px;">
-      60일간 5분 간격 17,280행의 실시간 조업 데이터를 기반으로, Ridge 회귀 모델(MAE 11.99)로
-      LHV를 예측하고, SHAP 분석으로 COG·BFG 유량이 핵심 제어 변수임을 검증했다.<br/>
-      목표 LHV(1,012 kcal/Nm³) 대비 오차 <strong style="color:var(--fg-1);">1.18%</strong> — 현장 ±15 경보 기준에서 실용 가능 수준.
-    </p>
-    <div class="grid">
+  <div style="display: flex; flex-direction: column; justify-content: center; gap: 48px; flex: 1;">
+    <!-- 상단: 인용문 + 1.24M -->
+    <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 64px; align-items: center;">
+      <div class="quote">
+        LHV 예측 모델을 만들었고,<br/>
+        그 과정에서<br/>
+        <em>"전환대기 직후 COG 투입"</em>이라는<br/>
+        구조적 낭비 구간을 직접 발견했다.
+      </div>
       <div class="stat-block">
         <div class="big" style="color: var(--accent-600);">1.24M</div>
         <div class="unit">Nm³ / YEAR — 연간 COG 절감 시나리오 (2% 절감 시)</div>
       </div>
+    </div>
+    <!-- 하단: 본문 + ±0.2 -->
+    <div class="grid">
+      <p class="slide-body" style="font-size: 26px; color: var(--fg-2);">
+        60일간 5분 간격 17,280행의 실시간 조업 데이터를 기반으로, Ridge 회귀 모델(MAE 11.99)로
+        LHV를 예측하고, SHAP 분석으로 COG·BFG 유량이 핵심 제어 변수임을 검증했다.<br/>
+        목표 LHV(1,012 kcal/Nm³) 대비 오차 <strong style="color:var(--fg-1);">1.18%</strong> — 현장 ±15 경보 기준에서 실용 가능 수준.
+      </p>
       <div class="stat-block" style="text-align: right;">
         <div class="big" style="font-size: 130px; color: var(--fg-1);">±0.2</div>
         <div class="unit">LHV 변화 · 허용 범위(±15) 내</div>
