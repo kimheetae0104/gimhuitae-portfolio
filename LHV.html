@@ -297,11 +297,11 @@
   </div>
   <div style="margin-top: 28px; display: grid; grid-template-columns: 1.7fr 0.85fr; gap: 40px; align-items: stretch; flex: 1; min-height: 0;">
     <div style="display:flex; flex-direction:column; justify-content:center; gap: 28px;">
-      <p class="slide-body" style="color: var(--fg-1); font-style: italic; font-size: 36px; line-height: 1.55;">
-        기각된 3개 가설이 더 중요한 발견이었다. 운전원의 경험적 패러다임을 데이터로 재검토하라는 가장 강한 메시지였기 때문이다.
+      <p class="slide-body" style="font-size: 32px; color: var(--fg-2); line-height: 1.6;">
+        가설 4개를 수립해 통계 검증을 수행했다. H1(BFG CO함량) · H2(Dome 온도) · H3(파생변수)는 기각. H4(전환대기 직후 COG 과잉 투입)만 채택됐다.
       </p>
-      <p class="slide-body" style="font-size: 30px; color: var(--fg-2); line-height: 1.6;">
-        채택된 H4 → <strong style="color:var(--fg-1);">is_post_standby</strong> 이진 플래그 → 전환대기 직후 COG 2% 절감 시나리오 (연 1.24M Nm³).
+      <p class="slide-body" style="font-size: 32px; color: var(--fg-2); line-height: 1.6;">
+        채택된 H4 → <strong style="color:var(--fg-1);">is_post_standby</strong> 이진 플래그 파생 → 전환대기 직후 COG 2% 절감 시나리오 (연 1.24M Nm³).
       </p>
     </div>
     <div style="display:flex; flex-direction:column; min-height:0;">
@@ -359,27 +359,27 @@
       <p class="slide-body" style="margin-top: 24px; font-size: 24px; flex-shrink:0;">
         상관계수, RF Feature Importance, XGBoost SHAP — 세 가지 분석이 모두 같은 결론으로 수렴한 순간이 인상적이었다. 물리 도메인(COG 발열량 BFG의 6배)이 ML로도 1위로 확인됐다.
       </p>
-      <div style="margin-top: 28px; padding: 20px 24px; background: var(--paper-100); border: 1px solid var(--rule); flex-shrink:0;">
-        <div class="meta-cap" style="margin-bottom: 14px;">피처 엔지니어링 · 파생변수 4종</div>
-        <div style="font-family: var(--font-mono); font-size: 19px; line-height: 1.9; color: var(--fg-2);">
+      <div style="margin-top: 28px; padding: 28px 28px; background: var(--paper-100); border: 1px solid var(--rule); flex: 1;">
+        <div class="meta-cap" style="margin-bottom: 18px;">피처 엔지니어링 · 파생변수 4종</div>
+        <div style="font-family: var(--font-mono); font-size: 22px; line-height: 2.2; color: var(--fg-2);">
           <div><span style="color: var(--accent-600);">is_post_standby</span> — H4 채택 가설 직접 반영 (이진 플래그)</div>
           <div><span style="color: var(--fg-1);">COG_per_Air</span>&nbsp;&nbsp;&nbsp;— 공기 대비 COG 투입 비율</div>
           <div><span style="color: var(--fg-1);">CO_CH4_ratio</span>&nbsp;&nbsp;— BFG_CO / COG_CH₄ 성분 복합</div>
           <div><span style="color: var(--fg-1);">LHV_diff</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;— 직전 5분 대비 변화량 (추세 반영)</div>
         </div>
       </div>
-      <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 8px; flex: 1;">
-        <div style="padding: 10px 16px; background: var(--paper-200); border-left: 3px solid var(--accent-600); display:flex; gap:16px; align-items:center; flex:1;">
-          <div style="font-family:var(--font-mono);font-size:17px;color:var(--fg-3);letter-spacing:0.08em;white-space:nowrap;">COG 유량</div>
-          <div style="font-size:20px;color:var(--fg-1);">고값 → <strong>강한 양(+) 기여</strong> — BFG 대비 6배 발열량</div>
+      <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0;">
+        <div style="padding: 8px 16px; background: var(--paper-200); border-left: 3px solid var(--accent-600); display:flex; gap:16px; align-items:center;">
+          <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg-3);letter-spacing:0.08em;white-space:nowrap;">COG 유량</div>
+          <div style="font-size:18px;color:var(--fg-1);">고값 → <strong>강한 양(+) 기여</strong> — BFG 대비 6배 발열량</div>
         </div>
-        <div style="padding: 10px 16px; background: var(--paper-200); border-left: 3px solid var(--danger); display:flex; gap:16px; align-items:center; flex:1;">
-          <div style="font-family:var(--font-mono);font-size:17px;color:var(--fg-3);letter-spacing:0.08em;white-space:nowrap;">BFG 유량</div>
-          <div style="font-size:20px;color:var(--fg-1);">고값 → <strong>강한 음(−) 기여</strong> — 희석 효과</div>
+        <div style="padding: 8px 16px; background: var(--paper-200); border-left: 3px solid var(--danger); display:flex; gap:16px; align-items:center;">
+          <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg-3);letter-spacing:0.08em;white-space:nowrap;">BFG 유량</div>
+          <div style="font-size:18px;color:var(--fg-1);">고값 → <strong>강한 음(−) 기여</strong> — 희석 효과</div>
         </div>
-        <div style="padding: 10px 16px; background: var(--paper-200); border-left: 3px solid var(--rule); display:flex; gap:16px; align-items:center; flex:1;">
-          <div style="font-family:var(--font-mono);font-size:17px;color:var(--fg-3);letter-spacing:0.08em;white-space:nowrap;">BFG CO함량</div>
-          <div style="font-size:20px;color:var(--fg-2);">SHAP ≈ 0 — 가설 H1 기각과 일관</div>
+        <div style="padding: 8px 16px; background: var(--paper-200); border-left: 3px solid var(--rule); display:flex; gap:16px; align-items:center;">
+          <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg-3);letter-spacing:0.08em;white-space:nowrap;">BFG CO함량</div>
+          <div style="font-size:18px;color:var(--fg-2);">SHAP ≈ 0 — 가설 H1 기각과 일관</div>
         </div>
       </div>
     </div>
