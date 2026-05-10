@@ -355,13 +355,13 @@
   </div>
   <div style="display: grid; grid-template-columns: 1fr 1.1fr; gap: 72px; flex: 1; padding-top: 40px; align-items: stretch; min-height: 0;">
     <div style="display:flex; flex-direction:column; min-height:0;">
-      <h2 class="slide-h2" style="font-size:44px; flex-shrink:0;">COG를 관리하는 것이<br/>곧 LHV를 관리하는 것이다.</h2>
+      <h2 class="slide-h2" style="font-size:44px; flex-shrink:0;">COG유량·BFG유량 —<br/>두 모델이 공통 1·2위.</h2>
       <p class="slide-body" style="margin-top: 24px; font-size: 24px; flex-shrink:0;">
-        상관계수, RF Feature Importance, XGBoost SHAP — 세 가지 분석이 모두 같은 결론으로 수렴한 순간이 인상적이었다. 물리 도메인(COG 발열량 BFG의 6배)이 ML로도 1위로 확인됐다.
+        상관계수(r), RF Feature Importance, XGBoost SHAP — 세 분석 모두 COG유량(1위)·BFG유량(2위)으로 수렴. COG(4,400 kcal/Nm³)가 BFG(750 kcal/Nm³) 대비 약 6배 발열량을 가지는 물리 특성과 완전히 일치한다.
       </p>
       <div style="margin-top: 28px; padding: 28px 28px; background: var(--paper-100); border: 1px solid var(--rule); flex: 1;">
         <div class="meta-cap" style="margin-bottom: 18px;">피처 엔지니어링 · 파생변수 4종</div>
-        <div style="font-family: var(--font-mono); font-size: 22px; line-height: 2.2; color: var(--fg-2);">
+        <div style="font-family: var(--font-mono); font-size: 26px; line-height: 2.0; color: var(--fg-2);">
           <div><span style="color: var(--accent-600);">is_post_standby</span> — H4 채택 가설 직접 반영 (이진 플래그)</div>
           <div><span style="color: var(--fg-1);">COG_per_Air</span>&nbsp;&nbsp;&nbsp;— 공기 대비 COG 투입 비율</div>
           <div><span style="color: var(--fg-1);">CO_CH4_ratio</span>&nbsp;&nbsp;— BFG_CO / COG_CH₄ 성분 복합</div>
