@@ -411,7 +411,7 @@
         COG·BFG 유량과 LHV 사이의 강한 선형 관계가 비선형 트리의 복잡도를 무력화했다.
       </p>
       <p class="slide-body" style="margin-top: 18px; font-size: 24px; color: var(--fg-3); flex-shrink:0;">
-        처음엔 Ridge가 1위라는 결과를 의심했다. 하지만 데이터 구조를 먼저 이해하는 것이 모델 복잡도보다 우선이라는 걸 체감했다.
+        Ridge(α=1)가 XGBoost보다 우수 — COG·BFG 유량과 LHV 간의 강한 선형 관계가 비선형 트리 모델의 복잡도를 무력화했다. R²=0.43은 유량 변수 중심 피처 구성의 한계이며, COG 연소 물리 파생변수 추가 시 R²=0.60+ 달성 가능하다.
       </p>
       <div style="margin-top: 28px; display:flex; flex-direction:column; flex:1; min-height:0;">
         <div style="font-family:var(--font-mono);font-size:20px;letter-spacing:0.08em;text-transform:uppercase;color:var(--fg-3);margin-bottom:10px;flex-shrink:0;">그림 2 — Ridge(α=1) 실측 vs 예측 · 잔차 정규성</div>
@@ -486,11 +486,11 @@
   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 64px; flex: 1; margin-top: 40px; align-items: stretch; min-height: 0;">
     <div style="display:flex; flex-direction:column; min-height:0;">
       <div class="pull" style="color: var(--fg-1); font-size: 58px; flex-shrink:0;">
-        LHV 실측값은<br/>공정의 <em style="color:var(--accent-600);">최종 결과</em>다.<br/>
-        원인은 그 상류에 있다.
+        COG유량이 LHV와<br/>최고 상관(r=+0.49) —<br/>
+        RF·XGBoost <em style="color:var(--accent-600);">피처 중요도 1위</em>.
       </div>
       <p style="font-family:var(--font-sans);font-size:24px;color:var(--fg-2);margin-top:28px;line-height:1.65;flex-shrink:0;">
-        Dome온도를 보고 연료를 조절하는 운전원의 경험적 방식은 결과를 보고 원인을 추측하는 역방향이었다. 데이터가 그것을 권고했고, COG 유량이 진짜 원인임을 세 가지 분석이 동시에 가리켰다.
+        전환대기 직후 구간(약 10~15%, 1,728~2,592행)에서 COG효율(LHV/COG유량) 0.08457 — 연소중 0.08460보다 낮음을 확인. Dome온도는 LHV의 원인 변수가 아니라 연소 결과 변수 — 보조 모니터링 지표로만 활용.
       </p>
       <div style="margin-top:24px; display:grid; gap:14px; flex:1; align-content:stretch;">
         <div style="padding:20px 24px;border:1px solid var(--rule-soft);display:flex;gap:20px;align-items:center;">
