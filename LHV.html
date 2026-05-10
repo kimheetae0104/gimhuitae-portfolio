@@ -9,8 +9,8 @@
 <script src="shared/deck-stage.js"></script>
 <style>
   /* LHV-specific overrides */
-  .s-title .hero h1 { font-size: 120px; }
-  .s-title .hero .ko-sub { max-width: 36ch; }
+  .s-title .hero h1 { font-size: 120px; line-height: 1.12; }
+  .s-title .hero .ko-sub { max-width: 48ch; }
 
   .num-display { font-family: var(--font-sans); font-weight: 700;
                  font-size: 240px; line-height: 0.95;
@@ -97,13 +97,12 @@
   <div class="hero">
     <div class="meta-cap" style="margin-bottom: 32px;">제조 AI 실습 · 팀장</div>
     <h1>열풍로 발열량을<br/>5분마다 예측한다.</h1>
-    <p class="ko-sub">고로 열풍로의 LHV(저위발열량)를 5분 주기로 예측하는 ML 모델 개발 —<br/>
-      그리고 데이터가 스스로 드러낸 한 가지 구조적 낭비 패턴.</p>
+    <p class="ko-sub">고로 열풍로의 LHV(저위발열량)를 5분 주기로 예측하는 ML 모델 개발, 그리고 데이터가 스스로 드러낸 한 가지 구조적 낭비 패턴.</p>
   </div>
   <div class="meta-grid">
     <div class="col">
       <div class="k">유형</div>
-      <div class="v">제조 AI 실습<br/>팀장 (4인 팀)</div>
+      <div class="v">제조 AI 실습 프로젝트</div>
     </div>
     <div class="col">
       <div class="k">데이터</div>
@@ -167,14 +166,11 @@
     <div style="display:flex; flex-direction:column; justify-content:space-between;">
       <h2 class="slide-h2" style="font-size:44px;">운전원이 본 것은 결과였다.<br/>
         <span style="color:var(--fg-3);font-weight:400;">원인은 5분 뒤에 도착했다.</span></h2>
-      <p class="slide-body" style="margin-top: 28px; max-width: 28ch; font-size:26px;">
-        열풍로는 <strong style="color:var(--fg-1);">연소중 → 축열중 → 전환대기</strong>를 반복한다.
-        목표 LHV는 <strong style="color:var(--fg-1);">1,012 kcal/Nm³ (±15)</strong>. 이 범위를 벗어나면
-        연료 과잉 소모 또는 선철 품질 저하가 발생한다.
+      <p class="slide-body" style="margin-top: 28px; font-size:26px;">
+        열풍로는 <strong style="color:var(--fg-1);">연소중 → 축열중 → 전환대기</strong>를 반복한다. 목표 LHV는 <strong style="color:var(--fg-1);">1,012 kcal/Nm³ (±15)</strong>. 이 범위를 벗어나면 연료 과잉 소모 또는 선철 품질 저하가 발생한다.
       </p>
-      <p class="slide-body" style="margin-top: 20px; max-width: 28ch; font-size: 24px; color: var(--fg-3);">
-        기존 운전원은 Dome온도를 보고 유량을 조절했다.<br/>
-        그 상관계수가 r≈0이라는 사실은 데이터를 열기 전까지는 아무도 몰랐다.
+      <p class="slide-body" style="margin-top: 20px; font-size: 24px; color: var(--fg-3);">
+        기존 운전원은 Dome온도를 보고 유량을 조절했다. 그 상관계수가 r≈0이라는 사실은 데이터를 열기 전까지는 아무도 몰랐다.
       </p>
       <div style="margin-top: 28px; display: grid; gap: 10px;">
         <div style="padding: 14px 20px; background: rgba(181,51,30,0.06); border-left: 3px solid var(--danger);">
@@ -192,6 +188,7 @@
       </div>
     </div>
     <div style="display:flex; flex-direction:column; justify-content:space-between;">
+      <div>
       <div class="meta-cap" style="margin-bottom: 20px;">상관계수 r — vs LHV</div>
       <div style="display: grid; gap: 18px;">
         <div style="display: grid; grid-template-columns: 220px 1fr 110px; align-items: center; gap: 24px; font-family: var(--font-mono);">
@@ -227,7 +224,8 @@
           <span style="font-size: 26px; font-weight: 700; text-align: right; color: var(--fg-3);">≈ 0</span>
         </div>
       </div>
-      <div style="margin-top: 32px; padding: 20px 24px; background: var(--paper-100); border: 1px solid var(--rule);">
+      </div>
+      <div style="padding: 20px 24px; background: var(--paper-100); border: 1px solid var(--rule);">
         <div class="meta-cap" style="margin-bottom: 12px;">LHV 기술통계 (17,280행)</div>
         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;">
           <div style="text-align:center; padding: 12px 8px; border-right: 1px solid var(--rule-soft);">
