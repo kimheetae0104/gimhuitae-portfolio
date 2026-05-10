@@ -256,29 +256,26 @@
     <span>04 · EDA</span>
     <span>데이터 탐색</span>
   </div>
-  <p class="slide-body" style="margin-top: 16px; font-style: italic; font-size: 24px; color: var(--fg-3); max-width: 60ch;">
-    데이터를 처음 열었을 때 가장 먼저 확인한 세 가지 — 각 변수의 분포, 공정단계별 패턴, 그리고 변수 간 선형 관계.
-  </p>
-  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 28px; flex: 1; padding-top: 20px; align-items: stretch; min-height: 0;">
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 28px; flex: 1; padding-top: 32px; align-items: stretch; min-height: 0;">
     <div style="display:flex; flex-direction:column;">
-      <div class="meta-cap" style="margin-bottom: 12px;">핵심 변수 분포 — 히스토그램</div>
+      <div class="meta-cap" style="margin-bottom: 10px; flex-shrink:0;">그림 A — 핵심 변수 분포 · 히스토그램</div>
       <img src="lhv/img/image2-31.png" alt="핵심 변수 히스토그램" style="flex:1; width:100%; min-height:0; object-fit:contain; object-position:center; border:1px solid var(--rule); background:var(--paper-50);" />
-      <p style="margin-top: 12px; font-size: 20px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.5; flex-shrink:0;">
-        그림 A — LHV 정규분포(σ=19.8). COG유량 11,000~13,000 Nm³/h 집중. <strong style="color:var(--fg-2);">결측치 없음.</strong>
+      <p style="margin-top: 10px; font-size: 19px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.4; flex-shrink:0;">
+        LHV 정규분포(σ=19.8) · COG유량 11,000~13,000 Nm³/h 집중 · <strong style="color:var(--fg-2);">결측치 없음</strong>
       </p>
     </div>
     <div style="display:flex; flex-direction:column;">
-      <div class="meta-cap" style="margin-bottom: 12px;">공정단계별 핵심 변수 분포 — 박스플롯</div>
+      <div class="meta-cap" style="margin-bottom: 10px; flex-shrink:0;">그림 B — 공정단계별 분포 · 박스플롯</div>
       <img src="lhv/img/image1-33.png" alt="공정단계별 박스플롯" style="flex:1; width:100%; min-height:0; object-fit:contain; object-position:center; border:1px solid var(--rule); background:var(--paper-50);" />
-      <p style="margin-top: 12px; font-size: 20px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.5; flex-shrink:0;">
-        그림 B — 공정단계 무관 유사 분포. <strong style="color:var(--fg-2);">공정단계 단독으로는 예측력 미미.</strong>
+      <p style="margin-top: 10px; font-size: 19px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.4; flex-shrink:0;">
+        공정단계 무관 유사 분포 · <strong style="color:var(--fg-2);">공정단계 단독으로는 예측력 미미</strong>
       </p>
     </div>
     <div style="display:flex; flex-direction:column;">
-      <div class="meta-cap" style="margin-bottom: 12px;">변수 간 상관행렬 — 히트맵</div>
+      <div class="meta-cap" style="margin-bottom: 10px; flex-shrink:0;">그림 C — 변수 간 상관행렬 · 히트맵</div>
       <img src="lhv/img/image4-35.png" alt="상관관계 히트맵" style="flex:1; width:100%; min-height:0; object-fit:contain; object-position:center; border:1px solid var(--rule); background:var(--paper-50);" />
-      <p style="margin-top: 12px; font-size: 20px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.5; flex-shrink:0;">
-        그림 C — COG r=+0.49, BFG r=−0.44. <strong style="color:var(--danger);">혼합가스↔BFG 유량 r=0.995</strong> → 혼합가스유량 제거.
+      <p style="margin-top: 10px; font-size: 19px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.4; flex-shrink:0;">
+        COG r=+0.49 · BFG r=−0.44 · <strong style="color:var(--danger);">혼합가스↔BFG r=0.995</strong> → 혼합가스유량 제거
       </p>
     </div>
   </div>
