@@ -379,13 +379,92 @@
     COG 2% 절감 시나리오(연 1.24M Nm³)의 근거가 되었다.
   </p>
   <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-  <div class="pageno">05 / 07</div>
+  <div class="pageno">05 / 08</div>
 </section>
 
-<!-- ═══ Slide 5 — Models ═══ -->
-<section class="slide" data-label="05 Models">
+<!-- ═══ Slide 6 — Feature Importance + SHAP ═══ -->
+<section class="slide" data-label="06 SHAP">
   <div class="top-rule">
-    <span>06 · 5 MODELS</span>
+    <span>06 · FEATURE IMPORTANCE</span>
+    <span>COG IS KING</span>
+  </div>
+  <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 96px; flex: 1; padding-top: 56px; align-items: start;">
+    <div>
+      <h2 class="slide-h2">COG를 관리하는 것이<br/>곧 LHV를 관리하는 것이다.</h2>
+      <p class="slide-body" style="margin-top: 32px; max-width: 28ch; font-size: 28px;">
+        상관계수 · RF Feature Importance · XGBoost SHAP —<br/>세 가지 분석 방법이 모두 같은 결론으로 수렴했다.
+      </p>
+      <div style="margin-top: 40px; display: grid; gap: 16px;">
+        <div style="padding: 20px 24px; background: var(--paper-200); border-left: 3px solid var(--accent-600);">
+          <div style="font-family: var(--font-mono); font-size: 21px; color: var(--fg-3); margin-bottom: 8px; letter-spacing: 0.1em; text-transform: uppercase;">COG 유량 — SHAP</div>
+          <div style="font-family: var(--font-sans); font-size: 24px; color: var(--fg-1);">고값 → 강한 <strong>양의 기여</strong> (BFG 대비 6배 발열량)</div>
+        </div>
+        <div style="padding: 20px 24px; background: var(--paper-200); border-left: 3px solid var(--danger);">
+          <div style="font-family: var(--font-mono); font-size: 21px; color: var(--fg-3); margin-bottom: 8px; letter-spacing: 0.1em; text-transform: uppercase;">BFG 유량 — SHAP</div>
+          <div style="font-family: var(--font-sans); font-size: 24px; color: var(--fg-1);">고값 → 강한 <strong>음의 기여</strong> (희석 효과)</div>
+        </div>
+        <div style="padding: 20px 24px; background: var(--paper-200); border-left: 3px solid var(--rule);">
+          <div style="font-family: var(--font-mono); font-size: 21px; color: var(--fg-3); margin-bottom: 8px; letter-spacing: 0.1em; text-transform: uppercase;">BFG CO 함량 — SHAP</div>
+          <div style="font-family: var(--font-sans); font-size: 24px; color: var(--fg-2);">SHAP ≈ 0 — 가설 H1 기각과 완전 일관</div>
+        </div>
+      </div>
+      <div style="margin-top: 28px; padding: 20px 24px; background: var(--paper-100); border: 1px solid var(--rule);">
+        <div class="meta-cap" style="margin-bottom: 14px;">피처 엔지니어링 · 파생변수 4종</div>
+        <div style="font-family: var(--font-mono); font-size: 21px; line-height: 1.8; color: var(--fg-2);">
+          <div><span style="color: var(--accent-600);">is_post_standby</span> — H4 채택 → 이진 플래그 직접 반영</div>
+          <div><span style="color: var(--fg-1);">COG_per_Air</span>&nbsp;&nbsp;&nbsp;— COG / 공기 투입 비율</div>
+          <div><span style="color: var(--fg-1);">CO_CH4_ratio</span>&nbsp;&nbsp;— BFG_CO / COG_CH₄ 성분 복합</div>
+          <div><span style="color: var(--fg-1);">LHV_diff</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;— 직전 5분 대비 변화량</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="meta-cap" style="margin-bottom: 28px;">Feature Importance — RF · XGBoost</div>
+      <table class="slide-table">
+        <thead>
+          <tr>
+            <th>RANK</th><th>VARIABLE</th>
+            <th class="num" style="text-align:right;">RF</th>
+            <th class="num" style="text-align:right;">XGB</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight">
+            <td class="num">★ 1</td><td>COG 유량</td>
+            <td class="num" style="text-align:right; color: var(--accent-600);">0.320</td>
+            <td class="num" style="text-align:right; color: var(--accent-600);">0.440</td>
+          </tr>
+          <tr class="highlight">
+            <td class="num">★ 2</td><td>BFG 유량</td>
+            <td class="num" style="text-align:right;">0.279</td>
+            <td class="num" style="text-align:right;">0.352</td>
+          </tr>
+          <tr>
+            <td class="num">3</td><td>공기 유량</td>
+            <td class="num" style="text-align:right; color: var(--fg-3);">0.074</td>
+            <td class="num" style="text-align:right; color: var(--fg-3);">0.036</td>
+          </tr>
+          <tr>
+            <td class="num">4</td><td>COG CH₄ 함량</td>
+            <td class="num" style="text-align:right; color: var(--fg-3);">0.073</td>
+            <td class="num" style="text-align:right; color: var(--fg-3);">0.034</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="slide-body" style="margin-top: 28px; font-size: 24px; color: var(--fg-3); font-style: italic; max-width: 30ch; line-height: 1.5;">
+        상위 2개 변수(COG·BFG 유량)가 전체 Feature Importance의 60% 이상을 차지.
+        도메인 지식(발열량 6배 차이)과 데이터가 완전히 일치한 케이스.
+      </p>
+    </div>
+  </div>
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">06 / 08</div>
+</section>
+
+<!-- ═══ Slide 7 — Models ═══ -->
+<section class="slide" data-label="07 Models">
+  <div class="top-rule">
+    <span>07 · 5 MODELS</span>
     <span>RIDGE WON</span>
   </div>
   <div style="display: grid; grid-template-columns: 1.1fr 1.4fr; gap: 96px;
@@ -439,13 +518,13 @@
     </table>
   </div>
   <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-  <div class="pageno">06 / 07</div>
+  <div class="pageno">07 / 08</div>
 </section>
 
-<!-- ═══ Slide 6 — Impact / Close ═══ -->
-<section class="slide dark s-close" data-label="06 Impact">
+<!-- ═══ Slide 8 — Impact / Close ═══ -->
+<section class="slide dark s-close" data-label="08 Impact">
   <div class="top-rule">
-    <span>07 · IMPACT</span>
+    <span>08 · IMPACT</span>
     <span>WHAT IT BUYS US</span>
   </div>
   <div style="margin-top: 80px;">
@@ -479,7 +558,7 @@
     제조 AI 실습 · PYTHON · SCIKIT-LEARN · XGBOOST · SHAP
   </div>
   <a href="index.html" class="pageno-mark" style="text-decoration:none; color:rgba(244,244,246,0.45);">김희태</a>
-  <div class="pageno" style="color: rgba(244,244,246,0.45);">07 / 07</div>
+  <div class="pageno" style="color: rgba(244,244,246,0.45);">08 / 08</div>
 </section>
 
 </deck-stage>
