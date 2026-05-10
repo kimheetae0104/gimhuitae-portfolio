@@ -258,17 +258,16 @@
     <span>04 · EDA</span>
     <span>데이터 탐색</span>
   </div>
-  <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 32px; flex: 1; padding-top: 32px; align-items: stretch; min-height: 0;">
-    <!-- A: 히스토그램 — 세로 꽉 채움 -->
-    <div style="display:flex; flex-direction:column; min-height:0;">
-      <div class="meta-cap" style="margin-bottom: 10px; flex-shrink:0;">그림 A — 핵심 변수 분포 · 히스토그램</div>
-      <img src="lhv/img/image2-31.png" alt="핵심 변수 히스토그램" style="flex:1; width:100%; min-height:0; object-fit:contain; object-position:center; border:1px solid var(--rule); background:var(--paper-50);" />
-      <p style="margin-top: 10px; font-size: 19px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.4; flex-shrink:0;">
-        LHV 정규분포(σ=19.8) · COG유량 11,000~13,000 Nm³/h 집중 · <strong style="color:var(--fg-2);">결측치 없음</strong>
-      </p>
-    </div>
-    <!-- B + C 상하 배치 -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; padding-top: 32px; align-items: stretch; min-height: 0;">
+    <!-- A + B 왼쪽 상하 -->
     <div style="display:flex; flex-direction:column; gap: 20px; min-height:0;">
+      <div style="display:flex; flex-direction:column; flex:1; min-height:0;">
+        <div class="meta-cap" style="margin-bottom: 10px; flex-shrink:0;">그림 A — 핵심 변수 분포 · 히스토그램</div>
+        <img src="lhv/img/image2-31.png" alt="핵심 변수 히스토그램" style="flex:1; width:100%; min-height:0; object-fit:contain; object-position:center; border:1px solid var(--rule); background:var(--paper-50);" />
+        <p style="margin-top: 10px; font-size: 19px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.4; flex-shrink:0;">
+          LHV 정규분포(σ=19.8) · COG유량 11,000~13,000 Nm³/h 집중 · <strong style="color:var(--fg-2);">결측치 없음</strong>
+        </p>
+      </div>
       <div style="display:flex; flex-direction:column; flex:1; min-height:0;">
         <div class="meta-cap" style="margin-bottom: 10px; flex-shrink:0;">그림 B — 공정단계별 분포 · 박스플롯</div>
         <img src="lhv/img/image1-33.png" alt="공정단계별 박스플롯" style="flex:1; width:100%; min-height:0; object-fit:contain; object-position:center; border:1px solid var(--rule); background:var(--paper-50);" />
@@ -276,13 +275,14 @@
           공정단계 무관 유사 분포 · <strong style="color:var(--fg-2);">공정단계 단독으로는 예측력 미미</strong>
         </p>
       </div>
-      <div style="display:flex; flex-direction:column; flex:1.4; min-height:0;">
-        <div class="meta-cap" style="margin-bottom: 10px; flex-shrink:0;">그림 C — 변수 간 상관행렬 · 히트맵</div>
-        <img src="lhv/img/image4-35.png" alt="상관관계 히트맵" style="flex:1; width:100%; min-height:0; object-fit:contain; object-position:center; border:1px solid var(--rule); background:var(--paper-50);" />
-        <p style="margin-top: 10px; font-size: 19px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.4; flex-shrink:0;">
-          COG r=+0.49 · BFG r=−0.44 · <strong style="color:var(--danger);">혼합가스↔BFG r=0.995</strong> → 혼합가스유량 제거
-        </p>
-      </div>
+    </div>
+    <!-- C: 히트맵 오른쪽 단독 -->
+    <div style="display:flex; flex-direction:column; min-height:0;">
+      <div class="meta-cap" style="margin-bottom: 10px; flex-shrink:0;">그림 C — 변수 간 상관행렬 · 히트맵</div>
+      <img src="lhv/img/image4-35.png" alt="상관관계 히트맵" style="flex:1; width:100%; min-height:0; object-fit:contain; object-position:center; border:1px solid var(--rule); background:var(--paper-50);" />
+      <p style="margin-top: 10px; font-size: 19px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.4; flex-shrink:0;">
+        COG r=+0.49 · BFG r=−0.44 · <strong style="color:var(--danger);">혼합가스↔BFG r=0.995</strong> → 혼합가스유량 제거
+      </p>
     </div>
   </div>
   <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
@@ -295,13 +295,13 @@
     <span>05 · 가설 4개 검증</span>
     <span>3개 기각 · 1개 채택</span>
   </div>
-  <div style="margin-top: 28px; display: grid; grid-template-columns: 1fr 1.6fr; gap: 40px; align-items: stretch; flex: 1; min-height: 0;">
-    <div style="display:flex; flex-direction:column; justify-content:center; gap: 20px;">
-      <p class="slide-body" style="color: var(--fg-1); font-style: italic; font-size: 28px; line-height: 1.55;">
+  <div style="margin-top: 28px; display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: stretch; flex: 1; min-height: 0;">
+    <div style="display:flex; flex-direction:column; justify-content:center; gap: 28px;">
+      <p class="slide-body" style="color: var(--fg-1); font-style: italic; font-size: 32px; line-height: 1.55;">
         기각된 3개 가설이 더 중요한 발견이었다. 운전원의 경험적 패러다임을 데이터로 재검토하라는 가장 강한 메시지였기 때문이다.
       </p>
-      <p class="slide-body" style="font-size: 22px; color: var(--fg-3); line-height: 1.6;">
-        채택된 H4 → <strong style="color:var(--fg-2);">is_post_standby</strong> 이진 플래그 → 전환대기 직후 COG 2% 절감 시나리오 (연 1.24M Nm³).
+      <p class="slide-body" style="font-size: 26px; color: var(--fg-2); line-height: 1.6;">
+        채택된 H4 → <strong style="color:var(--fg-1);">is_post_standby</strong> 이진 플래그 → 전환대기 직후 COG 2% 절감 시나리오 (연 1.24M Nm³).
       </p>
     </div>
     <div style="display:flex; flex-direction:column; min-height:0;">
@@ -368,16 +368,16 @@
           <div><span style="color: var(--fg-1);">LHV_diff</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;— 직전 5분 대비 변화량 (추세 반영)</div>
         </div>
       </div>
-      <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 6px; flex: 1;">
-        <div style="padding: 10px 16px; background: var(--paper-200); border-left: 3px solid var(--accent-600); display:flex; gap:16px; align-items:center;">
+      <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 8px; flex: 1;">
+        <div style="padding: 10px 16px; background: var(--paper-200); border-left: 3px solid var(--accent-600); display:flex; gap:16px; align-items:center; flex:1;">
           <div style="font-family:var(--font-mono);font-size:17px;color:var(--fg-3);letter-spacing:0.08em;white-space:nowrap;">COG 유량</div>
           <div style="font-size:20px;color:var(--fg-1);">고값 → <strong>강한 양(+) 기여</strong> — BFG 대비 6배 발열량</div>
         </div>
-        <div style="padding: 10px 16px; background: var(--paper-200); border-left: 3px solid var(--danger); display:flex; gap:16px; align-items:center;">
+        <div style="padding: 10px 16px; background: var(--paper-200); border-left: 3px solid var(--danger); display:flex; gap:16px; align-items:center; flex:1;">
           <div style="font-family:var(--font-mono);font-size:17px;color:var(--fg-3);letter-spacing:0.08em;white-space:nowrap;">BFG 유량</div>
           <div style="font-size:20px;color:var(--fg-1);">고값 → <strong>강한 음(−) 기여</strong> — 희석 효과</div>
         </div>
-        <div style="padding: 10px 16px; background: var(--paper-200); border-left: 3px solid var(--rule); display:flex; gap:16px; align-items:center;">
+        <div style="padding: 10px 16px; background: var(--paper-200); border-left: 3px solid var(--rule); display:flex; gap:16px; align-items:center; flex:1;">
           <div style="font-family:var(--font-mono);font-size:17px;color:var(--fg-3);letter-spacing:0.08em;white-space:nowrap;">BFG CO함량</div>
           <div style="font-size:20px;color:var(--fg-2);">SHAP ≈ 0 — 가설 H1 기각과 일관</div>
         </div>
