@@ -5,88 +5,19 @@
 <title>LHV — 열풍로 발열량 예측</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="stylesheet" href="shared/tokens.css" />
+<link rel="stylesheet" href="shared/slide.css" />
 <script src="shared/deck-stage.js"></script>
 <style>
-  :root {
-    --slide-pad-x: 100px;
-    --slide-pad-top: 80px;
-    --slide-pad-bottom: 80px;
-  }
-  body { background: #0a0a0c; }
-  deck-stage { background: var(--bg); }
-
-  /* Slide base */
-  section.slide {
-    background: var(--bg);
-    color: var(--fg-1);
-    font-family: var(--font-sans);
-    padding: var(--slide-pad-top) var(--slide-pad-x) var(--slide-pad-bottom);
-    box-sizing: border-box;
-    display: flex; flex-direction: column;
-    overflow: hidden;
-    height: 100%;
-  }
-  section.slide.dark { background: var(--ink-900); color: #F4F4F6; }
-  section.slide.soft { background: var(--paper-100); }
-
-  /* common parts */
-  .top-rule { display: flex; justify-content: space-between;
-              padding-bottom: 28px; border-bottom: 1px solid var(--rule);
-              font-family: var(--font-mono); font-size: 26px;
-              letter-spacing: 0.16em; text-transform: uppercase;
-              color: var(--fg-3); }
-  .s-title .hero {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-bottom: 24px;
-  }
-  .dark .top-rule { border-color: rgba(244,244,246,0.2); color: rgba(244,244,246,0.5); }
-
-  .meta-cap { font-family: var(--font-mono); font-size: 26px;
-              letter-spacing: 0.16em; text-transform: uppercase;
-              color: var(--fg-3); }
-  .dark .meta-cap { color: rgba(244,244,246,0.55); }
-
-  h1.slide-title {
-    font-family: var(--font-sans); font-weight: 600;
-    font-size: 84px; line-height: 1.05; letter-spacing: -0.025em;
-    color: var(--fg-1); margin: 0;
-  }
-  .dark h1.slide-title { color: #F4F4F6; }
-
-  h2.slide-h2 {
-    font-family: var(--font-sans); font-weight: 600;
-    font-size: 64px; line-height: 1.08; letter-spacing: -0.02em;
-    color: var(--fg-1); margin: 0;
-  }
-  .dark h2.slide-h2 { color: #F4F4F6; }
-
-  p.slide-body { font-family: var(--font-sans); font-size: 32px;
-                 line-height: 1.6; color: var(--fg-2); margin: 0; }
-  .dark p.slide-body { color: rgba(244,244,246,0.78); }
+  /* LHV-specific overrides */
+  .s-title .hero h1 { font-size: 120px; }
+  .s-title .hero .ko-sub { max-width: 36ch; }
 
   .num-display { font-family: var(--font-sans); font-weight: 700;
                  font-size: 240px; line-height: 0.95;
                  letter-spacing: -0.04em; color: var(--fg-1); }
   .dark .num-display { color: #F4F4F6; }
 
-  /* slide 1: title */
-  .s-title { justify-content: flex-start; }
-  .s-title .hero h1 { font-size: 120px; line-height: 1.0; max-width: 22ch; }
-  .s-title .hero .ko-sub { font-size: 36px; color: var(--fg-2);
-                            margin-top: 24px; max-width: 36ch; line-height: 1.45; }
-  .s-title .meta-grid { display: grid; grid-template-columns: repeat(4, 1fr);
-                        gap: 0; padding-top: 36px; border-top: 1px solid var(--rule); }
-  .s-title .meta-grid .col { padding-right: 24px; }
-  .s-title .meta-grid .k { font-family: var(--font-mono); font-size: 24px;
-                            letter-spacing: 0.16em; text-transform: uppercase;
-                            color: var(--fg-3); margin-bottom: 12px; }
-  .s-title .meta-grid .v { font-family: var(--font-sans); font-size: 28px;
-                            color: var(--fg-1); line-height: 1.4; }
-
-  /* slide 2: one-line + big stat */
+  /* slide 2: summary */
   .s-summary { display: grid; grid-template-rows: auto 1fr; gap: 48px; }
   .s-summary .quote { font-family: var(--font-sans); font-weight: 500;
                       font-size: 64px; line-height: 1.18; letter-spacing: -0.015em;
@@ -103,33 +34,6 @@
   .s-summary .stat-block .unit { font-size: 22px; letter-spacing: 0.14em;
                                   text-transform: uppercase; color: var(--fg-3);
                                   margin-top: 16px; }
-
-  /* table */
-  table.slide-table { width: 100%; border-collapse: collapse;
-                      font-family: var(--font-sans); font-size: 28px; line-height: 1.5;
-                      color: var(--fg-2); }
-  table.slide-table th, table.slide-table td {
-    padding: 24px 20px; text-align: left; vertical-align: top;
-    border-bottom: 1px solid var(--rule-soft); }
-  table.slide-table thead th {
-    font-family: var(--font-mono); font-size: 24px; font-weight: 400;
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg-3);
-    border-bottom: 1px solid var(--rule); padding-bottom: 16px; }
-  table.slide-table tr.highlight td { background: rgba(30, 58, 138, 0.05);
-                                       color: var(--fg-1); font-weight: 500; }
-  table.slide-table .num { font-family: var(--font-mono); font-feature-settings: "tnum"; }
-  table.slide-table .check { color: var(--positive); font-weight: 600; }
-  table.slide-table .reject { color: var(--danger); }
-
-  /* footer page no */
-  .pageno { position: absolute; bottom: 36px; right: 100px;
-            font-family: var(--font-mono); font-size: 24px; color: var(--fg-3);
-            letter-spacing: 0.16em; }
-  .dark .pageno { color: rgba(244,244,246,0.45); }
-  .pageno-mark { position: absolute; bottom: 36px; left: 100px;
-                  font-family: var(--font-mono); font-size: 24px; color: var(--fg-3);
-                  letter-spacing: 0.16em; }
-  .dark .pageno-mark { color: rgba(244,244,246,0.45); }
 
   /* hypothesis cards */
   .hyp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
@@ -172,12 +76,6 @@
                       letter-spacing: 0.14em; color: var(--fg-3);
                       margin-top: 48px; padding-top: 24px;
                       border-top: 1px solid var(--rule); }
-  /* dark overrides for title slide meta-grid */
-  .dark .s-title .meta-grid .k { color: rgba(244,244,246,0.45); }
-  .dark .s-title .meta-grid .v { color: #F4F4F6; }
-  .dark .s-title .ko-sub { color: rgba(244,244,246,0.7); }
-  .dark .s-title h1 { color: #F4F4F6; }
-  .dark .s-title .meta-cap { color: rgba(244,244,246,0.45); }
 </style>
 </head>
 <body>
