@@ -472,63 +472,63 @@
 </section>
 
 <!-- ═══ Slide 8 — Impact / Close ═══ -->
-<section class="slide dark s-close" data-label="08 Impact">
+<section class="slide s-close" data-label="08 Impact">
   <div class="top-rule">
     <span>08 · 임팩트 & 결론</span>
     <span>현장이 납득할 수 있는 숫자</span>
   </div>
   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 64px; flex: 1; margin-top: 48px;">
     <div>
-      <div class="pull" style="color: #F4F4F6; font-size: 58px;">
-        LHV 실측값은<br/>공정의 <em style="color:#F5B556;">최종 결과</em>다.<br/>
+      <div class="pull" style="color: var(--fg-1); font-size: 58px;">
+        LHV 실측값은<br/>공정의 <em style="color:var(--accent-600);">최종 결과</em>다.<br/>
         원인은 그 상류에 있다.
       </div>
-      <p style="font-family:var(--font-sans);font-size:24px;color:rgba(244,244,246,0.65);margin-top:32px;line-height:1.65;max-width:28ch;">
+      <p style="font-family:var(--font-sans);font-size:24px;color:var(--fg-2);margin-top:32px;line-height:1.65;max-width:28ch;">
         Dome온도를 보고 연료를 조절하는 운전원의 경험적 방식은 결과를 보고 원인을 추측하는 역방향이었다.
         데이터가 그것을 권고했고, COG 유량이 진짜 원인임을 세 가지 분석이 동시에 가리켰다.
       </p>
       <div style="margin-top:32px;display:grid;gap:12px;">
-        <div style="padding:14px 20px;border:1px solid rgba(245,181,86,0.2);display:flex;gap:16px;align-items:center;">
-          <div style="font-family:var(--font-mono);font-size:14px;color:rgba(245,181,86,0.55);letter-spacing:0.1em;white-space:nowrap;">정책 제언 ①</div>
-          <div style="font-size:20px;color:rgba(244,244,246,0.8);">5분 주기 실시간 LHV 예측 경보 시스템 구축 (Ridge+XGBoost 앙상블)</div>
+        <div style="padding:14px 20px;border:1px solid var(--rule-soft);display:flex;gap:16px;align-items:center;">
+          <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg-3);letter-spacing:0.1em;white-space:nowrap;">정책 제언 ①</div>
+          <div style="font-size:20px;color:var(--fg-2);">5분 주기 실시간 LHV 예측 경보 시스템 구축 (Ridge+XGBoost 앙상블)</div>
         </div>
-        <div style="padding:14px 20px;border:1px solid rgba(245,181,86,0.2);display:flex;gap:16px;align-items:center;">
-          <div style="font-family:var(--font-mono);font-size:14px;color:rgba(245,181,86,0.55);letter-spacing:0.1em;white-space:nowrap;">정책 제언 ②</div>
-          <div style="font-size:20px;color:rgba(244,244,246,0.8);">전환대기 직후 COG 1~2% 자동 감축 로직 현장 적용</div>
+        <div style="padding:14px 20px;border:1px solid var(--rule-soft);display:flex;gap:16px;align-items:center;">
+          <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg-3);letter-spacing:0.1em;white-space:nowrap;">정책 제언 ②</div>
+          <div style="font-size:20px;color:var(--fg-2);">전환대기 직후 COG 1~2% 자동 감축 로직 현장 적용</div>
         </div>
-        <div style="padding:14px 20px;border:1px solid rgba(245,181,86,0.2);display:flex;gap:16px;align-items:center;">
-          <div style="font-family:var(--font-mono);font-size:14px;color:rgba(245,181,86,0.55);letter-spacing:0.1em;white-space:nowrap;">향후 과제</div>
-          <div style="font-size:20px;color:rgba(244,244,246,0.8);">COG 중심 연소 물리 파생변수 추가 → R²=0.60+ 목표</div>
+        <div style="padding:14px 20px;border:1px solid var(--rule-soft);display:flex;gap:16px;align-items:center;">
+          <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg-3);letter-spacing:0.1em;white-space:nowrap;">향후 과제</div>
+          <div style="font-size:20px;color:var(--fg-2);">COG 중심 연소 물리 파생변수 추가 → R²=0.60+ 목표</div>
         </div>
       </div>
     </div>
     <div>
-      <div class="impact" style="border-top-color: rgba(244,244,246,0.18); margin-bottom: 32px;">
-        <div class="col" style="border-right-color: rgba(244,244,246,0.10);">
-          <div class="k" style="color: rgba(244,244,246,0.55);">절감률</div>
-          <div class="v" style="color: #F5B556;">2%</div>
-          <div class="u" style="color: rgba(244,244,246,0.65);">전환대기 직후 구간 한정</div>
-        </div>
-        <div class="col" style="border-right-color: rgba(244,244,246,0.10);">
-          <div class="k" style="color: rgba(244,244,246,0.55);">LHV 영향</div>
-          <div class="v" style="color: #F4F4F6;">±0.2</div>
-          <div class="u" style="color: rgba(244,244,246,0.65);">목표 ±15 허용 범위 내</div>
+      <div class="impact" style="margin-bottom: 32px;">
+        <div class="col">
+          <div class="k">절감률</div>
+          <div class="v" style="color:var(--accent-600);">2%</div>
+          <div class="u">전환대기 직후 구간 한정</div>
         </div>
         <div class="col">
-          <div class="k" style="color: rgba(244,244,246,0.55);">연간 절감</div>
-          <div class="v" style="color: #F4F4F6;">1.24M</div>
-          <div class="u" style="color: rgba(244,244,246,0.65);">Nm³ COG / year</div>
+          <div class="k">LHV 영향</div>
+          <div class="v">±0.2</div>
+          <div class="u">목표 ±15 허용 범위 내</div>
+        </div>
+        <div class="col">
+          <div class="k">연간 절감</div>
+          <div class="v">1.24M</div>
+          <div class="u">Nm³ COG / year</div>
         </div>
       </div>
-      <div class="meta-cap" style="color:rgba(245,181,86,0.55);margin-bottom:14px;">그림 6 — COG 절감률별 연간 절감량 시나리오</div>
-      <img src="lhv/img/image7-49.png" alt="COG 절감 시나리오" style="width:100%; border:1px solid rgba(244,244,246,0.1);" />
+      <div style="font-family:var(--font-mono);font-size:20px;letter-spacing:0.08em;text-transform:uppercase;color:var(--fg-3);margin-bottom:12px;">그림 6 — COG 절감률별 연간 절감량 시나리오</div>
+      <img src="lhv/img/image7-49.png" alt="COG 절감 시나리오" style="width:100%; max-height:260px; object-fit:contain; border:1px solid var(--rule);" />
     </div>
   </div>
-  <div class="attrib" style="border-top-color: rgba(244,244,246,0.16); color: rgba(244,244,246,0.45);">
+  <div class="attrib">
     제조 AI 실습 · PYTHON · SCIKIT-LEARN · XGBOOST · SHAP · 2026.03
   </div>
-  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:rgba(244,244,246,0.45);">김희태</a>
-  <div class="pageno" style="color: rgba(244,244,246,0.45);">08 / 08</div>
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">08 / 08</div>
 </section>
 
 </deck-stage>
