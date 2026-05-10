@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Coming soon — 빈 슬롯</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+  body { display:grid; place-items:center; min-height: 100vh; background: var(--bg-soft); }
+  .wrap { text-align:center; padding: 32px; }
+  .dot { display:inline-block; width:8px; height:8px; border-radius:999px; background: var(--accent-500); margin-right: 8px; vertical-align: middle; animation: blink 1.6s var(--ease-out) infinite; }
+  @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:.18} }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="meta" style="margin-bottom:16px;"><span class="dot"></span>EMPTY SLOT · WAITING FOR WORK</div>
+    <h1 style="font-family:var(--font-mono); font-weight:700; font-size:48px; letter-spacing:-0.02em; line-height:1.05; margin: 0 0 12px 0;">아직 비어있어요.</h1>
+    <p style="font-size:16px; color: var(--fg-2); max-width: 36ch; margin: 0 auto;">곧 어떤 작업이 여기에 들어올 예정입니다. <span style="color: var(--fg-3);">A new project will move in soon.</span></p>
+  </div>
+</body>
+</html>

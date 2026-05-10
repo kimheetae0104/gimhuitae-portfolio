@@ -11,3 +11,4 @@
 secrets.json
 credentials.json
 uploads/
+.claude/

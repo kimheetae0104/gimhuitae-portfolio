@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Motion</title>
+<link rel="stylesheet" href="_card.css"></head>
+<body>
+<div class="card">
+  <div class="tag" style="margin-bottom:14px;">MOTION · 140 / 220 / 420 MS · EASE-OUT ONLY</div>
+  <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+    <div>
+      <div style="height: 56px; border:1px solid #0E0E10; display:flex; align-items:center; padding: 0 12px; font-size:14px;">
+        <span id="dot" style="display:inline-block; width: 10px; height:10px; background:#E04323; border-radius:999px; animation: travel 1.6s var(--ease-out) infinite;"></span>
+        <span style="margin-left: 10px;">link hover</span>
+      </div>
+      <div class="code" style="margin-top:6px;">140ms · color shift</div>
+    </div>
+    <div>
+      <div style="height: 56px; border:1px solid #0E0E10; display:flex; align-items:center; padding: 0 12px; font-size:14px;">
+        <span style="display:inline-block; width:18px; height:10px; background:#0E0E10; animation: pulse 2s var(--ease-out) infinite;"></span>
+        <span style="margin-left: 10px;">cursor blink</span>
+      </div>
+      <div class="code" style="margin-top:6px;">220ms · paper-fade</div>
+    </div>
+    <div>
+      <div style="height: 56px; border:1px solid #0E0E10; display:flex; align-items:center; padding: 0 12px; font-size:14px; color: var(--fg-3);">
+        <span>no springs · no parallax · no bounce</span>
+      </div>
+      <div class="code" style="margin-top:6px;">420ms · max</div>
+    </div>
+  </div>
+</div>
+<style>
+  @keyframes travel { 0%,100% { transform: translateX(0);} 50% { transform: translateX(120px);} }
+  @keyframes pulse  { 0%,49% { opacity: 1;} 50%,100% { opacity: 0;} }
+</style>
+</body></html>
