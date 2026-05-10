@@ -375,11 +375,11 @@
         <div class="quote">
           코일 10개 중 4개는<br />
           소둔 후에 <em>예외 공정</em>으로 빠진다.<br />
-          그 절반은 미리 알 수 있었다.
+          그 60%는 소둔 투입 전에 포착된다.
         </div>
-        <p class="slide-body" style="max-width: 52ch; font-size: 26px; color: var(--fg-2); margin-top: -40px;">
-          비계획 Skinpass는 소둔 완료 후 품질 검사에서 표면·형상·재질이 기준 미달인 코일에 긴급 투입되는 예외 공정이다.
-          현장 판단 기준이 담당자마다 달라 일관성이 흔들리고, 설비 가동률 저하·납기 지연·에너지 추가 소비를 동시에 유발한다.
+        <p class="slide-body" style="font-size: 26px; color: var(--fg-2); margin-top: -40px;">
+          비계획 Skinpass는 소둔 완료 후 품질 검사에서 기준 미달로 판정된 코일에 대해 긴급 투입되는 예외 공정 — 사전 스케줄링 없이 발생한다.
+          지금까지는 경험과 직관에 의존해왔지만, 소재 특성과 공정 조건을 함께 보면 어떤 코일에서 비계획이 발생하는지 일정한 패턴이 보인다.
         </p>
         <div class="stat-row">
           <div class="col">
@@ -393,9 +393,9 @@
             <div class="u">A등급 대비 +12.5%p</div>
           </div>
           <div class="col">
-            <div class="k">리드타임 영향</div>
-            <div class="v">+4–8h</div>
-            <div class="u">소둔→재검사 추가 시간 / 코일</div>
+            <div class="k">FN 미탐지 감소</div>
+            <div class="v">−24건</div>
+            <div class="u">LR 기준 대비, Gate+LR 최종 모델</div>
           </div>
         </div>
       </div>
@@ -431,13 +431,13 @@
     </section>
 
     <!-- ═══ Slide 4 — Hypotheses ═══ -->
-    <section class="slide soft" data-label="03 Hypotheses">
+    <section class="slide" data-label="04 Hypotheses">
       <div class="top-rule">
         <span>04 · 4 HYPOTHESES</span>
         <span>ALL ACCEPTED</span>
       </div>
-      <h2 class="slide-h2" style="margin-top: 56px; max-width: 28ch;">
-        가설 4개를 먼저 세우고,<br />그 논리를 모델 구조에 직접 녹였다.</h2>
+      <h2 class="slide-h2" style="margin-top: 56px;">
+        가설 4개를 먼저 세우고, 그 논리를 모델 구조에 직접 녹였다.</h2>
 
       <div class="hyp-row">
         <div class="hyp-card">
@@ -474,13 +474,11 @@
         </div>
       </div>
 
-      <p class="slide-body" style="margin-top: 48px; max-width: 64ch; font-style: italic;
-                                font-size: 28px;">
-        가설은 검증 도구가 아니라 모델 설계도였다. 4개 모두 채택됐고, 그 4개가 그대로 변수가 됐다.
+      <p class="slide-body" style="margin-top: 48px; font-style: italic; font-size: 28px;">
+        H1~H4 가설 기반 파생변수 4개가 SHAP 중요도 상위 8개 이내에 모두 포함됐다. 분석 초기에 세운 가설이 데이터에서도 핵심 신호로 작동하고 있었다.
       </p>
-      <p class="slide-body" style="margin-top: 16px; max-width: 64ch; font-size: 22px; color: var(--fg-3);">
-        SHAP 상위 8개 변수 중 4개가 가설 기반 파생변수 — 도메인 지식을 변수로 변환하는 작업이
-        단순 부스팅 모델 튜닝보다 더 큰 성능 개선을 가져왔다.
+      <p class="slide-body" style="margin-top: 16px; font-size: 22px; color: var(--fg-3);">
+        공정위험복합(H3+공정)과 품질위험점수(H1+H2)가 SHAP 전체 변수 중 1·2위를 차지 — 가설에서 예상한 현장 논리가 실제 데이터에서도 핵심 신호임을 SHAP이 사후 검증했다.
       </p>
       <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
       <div class="pageno">04 / 08</div>
@@ -492,8 +490,8 @@
         <span>05 · ARCHITECTURE</span>
         <span>2-STAGE DECISION</span>
       </div>
-      <h2 class="slide-h2" style="margin-top: 56px; max-width: 26ch;">
-        현장의 코일을 보는 순서를<br />그대로 모델에 옮겼다.</h2>
+      <h2 class="slide-h2" style="margin-top: 56px;">
+        현장의 코일을 보는 순서를 그대로 모델에 옮겼다.</h2>
 
       <div class="gate-flow">
         <div class="gate-box">
@@ -613,7 +611,7 @@
               margin-top: 48px; flex: 1; align-items: start;">
         <div>
           <h2 class="slide-h2" style="font-size: 56px;">미탐지의 비용이<br />오탐의 비용보다 크다.</h2>
-          <p class="slide-body" style="margin-top: 32px; max-width: 24ch; font-size: 28px;">
+          <p class="slide-body" style="margin-top: 32px; font-size: 28px;">
             Recall을 1순위 지표로 잡은 결과, Material Gate + LR이 6개 비교군 중 단독 1위.
           </p>
           <table class="slide-table" style="margin-top: 32px; font-size: 24px;">
@@ -650,6 +648,11 @@
                 <td class="num" style="text-align:right;">0.407</td>
                 <td class="num" style="text-align:right;">0.416</td>
               </tr>
+              <tr>
+                <td>랜덤포레스트</td>
+                <td class="num" style="text-align:right;">0.399</td>
+                <td class="num" style="text-align:right;">0.413</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -675,8 +678,10 @@
       </div>
       <div style="margin-top: 64px;">
         <div class="pull">
-          전면 자동화가 아니라,<br />
-          운영자 신뢰를 <em>단계적으로</em> 사는 일이다.
+          완전 자동화보다<br />
+          <em>의사결정 보조</em>가 먼저다.<br />
+          운영자가 위험 코일을 빠르게 추려내고<br />
+          판단 근거를 함께 볼 수 있도록 돕는다.
         </div>
       </div>
 
