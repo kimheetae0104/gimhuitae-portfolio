@@ -19,6 +19,8 @@ section.slide {
   flex-direction: column;
   overflow: hidden;
   height: 100%;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 section.slide.dark    { background: var(--ink-900); color: #F4F4F6; }
 section.slide.soft    { background: var(--paper-100); }
