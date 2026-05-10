@@ -257,23 +257,23 @@
       font-size: 80px;
       line-height: 1.18;
       letter-spacing: -0.02em;
-      color: #F4F4F6;
+      color: var(--fg-1);
       max-width: 22ch;
     }
 
     .s-close .pull em {
       font-style: normal;
-      color: #F5B556;
+      color: var(--accent-600);
     }
 
     .s-close .attrib {
       font-family: var(--font-mono);
       font-size: 24px;
       letter-spacing: 0.14em;
-      color: rgba(244, 244, 246, 0.5);
+      color: var(--fg-3);
       margin-top: 48px;
       padding-top: 24px;
-      border-top: 1px solid rgba(244, 244, 246, 0.16);
+      border-top: 1px solid var(--rule);
     }
 
     /* phase grid */
@@ -663,7 +663,7 @@
     </section>
 
     <!-- ═══ Slide 8 — Deployment ═══ -->
-    <section class="slide dark s-close" data-label="08 Deployment">
+    <section class="slide s-close" data-label="08 Deployment">
       <div class="top-rule">
         <span>08 · DEPLOYMENT</span>
         <span>3-PHASE ROLLOUT</span>
@@ -678,36 +678,33 @@
       </div>
 
       <div class="phase-grid">
-        <div class="phase" style="background: rgba(244,244,246,0.04);
-                                border-color: rgba(244,244,246,0.18);">
+        <div class="phase">
           <div class="num">01</div>
-          <div class="name" style="color: #F4F4F6;">경보 시스템</div>
-          <div class="desc" style="color: rgba(244,244,246,0.72);">
+          <div class="name">경보 시스템</div>
+          <div class="desc">
             Gate=1 코일에 소둔 투입 전 자동 경보 발령. 운영자 최종 판단 유지.
           </div>
-          <div class="target" style="color: #F5B556; border-top-color: rgba(244,244,246,0.16);">
+          <div class="target">
             고위험 포착 ≥ 80% · 1–2개월
           </div>
         </div>
-        <div class="phase" style="background: rgba(244,244,246,0.04);
-                                border-color: rgba(244,244,246,0.18);">
+        <div class="phase">
           <div class="num">02</div>
-          <div class="name" style="color: #F4F4F6;">의사결정 지원</div>
-          <div class="desc" style="color: rgba(244,244,246,0.72);">
+          <div class="name">의사결정 지원</div>
+          <div class="desc">
             전 코일에 발생 확률 + SHAP 원인 3가지를 함께 제시.
           </div>
-          <div class="target" style="color: #F5B556; border-top-color: rgba(244,244,246,0.16);">
+          <div class="target">
             발생률 −10% · 2–4개월
           </div>
         </div>
-        <div class="phase" style="background: rgba(244,244,246,0.04);
-                                border-color: rgba(244,244,246,0.18);">
+        <div class="phase">
           <div class="num">03</div>
-          <div class="name" style="color: #F4F4F6;">반자동 제어</div>
-          <div class="desc" style="color: rgba(244,244,246,0.72);">
+          <div class="name">반자동 제어</div>
+          <div class="desc">
             소둔 파라미터 자동 조정 권고. 운영자 승인 후 실행.
           </div>
-          <div class="target" style="color: #F5B556; border-top-color: rgba(244,244,246,0.16);">
+          <div class="target">
             발생률 −25% · 4–8개월
           </div>
         </div>
@@ -716,8 +713,8 @@
       <div class="attrib">
         SeSAC SCM 부트캠프 · PYTHON · LIGHTGBM · XGBOOST · SMOTE · SHAP
       </div>
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:rgba(244,244,246,0.45);">김희태</a>
-      <div class="pageno" style="color: rgba(244,244,246,0.45);">08 / 08</div>
+      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">김희태</a>
+      <div class="pageno">08 / 08</div>
     </section>
 
   </deck-stage>
