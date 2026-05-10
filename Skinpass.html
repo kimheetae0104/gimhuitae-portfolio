@@ -415,34 +415,30 @@
         <span>03 · EDA</span>
         <span>DATA EXPLORATION</span>
       </div>
-      <div style="display: grid; grid-template-columns: 1fr 1.6fr; gap: 40px; flex: 1; min-height: 0; padding-top: 40px; align-items: stretch;">
-        <!-- 왼쪽: 상관관계 히트맵 -->
-        <div style="display: flex; flex-direction: column; min-height: 0;">
-          <div class="meta-cap" style="margin-bottom: 12px; flex-shrink: 0;">상관관계 히트맵</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; flex: 1; min-height: 0; padding-top: 32px; align-items: start;">
+        <div>
+          <div class="meta-cap" style="margin-bottom: 12px;">상관관계 히트맵</div>
           <img src="skinpass/img/image1.png" alt="상관관계 히트맵"
-               style="width: 100%; flex: 1; min-height: 0; object-fit: contain; object-position: left top; border: 1px solid var(--rule);" />
-          <p style="margin-top: 8px; font-size: 15px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5; flex-shrink: 0;">
+               style="width: 100%; height: auto; display: block;" />
+          <p style="margin-top: 8px; font-size: 15px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
             Fig. 3-1 · 항복강도·표면조도 r=0.48 핵심 교호작용. 형상불량지수·비계획 발생 r=+0.074 단독 효과 제한.
           </p>
         </div>
-        <!-- 오른쪽: 히스토그램 + 박스플롯 위아래 균등 배치 -->
-        <div style="display: flex; flex-direction: column; gap: 20px; min-height: 0;">
-          <div style="display: flex; flex-direction: column; flex: 1; min-height: 0;">
-            <div class="meta-cap" style="margin-bottom: 12px; flex-shrink: 0;">클래스별 분포 히스토그램</div>
-            <img src="skinpass/img/image4.png" alt="클래스별 변수 분포"
-                 style="width: 100%; flex: 1; min-height: 0; object-fit: contain; object-position: left top; border: 1px solid var(--rule);" />
-            <p style="margin-top: 8px; font-size: 15px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5; flex-shrink: 0;">
-              Fig. 3-2 · 발생·미발생 그룹별 주요 수치형 변수 분포 비교. 이전공정경과시간 두 그룹 간 분포 차이 미미, 예측력 낮아 제거.
-            </p>
-          </div>
-          <div style="display: flex; flex-direction: column; flex: 1; min-height: 0;">
-            <div class="meta-cap" style="margin-bottom: 12px; flex-shrink: 0;">핵심 변수 박스플롯</div>
-            <img src="skinpass/img/image10.png" alt="박스플롯"
-                 style="width: 100%; flex: 1; min-height: 0; object-fit: contain; object-position: left top; border: 1px solid var(--rule);" />
-            <p style="margin-top: 8px; font-size: 15px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5; flex-shrink: 0;">
-              Fig. 3-3 · 항복강도 발생 그룹 중앙값이 미발생 그룹 대비 낮게 형성. 형상불량지수는 발생 그룹 이상치 범위에서 높은 값 집중.
-            </p>
-          </div>
+        <div>
+          <div class="meta-cap" style="margin-bottom: 12px;">클래스별 분포 히스토그램</div>
+          <img src="skinpass/img/image4.png" alt="클래스별 변수 분포"
+               style="width: 100%; height: auto; display: block;" />
+          <p style="margin-top: 8px; font-size: 15px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
+            Fig. 3-2 · 발생·미발생 그룹별 주요 수치형 변수 분포 비교. 이전공정경과시간 두 그룹 간 분포 차이 미미, 예측력 낮아 제거.
+          </p>
+        </div>
+        <div>
+          <div class="meta-cap" style="margin-bottom: 12px;">핵심 변수 박스플롯</div>
+          <img src="skinpass/img/image10.png" alt="박스플롯"
+               style="width: 100%; height: auto; display: block;" />
+          <p style="margin-top: 8px; font-size: 15px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
+            Fig. 3-3 · 항복강도 발생 그룹 중앙값이 미발생 그룹 대비 낮게 형성. 형상불량지수는 발생 그룹 이상치 범위에서 높은 값 집중.
+          </p>
         </div>
       </div>
       <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
@@ -489,7 +485,7 @@
         <div style="display: flex; flex-direction: column; min-height: 0;">
           <div class="meta-cap" style="margin-bottom: 14px; flex-shrink: 0;">가설 검증 결과 시각화 (H1~H4)</div>
           <img src="skinpass/img/image5.png" alt="가설 검증 결과 시각화"
-               style="width: 100%; flex: 1; min-height: 0; object-fit: contain; object-position: left top; border: 1px solid var(--rule);" />
+               style="width: 100%; height: auto; display: block;" />
           <p style="margin-top: 12px; font-size: 18px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5; flex-shrink: 0;">
             H1~H4 가설 기반 파생변수 4개가 SHAP 중요도 상위 8개 이내에 모두 포함됐다. 공정위험복합·품질위험점수가 1·2위.
           </p>
@@ -639,24 +635,24 @@
           <div style="margin-top: 32px;">
             <div class="meta-cap" style="margin-bottom: 10px;">모델별 성능 지표 비교</div>
             <img src="skinpass/img/image8.png" alt="모델별 성능 지표 비교"
-                 style="width: 100%; object-fit: contain; object-position: left top;" />
+                 style="width: 100%; height: auto; display: block;" />
           </div>
         </div>
 
-        <div style="padding-top: 24px; display: flex; flex-direction: column; gap: 20px; flex: 1; min-height: 0;">
-          <div style="display: flex; flex-direction: column; flex: 1; min-height: 0;">
-            <div class="meta-cap" style="margin-bottom: 10px; flex-shrink: 0;">ROC 곡선 비교 · 혼동행렬</div>
+        <div style="padding-top: 24px; display: flex; flex-direction: column; gap: 20px;">
+          <div>
+            <div class="meta-cap" style="margin-bottom: 10px;">ROC 곡선 비교 · 혼동행렬</div>
             <img src="skinpass/img/image6.png" alt="ROC 곡선 및 혼동행렬"
-                 style="width: 100%; flex: 1; min-height: 0; object-fit: contain; object-position: left top; display: block;" />
-            <p style="margin-top: 6px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5; flex-shrink: 0;">
+                 style="width: 100%; height: auto; display: block;" />
+            <p style="margin-top: 6px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
               Fig. 7-1 · Gate+LR FN 163건 vs LR 원천 187건. 미탐지 −24건.
             </p>
           </div>
-          <div style="display: flex; flex-direction: column; flex: 1; min-height: 0;">
-            <div class="meta-cap" style="margin-bottom: 10px; flex-shrink: 0;">SHAP FEATURE IMPORTANCE · LIGHTGBM</div>
+          <div>
+            <div class="meta-cap" style="margin-bottom: 10px;">SHAP FEATURE IMPORTANCE · LIGHTGBM</div>
             <img src="skinpass/img/image3.png" alt="SHAP 기반 변수 중요도"
-                 style="width: 100%; flex: 1; min-height: 0; object-fit: contain; object-position: left top; display: block;" />
-            <p style="margin-top: 6px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5; flex-shrink: 0;">
+                 style="width: 100%; height: auto; display: block;" />
+            <p style="margin-top: 6px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
               Fig. 7-2 · SHAP 변수 중요도 (LightGBM). 가설 파생변수 상위 1·2위 차지.
             </p>
           </div>
