@@ -8,12 +8,24 @@
 body { background: #0a0a0c; }
 deck-stage { background: var(--bg); }
 
-/* ── Slide shell ── */
+/* ── Slide shell ──
+   padding 분할: top 84 / sides 104 / bottom 120
+   ┌─────── 0px
+   │ TOP 여백 (84px)
+   ├─────── 84px
+   │ HEADER (top-rule, ~60px)
+   ├─────── 144px
+   │ CONTENT 영역 (~ 816px)
+   ├─────── 960px (콘텐츠는 여기까지만 내려와야 함)
+   │ SAFE ZONE (60px breathing room)
+   ├─────── 1020px
+   │ FOOTER (pageno · [HK], 60px)
+   └─────── 1080px */
 section.slide {
   background: var(--bg);
   color: var(--fg-1);
   font-family: var(--font-sans);
-  padding: 80px 100px;
+  padding: 84px 104px 120px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -30,7 +42,7 @@ section.slide.terminal { background: #0c0c10; color: #e0e0e8; }
 .top-rule {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 28px;
+  padding-bottom: 30px;
   border-bottom: 1px solid var(--rule);
   font-family: var(--font-mono);
   font-size: 26px;
@@ -77,7 +89,7 @@ h2.slide-h2 {
 p.slide-body {
   font-family: var(--font-sans);
   font-size: 32px;
-  line-height: 1.6;
+  line-height: 1.68;
   color: var(--fg-2);
   margin: 0;
 }
@@ -87,7 +99,7 @@ p.slide-body {
 .pageno {
   position: absolute;
   bottom: 36px;
-  right: 100px;
+  right: 104px;
   font-family: var(--font-mono);
   font-size: 24px;
   color: var(--fg-3);
@@ -99,7 +111,7 @@ p.slide-body {
 .pageno-mark {
   position: absolute;
   bottom: 36px;
-  left: 100px;
+  left: 104px;
   font-family: var(--font-mono);
   font-size: 24px;
   color: var(--fg-3);
@@ -109,14 +121,16 @@ p.slide-body {
 .terminal .pageno-mark { color: rgba(80,220,120,0.35); }
 
 /* ── Title slide layout ── */
-.s-title { justify-content: flex-start; }
+.s-title {
+  justify-content: flex-start;
+}
 
 .s-title .hero {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-bottom: 24px;
+  padding-bottom: 28px;
 }
 .s-title .hero h1 {
   font-size: 110px;
@@ -126,16 +140,16 @@ p.slide-body {
 .s-title .hero .ko-sub {
   font-size: 36px;
   color: var(--fg-2);
-  margin-top: 24px;
+  margin-top: 28px;
   max-width: 48ch;
-  line-height: 1.45;
+  line-height: 1.55;
 }
 
 .s-title .meta-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
-  padding-top: 36px;
+  padding-top: 40px;
   border-top: 1px solid var(--rule);
 }
 .s-title .meta-grid .col { padding-right: 24px; }
@@ -151,7 +165,7 @@ p.slide-body {
   font-family: var(--font-sans);
   font-size: 28px;
   color: var(--fg-1);
-  line-height: 1.4;
+  line-height: 1.48;
 }
 
 .dark .s-title .meta-grid .k { color: rgba(244,244,246,0.45); }
@@ -166,12 +180,12 @@ table.slide-table {
   border-collapse: collapse;
   font-family: var(--font-sans);
   font-size: 28px;
-  line-height: 1.5;
+  line-height: 1.58;
   color: var(--fg-2);
 }
 table.slide-table th,
 table.slide-table td {
-  padding: 24px 20px;
+  padding: 26px 20px;
   text-align: left;
   vertical-align: top;
   border-bottom: 1px solid var(--rule-soft);
