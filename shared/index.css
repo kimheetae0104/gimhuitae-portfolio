@@ -101,7 +101,7 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
   text-transform:uppercase;color:rgba(24,24,27,0.34);margin-bottom:10px}
 
 .cards{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:24px}
-.cards-single{grid-template-columns:1fr}
+.cards-single{grid-template-columns:1fr 1fr}
 
 .card{display:flex;flex-direction:column;text-decoration:none;color:inherit;
   border:1px solid rgba(24,24,27,0.08);overflow:hidden;position:relative;
@@ -171,10 +171,10 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
 .thumb-bot::before{content:'';position:absolute;inset:0;
   background:radial-gradient(ellipse at 65% 55%,rgba(91,141,239,0.08) 0%,transparent 70%)}
 .thumb-bot .bot-stage{display:flex;align-items:center;justify-content:center;gap:36px;
-  position:relative;z-index:1;
+  position:relative;z-index:1;transform:scale(0.78);
   transition:transform 400ms cubic-bezier(.2,.8,.2,1)}
-.card:hover .thumb-bot .bot-stage{transform:translateY(-4px)}
-.thumb-bot .candles{display:flex;align-items:flex-end;gap:8px;height:140px}
+.card:hover .thumb-bot .bot-stage{transform:translateY(-4px) scale(0.8)}
+.thumb-bot .candles{display:flex;align-items:flex-end;gap:8px;height:132px}
 .thumb-bot .cd{width:9px;border-radius:1px;position:relative}
 .thumb-bot .cd.up{background:rgba(120,200,140,0.55)}
 .thumb-bot .cd.down{background:rgba(200,90,90,0.5)}
@@ -185,7 +185,7 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
 .thumb-bot .cd::after{content:'';position:absolute;left:50%;bottom:-6px;width:1px;height:10px;
   background:rgba(244,244,246,0.14);transform:translateX(-50%)}
 .thumb-bot .prob{display:flex;flex-direction:column;align-items:flex-start}
-.thumb-bot .prob-v{font-family:var(--font-sans);font-weight:700;font-size:64px;
+.thumb-bot .prob-v{font-family:var(--font-sans);font-weight:700;font-size:58px;
   letter-spacing:-0.04em;line-height:1;
   background:linear-gradient(180deg,#9bb6f0 0%,#5b8def 60%,#1e3a8a 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -268,7 +268,8 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
   .stats-strip{grid-template-columns:1fr 1fr}
   .projects-section{padding:80px 28px}
   .group-head{flex-direction:column;align-items:flex-start}
-  .cards{grid-template-columns:1fr}
+  .cards,
+  .cards-single{grid-template-columns:1fr}
   .cover-top{left:28px;right:28px}
   .cover-top nav{display:none}
   .about-section{padding:80px 28px 100px}
