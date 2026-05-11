@@ -85,15 +85,23 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
 .section-head{max-width:1280px;margin:0 auto 64px;display:flex;
   justify-content:space-between;align-items:baseline;
   border-bottom:1px solid rgba(24,24,27,0.1);padding-bottom:20px}
-.section-head .label{font-family:var(--font-mono);font-size:13px;
+.section-head .label{font-family:var(--font-mono);font-size:14px;
   letter-spacing:0.2em;text-transform:uppercase;color:rgba(24,24,27,0.4)}
-.section-head .count{font-family:var(--font-mono);font-size:13px;
+.section-head .count{font-family:var(--font-mono);font-size:14px;
   letter-spacing:0.14em;color:rgba(24,24,27,0.3)}
 
 /* ═══ PROJECTS ═══ */
 .projects-section{position:relative;z-index:1;background:#F8F7F4;padding:120px 80px 140px}
 
+.project-group{max-width:1280px;margin:0 auto}
+.project-group + .project-group{margin-top:72px}
+.group-head{display:flex;justify-content:flex-start;align-items:flex-end;gap:32px;
+  padding-bottom:8px;margin-bottom:24px}
+.group-label{font-family:var(--font-mono);font-size:13px;letter-spacing:0.18em;
+  text-transform:uppercase;color:rgba(24,24,27,0.34);margin-bottom:10px}
+
 .cards{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.cards-single{grid-template-columns:1fr}
 
 .card{display:flex;flex-direction:column;text-decoration:none;color:inherit;
   border:1px solid rgba(24,24,27,0.08);overflow:hidden;position:relative;
@@ -185,11 +193,11 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
   color:rgba(91,141,239,0.55);margin-top:8px}
 
 .card .info{padding:28px 28px 32px;flex:1;display:flex;flex-direction:column}
-.card .info .num{font-family:var(--font-mono);font-size:11px;letter-spacing:0.18em;
+.card .info .num{font-family:var(--font-mono);font-size:14px;letter-spacing:0.18em;
   text-transform:uppercase;color:rgba(24,24,27,0.35);margin-bottom:12px}
-.card .info h2{font-weight:600;font-size:22px;line-height:1.25;color:#18181b;margin-bottom:8px}
-.card .info .pdesc{font-size:14px;line-height:1.6;color:rgba(24,24,27,0.5);flex:1}
-.card .info .tags{font-family:var(--font-mono);font-size:10px;letter-spacing:0.12em;
+.card .info h2{font-weight:600;font-size:24px;line-height:1.24;color:#18181b;margin-bottom:10px}
+.card .info .pdesc{font-size:17px;line-height:1.65;color:rgba(24,24,27,0.56);flex:1}
+.card .info .tags{font-family:var(--font-mono);font-size:13px;letter-spacing:0.12em;
   color:rgba(24,24,27,0.3);margin-top:16px;padding-top:16px;
   border-top:1px solid rgba(24,24,27,0.08)}
 
@@ -205,7 +213,7 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
 
 .about-bio h2{font-weight:700;font-size:56px;line-height:1.08;
   letter-spacing:-0.025em;color:#F4F4F6;margin-bottom:32px}
-.about-bio p{font-size:18px;line-height:1.75;color:rgba(244,244,246,0.65);max-width:42ch}
+.about-bio p{font-size:19px;line-height:1.76;color:rgba(244,244,246,0.68);max-width:42ch}
 .about-bio p+p{margin-top:20px}
 .about-bio .about-cta{display:inline-flex;align-items:center;gap:10px;
   margin-top:48px;font-family:var(--font-mono);font-size:12px;letter-spacing:0.16em;
@@ -259,6 +267,7 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
   .hero h1{font-size:52px}
   .stats-strip{grid-template-columns:1fr 1fr}
   .projects-section{padding:80px 28px}
+  .group-head{flex-direction:column;align-items:flex-start}
   .cards{grid-template-columns:1fr}
   .cover-top{left:28px;right:28px}
   .cover-top nav{display:none}

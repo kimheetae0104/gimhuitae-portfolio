@@ -9,21 +9,20 @@
   <link rel="stylesheet" href="shared/slide.css" />
   <script src="shared/deck-stage.js"></script>
   <style>
-    /* Skinpass-specific overrides */
+    /* ── Skinpass-specific overrides ── */
     .s-title .hero h1 { font-size: 80px; }
     .s-title .hero .ko-sub { max-width: 36ch; }
 
-    /* slide 2 */
+    /* ── Slide 03 quote ── */
     .s-summary .quote {
       font-family: var(--font-sans);
       font-weight: 500;
       font-size: 64px;
-      line-height: 1.18;
+      line-height: 1.24;
       letter-spacing: -0.015em;
       max-width: 24ch;
       color: var(--fg-1);
     }
-
     .s-summary .quote em {
       font-style: normal;
       color: var(--accent-600);
@@ -31,31 +30,23 @@
       padding: 0 4px;
     }
 
+    /* ── Stats row ── */
     .stat-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 0;
-      padding-top: 20px;
+      padding-top: 24px;
       border-top: 1px solid var(--rule);
       overflow: visible;
       flex-shrink: 0;
     }
-
     .stat-row .col {
       padding: 10px 32px 0 20px;
       border-right: 1px solid var(--rule-soft);
       overflow: visible;
     }
-
-    .stat-row .col:first-child {
-      padding-left: 0;
-    }
-
-    .stat-row .col:last-child {
-      border-right: 0;
-      padding-right: 0;
-    }
-
+    .stat-row .col:first-child { padding-left: 0; }
+    .stat-row .col:last-child { border-right: 0; padding-right: 0; }
     .stat-row .v {
       font-family: var(--font-sans);
       font-weight: 700;
@@ -65,7 +56,6 @@
       color: var(--fg-1);
       padding: 2px 0;
     }
-
     .stat-row .k {
       font-family: var(--font-mono);
       font-size: 18px;
@@ -74,7 +64,6 @@
       color: var(--fg-3);
       margin-bottom: 6px;
     }
-
     .stat-row .u {
       font-family: var(--font-sans);
       font-size: 18px;
@@ -83,63 +72,67 @@
       line-height: 1.4;
     }
 
-    /* hypothesis chips */
+    /* ── Hypothesis cards ── */
     .hyp-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 24px;
-      margin-top: 56px;
+      margin-top: 28px;
     }
-
     .hyp-card {
-      padding: 18px 18px;
+      padding: 22px 20px;
       border-top: 2px solid var(--accent-600);
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
-
+    .hyp-card.rejected { border-top-color: var(--danger); }
     .hyp-card .tag {
       font-family: var(--font-mono);
       font-size: 24px;
       letter-spacing: 0.14em;
       color: var(--fg-3);
     }
-
     .hyp-card .q {
       font-family: var(--font-sans);
       font-size: 26px;
-      line-height: 1.45;
+      line-height: 1.5;
       color: var(--fg-1);
     }
-
     .hyp-card .verdict {
       font-family: var(--font-mono);
-      font-size: 24px;
+      font-size: 22px;
       letter-spacing: 0.06em;
       padding-top: 10px;
       border-top: 1px solid var(--rule-soft);
       color: var(--positive);
     }
-
-    /* gate diagram */
-    .gate-flow {
-      display: grid;
-      grid-template-columns: 1fr 80px 1.4fr;
-      align-items: stretch;
-      gap: 24px;
-      margin-top: 48px;
+    .hyp-card .verdict-reject {
+      font-family: var(--font-mono);
+      font-size: 22px;
+      letter-spacing: 0.06em;
+      padding-top: 10px;
+      border-top: 1px solid var(--rule-soft);
+      color: var(--danger);
+    }
+    .hyp-card .consequence {
+      padding-top: 10px;
+      border-top: 1px solid var(--rule-soft);
+      font-family: var(--font-sans);
+      font-size: 19px;
+      color: var(--fg-2);
+      line-height: 1.5;
     }
 
+    /* ── Gate diagram ── */
     .gate-box {
       background: var(--paper-50);
       border: 1px solid var(--rule);
-      padding: 36px 28px;
+      padding: 38px 30px;
       display: flex;
       flex-direction: column;
       gap: 16px;
     }
-
     .gate-box .tag {
       font-family: var(--font-mono);
       font-size: 22px;
@@ -147,7 +140,6 @@
       text-transform: uppercase;
       color: var(--accent-600);
     }
-
     .gate-box h3 {
       font-family: var(--font-sans);
       font-weight: 600;
@@ -156,14 +148,12 @@
       margin: 0;
       color: var(--fg-1);
     }
-
     .gate-box .desc {
       font-family: var(--font-sans);
       font-size: 22px;
-      line-height: 1.5;
+      line-height: 1.58;
       color: var(--fg-2);
     }
-
     .gate-box .rule {
       font-family: var(--font-mono);
       font-size: 20px;
@@ -173,158 +163,285 @@
       color: var(--ink-900);
     }
 
-    .gate-arrow {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--fg-3);
-    }
-
-    .gate-arrow svg {
-      width: 80px;
-      height: 24px;
-    }
-
-    /* shap rows */
-    .shap-list {
-      display: grid;
-      gap: 16px;
-      margin-top: 36px;
-    }
-
-    .shap-list .row {
-      display: grid;
-      grid-template-columns: 60px 1fr 1.6fr 220px;
-      gap: 24px;
-      align-items: center;
-    }
-
-    .shap-list .rank {
-      font-family: var(--font-mono);
-      font-size: 24px;
-      color: var(--fg-3);
-    }
-
-    .shap-list .label {
-      font-family: var(--font-sans);
-      font-size: 26px;
-      color: var(--fg-1);
-    }
-
-    .shap-list .label .src {
-      font-family: var(--font-mono);
-      font-size: 18px;
-      color: var(--accent-600);
-      margin-left: 8px;
-      letter-spacing: 0.1em;
-    }
-
-    .shap-list .bar {
-      height: 14px;
-      background: var(--paper-200);
-      position: relative;
-    }
-
-    .shap-list .bar>div {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      background: var(--accent-600);
-    }
-
-    .shap-list .meta {
-      font-family: var(--font-mono);
-      font-size: 22px;
-      color: var(--fg-3);
-      text-align: right;
-    }
-
-    .footnote {
-      font-family: var(--font-sans);
-      font-size: 26px;
-      color: var(--fg-3);
-      font-style: italic;
-      margin-top: 56px;
-      max-width: 64ch;
-      line-height: 1.5;
-    }
-
-    /* close */
+    /* ── Close slide ── */
     .s-close .pull {
       font-family: var(--font-sans);
       font-weight: 500;
-      font-size: 80px;
-      line-height: 1.18;
+      font-size: 56px;
+      line-height: 1.24;
       letter-spacing: -0.02em;
       color: var(--fg-1);
-      max-width: 22ch;
+      max-width: 24ch;
     }
-
-    .s-close .pull em {
-      font-style: normal;
-      color: var(--accent-600);
+    .s-close .pull em { font-style: normal; color: var(--accent-600); }
+    .deploy-lead {
+      margin-top: 18px;
+      font-family: var(--font-sans);
+      font-size: 22px;
+      line-height: 1.6;
+      color: var(--fg-2);
+      max-width: 44ch;
     }
-
     .s-close .attrib {
       font-family: var(--font-mono);
-      font-size: 24px;
+      font-size: 22px;
       letter-spacing: 0.14em;
       color: var(--fg-3);
-      margin-top: 48px;
-      padding-top: 24px;
+      margin-top: 32px;
+      padding-top: 20px;
       border-top: 1px solid var(--rule);
     }
 
-    /* phase grid */
+    /* ── Phase grid ── */
     .phase-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-top: 56px;
+      gap: 18px;
+      margin-top: 26px;
     }
-
     .phase {
-      padding: 32px 28px;
+      padding: 28px 26px;
       background: var(--paper-50);
       border: 1px solid var(--rule);
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
     }
-
     .phase .num {
       font-family: var(--font-sans);
       font-weight: 700;
-      font-size: 80px;
+      font-size: 72px;
       line-height: 0.95;
       color: var(--accent-600);
       letter-spacing: -0.04em;
     }
+    .phase .name { font-family: var(--font-sans); font-weight: 600; font-size: 28px; line-height: 1.24; color: var(--fg-1); }
+    .phase .desc { font-family: var(--font-sans); font-size: 20px; line-height: 1.58; color: var(--fg-2); min-height: 92px; }
+    .phase .target { font-family: var(--font-mono); font-size: 18px; letter-spacing: 0.08em; color: var(--accent-600); padding-top: 12px; border-top: 1px solid var(--rule-soft); margin-top: auto; }
 
-    .phase .name {
+    /* ── Domain process flow (Slide 02) ── */
+    .domain-grid { display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 44px; align-items: start; }
+    .domain-col { display: flex; flex-direction: column; }
+    .proc-flow { display: flex; flex-direction: column; gap: 12px; }
+    .proc-step {
+      padding: 20px 24px;
+      border: 1px solid var(--rule);
+      background: var(--paper-50);
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      min-height: 88px;
+    }
+    .proc-num {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      color: var(--accent-600);
+      letter-spacing: 0.1em;
+      flex-shrink: 0;
+      padding-top: 5px;
+    }
+    .proc-label { font-family: var(--font-sans); font-weight: 600; font-size: 26px; line-height: 1.22; color: var(--fg-1); }
+    .proc-desc { font-family: var(--font-sans); font-size: 19px; color: var(--fg-2); line-height: 1.58; margin-top: 6px; }
+    .proc-arrow { text-align: center; color: var(--fg-3); font-size: 20px; padding: 2px 0; line-height: 1; }
+
+    /* ── Cause cards (Slide 02) ── */
+    .cause-stack { display: flex; flex-direction: column; gap: 10px; }
+    .cause-card {
+      display: flex;
+      gap: 14px;
+      padding: 20px 22px;
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--accent-600);
+      background: rgba(30,58,138,0.03);
+      min-height: 0;
+    }
+    .cause-card-dim { border-left-color: var(--fg-3); background: var(--paper-100); opacity: 0.72; }
+    .cause-num { font-family: var(--font-mono); font-size: 21px; letter-spacing: 0.1em; color: var(--accent-600); flex-shrink: 0; padding-top: 5px; }
+    .cause-title { font-family: var(--font-sans); font-weight: 600; font-size: 24px; line-height: 1.22; color: var(--fg-1); margin-bottom: 6px; }
+    .cause-desc { font-family: var(--font-sans); font-size: 18px; color: var(--fg-2); line-height: 1.58; }
+    .domain-note {
+      margin-top: 18px;
+      font-family: var(--font-sans);
+      font-size: 18px;
+      color: var(--fg-3);
+      line-height: 1.55;
+    }
+
+    /* ── Limit rows (Slide 09) ── */
+    .limit-row {
+      display: flex;
+      gap: 14px;
+      padding: 18px 20px;
+      border-left: 3px solid var(--danger);
+      background: rgba(220, 38, 38, 0.03);
+      flex: 1;
+      align-items: flex-start;
+    }
+    .limit-row .l-icon { font-family: var(--font-mono); font-size: 18px; color: var(--danger); flex-shrink: 0; padding-top: 4px; }
+    .limit-row .l-text { font-family: var(--font-sans); font-size: 18px; color: var(--fg-2); line-height: 1.62; }
+    .limit-row .l-text strong { color: var(--fg-1); font-weight: 600; }
+    .limit-row .l-text .headline {
+      display: block;
+      font-size: 24px;
+      line-height: 1.28;
+      color: var(--fg-1);
+      margin-bottom: 6px;
+    }
+
+    /* ── Learn cards (Slide 09) ── */
+    .learn-card {
+      padding: 22px 24px;
+      border-top: 2px solid var(--accent-600);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+      justify-content: center;
+    }
+    .learn-card .lc-title { font-family: var(--font-sans); font-weight: 600; font-size: 34px; line-height: 1.24; color: var(--fg-1); }
+    .learn-card .lc-body { font-family: var(--font-sans); font-size: 18px; color: var(--fg-2); line-height: 1.62; }
+
+    /* ── Insight cards (Slide 04 EDA) ── */
+    .insight-card {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 20px;
+      padding: 24px 26px;
+      border-left: 3px solid var(--accent-600);
+      background: var(--paper-50);
+      align-items: start;
+    }
+    .insight-card .ins-num {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 36px;
+      line-height: 1;
+      color: var(--accent-600);
+      letter-spacing: -0.02em;
+    }
+    .insight-card .ins-title {
       font-family: var(--font-sans);
       font-weight: 600;
-      font-size: 30px;
-      line-height: 1.2;
+      font-size: 24px;
       color: var(--fg-1);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .insight-card .ins-detail {
+      font-family: var(--font-sans);
+      font-size: 19px;
+      color: var(--fg-2);
+      line-height: 1.62;
+    }
+    .insight-card .ins-detail .num-tag {
+      font-family: var(--font-mono);
+      color: var(--fg-1);
+      background: var(--paper-200);
+      padding: 1px 6px;
+      font-size: 17px;
+    }
+    .insight-card .ins-arrow {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--rule-soft);
+      font-family: var(--font-sans);
+      font-size: 18px;
+      color: var(--accent-600);
+      font-weight: 500;
     }
 
-    .phase .desc {
+    /* ── Result row (Slide 08) ── */
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
       font-family: var(--font-sans);
       font-size: 22px;
-      line-height: 1.5;
+      margin-top: 16px;
+    }
+    .result-table thead th {
+      font-family: var(--font-mono);
+      font-size: 17px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+      text-align: right;
+      padding: 12px 12px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .result-table thead th:first-child { text-align: left; }
+    .result-table tbody td {
+      padding: 14px 12px;
+      border-bottom: 1px solid var(--rule-soft);
+      text-align: right;
+      font-family: var(--font-mono);
+      font-feature-settings: "tnum";
       color: var(--fg-2);
     }
-
-    .phase .target {
-      font-family: var(--font-mono);
-      font-size: 22px;
-      letter-spacing: 0.1em;
-      color: var(--accent-600);
-      padding-top: 12px;
-      border-top: 1px solid var(--rule-soft);
+    .result-table tbody td:first-child {
+      text-align: left;
+      font-family: var(--font-sans);
+      color: var(--fg-2);
     }
+    .result-table tbody tr.win td {
+      color: var(--fg-1);
+      background: rgba(30, 58, 138, 0.05);
+      font-weight: 600;
+    }
+    .result-table tbody tr.win td:first-child { color: var(--accent-600); }
+    .result-table tbody tr.win .winval { color: var(--accent-600); }
+
+    /* ── Results layout (Slide 08) ── */
+    .results-grid { display: grid; grid-template-columns: 0.92fr 1.08fr; gap: 34px; align-items: start; }
+    .results-col { display: flex; flex-direction: column; min-height: 0; }
+    .results-kicker {
+      font-family: var(--font-mono);
+      font-size: 17px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-600);
+      margin-bottom: 12px;
+    }
+    .results-summary {
+      margin-top: 12px;
+      padding: 14px 18px;
+      background: rgba(30,58,138,0.04);
+      border-left: 3px solid var(--accent-600);
+      font-family: var(--font-sans);
+      font-size: 19px;
+      line-height: 1.55;
+      color: var(--fg-2);
+    }
+    .results-note {
+      margin-top: 14px;
+      padding: 14px 18px;
+      border-left: 3px solid var(--accent-600);
+      background: rgba(30,58,138,0.04);
+    }
+    .results-note .title {
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 19px;
+      color: var(--fg-1);
+      margin-bottom: 6px;
+    }
+    .results-note .body {
+      font-family: var(--font-sans);
+      font-size: 17px;
+      color: var(--fg-2);
+      line-height: 1.58;
+    }
+    .results-panel {
+      padding: 14px 16px;
+      border: 1px solid var(--rule);
+      background: var(--paper-50);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    table.compact-tbl th,
+    table.compact-tbl td { padding: 9px 12px !important; }
+    table.compact-tbl thead th { padding-bottom: 8px !important; }
   </style>
 </head>
 
@@ -332,16 +449,16 @@
 
   <deck-stage width="1920" height="1080">
 
-    <!-- ═══ Slide 1 — Title ═══ -->
+    <!-- ═══ Slide 01 — Title ═══ -->
     <section class="slide s-title" data-label="01 Title">
       <div class="top-rule">
         <span>김희태 · PORTFOLIO</span>
         <span>2026</span>
       </div>
       <div class="hero">
-        <div class="meta-cap" style="margin-bottom: 32px;">SeSAC SCM · 수요예측 부트캠프</div>
-        <h1>비계획 Skinpass를<br />코일이 들어오기 전에 본다.</h1>
-        <p class="ko-sub">냉연 코일 4,000건의 물성·공정 실적으로, 소둔 이후 발생하는 예외 공정을 사전 판별한다.</p>
+        <div class="meta-cap" style="margin-bottom: 32px;">SeSAC SCM · 비계획 Skinpass 예측 프로젝트</div>
+        <h1>소둔 전에 비계획 Skinpass<br />발생 가능성을 예측했다.</h1>
+        <p class="ko-sub">냉연 코일 4,000건의 물성과 공정 실적으로, 소둔이 끝난 뒤 예외 공정으로 빠질 코일을 소둔 전에 먼저 골라내는 프로젝트.</p>
       </div>
       <div class="meta-grid">
         <div class="col">
@@ -350,7 +467,7 @@
         </div>
         <div class="col">
           <div class="k">DATA</div>
-          <div class="v">코일 4,000건<br />22 변수 (원천 13 + 파생 10)</div>
+          <div class="v">코일 4,000건<br />22 변수 (원천 13 + 파생 9)</div>
         </div>
         <div class="col">
           <div class="k">METHOD</div>
@@ -362,26 +479,116 @@
         </div>
       </div>
       <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">01 / 08</div>
+      <div class="pageno">01 / 10</div>
     </section>
 
-    <!-- ═══ Slide 2 — Problem · 한 줄 요약 ═══ -->
-    <section class="slide s-summary" data-label="02 Problem">
+    <!-- ═══ Slide 02 — 도메인 이해 [NEW] ═══ -->
+    <section class="slide" data-label="02 Domain">
       <div class="top-rule">
-        <span>02 · PROBLEM</span>
-        <span>WHY THIS MATTERS</span>
+        <span>02 · 도메인 이해</span>
+        <span>공정을 먼저 읽기</span>
+      </div>
+      <div class="domain-grid" style="flex: 1; padding-top: 24px;">
+
+        <!-- Left: Process Flow -->
+        <div class="domain-col">
+          <h2 class="slide-h2" style="font-size: 52px; line-height: 1.08; margin-bottom: 14px;">소둔 뒤에 왜 문제가 드러나는지부터 확인했다.</h2>
+          <p class="slide-body" style="font-size: 24px; color: var(--fg-2); margin-bottom: 20px; max-width: 28ch;">공정 흐름과 검사 기준을 다시 읽고, 비계획 Skinpass가 어디서 갈리는지부터 정리했다.</p>
+          <div class="proc-flow">
+            <div class="proc-step">
+              <div class="proc-num">01</div>
+              <div>
+                <div class="proc-label">소재 입고</div>
+                <div class="proc-desc">재질등급, 강종, 두께, 폭, 경도 같은 기본 물성 기록.</div>
+              </div>
+            </div>
+            <div class="proc-arrow">↓</div>
+            <div class="proc-step">
+              <div class="proc-num">02</div>
+              <div>
+                <div class="proc-label">냉간 압연</div>
+                <div class="proc-desc">압연하중과 온도편차가 표면조도와 형상에 직접 영향을 줌.</div>
+              </div>
+            </div>
+            <div class="proc-arrow">↓</div>
+            <div class="proc-step">
+              <div class="proc-num">03</div>
+              <div>
+                <div class="proc-label">소둔 공정</div>
+                <div class="proc-desc">재결정 열처리로 연성 회복. 하지만 소둔로 내부 조건 데이터는 없었다.</div>
+              </div>
+            </div>
+            <div class="proc-arrow">↓</div>
+            <div class="proc-step">
+              <div class="proc-num">04</div>
+              <div>
+                <div class="proc-label">품질 검사 → 분기</div>
+                <div class="proc-desc">표면·형상·재질 기준 판정. <strong>기준 미달이면 비계획 Skinpass로 빠진다. 전체의 40.8%.</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: 4가지 발생 원인 가설 -->
+        <div class="domain-col">
+          <div class="meta-cap" style="margin-bottom: 18px; font-size: 21px;">도메인 공부 뒤 세운 가설 4개</div>
+          <div class="cause-stack">
+            <div class="cause-card">
+              <div class="cause-num">H1</div>
+              <div>
+                <div class="cause-title">재질등급 차이</div>
+                <div class="cause-desc">재질등급 C 코일은 비계획 위험이 더 높을 것이라고 봤다.</div>
+              </div>
+            </div>
+            <div class="cause-card">
+              <div class="cause-num">H2</div>
+              <div>
+                <div class="cause-title">항복강도·표면 복합 위험</div>
+                <div class="cause-desc">항복강도와 표면조도가 함께 움직일 때 더 강한 위험 신호가 생길 것이라고 봤다.</div>
+              </div>
+            </div>
+            <div class="cause-card">
+              <div class="cause-num">H3</div>
+              <div>
+                <div class="cause-title">형상·표면 복합 조건</div>
+                <div class="cause-desc">형상과 표면 조건이 함께 나쁠 때 비계획 발생이 더 커질 것이라고 봤다.</div>
+              </div>
+            </div>
+            <div class="cause-card">
+              <div class="cause-num">H4</div>
+              <div>
+                <div class="cause-title">강종 × 재질등급 교호작용</div>
+                <div class="cause-desc">같은 등급이라도 강종에 따라 위험이 달라지고, 특정 조합은 더 취약할 것이라고 봤다.</div>
+              </div>
+            </div>
+          </div>
+          <p class="domain-note" style="font-size: 19px;">
+            먼저 가설을 세우고, 그다음 통계로 검증했다.
+          </p>
+        </div>
+
+      </div>
+      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+      <div class="pageno">02 / 10</div>
+    </section>
+
+    <!-- ═══ Slide 03 — Problem ═══ -->
+    <section class="slide s-summary" data-label="03 Problem">
+      <div class="top-rule">
+        <span>03 · PROBLEM</span>
+        <span>왜 중요한가</span>
       </div>
       <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 0;">
         <div style="flex: 1; display: grid; grid-template-columns: 1.2fr 1fr; gap: 56px; align-items: center;">
           <div>
             <div class="quote">
-              코일 10개 중 4개는<br />
-              소둔 후에 <em>예외 공정</em>으로 빠진다.<br />
-              그 60%는 소둔 투입 전에 포착된다.
+              코일 10개 중 4개는 소둔 후에 <em>예외 공정</em>으로 빠진다.<br />
+              그중 60%는 소둔 투입 전에 포착된다.
             </div>
-            <p class="slide-body" style="font-size: 26px; color: var(--fg-2); margin-top: 32px;">
-              계획된 정규 Skinpass와 달리, 비계획 Skinpass는 소둔 완료 후 품질 검사에서 표면·형상·재질이 기준에 미달한 코일에 대해 긴급 투입되는 예외 공정이다.
-              수집된 데이터 기준 전체 코일의 40.8%에서 비계획이 발생하고 있으며, 이는 설비 가동률 저하, 납기 지연, 에너지 추가 소비, 물류 비용 증가를 동시에 유발한다.
+            <p class="slide-body" style="font-size: 26px; color: var(--fg-2); margin-top: 36px;">
+              비계획 Skinpass는 소둔이 끝난 뒤 품질 기준을 못 맞춘 코일에 긴급 투입되는 예외 공정이다.
+              설비 가동률, 납기, 에너지, 물류 비용에 모두 영향을 준다.
+              소재 입고 시점 데이터만으로 이 40.8%를 미리 걸러낼 수 있다면 운영 방식 자체가 달라진다.
             </p>
           </div>
           <img src="skinpass/img/image9.png" alt="비계획 발생 분포 및 강종별 발생률"
@@ -406,168 +613,176 @@
         </div>
       </div>
       <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">02 / 08</div>
+      <div class="pageno">03 / 10</div>
     </section>
 
-    <!-- ═══ Slide 3 — EDA ═══ -->
-    <section class="slide" data-label="03 EDA">
+    <!-- ═══ Slide 04 — EDA ═══ -->
+    <section class="slide" data-label="04 EDA">
       <div class="top-rule">
-        <span>03 · EDA</span>
-        <span>DATA EXPLORATION</span>
+        <span>04 · EDA</span>
+        <span>데이터를 먼저 읽기</span>
       </div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; flex: 1; min-height: 0; padding-top: 32px; align-items: start;">
+      <div style="display: grid; grid-template-columns: 720px 600px; gap: 56px; flex: 1; min-height: 0; padding-top: 24px; justify-content: center; align-items: start;">
+
+        <!-- Left: 히트맵 1개 (height 645px = 720/1.116) -->
         <div>
-          <div class="meta-cap" style="margin-bottom: 12px;">상관관계 히트맵</div>
+          <div class="meta-cap" style="margin-bottom: 10px; font-size: 18px;">상관관계 히트맵 · 13개 변수 × 4,000건</div>
           <img src="skinpass/img/image1.png" alt="상관관계 히트맵"
-               style="width: 100%; height: auto; display: block;" />
-          <p style="margin-top: 8px; font-size: 15px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
-            Fig. 3-1 · 항복강도·표면조도 r=0.48 핵심 교호작용. 형상불량지수·비계획 발생 r=+0.074 단독 효과 제한.
+               style="width: 720px; height: auto; display: block;" />
+          <p style="margin-top: 12px; font-size: 18px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.6;">
+            <strong style="color: var(--fg-2); font-weight: 600;">발견 ①</strong> 단일 변수 상관은 모두 약했다.
+            <strong style="color: var(--fg-2); font-weight: 600; margin-left: 4px;">발견 ②</strong> 대신 변수끼리 함께 움직이는 패턴이 더 강했다.
+            <strong style="color: var(--accent-600); font-weight: 600; display: block; margin-top: 4px;">→ 단일 변수보다 복합 파생변수가 중요했다.</strong>
           </p>
         </div>
-        <div>
-          <div class="meta-cap" style="margin-bottom: 12px;">클래스별 분포 히스토그램</div>
-          <img src="skinpass/img/image4.png" alt="클래스별 변수 분포"
-               style="width: 100%; height: auto; display: block;" />
-          <p style="margin-top: 8px; font-size: 15px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
-            Fig. 3-2 · 발생·미발생 그룹별 주요 수치형 변수 분포 비교. 이전공정경과시간 두 그룹 간 분포 차이 미미, 예측력 낮아 제거.
-          </p>
+
+        <!-- Right: 히스토그램(358px) + 박스플롯(233px) 스택, 합산 높이 = 좌측 히트맵과 매칭 -->
+        <div style="display: flex; flex-direction: column; gap: 18px;">
+          <div>
+            <div class="meta-cap" style="margin-bottom: 8px; font-size: 18px;">클래스별 분포 히스토그램</div>
+            <img src="skinpass/img/image4.png" alt="클래스별 변수 분포"
+                 style="width: 600px; height: auto; display: block;" />
+            <p style="margin-top: 8px; font-size: 17px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.58;">
+            <strong style="color: var(--fg-2);">발견 ③</strong> 이전공정경과시간은 두 그룹 분포가 거의 겹쳤다. <strong style="color: var(--accent-600);">시간 변수는 핵심이 아닐 가능성을 여기서 확인했다.</strong>
+            </p>
+          </div>
+          <div>
+            <div class="meta-cap" style="margin-bottom: 8px; font-size: 18px;">핵심 변수 박스플롯</div>
+            <img src="skinpass/img/image10.png" alt="박스플롯"
+                 style="width: 600px; height: auto; display: block;" />
+            <p style="margin-top: 8px; font-size: 17px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.58;">
+              <strong style="color: var(--fg-2);">발견 ④</strong> 형상불량지수 이상치가 발생 그룹에 몰려 있었다. <strong style="color: var(--accent-600);">H2 가설이 시각적으로도 보였다.</strong>
+            </p>
+          </div>
         </div>
-        <div>
-          <div class="meta-cap" style="margin-bottom: 12px;">핵심 변수 박스플롯</div>
-          <img src="skinpass/img/image10.png" alt="박스플롯"
-               style="width: 100%; height: auto; display: block;" />
-          <p style="margin-top: 8px; font-size: 15px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
-            Fig. 3-3 · 항복강도 발생 그룹 중앙값이 미발생 그룹 대비 낮게 형성. 형상불량지수는 발생 그룹 이상치 범위에서 높은 값 집중.
-          </p>
-        </div>
+
       </div>
       <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">03 / 08</div>
+      <div class="pageno">04 / 10</div>
     </section>
 
-    <!-- ═══ Slide 4 — Hypotheses ═══ -->
-    <section class="slide" data-label="04 Hypotheses">
+    <!-- ═══ Slide 05 — Hypotheses ═══ -->
+    <section class="slide" data-label="05 Hypotheses">
       <div class="top-rule">
-        <span>04 · 4 HYPOTHESES</span>
-        <span>ALL ACCEPTED</span>
+        <span>05 · 가설 검증</span>
+        <span>4 ACCEPTED</span>
       </div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; flex: 1; min-height: 0; padding-top: 36px; align-items: stretch;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; flex: 1; min-height: 0; padding-top: 40px; align-items: stretch;">
         <div style="display: flex; flex-direction: column; min-height: 0;">
-          <h2 class="slide-h2" style="font-size: 48px; margin-bottom: 32px; flex-shrink: 0;">
-            가설 4개를 먼저 세우고,<br/>그 논리를 바탕으로 모델 구조에 적용해봤다.</h2>
-          <div class="hyp-row" style="grid-template-columns: repeat(2, 1fr); margin-top: 0; flex: 1; align-content: stretch;">
+          <h2 class="slide-h2" style="font-size: 52px; line-height: 1.12; margin-bottom: 24px; flex-shrink: 0;">
+            가설 4개를 먼저 세우고 통계로 바로 검증했다.</h2>
+          <div class="hyp-row" style="grid-template-columns: repeat(2, 1fr); margin-top: 0; flex: 1; align-content: start; gap: 14px;">
             <div class="hyp-card">
               <div class="tag">H1 · 재질등급</div>
-              <div class="q">재질등급 C가 구조적 비계획 발생 신호인가?</div>
+              <div class="q">재질등급 C가 발생률을 구조적으로 높이는가?</div>
               <div class="verdict">✓ Kruskal-Wallis p &lt; 0.001</div>
-              <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--rule-soft);font-size:18px;color:var(--fg-2);">→ Material Gate 1차 조건</div>
+              <div class="consequence">→ Material Gate 진입 조건으로 직접 활용</div>
             </div>
             <div class="hyp-card">
               <div class="tag">H2 · 항복강도</div>
-              <div class="q">항복강도·강종이 발생 위험 구조를 만드는가?</div>
-              <div class="verdict">✓ 강종 차이 p &lt; 0.001</div>
-              <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--rule-soft);font-size:18px;color:var(--fg-2);">→ Material Gate 2차 조건</div>
+              <div class="q">항복강도 임계값이 비계획 위험을 가르는가?</div>
+              <div class="verdict">✓ Mann-Whitney p &lt; 0.001</div>
+              <div class="consequence">→ Material Gate와 quality_risk_score 설계에 반영</div>
             </div>
             <div class="hyp-card">
-              <div class="tag">H3 · 형상×표면</div>
-              <div class="q">형상·표면 복합이 비선형 급증을 일으키는가?</div>
-              <div class="verdict">✓ 복합 구간 +24%p</div>
-              <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--rule-soft);font-size:18px;color:var(--fg-2);">→ surface_shape_composite</div>
+              <div class="tag">H3 · 형상·표면 복합</div>
+              <div class="q">형상과 표면 조건이 함께 나쁠 때 위험이 더 커지는가?</div>
+              <div class="verdict">✓ Kruskal-Wallis p &lt; 0.001</div>
+              <div class="consequence">→ surface_shape_composite 파생변수 생성</div>
             </div>
             <div class="hyp-card">
-              <div class="tag">H4 · 강종×등급</div>
-              <div class="q">강종과 재질등급의 교호작용이 핵심인가?</div>
-              <div class="verdict">✓ F1 +0.031 향상</div>
-              <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--rule-soft);font-size:18px;color:var(--fg-2);">→ grade_steel_interaction</div>
+              <div class="tag">H4 · 강종 × 등급</div>
+              <div class="q">강종과 재질등급 조합이 위험 패턴을 구조적으로 바꾸는가?</div>
+              <div class="verdict">✓ Kruskal-Wallis p &lt; 0.001</div>
+              <div class="consequence">→ grade_steel_interaction 파생변수 생성</div>
             </div>
           </div>
         </div>
         <div style="display: flex; flex-direction: column; min-height: 0;">
-          <div class="meta-cap" style="margin-bottom: 14px; flex-shrink: 0;">가설 검증 결과 시각화 (H1~H4)</div>
+          <div class="meta-cap" style="margin-bottom: 14px; flex-shrink: 0; font-size: 18px;">가설 검증 결과 시각화 (H1~H4)</div>
           <img src="skinpass/img/image5.png" alt="가설 검증 결과 시각화"
                style="width: 100%; height: auto; display: block;" />
-          <p style="margin-top: 12px; font-size: 18px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5; flex-shrink: 0;">
-            H1~H4 가설 기반 파생변수 4개가 SHAP 중요도 상위 8개 이내에 모두 포함됐다. 공정위험복합·품질위험점수가 1·2위.
+          <p style="margin-top: 12px; font-size: 18px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.58; flex-shrink: 0;">
+            H1~H4는 모두 파생변수와 Gate 조건으로 직접 연결했다. SHAP 분석에서 이 가설 기반 변수들이 상위권에 올라, 처음 세운 도메인 가설이 모델에서도 그대로 작동한다는 걸 확인했다.
           </p>
         </div>
       </div>
       <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">04 / 08</div>
+      <div class="pageno">05 / 10</div>
     </section>
 
-    <!-- ═══ Slide 4 — Gate Architecture ═══ -->
-    <section class="slide" data-label="04 Architecture">
+    <!-- ═══ Slide 06 — Architecture ═══ -->
+    <section class="slide" data-label="06 Architecture">
       <div class="top-rule">
-        <span>05 · ARCHITECTURE</span>
-        <span>2-STAGE DECISION</span>
+        <span>06 · ARCHITECTURE</span>
+        <span>2단계 의사결정</span>
       </div>
       <div style="flex: 1; min-height: 0; display: flex; flex-direction: column;">
-        <h2 class="slide-h2" style="margin-top: 32px; flex-shrink: 0;">
-          현장의 코일을 보는 순서를 그대로 모델에 옮겼다.</h2>
+        <h2 class="slide-h2" style="margin-top: 36px; font-size: 54px; line-height: 1.12; flex-shrink: 0;">
+          현장에서 코일을 판단하는 순서를 그대로 모델에 옮겼다.</h2>
 
-        <!-- Stage1·2 왼쪽 위아래, Recall-Precision 오른쪽 -->
-        <div style="display: grid; grid-template-columns: 1fr 0.95fr; gap: 32px; flex: 1; min-height: 0; margin-top: 24px; align-items: stretch;">
+        <div style="display: grid; grid-template-columns: 1.04fr 0.96fr; gap: 40px; flex: 1; min-height: 0; margin-top: 32px; align-items: start;">
           <!-- 왼쪽: Stage 1 + Stage 2 위아래 -->
-          <div style="display: flex; flex-direction: column; gap: 16px; min-height: 0;">
-            <div class="gate-box" style="flex: 1; min-height: 0; overflow: hidden; padding: 16px 20px; gap: 8px;">
-              <div class="tag" style="font-size: 18px;">STAGE 1 · MATERIAL QUALITY GATE</div>
-              <h3 style="font-size: 26px;">명백한 고위험은<br />규칙으로 즉시 차단</h3>
-              <div class="rule" style="font-size: 17px; padding: 8px 12px; line-height: 1.55;">IF 재질등급 == C<br />OR 항복강도 ≥ 임계값<br />→ 고위험 분류</div>
-              <div class="desc" style="font-size: 18px; line-height: 1.45;">H1 + H2 검증 결과를 결합한 하드 필터.<br />Gate=1 → 담당자 경보 발령.</div>
+          <div style="display: flex; flex-direction: column; gap: 18px; min-height: 0;">
+            <div class="gate-box" style="padding: 26px 28px; gap: 12px;">
+              <div class="tag">STAGE 1 · MATERIAL QUALITY GATE</div>
+              <h3 style="font-size: 36px; line-height: 1.14;">명백한 고위험은 규칙으로 먼저 걸렀다</h3>
+              <div class="rule" style="font-size: 21px; padding: 12px 14px; line-height: 1.58;">IF 재질등급 == C<br />OR 항복강도 ≥ 임계값<br />→ 고위험 분류 (Gate=1)</div>
+              <div class="desc" style="font-size: 22px; line-height: 1.56;">H1 + H2 검증 결과를 그대로 묶은 하드 필터다. Gate=1이면 담당자가 먼저 확인한다.</div>
             </div>
-            <div class="gate-box" style="flex: 1; min-height: 0; overflow: hidden; padding: 16px 20px; gap: 8px; background: rgba(30,58,138,0.04); border-color: var(--accent-600);">
-              <div class="tag" style="font-size: 18px;">STAGE 2 · LOGISTIC REGRESSION</div>
-              <h3 style="font-size: 26px;">나머지는<br />확률 모델로 세부 위험도 추정</h3>
-              <div class="rule" style="font-size: 17px; padding: 8px 12px; line-height: 1.55;">파생변수 6종 입력<br />quality_risk_score · process_risk_composite<br />surface_shape_composite · grade_steel_interaction</div>
-              <div class="desc" style="font-size: 18px; line-height: 1.45;">H3 + H4가 만든 교호작용·복합 변수가 SHAP 상위 8개 중 4개를 차지.</div>
+            <div class="gate-box" style="padding: 26px 28px; gap: 12px; background: rgba(30,58,138,0.04); border-color: var(--accent-600);">
+              <div class="tag">STAGE 2 · LOGISTIC REGRESSION</div>
+              <h3 style="font-size: 36px; line-height: 1.14;">애매한 구간은 확률로 다시 판단했다</h3>
+              <div class="rule" style="font-size: 19px; padding: 12px 14px; line-height: 1.58;">quality_risk_score · process_risk_composite<br />surface_shape_composite · grade_steel_interaction<br />두께/폭 비율 · 시간×온도 상호작용</div>
+              <div class="desc" style="font-size: 22px; line-height: 1.56;">H2·H3 기반 복합 파생변수가 상위권에 올라, 도메인 가설이 모델 안에서도 유지됐다.</div>
             </div>
           </div>
           <!-- 오른쪽: 원본 image7.png -->
-          <div style="display: flex; flex-direction: column; min-height: 0; justify-content: center;">
-            <div class="meta-cap" style="flex-shrink: 0; margin-bottom: 10px; font-size: 18px;">Gate 발동별 비계획 발생률 · Recall–Precision 트레이드오프</div>
+          <div style="display: flex; flex-direction: column; min-height: 0; justify-content: center; align-items: center;">
+            <div class="meta-cap" style="flex-shrink: 0; margin-bottom: 12px; font-size: 19px; align-self: flex-start;">Gate 발동별 비계획 발생률 · Recall-Precision 트레이드오프</div>
             <img src="skinpass/img/image7.png" alt="Gate 발동별 비계획 발생률 및 Recall-Precision"
-                 style="width: 100%; height: auto; display: block;" />
+                 style="width: 100%; max-width: 720px; height: auto; display: block; margin: 0 auto;" />
           </div>
         </div>
       </div>
       <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">05 / 08</div>
+      <div class="pageno">06 / 10</div>
     </section>
 
-    <!-- ═══ Slide 6 — Data Augmentation ═══ -->
-    <section class="slide soft" data-label="06 SMOTE">
+    <!-- ═══ Slide 07 — Data Augmentation ═══ -->
+    <section class="slide soft" data-label="07 SMOTE">
       <div class="top-rule">
-        <span>06 · DATA AUGMENTATION</span>
-        <span>5 METHODS · SMOTE WINS</span>
+        <span>07 · 불균형 보정</span>
+        <span>5개 방법 비교</span>
       </div>
-      <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; flex: 1; padding-top: 32px; align-items: start;">
+      <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; flex: 1; padding-top: 24px; align-items: start;">
         <div>
-          <h2 class="slide-h2">클래스 불균형을<br/>어떻게 다룰지도 실험했다.</h2>
-          <p class="slide-body" style="margin-top: 32px; max-width: 28ch; font-size: 28px;">
-            미발생 59.2% · 발생 40.8%로 완전 불균형은 아니나 Accuracy 단일 지표로는 평가 불가한 구조.
+          <h2 class="slide-h2" style="font-size: 54px; line-height: 1.12;">불균형 보정도 직접 비교해 골랐다.</h2>
+          <p class="slide-body" style="margin-top: 24px; max-width: 28ch; font-size: 26px;">
+            미발생 59.2%, 발생 40.8%로 극단적이진 않았지만 Accuracy만으로 판단하기엔 부족한 구조였다.
           </p>
-          <div style="margin-top: 40px; display: grid; gap: 20px;">
+          <div style="margin-top: 24px; display: grid; gap: 16px;">
             <div style="padding: 24px; background: rgba(30, 58, 138, 0.05); border: 1px solid var(--rule); border-left: 3px solid var(--accent-600);">
-              <div class="meta-cap" style="margin-bottom: 12px;">원칙: Data Leakage 방지</div>
+              <div class="meta-cap" style="margin-bottom: 12px; font-size: 18px;">원칙: Data Leakage 방지</div>
               <div style="font-family: var(--font-sans); font-size: 24px; color: var(--fg-2); line-height: 1.6;">
-                증강은 <strong style="color: var(--fg-1);">학습 데이터에만</strong> 적용.<br/>
-                스케일러·인코더 모두 train fit → test transform.
+                증강은 <strong style="color: var(--fg-1);">학습 데이터에만</strong> 적용했다.<br/>
+                train에서만 fit하고 test에는 transform만 적용했다.
               </div>
             </div>
             <div style="padding: 24px; background: var(--paper-200);">
-              <div class="meta-cap" style="margin-bottom: 12px;">SMOTE 선택 근거</div>
+              <div class="meta-cap" style="margin-bottom: 12px; font-size: 18px;">SMOTE 선택 근거</div>
               <div style="font-family: var(--font-sans); font-size: 24px; color: var(--fg-2); line-height: 1.6;">
-                단순 복제가 아닌 <strong style="color: var(--fg-1);">경계 근방 합성 샘플</strong> 생성 →
-                과적합 위험 최소화 + F1·AUROC 동시 최고.
+                단순 복제가 아니라 <strong style="color: var(--fg-1);">경계 근방 합성 샘플</strong>을 만들어
+                과적합 위험을 줄이면서 F1과 AUROC를 함께 끌어올렸다.
               </div>
             </div>
           </div>
         </div>
         <div>
-          <div class="meta-cap" style="margin-bottom: 14px;">5가지 증강 방법 비교</div>
+          <div class="meta-cap" style="margin-bottom: 14px; font-size: 18px;">5가지 증강 방법 비교</div>
           <img src="skinpass/img/image2.png" alt="증강 방법별 F1/AUROC 비교"
                style="width: 100%; height: auto; display: block; margin-bottom: 12px;" />
-          <table class="slide-table" style="font-size: 20px;">
+          <table class="slide-table compact-tbl" style="font-size: 19px;">
             <thead>
               <tr>
                 <th>METHOD</th>
@@ -609,80 +824,203 @@
               </tr>
             </tbody>
           </table>
-          <p class="slide-body" style="margin-top: 28px; font-size: 24px; color: var(--fg-3); font-style: italic; line-height: 1.5;">
-            언더샘플링은 정보 손실로 오히려 성능 저하.<br/>
-            SMOTE가 F1 +0.026 · AUROC +0.016 달성.
+          <p class="slide-body" style="margin-top: 16px; font-size: 22px; color: var(--fg-3); font-style: italic; line-height: 1.5;">
+            언더샘플링은 정보 손실로 오히려 성능이 떨어졌다. 5개 방법 비교에서 SMOTE가 가장 안정적이었다.
           </p>
         </div>
       </div>
       <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">06 / 08</div>
+      <div class="pageno">07 / 10</div>
     </section>
 
-    <!-- ═══ Slide 7 — Models + SHAP ═══ -->
-    <section class="slide" data-label="07 Results">
+    <!-- ═══ Slide 08 — Results ═══ -->
+    <section class="slide" data-label="08 Results">
       <div class="top-rule">
-        <span>07 · 6 MODELS · SHAP</span>
-        <span>RECALL OVER ACCURACY</span>
+        <span>08 · RESULTS</span>
+        <span>Recall을 우선했다</span>
       </div>
-      <div style="display: grid; grid-template-columns: 1fr 1.1fr; gap: 80px;
-              margin-top: 48px; flex: 1; min-height: 0; align-items: stretch;">
-        <div>
-          <h2 class="slide-h2" style="font-size: 56px;">미탐지의 비용이<br />오탐의 비용보다 크다.</h2>
-          <p class="slide-body" style="margin-top: 32px; font-size: 28px;">
-            Recall을 1순위 지표로 잡은 결과, Material Gate + LR이 6개 비교군 중 단독 1위.
+      <div class="results-grid" style="flex: 1; min-height: 0; padding-top: 24px;">
+
+        <!-- Left: Narrative + comparison table -->
+        <div class="results-col">
+          <div class="results-kicker">Final Decision</div>
+          <h2 class="slide-h2" style="font-size: 52px; line-height: 1.08; flex-shrink: 0;">최종 선택은 Gate + LR이었다.</h2>
+          <p class="slide-body" style="margin-top: 16px; font-size: 21px; line-height: 1.5; flex-shrink: 0; max-width: 33ch;">
+            비계획 발생을 놓치면(FN) 긴급 공정 투입 비용이 생기고, 오탐(FP)은 예방적 대응으로 끝난다.
+            그래서 Recall을 1순위로 뒀고, 이 기준이 최종 모델 선택을 결정했다.
           </p>
-          <div style="margin-top: 32px;">
-            <div class="meta-cap" style="margin-bottom: 10px;">모델별 성능 지표 비교</div>
-            <img src="skinpass/img/image8.png" alt="모델별 성능 지표 비교"
-                 style="width: 100%; height: auto; display: block;" />
+          <div class="results-summary">
+            복잡한 모델보다 <strong style="color: var(--fg-1);">미탐지를 가장 덜 내는 구조</strong>가 이 문제에 더 맞았다.
+          </div>
+
+          <div class="meta-cap" style="margin-top: 18px; margin-bottom: 8px; flex-shrink: 0; font-size: 18px;">6개 모델 성능 비교</div>
+          <table class="result-table compact-tbl" style="font-size: 19px;">
+            <thead>
+              <tr>
+                <th>MODEL</th>
+                <th>RECALL</th>
+                <th>F1</th>
+                <th>AUROC</th>
+                <th>FN</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="win">
+                <td>★ Gate + LR (최종)</td>
+                <td class="winval">0.595</td>
+                <td>0.494</td>
+                <td>0.581</td>
+                <td>163</td>
+              </tr>
+              <tr>
+                <td>Logistic Regression</td>
+                <td>0.531</td>
+                <td>0.495</td>
+                <td>0.581</td>
+                <td>187</td>
+              </tr>
+              <tr>
+                <td>LightGBM</td>
+                <td>0.408</td>
+                <td>0.427</td>
+                <td>0.565</td>
+                <td>237</td>
+              </tr>
+              <tr>
+                <td>SVM (RBF)</td>
+                <td>0.435</td>
+                <td>0.451</td>
+                <td>0.573</td>
+                <td>226</td>
+              </tr>
+              <tr>
+                <td>Random Forest</td>
+                <td>0.392</td>
+                <td>0.418</td>
+                <td>0.571</td>
+                <td>243</td>
+              </tr>
+              <tr>
+                <td>Decision Tree</td>
+                <td>0.370</td>
+                <td>0.395</td>
+                <td>0.535</td>
+                <td>252</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="results-note">
+            <div class="title">왜 LightGBM이 아니라 LR + Gate인가</div>
+            <div class="body">
+              LightGBM은 F1·AUROC는 비슷하지만 Recall이 0.408로 낮았다. 미탐지를 줄이는 게 목표라면 LR이 더 적합했고, 계수 부호로 위험 방향을 설명할 수 있다는 점도 강점이었다.
+            </div>
           </div>
         </div>
 
-        <div style="padding-top: 24px; display: flex; flex-direction: column; gap: 20px;">
-          <div>
-            <div class="meta-cap" style="margin-bottom: 10px;">ROC 곡선 비교 · 혼동행렬</div>
-            <img src="skinpass/img/image6.png" alt="ROC 곡선 및 혼동행렬"
-                 style="width: 100%; height: auto; display: block;" />
-            <p style="margin-top: 6px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
-              Fig. 7-1 · Gate+LR FN 163건 vs LR 원천 187건. 미탐지 −24건.
-            </p>
+        <!-- Right: SHAP -->
+        <div class="results-col">
+          <div class="results-panel" style="flex:1;">
+          <div class="meta-cap" style="margin-bottom: 12px; flex-shrink: 0; font-size: 18px;">가설 기반 변수가 실제로 상위권에 올랐다</div>
+          <img src="skinpass/img/image3.png" alt="SHAP 기반 변수 중요도"
+               style="width: 100%; height: auto; max-height: 380px; object-fit: contain; object-position: left top; display: block;" />
+          <div style="margin-top: 16px; font-family: var(--font-sans); font-size: 17px; color: var(--fg-2); line-height: 1.5;">
+            <div style="font-weight: 600; color: var(--fg-1); margin-bottom: 10px; font-size: 19px;">SHAP이 다시 확인한 것</div>
+            <div style="display: grid; grid-template-columns: 22px 1fr; gap: 6px 10px;">
+              <div style="color: var(--accent-600); font-family: var(--font-mono); font-weight: 600;">①</div>
+              <div><strong style="color: var(--fg-1);">가설 기반 파생변수</strong>가 최상위권을 차지했다.</div>
+              <div style="color: var(--accent-600); font-family: var(--font-mono); font-weight: 600;">②</div>
+              <div><strong style="color: var(--fg-1);">항복강도</strong>는 원천 변수 중 가장 강한 신호였다.</div>
+              <div style="color: var(--accent-600); font-family: var(--font-mono); font-weight: 600;">③</div>
+              <div><strong style="color: var(--fg-1);">강종 × 등급 조합</strong>도 상위권에 올라 H4와 맞아떨어졌다.</div>
+            </div>
           </div>
-          <div>
-            <div class="meta-cap" style="margin-bottom: 10px;">SHAP FEATURE IMPORTANCE · LIGHTGBM</div>
-            <img src="skinpass/img/image3.png" alt="SHAP 기반 변수 중요도"
-                 style="width: 100%; height: auto; display: block;" />
-            <p style="margin-top: 6px; font-size: 16px; color: var(--fg-3); font-style: italic; font-family: var(--font-sans); line-height: 1.5;">
-              Fig. 7-2 · SHAP 변수 중요도 (LightGBM). 가설 파생변수 상위 1·2위 차지.
-            </p>
+          </div>
           </div>
         </div>
+
       </div>
       <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">07 / 08</div>
+      <div class="pageno">08 / 10</div>
     </section>
 
-    <!-- ═══ Slide 8 — Deployment ═══ -->
-    <section class="slide s-close" data-label="08 Deployment">
+    <!-- ═══ Slide 09 — 한계점 & 배운 것 [NEW] ═══ -->
+    <section class="slide soft" data-label="09 Limits">
       <div class="top-rule">
-        <span>08 · DEPLOYMENT</span>
-        <span>3-PHASE ROLLOUT</span>
+        <span>09 · 한계점 & 인사이트</span>
+        <span>한계와 배운 점</span>
       </div>
-      <div style="margin-top: 64px;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 64px; flex: 1; min-height: 0; padding-top: 36px;">
+
+        <!-- Left: 한계점 -->
+        <div style="display: flex; flex-direction: column; min-height: 0;">
+          <div class="meta-cap" style="margin-bottom: 20px; flex-shrink: 0; font-size: 18px;">현재 모델의 한계</div>
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 14px; min-height: 0;">
+            <div class="limit-row">
+              <div class="l-icon">⚠</div>
+              <div class="l-text"><span class="headline">핵심 변수 미수집</span>소둔로 내부 조건(분위기 가스 성분, 위치별 온도 분포)이 없어 AUROC가 0.55~0.59 수준에서 멈췄다. 상업 배포 수준(≥0.7)에는 못 미쳤다.</div>
+            </div>
+            <div class="limit-row">
+              <div class="l-icon">⚠</div>
+              <div class="l-text"><span class="headline">레이블 노이즈</span>비계획 발생 레이블이 검사자의 주관적 판단에 의존했다. 객관적 수치 기준이 없으면 학습 품질도 함께 흔들린다.</div>
+            </div>
+            <div class="limit-row">
+              <div class="l-icon">⚠</div>
+              <div class="l-text"><span class="headline">시계열 패턴 미반영</span>코일을 독립 관측치로 처리해 생산 순서 드리프트와 계절성이 반영되지 않았다. 다음 단계에서는 시계열 구조를 따로 다뤄야 한다.</div>
+            </div>
+            <div class="limit-row">
+              <div class="l-icon">⚠</div>
+              <div class="l-text"><span class="headline">외부 요인 미포함</span>원자재 로트 변화와 설비 노후화 정보가 없어 장기 패턴 변화에 취약하다. 보조 데이터 연계가 필요하다.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: 배운 것 -->
+        <div style="display: flex; flex-direction: column; min-height: 0;">
+          <div class="meta-cap" style="margin-bottom: 20px; flex-shrink: 0; font-size: 18px;">이 프로젝트에서 배운 것</div>
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 18px; min-height: 0;">
+            <div class="learn-card">
+              <div class="lc-title">가설이 바로 피처가 됐다</div>
+              <div class="lc-body">도메인 가설을 통계로 검증한 뒤 Gate와 파생변수로 바로 연결했다. SHAP은 그 설계가 맞았다는 사후 검증이 됐다.</div>
+            </div>
+            <div class="learn-card">
+              <div class="lc-title">문제 정의가 모델 선택보다 먼저였다</div>
+              <div class="lc-body">핵심은 어떤 알고리즘이 더 센지가 아니라, 소둔 전에 무엇을 판단해야 하는지부터 정리한 데 있었다. 공정 순서를 알아야 입력 변수도 제대로 고를 수 있었다.</div>
+            </div>
+            <div class="learn-card">
+              <div class="lc-title">지표 선택이 문제 정의다</div>
+              <div class="lc-body">미탐지 비용이 더 크다는 판단에서 Recall을 1순위로 뒀다. 이 선택이 모델 선택과 임계값 조정 방향을 함께 결정했다.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+      <div class="pageno">09 / 10</div>
+    </section>
+
+    <!-- ═══ Slide 10 — Deployment ═══ -->
+    <section class="slide s-close" data-label="10 Deployment">
+      <div class="top-rule">
+        <span>10 · DEPLOYMENT</span>
+        <span>적용 단계 3개</span>
+      </div>
+      <div style="margin-top: 36px;">
         <div class="pull">
-          완전 자동화보다<br />
-          <em>의사결정 보조</em>가 먼저다.<br />
-          운영자가 위험 코일을 빠르게 추려내고<br />
-          판단 근거를 함께 볼 수 있도록 돕는다.
+          이 모델은 완전 자동화보다
+          <em>위험 가능성이 높은 코일을 먼저 보여주는 방식</em>에 더 적합했다.
+        </div>
+        <div class="deploy-lead">
+          그래서 공정을 바로 제어하기보다, 소둔 투입 전에 위험 가능성이 높은 코일을 먼저 표시하고 운영자가 대응 순서를 정하도록 돕는 쪽이 더 현실적이었다.
         </div>
       </div>
 
-      <div class="phase-grid">
+      <div class="phase-grid" style="margin-top: 40px;">
         <div class="phase">
           <div class="num">01</div>
           <div class="name">경보 시스템</div>
           <div class="desc">
-            Gate=1 코일에 소둔 투입 전 자동 경보 발령. 운영자 최종 판단 유지.
+            Gate=1 코일을 소둔 투입 전에 먼저 띄우고, 운영자가 우선 확인하도록 만든다.
           </div>
           <div class="target">
             고위험 포착 ≥ 80% · 1–2개월
@@ -692,7 +1030,7 @@
           <div class="num">02</div>
           <div class="name">의사결정 지원</div>
           <div class="desc">
-            전 코일에 발생 확률 + SHAP 원인 3가지를 함께 제시.
+            전 코일에 발생 확률과 주요 원인 3가지를 함께 보여주고, 점검 우선순위를 정하게 한다.
           </div>
           <div class="target">
             발생률 −10% · 2–4개월
@@ -702,7 +1040,7 @@
           <div class="num">03</div>
           <div class="name">반자동 제어</div>
           <div class="desc">
-            소둔 파라미터 자동 조정 권고. 운영자 승인 후 실행.
+            고위험 코일에 대해 소둔 조건 조정안을 먼저 제시하고, 승인 후 반자동으로 실행한다.
           </div>
           <div class="target">
             발생률 −25% · 4–8개월
@@ -711,10 +1049,10 @@
       </div>
 
       <div class="attrib">
-        SeSAC SCM 부트캠프 · PYTHON · LIGHTGBM · XGBOOST · SMOTE · SHAP
+        비계획 Skinpass 예측 프로젝트 · PYTHON · LIGHTGBM · XGBOOST · SMOTE · SHAP
       </div>
       <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">김희태</a>
-      <div class="pageno">08 / 08</div>
+      <div class="pageno">10 / 10</div>
     </section>
 
   </deck-stage>
@@ -726,7 +1064,7 @@
       width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M10 3L5 8l5 5" />
-    </svg>PORTFOLIO</a>
+    </svg>포트폴리오</a>
 
 </body>
 
