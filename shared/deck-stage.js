@@ -411,7 +411,10 @@
       tag.textContent =
         '@page { size: ' + this.designWidth + 'px ' + this.designHeight + 'px; margin: 0; } ' +
         '@media print { html, body { margin: 0 !important; padding: 0 !important; background: none !important; overflow: visible !important; height: auto !important; } ' +
-        '* { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }';
+        '* { -webkit-print-color-adjust: exact; print-color-adjust: exact; } ' +
+        /* Chrome 인쇄 엔진이 box-shadow를 불투명 회색 박스로 래스터화하는 버그 우회.
+           filter/drop-shadow도 동일 이슈가 있어 같이 제거. PDF에서 그림자는 의미 없음. */
+        '*, *::before, *::after { box-shadow: none !important; filter: none !important; -webkit-filter: none !important; } }';
     }
 
     _onSlotChange() {
