@@ -390,67 +390,10 @@
     }
 
     _downloadPDF() {
-      const btn = this._overlay.querySelector('.pdf');
-      const originalText = btn.innerHTML;
-      btn.innerHTML = "생성 중...";
-
-      const doExport = () => {
-        const w = parseInt(this.getAttribute('width')) || 1920;
-        const h = parseInt(this.getAttribute('height')) || 1080;
-        
-        const container = document.createElement('div');
-        container.style.width = w + 'px';
-        container.style.position = 'absolute';
-        container.style.left = '-9999px';
-        container.style.top = '0';
-        container.style.background = '#F8F7F4'; // fallback
-        
-        Array.from(this.children).forEach(child => {
-          if (child.tagName.toLowerCase() === 'script') return;
-          const clone = child.cloneNode(true);
-          clone.style.width = w + 'px';
-          clone.style.height = h + 'px';
-          clone.style.position = 'relative';
-          clone.style.inset = 'auto';
-          clone.style.opacity = '1';
-          clone.style.visibility = 'visible';
-          clone.style.display = 'block';
-          clone.style.boxSizing = 'border-box';
-          clone.style.pageBreakAfter = 'always';
-          clone.style.overflow = 'hidden';
-          clone.style.transform = 'none';
-          container.appendChild(clone);
-        });
-        
-        document.body.appendChild(container);
-
-        const opt = {
-          margin: 0,
-          filename: (document.title || 'portfolio') + '.pdf',
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 1.5, useCORS: true, windowWidth: w, windowHeight: h },
-          jsPDF: { unit: 'px', format: [w, h], orientation: 'landscape' }
-        };
-
-        window.html2pdf().set(opt).from(container).save().then(() => {
-          document.body.removeChild(container);
-          btn.innerHTML = originalText;
-        }).catch(err => {
-          console.error(err);
-          document.body.removeChild(container);
-          btn.innerHTML = originalText;
-          alert("PDF 생성 중 오류가 발생했습니다.");
-        });
-      };
-
-      if (!window.html2pdf) {
-        const script = document.createElement('script');
-        script.src = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
-        script.onload = doExport;
-        document.head.appendChild(script);
-      } else {
-        doExport();
-      }
+      // 브라우저 네이티브 인쇄 사용 — @media print + @page 규칙으로 슬라이드 한 장씩 페이지로 떨어짐.
+      // html2canvas 비트마이즈 방식보다 10~30배 빠르고, 텍스트가 벡터로 들어가 검색·확대해도 깨끗.
+      this._syncPrintPageRule();
+      window.print();
     }
 
     /** @page must live in the document stylesheet — it's a no-op inside
