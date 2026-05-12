@@ -674,17 +674,7 @@
 
 </deck-stage>
 
-<!-- 플로팅 홈 버튼 -->
-<a href="index.html" id="home-btn">← PORTFOLIO</a>
-
-<script>
-  const btn = document.getElementById('home-btn');
-  let t;
-  document.addEventListener('mousemove', () => {
-    btn.classList.add('visible');
-    clearTimeout(t);
-    t = setTimeout(() => btn.classList.remove('visible'), 2400);
-  });
-</script>
+<!-- 플로팅 홈 버튼 (LHV/Skinpass와 동일 스타일) -->
+<a href="index.html" style="position:fixed;top:22px;left:22px;z-index:2147483647;display:flex;align-items:center;gap:6px;padding:8px 16px 8px 12px;border-radius:999px;background:rgba(20,20,24,0.85);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.12);color:#fff;text-decoration:none;font-family:var(--font-mono);font-size:13px;letter-spacing:0.08em;transition:background 180ms ease,border-color 180ms ease;" onmouseenter="this.style.background='rgba(40,40,48,0.95)';this.style.borderColor='rgba(255,255,255,0.28)'" onmouseleave="this.style.background='rgba(20,20,24,0.85)';this.style.borderColor='rgba(255,255,255,0.12)'"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>포트폴리오</a>
 </body>
 </html>
