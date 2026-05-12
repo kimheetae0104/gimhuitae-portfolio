@@ -195,36 +195,45 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
 .card .info{padding:28px 28px 32px;flex:1;display:flex;flex-direction:column}
 .card .info .num{font-family:var(--font-mono);font-size:14px;letter-spacing:0.18em;
   text-transform:uppercase;color:rgba(24,24,27,0.35);margin-bottom:12px}
-.card .info h2{font-weight:600;font-size:24px;line-height:1.24;color:#18181b;margin-bottom:10px}
+.card .info h2{font-weight:600;font-size:22px;line-height:1.28;color:#18181b;margin-bottom:10px}
 .card .info .pdesc{font-size:17px;line-height:1.65;color:rgba(24,24,27,0.56);flex:1}
-.card .info .tags{font-family:var(--font-mono);font-size:13px;letter-spacing:0.12em;
-  color:rgba(24,24,27,0.3);margin-top:16px;padding-top:16px;
-  border-top:1px solid rgba(24,24,27,0.08)}
+.card .info .tags{margin-top:16px;padding-top:16px;border-top:1px solid rgba(24,24,27,0.08)}
+.card .info .tags::before{content:'TECH';display:block;margin-bottom:12px;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:0.16em;color:rgba(24,24,27,0.32)}
+.tech-row{display:flex;flex-wrap:wrap;gap:10px}
+.tech-icon{width:36px;height:36px;border:1px solid rgba(24,24,27,0.1);background:rgba(24,24,27,0.02);
+  display:inline-flex;align-items:center;justify-content:center;color:#18181b}
+.tech-icon svg{width:18px;height:18px;display:block}
+.tech-icon.dark{background:#18181b;color:#f8f7f4;border-color:#18181b}
+.tech-icon.green{color:#1f8f4d}
+.tech-icon.blue{color:#1e3a8a}
+.tech-icon.orange{color:#c95a12}
+.tech-icon.gray{color:#52525b}
 
 /* ═══ ABOUT ═══ */
-.about-section{position:relative;z-index:1;background:#18181b;padding:120px 80px 140px;color:#F4F4F6}
+.about-section{position:relative;z-index:1;background:#18181b;padding:96px 80px 88px;color:#F4F4F6}
 
 .about-section .section-head .label{color:rgba(244,244,246,0.4)}
 .about-section .section-head .count{color:rgba(244,244,246,0.25)}
-.about-section .section-head{border-bottom-color:rgba(244,244,246,0.1)}
+.about-section .section-head{border-bottom-color:rgba(244,244,246,0.1);margin-bottom:44px}
 
 .about-body{max-width:1280px;margin:0 auto;
-  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,0.95fr);gap:56px;align-items:start}
 
 .about-bio h2{font-weight:700;font-size:56px;line-height:1.08;
-  letter-spacing:-0.025em;color:#F4F4F6;margin-bottom:32px}
+  letter-spacing:-0.025em;color:#F4F4F6;margin-bottom:24px}
 .about-bio p{font-size:19px;line-height:1.76;color:rgba(244,244,246,0.68);max-width:42ch}
-.about-bio p+p{margin-top:20px}
+.about-bio p+p{margin-top:16px}
 .about-bio .about-cta{display:inline-flex;align-items:center;gap:10px;
-  margin-top:48px;font-family:var(--font-mono);font-size:12px;letter-spacing:0.16em;
+  margin-top:32px;font-family:var(--font-mono);font-size:12px;letter-spacing:0.16em;
   text-transform:uppercase;color:#F4F4F6;text-decoration:none;
   border-bottom:1px solid rgba(244,244,246,0.25);padding-bottom:6px;
   transition:border-color 200ms ease,color 200ms ease}
 .about-bio .about-cta:hover{border-color:#F4F4F6;color:#fff}
 
-.about-stack{display:flex;flex-direction:column;gap:0;padding-top:8px}
+.about-stack{display:flex;flex-direction:column;gap:0;padding-top:2px}
 .stack-row{display:grid;grid-template-columns:140px 1fr;gap:24px;
-  padding:28px 0;border-top:1px solid rgba(244,244,246,0.1);align-items:baseline}
+  padding:20px 0;border-top:1px solid rgba(244,244,246,0.1);align-items:baseline}
 .stack-row:last-child{border-bottom:1px solid rgba(244,244,246,0.1)}
 .stack-row .sk{font-family:var(--font-mono);font-size:11px;letter-spacing:0.16em;
   text-transform:uppercase;color:rgba(244,244,246,0.35)}
@@ -241,14 +250,14 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
 
 /* ═══ FOOTER ═══ */
 .site-footer{background:#18181b;position:relative;z-index:1}
-.footer-inner{max-width:1280px;margin:0 auto;padding:80px 80px 48px}
-.footer-top{margin-bottom:64px}
-.footer-wordmark{font-family:var(--font-sans);font-weight:700;font-size:72px;
-  letter-spacing:-0.03em;color:#F8F7F4;line-height:1;margin-bottom:20px}
+.footer-inner{max-width:1280px;margin:0 auto;padding:0 80px 36px}
+.footer-top{margin-bottom:28px}
+.footer-wordmark{font-family:var(--font-sans);font-weight:700;font-size:44px;
+  letter-spacing:-0.03em;color:#F8F7F4;line-height:1;margin-bottom:12px}
 .footer-desc{font-family:var(--font-mono);font-size:13px;letter-spacing:0.16em;
   text-transform:uppercase;color:rgba(248,247,244,0.35)}
-.footer-contacts{display:flex;gap:48px;margin-bottom:64px;
-  padding-bottom:48px;border-bottom:1px solid rgba(248,247,244,0.1)}
+.footer-contacts{display:flex;gap:28px;flex-wrap:wrap;margin-bottom:28px;
+  padding-bottom:24px;border-bottom:1px solid rgba(248,247,244,0.1)}
 .footer-link{font-family:var(--font-mono);font-size:13px;letter-spacing:0.1em;
   text-transform:uppercase;color:rgba(248,247,244,0.55);text-decoration:none;
   display:flex;align-items:center;gap:10px;transition:color 200ms ease}
@@ -258,8 +267,6 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
 .footer-bottom{display:flex;justify-content:space-between;align-items:center}
 .footer-copy{font-family:var(--font-mono);font-size:11px;letter-spacing:0.12em;
   text-transform:uppercase;color:rgba(248,247,244,0.25)}
-.footer-built{font-family:var(--font-mono);font-size:11px;letter-spacing:0.12em;
-  text-transform:uppercase;color:rgba(248,247,244,0.15)}
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:900px){
@@ -272,11 +279,11 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
   .cards-single{grid-template-columns:1fr}
   .cover-top{left:28px;right:28px}
   .cover-top nav{display:none}
-  .about-section{padding:80px 28px 100px}
-  .about-body{grid-template-columns:1fr;gap:56px}
+  .about-section{padding:72px 28px 64px}
+  .about-body{grid-template-columns:1fr;gap:40px}
   .about-bio h2{font-size:40px}
-  .footer-inner{padding:56px 28px 40px}
-  .footer-wordmark{font-size:48px}
-  .footer-contacts{flex-direction:column;gap:24px}
+  .footer-inner{padding:0 28px 32px}
+  .footer-wordmark{font-size:36px}
+  .footer-contacts{flex-direction:column;gap:18px}
   .footer-bottom{flex-direction:column;gap:12px;align-items:flex-start}
 }
