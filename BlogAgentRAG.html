@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<title>Blog Agent RAG — 국내 주식 이슈 블로그 파이프라인</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="stylesheet" href="shared/tokens.css"/>
+<link rel="stylesheet" href="shared/slide.css"/>
+<script src="shared/deck-stage.js"></script>
+<style>
+  /* ── 터미널 블록 ── */
+  .term-block {
+    background: #111116;
+    border: 1px solid rgba(80,220,120,0.18);
+    padding: 24px 28px;
+    font-family: var(--font-mono);
+    font-size: 19px;
+    line-height: 1.8;
+    color: rgba(80,220,120,0.85);
+  }
+  .term-block .prompt { color: rgba(80,220,120,0.45); }
+  .term-block .cmd    { color: #e0e0e8; }
+  .term-block .out    { color: rgba(80,220,120,0.7); }
+  .term-block .dim    { color: rgba(255,255,255,0.3); }
+  .blink {
+    display: inline-block; width: 10px; height: 18px;
+    background: rgba(80,220,120,0.7); vertical-align: middle;
+    animation: cur 1s step-end infinite;
+  }
+  @keyframes cur { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* ── 파이프라인 행 ── */
+  .pipe-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 0;
+    border-top: 1px solid rgba(80,220,120,0.15);
+    padding: 10px 0;
+    align-items: start;
+  }
+  .pipe-row:first-child { border-top: none; }
+  .pipe-stage {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    letter-spacing: 0.12em;
+    color: rgba(80,220,120,0.55);
+    padding-top: 2px;
+  }
+  .pipe-content {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    color: #e0e0e8;
+    line-height: 1.65;
+  }
+  .pipe-content .hl { color: rgba(80,220,120,0.85); }
+  .pipe-arrow {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    color: rgba(80,220,120,0.35);
+    padding: 4px 0;
+    border-top: 1px solid rgba(80,220,120,0.1);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── 검증 카드 ── */
+  .val-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .val-card {
+    padding: 28px 24px;
+    border-top: 2px solid var(--accent-600);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: var(--paper-50);
+  }
+  .val-card .vc-num {
+    font-family: var(--font-mono);
+    font-size: 17px;
+    letter-spacing: 0.12em;
+    color: var(--accent-600);
+  }
+  .val-card .vc-title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 26px;
+    color: var(--fg-1);
+    line-height: 1.2;
+  }
+  .val-card .vc-items {
+    font-family: var(--font-mono);
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--fg-2);
+  }
+  .val-card .vc-items .hit { color: var(--accent-600); }
+
+  /* ── 결과 수치 ── */
+  .result-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 36px;
+    margin-bottom: 36px;
+  }
+  .result-stats .rs-col {
+    padding-right: 32px;
+    border-right: 1px solid var(--rule-soft);
+  }
+  .result-stats .rs-col:last-child { border-right: none; padding-right: 0; }
+  .result-stats .rs-col:not(:first-child) { padding-left: 32px; }
+  .result-stats .rs-v {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 76px;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--accent-600);
+  }
+  .result-stats .rs-k {
+    font-family: var(--font-mono);
+    font-size: 17px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    margin-bottom: 10px;
+  }
+  .result-stats .rs-u {
+    font-family: var(--font-sans);
+    font-size: 19px;
+    color: var(--fg-2);
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+
+  /* ── Close 증명 테이블 ── */
+  .prove-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+  }
+  .prove-table th {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(244,244,246,0.35);
+    text-align: left;
+    padding: 0 24px 14px 0;
+    border-bottom: 1px solid rgba(244,244,246,0.12);
+  }
+  .prove-table td {
+    font-size: 21px;
+    color: #C2C2C8;
+    padding: 13px 24px 13px 0;
+    border-bottom: 1px solid rgba(244,244,246,0.08);
+    line-height: 1.4;
+    vertical-align: top;
+  }
+  .prove-table td:first-child {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    letter-spacing: 0.06em;
+    color: rgba(80,220,120,0.75);
+    white-space: nowrap;
+    padding-right: 40px;
+  }
+  .prove-table tr:last-child td { border-bottom: none; }
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+<!-- ═══ Slide 01 — Title ═══ -->
+<section class="slide dark" data-label="01 Title">
+  <div class="top-rule">
+    <span>김희태 · PORTFOLIO</span>
+    <span>LLM APPLICATION SYSTEM</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 500px; gap:64px; flex:1; align-items:center;">
+    <div style="display:flex; flex-direction:column; gap:40px;">
+      <div>
+        <div class="meta-cap" style="margin-bottom:20px; color:rgba(244,244,246,0.4);">개인 프로젝트 · 2026.04–05 · 4주</div>
+        <h1 style="font-family:var(--font-sans); font-weight:700; font-size:96px; line-height:1.06; letter-spacing:-0.03em; color:#F4F4F6;">
+          국내 주식 이슈<br/>블로그 파이프라인
+        </h1>
+        <p style="font-family:var(--font-sans); font-size:28px; line-height:1.55; color:rgba(244,244,246,0.55); margin-top:24px; max-width:38ch;">
+          상한가·급등 종목 분석 글을 자동 생성하는<br/>RAG + 환각 방지 LLM 응용 시스템
+        </p>
+      </div>
+
+      <div class="meta-grid" style="border-top:1px solid rgba(244,244,246,0.12); padding-top:32px;">
+        <div class="col">
+          <div class="k" style="color:rgba(244,244,246,0.35);">TYPE</div>
+          <div class="v" style="color:#F4F4F6;">LLM Pipeline</div>
+        </div>
+        <div class="col">
+          <div class="k" style="color:rgba(244,244,246,0.35);">LLM</div>
+          <div class="v" style="color:#F4F4F6;">Gemini Flash</div>
+        </div>
+        <div class="col">
+          <div class="k" style="color:rgba(244,244,246,0.35);">RAG</div>
+          <div class="v" style="color:#F4F4F6;">6단 도메인 소스</div>
+        </div>
+        <div class="col">
+          <div class="k" style="color:rgba(244,244,246,0.35);">STACK</div>
+          <div class="v" style="color:#F4F4F6;">DART · Selenium</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 터미널 블록 -->
+    <div class="term-block" style="align-self:center;">
+      <div><span class="prompt">$ </span><span class="cmd">python run.py --cloud</span></div>
+      <div class="out">✓ 종목 수집: 7개 (+10%↑)</div>
+      <div class="out">✓ RAG 6단 완료</div>
+      <div class="out">&nbsp; └ DART 사업보고서 파싱</div>
+      <div class="out">&nbsp; └ 지분 시계열 추출</div>
+      <div class="out">✓ Gemini Flash 작성</div>
+      <div class="out">✓ 검증 통과 — 환각 <span style="color:#f5746a;">0</span>건</div>
+      <div class="out">✓ Sheets 배포 완료</div>
+      <div><span class="prompt">$ </span><span class="blink"></span></div>
+    </div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:rgba(244,244,246,0.4);">[ HK ]</a>
+  <div class="pageno" style="color:rgba(244,244,246,0.4);">01 / 06</div>
+</section>
+
+<!-- ═══ Slide 02 — Problem ═══ -->
+<section class="slide" data-label="02 Problem">
+  <div class="top-rule">
+    <span>02 · 문제 정의</span>
+    <span>WHY THIS MATTERS</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1.1fr 0.9fr; gap:64px; flex:1; align-items:center; padding-top:24px;">
+    <div>
+      <h2 style="font-family:var(--font-sans); font-weight:600; font-size:60px; line-height:1.18; letter-spacing:-0.02em; color:var(--fg-1); max-width:22ch;">
+        1개 종목 = 1시간.<br/>
+        <span style="color:var(--fg-3); font-weight:400;">LLM에 맡기면 환각.</span>
+      </h2>
+      <p style="font-family:var(--font-sans); font-size:26px; line-height:1.6; color:var(--fg-2); margin-top:28px; max-width:34ch;">
+        매일 상한가·급등 종목이 5~15개 발생한다. 시세 수집, 공시 검토, 뉴스 정독, 글 작성, 배포까지 한 종목에 약 1시간. 5개면 하루 절반이 사라진다.
+      </p>
+      <div style="margin-top:36px; padding:20px 24px; background:rgba(181,51,30,0.06); border-left:3px solid var(--danger);">
+        <div style="font-family:var(--font-mono); font-size:15px; color:var(--danger); letter-spacing:0.1em; margin-bottom:6px;">핵심 문제</div>
+        <div style="font-family:var(--font-sans); font-size:24px; color:var(--fg-1); line-height:1.5;">
+          투자 정보의 환각 = 자본시장법 위반 + 독자 피해.<br/>어떤 형태로든 <strong>반드시 막아야 한다.</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- 환각 비교 카드 -->
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <div style="font-family:var(--font-mono); font-size:15px; letter-spacing:0.12em; color:var(--fg-3); margin-bottom:4px;">실제 환각 사례 — 경인전자 (초기 v3)</div>
+
+      <div style="padding:24px 26px; background:rgba(181,51,30,0.05); border:1px solid rgba(181,51,30,0.3);">
+        <div style="font-family:var(--font-mono); font-size:13px; letter-spacing:0.1em; color:var(--danger); margin-bottom:12px;">LLM 출력 (v3)</div>
+        <div style="font-family:var(--font-sans); font-size:22px; color:var(--fg-1); line-height:1.6;">
+          "경인전자는 <span style="background:rgba(181,51,30,0.2); padding:2px 6px; color:var(--danger); font-weight:600;">엔터테이먼트 산업</span>에서 강점을 가지고 있으며, 매출 <span style="background:rgba(181,51,30,0.2); padding:2px 6px; color:var(--danger); font-weight:600;">1조원</span>으로 전년 대비 50% 성장했습니다."
+        </div>
+      </div>
+
+      <div style="padding:24px 26px; background:rgba(79,122,61,0.05); border:1px solid rgba(79,122,61,0.3);">
+        <div style="font-family:var(--font-mono); font-size:13px; letter-spacing:0.1em; color:var(--positive); margin-bottom:12px;">DART 실제 (v11)</div>
+        <div style="font-family:var(--font-sans); font-size:22px; color:var(--fg-1); line-height:1.6;">
+          사업: <span style="color:var(--positive); font-weight:600;">가전 리모컨·스위치 제조</span><br/>
+          매출: <span style="color:var(--positive); font-weight:600;">229억원</span>
+          <span style="font-family:var(--font-mono); font-size:15px; color:var(--fg-3); margin-left:10px;">← 4,259% 차이</span>
+        </div>
+      </div>
+
+      <div style="font-family:var(--font-mono); font-size:17px; color:var(--fg-3); padding-top:8px; line-height:1.65;">
+        LLM 크기 문제가 아니었다.<br/>입력 데이터 자체가 부실했다.
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">02 / 06</div>
+</section>
+
+<!-- ═══ Slide 03 — Solution (Pipeline) ═══ -->
+<section class="slide" data-label="03 Solution">
+  <div class="top-rule">
+    <span>03 · 파이프라인 설계</span>
+    <span>PIPELINE ARCHITECTURE</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:48px; flex:1; padding-top:20px;">
+    <!-- 파이프라인 터미널 -->
+    <div class="term-block" style="font-size:17px; line-height:1.75; display:flex; flex-direction:column; justify-content:center;">
+      <div class="pipe-row">
+        <div class="pipe-stage">[COLLECT]</div>
+        <div class="pipe-content">
+          <span class="hl">[1]</span> Naver 시세 — 종가/PBR/PER/EPS/시총<br/>
+          <span class="hl">[2]</span> Google News RSS + 본문 크롤<br/>
+          <span class="hl">[3]</span> DART 재무 — 매출/영업이익/순이익<br/>
+          <span class="hl">[4]</span> DART 사업보고서 본문 파싱<br/>
+          <span style="color:rgba(80,220,120,0.4);">&nbsp;&nbsp;&nbsp;└</span> 사업내용 / 관계회사 / 지분 시계열<br/>
+          <span class="hl">[5]</span> 재무상태표 → 부채비율·유보율<br/>
+          <span class="hl">[6]</span> KOSPI/KOSDAQ 시황
+        </div>
+      </div>
+      <div class="pipe-arrow">↓ RAG 6단 데이터 주입</div>
+      <div class="pipe-row">
+        <div class="pipe-stage">[GENERATE]</div>
+        <div class="pipe-content">
+          Gemini Flash — Few-shot 시스템 프롬프트<br/>
+          <span style="color:rgba(80,220,120,0.4);">&nbsp;└</span> 정답글 패턴 학습 (인과관계 추적)
+        </div>
+      </div>
+      <div class="pipe-arrow">↓ 3중 검증 루프 (MAX 2회 재시도)</div>
+      <div class="pipe-row">
+        <div class="pipe-stage">[VALIDATE]</div>
+        <div class="pipe-content">
+          형식검증 → 팩트체커 → 모순감지<br/>
+          <span style="color:rgba(80,220,120,0.4);">&nbsp;└</span> 위반 시 재시도 → 잔재 → <span class="hl">코드 강제 교정</span>
+        </div>
+      </div>
+      <div class="pipe-arrow">↓ 배포</div>
+      <div class="pipe-row">
+        <div class="pipe-stage">[DEPLOY]</div>
+        <div class="pipe-content">
+          Google Sheets / Obsidian / Telegram
+        </div>
+      </div>
+    </div>
+
+    <!-- 기술 의사결정 -->
+    <div style="display:flex; flex-direction:column; justify-content:center; gap:0;">
+      <div style="font-family:var(--font-mono); font-size:15px; letter-spacing:0.12em; color:var(--fg-3); margin-bottom:20px;">기술 의사결정</div>
+      <div style="display:flex; flex-direction:column;">
+        <div style="display:grid; grid-template-columns:200px 1fr; gap:16px; padding:15px 0; border-top:1px solid var(--rule-soft);">
+          <div style="font-family:var(--font-mono); font-size:17px; color:var(--accent-600);">Gemini Flash</div>
+          <div style="font-size:21px; color:var(--fg-2); line-height:1.45;">Ollama 환각 심함 → Cloud 전환. Claude 키 없음, Gemini Pro 한도 0, Flash 무료 15회/분</div>
+        </div>
+        <div style="display:grid; grid-template-columns:200px 1fr; gap:16px; padding:15px 0; border-top:1px solid var(--rule-soft);">
+          <div style="font-family:var(--font-mono); font-size:17px; color:var(--accent-600);">RAG 6단</div>
+          <div style="font-size:21px; color:var(--fg-2); line-height:1.45;">재무 3줄만 주면 빈 곳을 환각으로 채움 → 회사정보·지분·공시·시황 모두 명시 주입</div>
+        </div>
+        <div style="display:grid; grid-template-columns:200px 1fr; gap:16px; padding:15px 0; border-top:1px solid var(--rule-soft);">
+          <div style="font-family:var(--font-mono); font-size:17px; color:var(--accent-600);">지분 시계열</div>
+          <div style="font-size:21px; color:var(--fg-2); line-height:1.45;">DART 사업보고서 연도별 변동 → 정규식으로 최신값 추출. 정답글 핵심 트리거 자동 인용</div>
+        </div>
+        <div style="display:grid; grid-template-columns:200px 1fr; gap:16px; padding:15px 0; border-top:1px solid var(--rule-soft);">
+          <div style="font-family:var(--font-mono); font-size:17px; color:var(--accent-600);">Few-shot</div>
+          <div style="font-size:21px; color:var(--fg-2); line-height:1.45;">단순 시세 나열 → 시장 평가 논리 구조 학습. 인과관계 추적 패턴 학습</div>
+        </div>
+        <div style="display:grid; grid-template-columns:200px 1fr; gap:16px; padding:15px 0; border-top:1px solid var(--rule-soft);">
+          <div style="font-family:var(--font-mono); font-size:17px; color:var(--accent-600);">코드 교정</div>
+          <div style="font-size:21px; color:var(--fg-2); line-height:1.45;">LLM 재시도해도 같은 모순 반복 → 코드가 정규식으로 강제 수정. 마지막 안전망</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">03 / 06</div>
+</section>
+
+<!-- ═══ Slide 04 — Method (3-layer safety net) ═══ -->
+<section class="slide soft" data-label="04 Method">
+  <div class="top-rule">
+    <span>04 · 검증 설계</span>
+    <span>3-LAYER SAFETY NET</span>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:28px; flex:1; padding-top:20px;">
+    <div class="val-grid">
+      <div class="val-card">
+        <div class="vc-num">① 형식 검증</div>
+        <div class="vc-title">구조가 맞는가</div>
+        <div class="vc-items">
+          <span class="hit">##</span> 헤딩 4개 이상<br/>
+          한글 <span class="hit">800자+</span> (1,500자 목표)<br/>
+          해시태그 <span class="hit">10개+</span><br/>
+          종목명 본문 언급<br/>
+          플레이스홀더 텍스트 없음
+        </div>
+      </div>
+      <div class="val-card">
+        <div class="vc-num">② 팩트체커</div>
+        <div class="vc-title">수치가 맞는가</div>
+        <div class="vc-items">
+          DART 매출 / 영업이익 / 순이익<br/>vs 본문 수치 자동 대조<br/><br/>
+          <span class="hit">50%+ 차이</span> → 환각 판정<br/>
+          → 재시도 (강화 가이드)
+        </div>
+      </div>
+      <div class="val-card">
+        <div class="vc-num">③ 모순 감지 10+ 룰</div>
+        <div class="vc-title">논리가 맞는가</div>
+        <div class="vc-items">
+          PBR 5+ ↔ <span class="hit">"저평가"</span><br/>
+          EPS 음수 ↔ <span class="hit">"PER 저평가"</span><br/>
+          적자 + <span class="hit">"안정적"</span><br/>
+          등락률 &lt;28% + <span class="hit">"상한가"</span><br/>
+          유상증자 + <span class="hit">"재무 안정"</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 코드 스니펫 -->
+    <div style="display:grid; grid-template-columns:200px 1fr; gap:0; align-items:stretch;">
+      <div style="background:var(--accent-600); padding:20px 24px; display:flex; flex-direction:column; justify-content:center;">
+        <div style="font-family:var(--font-mono); font-size:13px; letter-spacing:0.1em; color:rgba(255,255,255,0.65);">LAST RESORT</div>
+        <div style="font-family:var(--font-sans); font-weight:600; font-size:22px; color:#fff; margin-top:8px; line-height:1.35;">코드가<br/>마지막<br/>안전망</div>
+      </div>
+      <div class="term-block" style="font-size:17px; padding:20px 26px; line-height:1.7;">
+        <span style="color:rgba(255,255,255,0.3);"># LLM이 재시도해도 같은 모순 반복 → 코드가 강제 교정</span><br/>
+        <span style="color:#e0e0e8;">for</span> pat <span style="color:#e0e0e8;">in</span> [<br/>
+        &nbsp;&nbsp;<span style="color:#f5b556;">r"재무\s*지표상의?\s*안정적?\s*흐름[^.\n]*\.?"</span>,<br/>
+        &nbsp;&nbsp;<span style="color:#f5b556;">r"안정적인?\s*재무\s*(?:상태|구조)[^.\n]*\.?"</span>,<br/>
+        ]:<br/>
+        &nbsp;&nbsp;raw = re.<span style="color:#e0e0e8;">sub</span>(pat, <span style="color:rgba(80,220,120,0.85);">"본업이 적자 상태로 실적 회복 관찰이 필요합니다."</span>, raw)
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">04 / 06</div>
+</section>
+
+<!-- ═══ Slide 05 — Results ═══ -->
+<section class="slide" data-label="05 Results">
+  <div class="top-rule">
+    <span>05 · 결과</span>
+    <span>BEFORE → AFTER</span>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:28px; flex:1; padding-top:16px;">
+    <div class="result-stats">
+      <div class="rs-col">
+        <div class="rs-k">환각 (DART 50%+ 차이)</div>
+        <div class="rs-v">0건</div>
+        <div class="rs-u">초기 v3: 5종목 중 3건 → 현재 0건</div>
+      </div>
+      <div class="rs-col">
+        <div class="rs-k">정답글 대비 완성도</div>
+        <div class="rs-v">75–90%</div>
+        <div class="rs-u">달바글로벌 — 뉴스 인용·외국인 지분·Re-rating 패턴 학습</div>
+      </div>
+      <div class="rs-col">
+        <div class="rs-k">개선 이터레이션</div>
+        <div class="rs-v">v1→v11</div>
+        <div class="rs-u">매 버전 문제 발견 → 해결 → 커밋 기록</div>
+      </div>
+    </div>
+
+    <div style="flex:1; min-height:0; display:flex; flex-direction:column; gap:10px;">
+      <div style="font-family:var(--font-mono); font-size:14px; letter-spacing:0.1em; color:var(--fg-3);">실제 생성 결과 — Google Sheets 배포</div>
+      <div style="flex:1; min-height:0; overflow:hidden; border:1px solid var(--rule);">
+        <img src="blog-agent-rag/img/sheets-result.png"
+             alt="Google Sheets에 배포된 블로그 초안"
+             style="width:100%; height:100%; object-fit:cover; object-position:top;"/>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
+  <div class="pageno">05 / 06</div>
+</section>
+
+<!-- ═══ Slide 06 — Close ═══ -->
+<section class="slide dark" data-label="06 Close">
+  <div class="top-rule">
+    <span>06 · 증명한 것</span>
+    <span>WHAT THIS PROVES</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 380px; gap:80px; flex:1; align-items:center;">
+    <table class="prove-table">
+      <thead>
+        <tr>
+          <th>영역</th>
+          <th>증명 내용</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>LLM 시스템 설계</td>
+          <td>데이터 수집 → LLM → 검증 → 교정 → 배포 완결 파이프라인</td>
+        </tr>
+        <tr>
+          <td>RAG 깊이</td>
+          <td>단순 챗봇 RAG가 아닌 6단 도메인 특화 소스 통합 (DART 사업보고서 파싱 포함)</td>
+        </tr>
+        <tr>
+          <td>환각 방지</td>
+          <td>룰베이스 + 모순 감지 + 자동 교정 3중 안전망으로 DART 수치 환각 0건</td>
+        </tr>
+        <tr>
+          <td>반복 개선</td>
+          <td>v1~v11, 매 버전 문제 발견·해결 기록 (GitHub 커밋 시퀀스)</td>
+        </tr>
+        <tr>
+          <td>외부 통합</td>
+          <td>Google Sheets API / Selenium / 인증 4단 폴백 체인</td>
+        </tr>
+        <tr>
+          <td>실용적 결정</td>
+          <td>"LLM이 못 고치면 코드가 고친다" — 완벽보다 동작하는 시스템</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="display:flex; flex-direction:column; gap:24px; align-self:center;">
+      <div style="font-family:var(--font-mono); font-size:14px; letter-spacing:0.12em; color:rgba(244,244,246,0.3);">GITHUB</div>
+      <a href="https://github.com/kimheetae0104/Agent/tree/blog-agent-pr"
+         target="_blank" rel="noopener noreferrer"
+         style="font-family:var(--font-mono); font-size:18px; color:rgba(80,220,120,0.8); text-decoration:none; line-height:1.6; word-break:break-all;">
+        github.com/kimheetae0104/<br/>Agent (blog-agent-pr)
+      </a>
+      <div style="padding-top:24px; border-top:1px solid rgba(244,244,246,0.1);">
+        <div style="font-family:var(--font-mono); font-size:72px; font-weight:700; color:rgba(244,244,246,0.06); line-height:1; letter-spacing:-0.04em;">RAG</div>
+        <div style="font-family:var(--font-mono); font-size:72px; font-weight:700; color:rgba(244,244,246,0.06); line-height:1; letter-spacing:-0.04em;">+LLM</div>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:rgba(244,244,246,0.4);">[ HK ]</a>
+  <div class="pageno" style="color:rgba(244,244,246,0.4);">06 / 06</div>
+</section>
+
+</deck-stage>
+
+<!-- 플로팅 홈 버튼 -->
+<a href="index.html" id="home-btn">← PORTFOLIO</a>
+
+<script>
+  const btn = document.getElementById('home-btn');
+  let t;
+  document.addEventListener('mousemove', () => {
+    btn.classList.add('visible');
+    clearTimeout(t);
+    t = setTimeout(() => btn.classList.remove('visible'), 2400);
+  });
+</script>
+</body>
+</html>
