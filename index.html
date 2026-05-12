@@ -8,28 +8,119 @@
 <link rel="stylesheet" href="shared/index.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&display=swap" rel="stylesheet"/>
 <style>
+  /* ── Blog Agent RAG 썸네일 (단일 상한가 캔들 + 검증 배지) ── */
   .thumb-rag {
-    background: #111116;
+    background: #fafafa;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 24px 28px 36px;
+  }
+  .thumb-rag::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+  }
+  .rag-stage {
+    position: relative;
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 24px;
+    align-items: flex-end;
+    width: 100%;
+    height: 100%;
+  }
+  .rag-candle {
+    position: relative;
+    width: 36px;
+    height: 88%;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+  }
+  .rag-candle::before {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0; left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    background: #d4341c;
+  }
+  .rag-candle-body {
+    position: relative;
+    width: 100%;
+    height: 78%;
+    background: linear-gradient(180deg, #ef4a2e 0%, #c4291a 100%);
+    box-shadow: 0 4px 16px rgba(212,52,28,0.28);
+  }
+  .rag-uplabel {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #d4341c;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .rag-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 4px;
+  }
+  .rag-info .rag-code {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: #6B6B72;
+  }
+  .rag-info .rag-name {
+    font-family: var(--font-sans, 'Plus Jakarta Sans'), system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1.1;
+    color: #0E0E10;
+    letter-spacing: -0.02em;
+  }
+  .rag-info .rag-pct {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 22px;
+    color: #d4341c;
+    letter-spacing: -0.01em;
+  }
+  .rag-badge {
+    position: absolute;
+    top: 18px;
+    right: 18px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 0 24px;
-  }
-  .rag-term {
+    gap: 6px;
+    padding: 7px 12px;
+    background: #0E0E10;
+    color: #fff;
     font-family: 'Space Mono', monospace;
-    font-size: 13px;
-    line-height: 1.9;
-    width: 100%;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
-  .rag-term .rp { color: rgba(80,220,120,0.45); }
-  .rag-term .rc { color: #e0e0e8; }
-  .rag-term .ro { color: rgba(80,220,120,0.75); }
-  .rblink {
-    display: inline-block; width: 8px; height: 14px;
-    background: rgba(80,220,120,0.7); vertical-align: middle;
-    animation: rbcur 1s step-end infinite;
+  .rag-badge .rag-dot {
+    width: 6px; height: 6px;
+    background: #4ade80;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(74,222,128,0.18);
   }
-  @keyframes rbcur { 0%,100%{opacity:1} 50%{opacity:0} }
 </style>
 </head>
 <body>
@@ -200,13 +291,20 @@
 
       <a class="card" href="BlogAgentRAG.html">
         <div class="thumb thumb-rag">
-          <div class="rag-term">
-            <div><span class="rp">$</span> <span class="rc">python run.py --cloud</span></div>
-            <div><span class="ro">✓ 종목 수집: 7개 (+10%)</span></div>
-            <div><span class="ro">✓ RAG 6단 완료</span></div>
-            <div><span class="ro">✓ 환각 <span style="color:#f5746a;">0</span>건 통과</span></div>
-            <div><span class="ro">✓ Sheets 배포 완료</span></div>
-            <div><span class="rp">$</span> <span class="rblink"></span></div>
+          <div class="rag-badge">
+            <span class="rag-dot"></span>
+            환각 0건 · DART PASS
+          </div>
+          <div class="rag-stage">
+            <div class="rag-candle">
+              <div class="rag-uplabel">+29.81%</div>
+              <div class="rag-candle-body"></div>
+            </div>
+            <div class="rag-info">
+              <div class="rag-code">KOSPI · 009140</div>
+              <div class="rag-name">경인전자<br/>상한가</div>
+              <div class="rag-pct">▲ 30,050원</div>
+            </div>
           </div>
         </div>
         <div class="info">
