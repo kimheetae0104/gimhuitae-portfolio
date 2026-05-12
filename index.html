@@ -7,6 +7,30 @@
 <link rel="stylesheet" href="shared/tokens.css"/>
 <link rel="stylesheet" href="shared/index.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&display=swap" rel="stylesheet"/>
+<style>
+  .thumb-rag {
+    background: #111116;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+  }
+  .rag-term {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    line-height: 1.9;
+    width: 100%;
+  }
+  .rag-term .rp { color: rgba(80,220,120,0.45); }
+  .rag-term .rc { color: #e0e0e8; }
+  .rag-term .ro { color: rgba(80,220,120,0.75); }
+  .rblink {
+    display: inline-block; width: 8px; height: 14px;
+    background: rgba(80,220,120,0.7); vertical-align: middle;
+    animation: rbcur 1s step-end infinite;
+  }
+  @keyframes rbcur { 0%,100%{opacity:1} 50%{opacity:0} }
+</style>
 </head>
 <body>
 
@@ -71,7 +95,7 @@
 <section class="projects-section" id="projects">
   <div class="section-head">
     <div class="label">SELECTED PROJECTS</div>
-    <div class="count">05 WORKS</div>
+    <div class="count">06 WORKS</div>
   </div>
 
   <div class="project-group">
@@ -171,6 +195,25 @@
           <h2>Local AI Agent — 클라우드 없이, 로컬에서 완결되는 AI</h2>
           <div class="pdesc">Obsidian + Ollama + AntiGravity로 붙인 로컬 AI 워크플로우 실험.</div>
           <div class="tags">PYTHON · OLLAMA · OBSIDIAN · ANTIGRAVITY</div>
+        </div>
+      </a>
+
+      <a class="card" href="BlogAgentRAG.html">
+        <div class="thumb thumb-rag">
+          <div class="rag-term">
+            <div><span class="rp">$</span> <span class="rc">python run.py --cloud</span></div>
+            <div><span class="ro">✓ 종목 수집: 7개 (+10%)</span></div>
+            <div><span class="ro">✓ RAG 6단 완료</span></div>
+            <div><span class="ro">✓ 환각 <span style="color:#f5746a;">0</span>건 통과</span></div>
+            <div><span class="ro">✓ Sheets 배포 완료</span></div>
+            <div><span class="rp">$</span> <span class="rblink"></span></div>
+          </div>
+        </div>
+        <div class="info">
+          <div class="num">№ 06 · LLM PIPELINE · 2026.05</div>
+          <h2>Blog Agent RAG — 상한가 종목 분석 글을 자동 생성한다</h2>
+          <div class="pdesc">6단 RAG + 3중 환각 방지로 투자 블로그 반자동화. DART 수치 환각 0건.</div>
+          <div class="tags">PYTHON · GEMINI · DART · RAG · SELENIUM</div>
         </div>
       </a>
     </div>
