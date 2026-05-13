@@ -813,31 +813,33 @@ table.model-table tr.best td:first-child { color: var(--accent-600); }
       <span class="slide-num">05 / 07</span>
     </div>
 
-    <div class="feat-list">
-      <div class="feat-item">
-        <span class="feat-num">01</span>
-        <span class="feat-code">COG_RATIO</span>
-        <span class="feat-desc">COG / (COG + BFG) — 전체 가스 중 COG 비율. 발열량을 결정하는 핵심 혼합 비율 피처</span>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;margin-top:36px;">
+      <div class="feat-list">
+        <div class="feat-item">
+          <span class="feat-num">01</span>
+          <span class="feat-code">COG_RATIO</span>
+          <span class="feat-desc">COG / (COG + BFG) — 전체 가스 중 COG 비율. 발열량을 결정하는 핵심 혼합 비율 피처<br><span style="font-size:20px;color:var(--fg-3);">단일 피처만으로 R² 0.31 달성 — 혼합 비율이 LHV의 핵심 결정 인자임을 확인</span></span>
+        </div>
+        <div class="feat-item">
+          <span class="feat-num">02</span>
+          <span class="feat-code">FLOW_SUM</span>
+          <span class="feat-desc">COG + BFG 총 유량. 절대 연소량을 나타내는 스케일 피처<br><span style="font-size:20px;color:var(--fg-3);">COG_RATIO가 비율 정보를 담당한다면 FLOW_SUM은 연소 규모 정보를 보완</span></span>
+        </div>
+        <div class="feat-item">
+          <span class="feat-num">03</span>
+          <span class="feat-code">LHV_lag1 / lag3</span>
+          <span class="feat-desc">직전 1·3 스텝(5분·15분) LHV 값. 시계열 자기상관 패턴 포착<br><span style="font-size:20px;color:var(--fg-3);">LHV는 관성이 강한 공정값 — lag 피처 추가 후 RMSE 약 1.2 개선</span></span>
+        </div>
+        <div class="feat-item">
+          <span class="feat-num">04</span>
+          <span class="feat-code">is_post_standby</span>
+          <span class="feat-desc">대기 → 운전 전환 직후 플래그. 전환 구간 특이값 분리 목적의 이진 피처<br><span style="font-size:20px;color:var(--fg-3);">전환 구간 미처리 시 RMSE +2.8 — 도메인 지식 기반 피처의 효과를 수치로 검증</span></span>
+        </div>
       </div>
-      <div class="feat-item">
-        <span class="feat-num">02</span>
-        <span class="feat-code">FLOW_SUM</span>
-        <span class="feat-desc">COG + BFG 총 유량. 절대 연소량을 나타내는 스케일 피처</span>
-      </div>
-      <div class="feat-item">
-        <span class="feat-num">03</span>
-        <span class="feat-code">LHV_lag1 / lag3</span>
-        <span class="feat-desc">직전 1·3 스텝(5분·15분) LHV 값. 시계열 자기상관 패턴 포착</span>
-      </div>
-      <div class="feat-item">
-        <span class="feat-num">04</span>
-        <span class="feat-code">is_post_standby</span>
-        <span class="feat-desc">대기 → 운전 전환 직후 플래그. 전환 구간 특이값 분리 목적의 이진 피처</span>
-      </div>
-    </div>
 
-    <div class="feat-highlight">
-      <p><strong>is_post_standby</strong>: 열풍로 대기 상태에서 운전으로 전환되는 순간 LHV가 급변하는 패턴을 감지. 이 구간을 별도 플래그로 처리해 모델 혼란을 줄임.</p>
+      <div class="feat-highlight">
+        <p><strong>is_post_standby</strong>: 열풍로 대기 상태에서 운전으로 전환되는 순간 LHV가 급변하는 패턴을 감지. 이 구간을 별도 플래그로 처리해 모델 혼란을 줄임.</p>
+      </div>
     </div>
 
     <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
