@@ -852,7 +852,8 @@ table.model-table tr.best td:first-child { color: var(--accent-600); }
     </div>
 
     <div class="model-layout">
-      <div class="model-table-wrap">
+      <!-- 왼쪽: 모델 비교 테이블 + 인사이트 -->
+      <div class="model-table-wrap" style="display:flex;flex-direction:column;">
         <table class="model-table">
           <thead>
             <tr>
@@ -890,27 +891,49 @@ table.model-table tr.best td:first-child { color: var(--accent-600); }
           </tbody>
         </table>
 
-        <div style="margin-top:28px;padding:20px 24px;background:var(--accent-100);border-radius:var(--r-3);border-left:3px solid var(--accent-600);">
-          <p style="font-family:var(--font-mono);font-size:20px;color:var(--fg-2);margin:0;line-height:1.6;">
-            <strong style="color:var(--accent-600);">Ridge &gt; XGBoost</strong><br>
-            COG·BFG 유량과 LHV 사이 선형 관계가 지배적 → 트리 기반 앙상블보다 정규화 선형 모델이 유리
+        <div style="margin-top:28px;padding:24px 28px;background:var(--accent-100);border-radius:var(--r-3);border-left:3px solid var(--accent-600);">
+          <p style="font-family:var(--font-mono);font-size:20px;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent-600);margin:0 0 10px;">Ridge &gt; XGBoost</p>
+          <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);margin:0;line-height:1.6;">
+            COG·BFG 유량과 LHV 사이 <strong style="color:var(--fg-1)">선형 관계가 지배적</strong><br>
+            → 트리 기반 앙상블보다 정규화 선형 모델이 유리
           </p>
         </div>
 
-        <div style="margin-top:20px;padding:20px 24px;background:var(--paper-100);border-radius:var(--r-3);">
-          <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);margin:0;line-height:1.6;">
-            5개 모델 전체 비교 이미지 →
+        <div style="margin-top:20px;padding:24px 28px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-100);flex:1;display:flex;flex-direction:column;justify-content:center;">
+          <p style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-3);margin:0 0 6px;">핵심 피처 기여도 (SHAP 기준)</p>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span style="font-family:var(--font-mono);font-size:20px;color:var(--accent-600);font-weight:700;min-width:28px;">①</span>
+              <span style="font-family:var(--font-sans);font-size:22px;color:var(--fg-1);">COG_FLOW</span>
+              <span style="font-family:var(--font-sans);font-size:20px;color:var(--fg-3);margin-left:auto;">가장 높은 기여</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span style="font-family:var(--font-mono);font-size:20px;color:var(--accent-600);font-weight:700;min-width:28px;">②</span>
+              <span style="font-family:var(--font-sans);font-size:22px;color:var(--fg-1);">BFG_FLOW</span>
+              <span style="font-family:var(--font-sans);font-size:20px;color:var(--fg-3);margin-left:auto;">2위</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span style="font-family:var(--font-mono);font-size:20px;color:var(--accent-600);font-weight:700;min-width:28px;">③</span>
+              <span style="font-family:var(--font-sans);font-size:22px;color:var(--fg-1);">COG_RATIO</span>
+              <span style="font-family:var(--font-sans);font-size:20px;color:var(--fg-3);margin-left:auto;">도메인 설계 피처</span>
+            </div>
+          </div>
+          <p style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);margin:16px 0 0;line-height:1.55;">
+            도메인 지식과 SHAP 결과 일치 → <strong style="color:var(--fg-1)">모델 신뢰도 확보</strong>
           </p>
-        </div>
-        <div class="model-img-wrap" style="margin-top:16px;height:180px;">
-          <img src="lhv/img/image10-39.png" alt="모델 성능 비교"/>
-          <div class="model-img-cap">5개 모델 성능 비교</div>
         </div>
       </div>
 
-      <div class="shap-img-wrap">
-        <img src="lhv/img/image3-45.png" alt="SHAP 피처 중요도"/>
-        <div class="shap-img-cap">SHAP — 피처 중요도 및 방향성</div>
+      <!-- 오른쪽: SHAP 이미지 위 + 모델 비교 이미지 아래 -->
+      <div style="display:grid;grid-template-rows:1fr auto;gap:20px;">
+        <div class="shap-img-wrap">
+          <img src="lhv/img/image3-45.png" alt="SHAP 피처 중요도"/>
+          <div class="shap-img-cap">SHAP — 피처 중요도 및 방향성</div>
+        </div>
+        <div class="model-img-wrap" style="height:160px;">
+          <img src="lhv/img/image10-39.png" alt="모델 성능 비교"/>
+          <div class="model-img-cap">5개 모델 성능 비교</div>
+        </div>
       </div>
     </div>
 
