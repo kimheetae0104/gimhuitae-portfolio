@@ -6,432 +6,848 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <link rel="stylesheet" href="shared/tokens.css"/>
 <link rel="stylesheet" href="shared/index.css"/>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&display=swap" rel="stylesheet"/>
-<style>
-  /* ── Blog Agent RAG 썸네일 (단일 상한가 캔들 + 검증 배지) ── */
-  .thumb-rag {
-    background: #fafafa;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding: 24px 28px 36px;
-  }
-  .thumb-rag::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
-    background-size: 28px 28px;
-    pointer-events: none;
-  }
-  .rag-stage {
-    position: relative;
-    display: grid;
-    grid-template-columns: 64px 1fr;
-    gap: 24px;
-    align-items: flex-end;
-    width: 100%;
-    height: 100%;
-  }
-  .rag-candle {
-    position: relative;
-    width: 36px;
-    height: 88%;
-    margin: 0 auto;
-    display: flex;
-    align-items: flex-end;
-  }
-  .rag-candle::before {
-    content: "";
-    position: absolute;
-    top: 0; bottom: 0; left: 50%;
-    width: 2px;
-    transform: translateX(-50%);
-    background: #d4341c;
-  }
-  .rag-candle-body {
-    position: relative;
-    width: 100%;
-    height: 78%;
-    background: linear-gradient(180deg, #ef4a2e 0%, #c4291a 100%);
-    box-shadow: 0 4px 16px rgba(212,52,28,0.28);
-  }
-  .rag-uplabel {
-    position: absolute;
-    top: 6px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    color: #d4341c;
-    letter-spacing: 0.06em;
-    white-space: nowrap;
-  }
-  .rag-info {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding-bottom: 4px;
-  }
-  .rag-info .rag-code {
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    color: #6B6B72;
-  }
-  .rag-info .rag-name {
-    font-family: var(--font-sans, 'Plus Jakarta Sans'), system-ui, sans-serif;
-    font-weight: 700;
-    font-size: 26px;
-    line-height: 1.1;
-    color: #0E0E10;
-    letter-spacing: -0.02em;
-  }
-  .rag-info .rag-pct {
-    font-family: 'Space Mono', monospace;
-    font-weight: 700;
-    font-size: 22px;
-    color: #d4341c;
-    letter-spacing: -0.01em;
-  }
-  .rag-badge {
-    position: absolute;
-    top: 18px;
-    right: 18px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 7px 12px;
-    background: #0E0E10;
-    color: #fff;
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .rag-badge .rag-dot {
-    width: 6px; height: 6px;
-    background: #4ade80;
-    border-radius: 50%;
-    box-shadow: 0 0 0 3px rgba(74,222,128,0.18);
-  }
-</style>
 </head>
 <body>
 
 <div class="grid-bg"></div>
 
-<!-- ═══ COVER ═══ -->
-<section class="cover">
-  <div class="cover-glow"></div>
-  <div class="cover-glow-2"></div>
-
-  <div class="cover-top">
-    <a href="/" class="mark" style="text-decoration:none;color:inherit;">
-      <svg width="76" height="57" viewBox="0 0 88 66" fill="currentColor">
-        <!-- H: left stem (thick) -->
+<!-- ═══ SITE HEADER ═══ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="mark" style="text-decoration:none;color:inherit">
+      <svg width="28" height="21" viewBox="0 0 88 66" fill="currentColor">
         <rect x="0"  y="4"  width="9" height="58"/>
-        <!-- H: right stem (thick) -->
         <rect x="34" y="4"  width="9" height="58"/>
-        <!-- H: crossbar (thin) -->
         <rect x="0"  y="29" width="43" height="2"/>
-        <!-- H: top serifs -->
         <rect x="-3" y="4"  width="15" height="2.5"/>
         <rect x="31" y="4"  width="15" height="2.5"/>
-        <!-- H: bottom serifs -->
         <rect x="-3" y="59.5" width="15" height="2.5"/>
         <rect x="31" y="59.5" width="15" height="2.5"/>
-
-        <!-- K: stem (thick) -->
         <rect x="51" y="4"  width="9" height="58"/>
-        <!-- K: top serif -->
         <rect x="48" y="4"  width="15" height="2.5"/>
-        <!-- K: bottom serif -->
         <rect x="48" y="59.5" width="15" height="2.5"/>
-        <!-- K: upper arm (thin diagonal) -->
         <polygon points="60,30 60,33 88,4 85,4"/>
-        <!-- K: lower leg (slightly thicker diagonal) -->
         <polygon points="60,33 60,36 88,66 84,66"/>
       </svg>
+      <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.08em">HK&nbsp;&nbsp;PORTFOLIO · 2026</span>
     </a>
-    <nav>
+    <nav class="site-nav-links">
       <a href="#projects">PROJECTS</a>
       <a href="#about">ABOUT</a>
       <a href="mailto:heetae104@gmail.com">CONTACT</a>
     </nav>
   </div>
+</header>
 
-  <div class="hero">
-    <div class="hero-left">
-      <div class="tag-line"><span class="dot"></span> 김희태 · ML ENGINEERING & DATA · 2026</div>
-      <h1>문제 정의가<br/>AI 활용의<br/>방향을 결정한다.</h1>
-      <p class="sub">
-        <strong>제조 AI</strong>, <strong>예측 모델링</strong>, <strong>ML 파이프라인</strong>, <strong>LLM 자동화</strong> —
-        무엇을 예측하고 무엇을 자동화할지 먼저 정의한 뒤, 그 판단을 데이터와 시스템으로 구현합니다.
-      </p>
-      <div class="cta-row">
-        <a href="#projects" class="cta cta-primary">VIEW PROJECTS <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></a>
-        <a href="#about" class="cta cta-ghost">ABOUT ME</a>
+<!-- ═══ HERO ═══ -->
+<div class="hero-section">
+  <div class="hero-inner">
+    <div class="hero-wrap">
+      <div class="hero-bar">
+        <div class="hero-bar-mark">김희태 · AI ENGINEER</div>
+      </div>
+      <div class="hero-body">
+        <div class="hero-bg-dot"></div>
+        <div class="hero-left">
+          <div class="hero-role">
+            ML / AI Engineer
+            <span class="avail-badge">구직 중</span>
+          </div>
+          <h1 class="hero-h1">
+            <span class="hero-pre">문제를 먼저 정의하고</span>
+            <span class="hero-key">데이터 설계<span class="hero-dot"> · </span>모델 검증<span class="hero-dot"> · </span>시스템 구현</span>
+            <span class="hero-suf">으로 AI를 만듭니다.</span>
+          </h1>
+          <p class="hero-desc">
+            <strong>제조 AI</strong>, <strong>예측 모델링</strong>, <strong>ML 파이프라인</strong>, <strong>LLM 자동화</strong> —
+            무엇을 예측하고 무엇을 자동화할지 먼저 정의한 뒤, 그 판단을 데이터와 시스템으로 구현합니다.
+          </p>
+          <div class="hero-cta-row">
+            <a href="#projects" class="btn-primary">
+              VIEW PROJECTS
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg>
+            </a>
+            <a href="#about" class="btn-ghost">ABOUT ME</a>
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="h-stat">
+            <div class="h-stat-val">0.31</div>
+            <div class="h-stat-lbl">RMSE · LHV 열풍로</div>
+          </div>
+          <div class="h-stat">
+            <div class="h-stat-val g">상위 4%</div>
+            <div class="h-stat-lbl">데이콘 공모전</div>
+          </div>
+          <div class="h-stat">
+            <div class="h-stat-val k">6</div>
+            <div class="h-stat-lbl">Projects</div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="hero-right">
-      <div class="hero-m"><span class="hm-v">06</span><span class="hm-k">Projects</span></div>
-      <div class="hero-m"><span class="hm-v">3</span><span class="hm-k">Domains</span></div>
-      <div class="hero-m"><span class="hm-v">'26</span><span class="hm-k">ML Eng</span></div>
+  </div>
+</div>
+
+<!-- ═══ TECH MARQUEE ═══ -->
+<div class="tech-strip">
+  <div class="tech-track">
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/python/9CA3AF" alt="">Python</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/scikitlearn/9CA3AF" alt="">Scikit-Learn</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/pytorch/9CA3AF" alt="">PyTorch</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/xgboost/9CA3AF" alt="">XGBoost</div>
+    <div class="tech-item">LightGBM</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/pandas/9CA3AF" alt="">Pandas</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/fastapi/9CA3AF" alt="">FastAPI</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/docker/9CA3AF" alt="">Docker</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/postgresql/9CA3AF" alt="">SQL</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/jupyter/9CA3AF" alt="">Jupyter</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/numpy/9CA3AF" alt="">NumPy</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/huggingface/9CA3AF" alt="">HuggingFace</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/git/9CA3AF" alt="">Git</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/python/9CA3AF" alt="">Python</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/scikitlearn/9CA3AF" alt="">Scikit-Learn</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/pytorch/9CA3AF" alt="">PyTorch</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/xgboost/9CA3AF" alt="">XGBoost</div>
+    <div class="tech-item">LightGBM</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/pandas/9CA3AF" alt="">Pandas</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/fastapi/9CA3AF" alt="">FastAPI</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/docker/9CA3AF" alt="">Docker</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/postgresql/9CA3AF" alt="">SQL</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/jupyter/9CA3AF" alt="">Jupyter</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/numpy/9CA3AF" alt="">NumPy</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/huggingface/9CA3AF" alt="">HuggingFace</div>
+    <div class="tech-item"><img src="https://cdn.simpleicons.org/git/9CA3AF" alt="">Git</div>
+  </div>
+</div>
+
+<!-- ═══ IMPACT NUMBERS ═══ -->
+<div class="impact-strip">
+  <div class="impact-inner">
+    <div class="impact-item">
+      <div class="impact-pre">상위</div>
+      <div class="impact-num"><span class="counter" data-target="4" data-suffix="%">4%</span></div>
+      <div class="impact-label">공모전 성적</div>
+      <div class="impact-sub">데이콘 Private 11위</div>
+    </div>
+    <div class="impact-item">
+      <div class="impact-pre">&nbsp;</div>
+      <div class="impact-num"><span class="counter" data-target="6" data-suffix="개">6개</span></div>
+      <div class="impact-label">완성 프로젝트</div>
+      <div class="impact-sub">6개 산업 도메인</div>
+    </div>
+    <div class="impact-item">
+      <div class="impact-pre">&nbsp;</div>
+      <div class="impact-num"><span class="counter" data-target="5" data-suffix="개">5개</span></div>
+      <div class="impact-label">보유 자격증</div>
+      <div class="impact-sub">ADsP · SQLD · 외 3개</div>
+    </div>
+    <div class="impact-item">
+      <div class="impact-pre">RMSE</div>
+      <div class="impact-num"><span class="counter" data-target="0.31" data-suffix="" data-decimals="2">0.31</span></div>
+      <div class="impact-label">최고 모델 성능</div>
+      <div class="impact-sub">LHV 열풍로 예측</div>
     </div>
   </div>
-
-</section>
+</div>
 
 <!-- ═══ PROJECTS ═══ -->
 <section class="projects-section" id="projects">
-  <div class="section-head">
-    <div class="label">SELECTED WORK</div>
-    <div class="count">06 CASE STUDIES</div>
-  </div>
+  <div class="projects-inner">
 
-  <div class="project-group">
-    <div class="group-label">ML TRADING · 제조 AI · 2023–2026</div>
-    <div class="cards">
-      <a class="card" href="BinanceBot.html">
-        <div class="thumb thumb-bot">
-          <div class="bot-stage">
-            <div class="candles">
-              <span class="cd down" style="height:32%"></span>
-              <span class="cd up"   style="height:26%"></span>
-              <span class="cd down" style="height:40%"></span>
-              <span class="cd down" style="height:18%"></span>
-              <span class="cd up"   style="height:44%"></span>
-              <span class="cd down" style="height:30%"></span>
-              <span class="cd up"   style="height:36%"></span>
-              <span class="cd up surge" style="height:88%"></span>
-            </div>
-            <div class="prob">
-              <div class="prob-v">0.83</div>
-              <div class="prob-k">P(SURGE) · ML</div>
-            </div>
-          </div>
-        </div>
-        <div class="info">
-          <div class="num">№ 01 · ML TRADING · 2023</div>
-          <h2>Binance ML Bot — 급등 가능성이 높은 코인을 선별하는 트레이딩 봇</h2>
-          <div class="pdesc">기술 분석 필터와 ML 앙상블을 결합해 500+ USDT 페어의 급등 신호를 탐지.</div>
-          <div class="tags">
-            <div class="tech-row" aria-label="Python, XGBoost, LightGBM, CCXT, SMOTE">
-              <span class="tech-icon blue" title="Python">Py</span>
-              <span class="tech-icon orange" title="XGBoost">XG</span>
-              <span class="tech-icon green" title="LightGBM">LG</span>
-              <span class="tech-icon dark" title="CCXT">CX</span>
-              <span class="tech-icon gray" title="SMOTE">SM</span>
-            </div>
-          </div>
-        </div>
-      </a>
-
-      <a class="card" href="LHV.html">
-        <div class="thumb thumb-lhv">
-          <div class="big">1.24M</div>
-          <div class="unit">Nm³ / YEAR</div>
-        </div>
-        <div class="info">
-          <div class="num">№ 02 · 제조 AI · 2026.03</div>
-          <h2>LHV — 열풍로 발열량 5분 예측</h2>
-          <div class="pdesc">고로 부대 설비 LHV 실시간 예측. COG 과잉 투입 패턴 발견.</div>
-          <div class="tags">
-            <div class="tech-row" aria-label="Ridge, XGBoost, SHAP, Scikit-Learn">
-              <span class="tech-icon gray" title="Ridge">RG</span>
-              <span class="tech-icon orange" title="XGBoost">XG</span>
-              <span class="tech-icon blue" title="SHAP">SH</span>
-              <span class="tech-icon dark" title="Scikit-Learn">SK</span>
-            </div>
-          </div>
-        </div>
-      </a>
-
-      <a class="card" href="Skinpass.html">
-        <div class="thumb thumb-skin">
-          <div class="ring-wrap">
-            <div class="ring"><div class="pct">40.8%</div></div>
-          </div>
-        </div>
-        <div class="info">
-          <div class="num">№ 03 · SCM · 품질 예측 · 2026.04</div>
-          <h2>Skinpass — 코일 투입 전 비계획 공정 가능성 예측</h2>
-          <div class="pdesc">냉연 코일 4,000건의 물성·공정 실적으로 비계획 공정 발생 가능성 사전 판별.</div>
-          <div class="tags">
-            <div class="tech-row" aria-label="Logistic Regression, LightGBM, SMOTE, SHAP">
-              <span class="tech-icon gray" title="Logistic Regression">LR</span>
-              <span class="tech-icon green" title="LightGBM">LG</span>
-              <span class="tech-icon dark" title="SMOTE">SM</span>
-              <span class="tech-icon blue" title="SHAP">SH</span>
-            </div>
-          </div>
-        </div>
-      </a>
+    <div class="section-head">
+      <div class="label">SELECTED WORK</div>
+      <div class="count">06 CASE STUDIES</div>
     </div>
-  </div>
 
-  <div class="project-group">
-    <div class="group-label">AI 응용 · 자동화 · 2026</div>
-    <div class="cards">
-      <a class="card" href="JANN.html">
-        <div class="thumb thumb-jann">
-          <div class="phones">
-            <div class="ph"><img src="jann/img/scan.jpg" alt="JANN 스캔 화면"></div>
-            <div class="ph"><img src="jann/img/splash.jpg" alt="JANN 스플래시"></div>
-            <div class="ph"><img src="jann/img/home.jpg" alt="JANN 홈 화면"></div>
-          </div>
-        </div>
-        <div class="info">
-          <div class="num">№ 04 · iOS APP · 2026</div>
-          <h2>JANN — 향미 데이터 레시피 추천</h2>
-          <div class="pdesc">분자 미식학 기반 iOS 레시피 앱. 향미 화합물 분석으로 최적 조합 제안.</div>
-          <div class="tags">
-            <div class="tech-row" aria-label="SwiftUI, Python, CoreML, Flavor Network">
-              <span class="tech-icon orange" title="SwiftUI">SW</span>
-              <span class="tech-icon blue" title="Python">Py</span>
-              <span class="tech-icon green" title="CoreML">CM</span>
-              <span class="tech-icon gray" title="Flavor Network">FN</span>
-            </div>
-          </div>
-        </div>
-      </a>
+    <div class="projects-cols js-fade">
 
-      <a class="card" href="LocalAI.html">
-        <div class="thumb thumb-ai">
-          <div class="term">
-            <div><span class="p">$</span> <span class="c">ollama run llama3.2</span></div>
-            <div><span class="o">✓ Model loaded (3.2B)</span></div>
-            <div><span class="o">✓ Context: vault/notes/</span></div>
-            <div><span class="o">✓ Response: 2.1s</span></div>
-            <div><span class="p">$</span> <span class="blink"></span></div>
-          </div>
-        </div>
-        <div class="info">
-          <div class="num">№ 05 · LOCAL AI · 2026.04</div>
-          <h2>Local AI Agent — 로컬 AI 워크플로우</h2>
-          <div class="pdesc">Obsidian + Ollama + AntiGravity로 붙인 로컬 AI 워크플로우 실험.</div>
-          <div class="tags">
-            <div class="tech-row" aria-label="Python, Ollama, Obsidian, AntiGravity">
-              <span class="tech-icon blue" title="Python">Py</span>
-              <span class="tech-icon dark" title="Ollama">OL</span>
-              <span class="tech-icon gray" title="Obsidian">OB</span>
-              <span class="tech-icon green" title="AntiGravity">AG</span>
-            </div>
-          </div>
-        </div>
-      </a>
+    <!-- ── 컬럼 1: 2023 개인 프로젝트 ── -->
+    <div class="proj-col">
 
-      <a class="card" href="BlogAgentRAG.html">
-        <div class="thumb thumb-rag">
-          <div class="rag-badge">
-            <span class="rag-dot"></span>
-            DART · 팩트체커
-          </div>
-          <div class="rag-stage">
-            <div class="rag-candle">
-              <div class="rag-uplabel">UP</div>
-              <div class="rag-candle-body"></div>
+    <!-- 그룹 1: 개인 프로젝트 · 2023 -->
+    <div class="project-group">
+      <div class="group-head">
+        <span class="group-year">2023</span>
+        <span class="group-topic">개인 프로젝트</span>
+      </div>
+      <div class="pcards pcards-col">
+
+        <!-- BinanceBot -->
+        <a class="pcard d-bot" href="BinanceBot.html">
+          <div class="pthumb t-bot">
+            <div class="thumb-inner">
+              <svg width="340" height="130" viewBox="0 0 200 110" fill="none">
+                <path d="M10 85 Q30 75 50 60 Q70 45 90 40 Q110 35 130 28 Q150 22 170 18 Q185 14 195 12" stroke="rgba(30,58,138,.25)" stroke-width="1.5" stroke-dasharray="4 3"/>
+                <line x1="18" y1="72" x2="18" y2="92" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="14" y="78" width="8" height="9" rx="1.5" fill="#34D399"/>
+                <line x1="36" y1="58" x2="36" y2="80" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="32" y="62" width="8" height="13" rx="1.5" fill="#34D399"/>
+                <line x1="54" y1="65" x2="54" y2="85" stroke="#FCA5A5" stroke-width="1.5"/>
+                <rect x="50" y="68" width="8" height="12" rx="1.5" fill="#FCA5A5"/>
+                <line x1="72" y1="52" x2="72" y2="70" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="68" y="55" width="8" height="10" rx="1.5" fill="#34D399"/>
+                <line x1="90" y1="44" x2="90" y2="65" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="86" y="48" width="8" height="11" rx="1.5" fill="#34D399"/>
+                <line x1="108" y1="22" x2="108" y2="48" stroke="#1E3A8A" stroke-width="2"/>
+                <rect x="103" y="26" width="10" height="16" rx="2" fill="#1E3A8A"/>
+                <line x1="126" y1="30" x2="126" y2="52" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="122" y="34" width="8" height="12" rx="1.5" fill="#34D399"/>
+                <line x1="144" y1="38" x2="144" y2="58" stroke="#FCA5A5" stroke-width="1.5"/>
+                <rect x="140" y="41" width="8" height="11" rx="1.5" fill="#FCA5A5"/>
+                <line x1="162" y1="25" x2="162" y2="46" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="158" y="28" width="8" height="12" rx="1.5" fill="#34D399"/>
+                <line x1="180" y1="18" x2="180" y2="38" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="176" y="21" width="8" height="11" rx="1.5" fill="#34D399"/>
+                <rect x="14"  y="96" width="8"  height="8"  rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="32"  y="94" width="8"  height="10" rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="50"  y="97" width="8"  height="7"  rx="1" fill="rgba(252,165,165,.3)"/>
+                <rect x="68"  y="95" width="8"  height="9"  rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="86"  y="93" width="8"  height="11" rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="103" y="90" width="10" height="14" rx="1" fill="rgba(30,58,138,.2)"/>
+                <rect x="122" y="94" width="8"  height="10" rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="140" y="96" width="8"  height="8"  rx="1" fill="rgba(252,165,165,.3)"/>
+                <rect x="158" y="93" width="8"  height="11" rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="176" y="91" width="8"  height="13" rx="1" fill="rgba(52,211,153,.3)"/>
+              </svg>
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#059669;margin-top:10px">ML 예측 가능성 검증</div>
             </div>
-            <div class="rag-info">
-              <div class="rag-code">KOR · 급등 종목</div>
-              <div class="rag-name">상한가<br/>자동 분석</div>
-              <div class="rag-pct">RAG → LLM</div>
+          </div>
+          <div class="pinfo">
+            <div class="pnum">№ 01 · ML TRADING · 2023</div>
+            <div class="ptitle">Binance ML Bot — 급등 가능성이 높은 코인을 선별하는 트레이딩 봇</div>
+            <div class="pdesc">기술 분석 필터와 ML 앙상블을 결합해 500+ USDT 페어의 급등 신호를 탐지. 사회복무 기간 중에도 개발 지속.</div>
+            <div class="tech-row">
+              <span class="tech-icon blue">Python</span>
+              <span class="tech-icon orange">XGBoost</span>
+              <span class="tech-icon green">LightGBM</span>
+              <span class="tech-icon dark">CCXT</span>
+              <span class="tech-icon gray">SMOTE</span>
             </div>
           </div>
-        </div>
-        <div class="info">
-          <div class="num">№ 06 · 로컬 LLM PIPELINE · 2026.05</div>
-          <h2>Blog Agent RAG — 상한가 분석 글 자동화</h2>
-          <div class="pdesc">6단 RAG + 4중 검증(형식·팩트·모순·Self-critique)으로 상한가 종목 분석 블로그 반자동화. v1→v12 반복 개선.</div>
-          <div class="tags">
-            <div class="tech-row" aria-label="Python, Gemini, DART, RAG, Selenium">
-              <span class="tech-icon blue" title="Python">Py</span>
-              <span class="tech-icon orange" title="Gemini">GM</span>
-              <span class="tech-icon green" title="DART">DT</span>
-              <span class="tech-icon dark" title="RAG">RG</span>
-              <span class="tech-icon gray" title="Selenium">SL</span>
-            </div>
-          </div>
-        </div>
-      </a>
+        </a>
+
+      </div>
     </div>
+
+    </div><!-- /proj-col 1 -->
+
+    <!-- ── 컬럼 2: 2026 데이터 분석 / 제조 AI ── -->
+    <div class="proj-col">
+
+    <!-- 그룹 2: 2026 · 데이터 분석 / 제조 AI -->
+    <div class="project-group">
+      <div class="group-head">
+        <span class="group-year">2026</span>
+        <span class="group-topic">데이터 분석 / 제조 AI &nbsp;·&nbsp; SeSAC TRACK</span>
+      </div>
+      <div class="pcards pcards-col">
+
+        <!-- LHV -->
+        <a class="pcard d-lhv" href="LHV.html">
+          <div class="pthumb t-lhv">
+            <div class="thumb-inner" style="position:relative">
+              <svg width="100%" height="100%" viewBox="0 0 640 240" fill="none" style="position:absolute;inset:0">
+                <defs>
+                  <linearGradient id="lhvBand" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#1E3A8A" stop-opacity="0.13"/>
+                    <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.02"/>
+                  </linearGradient>
+                  <linearGradient id="lhvLine" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#4F6FE0"/>
+                    <stop offset="100%" stop-color="#1E3A8A"/>
+                  </linearGradient>
+                </defs>
+                <line x1="70"  y1="30" x2="70"  y2="200" stroke="rgba(30,58,138,.07)" stroke-width="1"/>
+                <line x1="200" y1="30" x2="200" y2="200" stroke="rgba(30,58,138,.07)" stroke-width="1"/>
+                <line x1="330" y1="30" x2="330" y2="200" stroke="rgba(30,58,138,.07)" stroke-width="1"/>
+                <line x1="460" y1="30" x2="460" y2="200" stroke="rgba(30,58,138,.07)" stroke-width="1"/>
+                <line x1="590" y1="30" x2="590" y2="200" stroke="rgba(30,58,138,.07)" stroke-width="1"/>
+                <line x1="60"  y1="50"  x2="610" y2="50"  stroke="rgba(30,58,138,.07)" stroke-width="1"/>
+                <line x1="60"  y1="100" x2="610" y2="100" stroke="rgba(30,58,138,.07)" stroke-width="1"/>
+                <line x1="60"  y1="150" x2="610" y2="150" stroke="rgba(30,58,138,.07)" stroke-width="1"/>
+                <line x1="68" y1="198" x2="598" y2="38" stroke="rgba(30,58,138,.18)" stroke-width="1.5" stroke-dasharray="6 4"/>
+                <path d="M80 192 Q180 162 280 138 Q380 112 480 84 Q540 68 598 52 L598 68 Q540 86 480 106 Q380 136 280 162 Q180 188 80 210Z" fill="url(#lhvBand)"/>
+                <path d="M80 192 Q180 162 280 138 Q380 112 480 84 Q540 68 598 52" stroke="url(#lhvLine)" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="95"  cy="188" r="4.5" fill="#4F6FE0" opacity=".55"/>
+                <circle cx="118" cy="196" r="3.5" fill="#1E3A8A" opacity=".6"/>
+                <circle cx="140" cy="175" r="4"   fill="#1E3A8A" opacity=".65"/>
+                <circle cx="158" cy="182" r="3.5" fill="#4F6FE0" opacity=".55"/>
+                <circle cx="182" cy="163" r="4.5" fill="#1E3A8A" opacity=".7"/>
+                <circle cx="205" cy="156" r="3.5" fill="#4F6FE0" opacity=".6"/>
+                <circle cx="228" cy="170" r="4"   fill="#1E3A8A" opacity=".55"/>
+                <circle cx="252" cy="144" r="4.5" fill="#1E3A8A" opacity=".7"/>
+                <circle cx="275" cy="137" r="3.5" fill="#4F6FE0" opacity=".65"/>
+                <circle cx="300" cy="150" r="4"   fill="#1E3A8A" opacity=".6"/>
+                <circle cx="320" cy="125" r="5"   fill="#1E3A8A" opacity=".8"/>
+                <circle cx="345" cy="118" r="3.5" fill="#4F6FE0" opacity=".65"/>
+                <circle cx="368" cy="130" r="4"   fill="#1E3A8A" opacity=".6"/>
+                <circle cx="392" cy="106" r="4.5" fill="#1E3A8A" opacity=".75"/>
+                <circle cx="415" cy="98"  r="3.5" fill="#4F6FE0" opacity=".7"/>
+                <circle cx="438" cy="112" r="4"   fill="#1E3A8A" opacity=".6"/>
+                <circle cx="462" cy="87"  r="5"   fill="#1E3A8A" opacity=".8"/>
+                <circle cx="485" cy="80"  r="3.5" fill="#4F6FE0" opacity=".65"/>
+                <circle cx="510" cy="93"  r="4"   fill="#1E3A8A" opacity=".6"/>
+                <circle cx="535" cy="68"  r="4.5" fill="#1E3A8A" opacity=".75"/>
+                <circle cx="558" cy="60"  r="3.5" fill="#4F6FE0" opacity=".7"/>
+                <circle cx="580" cy="56"  r="5"   fill="#1E3A8A" opacity=".85"/>
+                <line x1="65" y1="30"  x2="65" y2="205" stroke="rgba(17,24,39,.14)" stroke-width="1.5"/>
+                <line x1="65" y1="205" x2="610" y2="205" stroke="rgba(17,24,39,.14)" stroke-width="1.5"/>
+                <text x="52" y="205" font-family="monospace" font-size="9" fill="rgba(17,24,39,.3)" text-anchor="middle" transform="rotate(-90,52,148)">실제 LHV</text>
+                <text x="338" y="222" font-family="monospace" font-size="9" fill="rgba(17,24,39,.3)" text-anchor="middle">예측 LHV</text>
+                <rect x="472" y="160" width="114" height="30" rx="8" fill="white" stroke="rgba(30,58,138,.15)" stroke-width="1" opacity=".95"/>
+                <text x="529" y="180" font-family="monospace" font-size="16" font-weight="bold" fill="#1E3A8A" text-anchor="middle">RMSE 0.31</text>
+              </svg>
+            </div>
+          </div>
+          <div class="pinfo">
+            <div class="pnum">№ 02 · 제조 AI · 2026.03</div>
+            <div class="ptitle">LHV — 열풍로 발열량 5분 예측</div>
+            <div class="pdesc">고로 부대 설비 LHV 실시간 예측. COG 과잉 투입 패턴 발견 → 에너지 최적화 인사이트 도출.</div>
+            <div class="tech-row">
+              <span class="tech-icon gray">Ridge</span>
+              <span class="tech-icon orange">XGBoost</span>
+              <span class="tech-icon blue">SHAP</span>
+              <span class="tech-icon dark">Scikit-Learn</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Skinpass -->
+        <a class="pcard d-skin" href="Skinpass.html">
+          <div class="pthumb t-skin">
+            <div class="thumb-inner" style="flex-direction:column;gap:0;padding:20px 28px;justify-content:center;align-items:stretch">
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#7C3AED;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
+                <span>모델 정확도 비교</span>
+                <span style="background:#EDE9FE;color:#6D28D9;padding:2px 8px;border-radius:999px;font-size:8px">Skinpass</span>
+              </div>
+              <svg width="100%" viewBox="0 0 320 140" fill="none">
+                <defs>
+                  <linearGradient id="skinHL" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#7C3AED"/>
+                    <stop offset="100%" stop-color="#A78BFA"/>
+                  </linearGradient>
+                  <linearGradient id="skinBar" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#C4B5FD" stop-opacity=".6"/>
+                    <stop offset="100%" stop-color="#DDD6FE" stop-opacity=".4"/>
+                  </linearGradient>
+                </defs>
+                <line x1="92"  y1="0" x2="92"  y2="130" stroke="rgba(124,58,237,.09)" stroke-width="1"/>
+                <line x1="141" y1="0" x2="141" y2="130" stroke="rgba(124,58,237,.06)" stroke-width="1" stroke-dasharray="3 3"/>
+                <line x1="191" y1="0" x2="191" y2="130" stroke="rgba(124,58,237,.06)" stroke-width="1" stroke-dasharray="3 3"/>
+                <line x1="240" y1="0" x2="240" y2="130" stroke="rgba(124,58,237,.06)" stroke-width="1" stroke-dasharray="3 3"/>
+                <line x1="290" y1="0" x2="290" y2="130" stroke="rgba(124,58,237,.09)" stroke-width="1"/>
+                <text x="92"  y="138" font-family="monospace" font-size="7.5" fill="rgba(109,40,217,.3)" text-anchor="middle">0%</text>
+                <text x="191" y="138" font-family="monospace" font-size="7.5" fill="rgba(109,40,217,.3)" text-anchor="middle">50%</text>
+                <text x="290" y="138" font-family="monospace" font-size="7.5" fill="rgba(109,40,217,.3)" text-anchor="middle">100%</text>
+                <text x="88" y="14" font-family="monospace" font-size="9" fill="rgba(109,40,217,.5)" text-anchor="end">LR</text>
+                <rect x="92" y="5"  width="146" height="14" rx="3" fill="url(#skinBar)"/>
+                <text x="242" y="15" font-family="monospace" font-size="9" fill="rgba(109,40,217,.6)">74%</text>
+                <text x="88" y="44" font-family="monospace" font-size="9" fill="rgba(109,40,217,.5)" text-anchor="end">XGBoost</text>
+                <rect x="92" y="35" width="168" height="14" rx="3" fill="url(#skinBar)"/>
+                <text x="264" y="45" font-family="monospace" font-size="9" fill="rgba(109,40,217,.6)">85%</text>
+                <text x="88" y="74" font-family="monospace" font-size="9" fill="rgba(109,40,217,.5)" text-anchor="end">RF</text>
+                <rect x="92" y="65" width="162" height="14" rx="3" fill="url(#skinBar)"/>
+                <text x="258" y="75" font-family="monospace" font-size="9" fill="rgba(109,40,217,.6)">82%</text>
+                <rect x="88" y="95" width="186" height="20" rx="4" fill="url(#skinHL)"/>
+                <text x="90"  y="109" font-family="monospace" font-size="9" fill="white" font-weight="bold">LightGBM</text>
+                <text x="268" y="109" font-family="monospace" font-size="10" fill="white" font-weight="bold" text-anchor="end">92%</text>
+                <rect x="277" y="97" width="22" height="16" rx="4" fill="#5B21B6"/>
+                <text x="288" y="109" font-family="monospace" font-size="8" fill="#F3E8FF" font-weight="bold" text-anchor="middle">#1</text>
+              </svg>
+            </div>
+          </div>
+          <div class="pinfo">
+            <div class="pnum">№ 03 · SCM · 품질 예측 · 2026.04</div>
+            <div class="ptitle">Skinpass — 코일 투입 전 비계획 공정 가능성 예측</div>
+            <div class="pdesc">냉연 코일 4,000건의 물성·공정 실적으로 비계획 공정 발생 가능성 사전 판별.</div>
+            <div class="tech-row">
+              <span class="tech-icon gray">LR</span>
+              <span class="tech-icon green">LightGBM</span>
+              <span class="tech-icon dark">SMOTE</span>
+              <span class="tech-icon blue">SHAP</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    </div><!-- /proj-col 2 -->
+
+    <!-- ── 컬럼 3: 2026 AI 응용 / 자동화 ── -->
+    <div class="proj-col">
+
+    <!-- 그룹 3: 2026 · AI 응용 / 자동화 -->
+    <div class="project-group">
+      <div class="group-head">
+        <span class="group-year">2026</span>
+        <span class="group-topic">AI 응용 / 자동화 &nbsp;·&nbsp; 개인 미니프로젝트</span>
+      </div>
+      <div class="pcards pcards-col">
+
+        <!-- JANN -->
+        <a class="pcard d-jann" href="JANN.html">
+          <div class="pthumb t-jann">
+            <img src="jann/img/tsne-clustering.png" alt="JANN t-SNE 클러스터링" loading="lazy">
+          </div>
+          <div class="pinfo">
+            <div class="pnum">№ 04 · iOS APP · 2026</div>
+            <div class="ptitle">JANN — 향미 데이터 레시피 추천</div>
+            <div class="pdesc">분자 미식학 기반 iOS 레시피 앱. 향미 화합물 분석으로 최적 조합 제안.</div>
+            <div class="tech-row">
+              <span class="tech-icon orange">SwiftUI</span>
+              <span class="tech-icon blue">Python</span>
+              <span class="tech-icon green">CoreML</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- LocalAI -->
+        <a class="pcard d-ai" href="LocalAI.html">
+          <div class="pthumb t-ai" style="padding:24px 28px;align-items:stretch;justify-content:center">
+            <svg width="100%" viewBox="0 0 460 160" fill="none">
+              <defs>
+                <linearGradient id="aiModelGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#EFF6FF"/>
+                  <stop offset="100%" stop-color="#C7D7F8"/>
+                </linearGradient>
+                <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                  <path d="M0 0 L6 3 L0 6Z" fill="rgba(30,58,138,.35)"/>
+                </marker>
+              </defs>
+              <path d="M112 80 L148 80" stroke="rgba(30,58,138,.25)" stroke-width="1.5" marker-end="url(#arr)"/>
+              <path d="M308 80 L344 80" stroke="rgba(30,58,138,.25)" stroke-width="1.5" marker-end="url(#arr)"/>
+              <text x="56"  y="22" font-family="monospace" font-size="9" fill="rgba(17,24,39,.38)" text-anchor="middle" letter-spacing=".06em">USER</text>
+              <text x="228" y="22" font-family="monospace" font-size="9" fill="rgba(30,58,138,.65)" text-anchor="middle" letter-spacing=".06em" font-weight="600">LOCAL MODEL</text>
+              <text x="400" y="22" font-family="monospace" font-size="9" fill="rgba(17,24,39,.38)" text-anchor="middle" letter-spacing=".06em">RESPONSE</text>
+              <rect x="8"   y="32" width="96"  height="96" rx="12" fill="white" stroke="rgba(30,58,138,.12)" stroke-width="1.5"/>
+              <circle cx="56" cy="62" r="14" fill="#DBEAFE" stroke="rgba(30,58,138,.2)" stroke-width="1.5"/>
+              <circle cx="56" cy="59" r="5"  fill="#1E3A8A" opacity=".6"/>
+              <path d="M42 76 Q56 68 70 76" stroke="#1E3A8A" stroke-width="1.5" fill="none" opacity=".5"/>
+              <text x="56" y="95"  font-family="monospace" font-size="9" fill="#374151" text-anchor="middle">입력</text>
+              <text x="56" y="108" font-family="monospace" font-size="8" fill="#9CA3AF" text-anchor="middle">질문 / 코드</text>
+              <rect x="152" y="24" width="152" height="112" rx="14" fill="url(#aiModelGrad)" stroke="rgba(30,58,138,.28)" stroke-width="2"/>
+              <rect x="178" y="40" width="100" height="38" rx="8" fill="white" stroke="rgba(30,58,138,.12)" stroke-width="1"/>
+              <text x="228" y="57" font-family="monospace" font-size="11" font-weight="bold" fill="#1E3A8A" text-anchor="middle">Gemma 4</text>
+              <text x="228" y="70" font-family="monospace" font-size="8" fill="#6B7280" text-anchor="middle">via Ollama</text>
+              <text x="228" y="95"  font-family="monospace" font-size="9" fill="#374151" text-anchor="middle">100% 로컬 실행</text>
+              <text x="228" y="108" font-family="monospace" font-size="8" fill="#6B7280" text-anchor="middle">No API · No Cloud</text>
+              <rect x="348" y="32" width="104" height="96" rx="12" fill="white" stroke="rgba(30,58,138,.12)" stroke-width="1.5"/>
+              <rect x="362" y="46" width="76" height="9" rx="3" fill="#DBEAFE"/>
+              <rect x="362" y="60" width="60" height="9" rx="3" fill="#DBEAFE" opacity=".7"/>
+              <rect x="362" y="74" width="70" height="9" rx="3" fill="#DBEAFE" opacity=".5"/>
+              <rect x="362" y="88" width="50" height="9" rx="3" fill="#DBEAFE" opacity=".35"/>
+              <text x="400" y="112" font-family="monospace" font-size="8" fill="#9CA3AF" text-anchor="middle">오프라인 응답</text>
+            </svg>
+          </div>
+          <div class="pinfo">
+            <div class="pnum">№ 05 · LOCAL AI · 2026.04</div>
+            <div class="ptitle">Local AI Agent — 로컬 AI 워크플로우</div>
+            <div class="pdesc">Obsidian + Ollama + AntiGravity로 붙인 로컬 AI 워크플로우 실험. 클라우드 의존 없이 100% 로컬 실행.</div>
+            <div class="tech-row">
+              <span class="tech-icon blue">Python</span>
+              <span class="tech-icon dark">Ollama</span>
+              <span class="tech-icon gray">Obsidian</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- BlogAgentRAG -->
+        <a class="pcard d-rag" href="BlogAgentRAG.html">
+          <div class="pthumb t-rag" style="padding:14px 16px;align-items:stretch;justify-content:center">
+            <svg width="100%" viewBox="0 0 300 210" fill="none">
+              <defs>
+                <linearGradient id="ragHG" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#03C75A"/>
+                  <stop offset="100%" stop-color="#02A84B"/>
+                </linearGradient>
+                <marker id="ra"  markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6Z" fill="#38BDF8"/></marker>
+                <marker id="ra2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6Z" fill="#03C75A"/></marker>
+              </defs>
+              <rect x="4" y="4" width="292" height="202" rx="10" fill="white" stroke="rgba(3,199,90,.18)" stroke-width="1.5"/>
+              <rect x="4" y="4"  width="292" height="34" rx="10" fill="url(#ragHG)"/>
+              <rect x="4" y="28" width="292" height="10"  fill="url(#ragHG)"/>
+              <text x="18" y="27" font-family="Arial Black,sans-serif" font-size="16" font-weight="900" fill="white">N</text>
+              <text x="36" y="27" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.9)" font-weight="600">블로그</text>
+              <rect x="224" y="10" width="64" height="18" rx="9" fill="rgba(255,255,255,.22)"/>
+              <text x="256" y="23" font-family="monospace" font-size="8" fill="white" text-anchor="middle" letter-spacing=".06em">AI AGENT</text>
+              <text x="16" y="60" font-family="sans-serif" font-size="11" font-weight="700" fill="#111827">[상한가] </text>
+              <rect x="80" y="49" width="72" height="12" rx="3" fill="#CBD5E1"/>
+              <text x="156" y="60" font-family="sans-serif" font-size="11" font-weight="700" fill="#111827"> 급등 이유 분석</text>
+              <rect x="16"  y="68" width="44" height="14" rx="7" fill="#DCFCE7" stroke="rgba(3,199,90,.25)" stroke-width="1"/>
+              <text x="38"  y="79" font-family="monospace" font-size="7.5" fill="#15803D" text-anchor="middle">상한가</text>
+              <rect x="65"  y="68" width="44" height="14" rx="7" fill="#EFF6FF" stroke="rgba(30,58,138,.18)" stroke-width="1"/>
+              <text x="87"  y="79" font-family="monospace" font-size="7.5" fill="#1E3A8A" text-anchor="middle">바이오</text>
+              <rect x="114" y="68" width="44" height="14" rx="7" fill="#FEF9C3" stroke="rgba(161,98,7,.18)" stroke-width="1"/>
+              <text x="136" y="79" font-family="monospace" font-size="7.5" fill="#92400E" text-anchor="middle">코스닥</text>
+              <rect x="16" y="92"  width="268" height="8" rx="3" fill="#E2E8F0"/>
+              <rect x="16" y="106" width="240" height="8" rx="3" fill="#E2E8F0"/>
+              <rect x="16" y="120" width="255" height="8" rx="3" fill="#E2E8F0"/>
+              <rect x="16" y="134" width="180" height="8" rx="3" fill="#E2E8F0" opacity=".6"/>
+              <line x1="16" y1="152" x2="284" y2="152" stroke="rgba(3,199,90,.12)" stroke-width="1"/>
+              <text x="16" y="163" font-family="monospace" font-size="8" fill="#64748B" letter-spacing=".08em">PIPELINE</text>
+              <rect x="16"  y="169" width="42" height="20" rx="5" fill="#F0F9FF" stroke="#38BDF8" stroke-width="1.5"/>
+              <text x="37"  y="183" font-family="monospace" font-size="9" fill="#0369A1" text-anchor="middle" font-weight="600">크롤링</text>
+              <path d="M59 179 L65 179" stroke="#38BDF8" stroke-width="2" marker-end="url(#ra)"/>
+              <rect x="66"  y="169" width="30" height="20" rx="5" fill="#F0F9FF" stroke="#38BDF8" stroke-width="1.5"/>
+              <text x="81"  y="183" font-family="monospace" font-size="9" fill="#0369A1" text-anchor="middle" font-weight="600">RAG</text>
+              <path d="M97 179 L103 179" stroke="#38BDF8" stroke-width="2" marker-end="url(#ra)"/>
+              <rect x="104" y="169" width="42" height="20" rx="5" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
+              <text x="125" y="183" font-family="monospace" font-size="9" fill="#92400E" text-anchor="middle" font-weight="600">초안</text>
+              <path d="M147 179 L153 179" stroke="#38BDF8" stroke-width="2" marker-end="url(#ra)"/>
+              <rect x="154" y="169" width="42" height="20" rx="5" fill="#F5F3FF" stroke="#8B5CF6" stroke-width="1.5"/>
+              <text x="175" y="183" font-family="monospace" font-size="9" fill="#7C3AED" text-anchor="middle" font-weight="600">검증</text>
+              <path d="M197 179 L203 179" stroke="#03C75A" stroke-width="2" stroke-dasharray="3 2" marker-end="url(#ra2)"/>
+              <rect x="204" y="169" width="80" height="20" rx="5" fill="#DCFCE7" stroke="rgba(3,199,90,.5)" stroke-width="1.5"/>
+              <text x="214" y="183" font-family="Arial Black,sans-serif" font-size="10" font-weight="900" fill="#03C75A">N</text>
+              <text x="249" y="183" font-family="monospace" font-size="8" fill="#15803D" text-anchor="middle" font-weight="600">발행</text>
+            </svg>
+          </div>
+          <div class="pinfo">
+            <div class="pnum">№ 06 · 로컬 LLM PIPELINE · 2026.05</div>
+            <div class="ptitle">Blog Agent RAG — 상한가 분석 글 자동화</div>
+            <div class="pdesc">6단 RAG + 4중 검증(형식·팩트·모순·Self-critique)으로 상한가 종목 분석 블로그 반자동화. v1→v12 반복 개선.</div>
+            <div class="tech-row">
+              <span class="tech-icon blue">Python</span>
+              <span class="tech-icon orange">Gemini</span>
+              <span class="tech-icon green">DART</span>
+              <span class="tech-icon dark">RAG</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    </div><!-- /proj-col 3 -->
+    </div><!-- /projects-cols -->
+
   </div>
 </section>
 
 <!-- ═══ ABOUT ═══ -->
 <section class="about-section" id="about">
-  <div class="section-head">
-    <div class="label">ABOUT</div>
-    <div class="count">김희태</div>
-  </div>
-
-  <div class="about-body">
-    <div class="about-bio js-fade">
-      <h2>문제를 먼저 정의하고,<br/>데이터와 모델로 연결하는 ML 엔지니어.</h2>
-      <p>제조 설비의 발열량을 5분 단위로 예측하고, 코일이 들어오기 전에 비계획 공정을 걸러내고, 클라우드 없이 로컬에서 돌아가는 AI 워크플로우를 만들었습니다.</p>
-      <p>모델 성능만 보기보다, 현장에서 어떤 판단이 필요한지부터 봅니다. 정확도보다 틀렸을 때 손실이 더 큰 문제에서는 Recall을 우선하고, SHAP으로 왜 그런 판단이 나왔는지도 함께 확인합니다.</p>
-      <a href="mailto:heetae104@gmail.com" class="about-cta">
-        GET IN TOUCH
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg>
-      </a>
+  <div class="about-inner">
+    <div class="section-head">
+      <div class="label">ABOUT</div>
+      <div class="count">김희태</div>
     </div>
-
-    <div class="about-stack js-fade">
-      <div class="stack-row">
-        <div class="sk">ML / 모델링</div>
-        <div class="sv">XGBoost · LightGBM · Ridge · Logistic Regression · SHAP · SMOTE · Scikit-Learn</div>
-      </div>
-      <div class="stack-row">
-        <div class="sk">언어 / 환경</div>
-        <div class="sv">Python · SwiftUI · CoreML · SQL · Git</div>
-      </div>
-      <div class="stack-row">
-        <div class="sk">AI / 자동화</div>
-        <div class="sv">Ollama · Claude API · Obsidian · AntiGravity · Prompt Engineering</div>
-      </div>
-      <div class="stack-row">
-        <div class="sk">도메인</div>
-        <div class="sv">제조 AI (고로·냉연) · SCM 수요예측 · 알고리즘 트레이딩 · iOS 앱</div>
-      </div>
-      <div class="stack-row">
-        <div class="sk">연락처</div>
-        <div class="sv">heetae104@gmail.com · github.com/kimheetae0104</div>
+    <div class="about-wrap js-fade">
+      <div class="about-grid">
+        <div>
+          <div class="about-role">ML / AI Engineer</div>
+          <h2 class="about-name">문제를 먼저 정의하고,<br>데이터와 모델로 연결하는<br>AI 엔지니어.</h2>
+          <p class="about-copy">제조 설비의 발열량을 5분 단위로 예측하고, 코일이 들어오기 전에 비계획 공정을 걸러내고, 클라우드 없이 로컬에서 돌아가는 AI 워크플로우를 만들었습니다.</p>
+          <p class="about-copy" style="margin-top:14px">모델 성능만 보기보다, 현장에서 어떤 판단이 필요한지부터 봅니다. 정확도보다 틀렸을 때 손실이 더 큰 문제에서는 Recall을 우선하고, SHAP으로 왜 그런 판단이 나왔는지도 함께 확인합니다.</p>
+          <div class="about-links">
+            <a href="mailto:heetae104@gmail.com" class="alink">이메일 보내기 →</a>
+            <a href="https://github.com/kimheetae0104" target="_blank" rel="noopener" class="alink">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="about-stack">
+          <div class="astack-row">
+            <div class="asc">ML</div>
+            <div class="asv">XGBoost · LightGBM · Ridge · Logistic Regression · SHAP · SMOTE · Scikit-Learn</div>
+          </div>
+          <div class="astack-row">
+            <div class="asc">언어 / 환경</div>
+            <div class="asv">Python · SwiftUI · CoreML · SQL · Git</div>
+          </div>
+          <div class="astack-row">
+            <div class="asc">AI / 자동화</div>
+            <div class="asv">Ollama · Claude API · Obsidian · Prompt Engineering</div>
+          </div>
+          <div class="astack-row">
+            <div class="asc">도메인</div>
+            <div class="asv">제조 AI (고로·냉연) · SCM · 알고리즘 트레이딩 · iOS · LLM</div>
+          </div>
+          <div class="astack-row">
+            <div class="asc">연락처</div>
+            <div class="asv">heetae104@gmail.com</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ═══ CAREER TIMELINE ═══ -->
+<section class="timeline-section" id="career">
+  <div class="timeline-inner">
+    <div class="section-head" style="max-width:860px;margin-left:auto;margin-right:auto">
+      <div class="label">CAREER</div>
+      <div class="count">경력 · 경험 · 교육 · 자격</div>
+    </div>
+    <div class="tl-sections js-fade">
+
+      <!-- ── 왼쪽: 경력·경험·교육 ── -->
+      <div class="tl-col">
+
+      <div class="tl-group g-work">
+        <div class="tl-group-header">
+          <span class="tl-group-label g-work">경력</span>
+          <div class="tl-group-rule"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2023.01<br>— 2024.11</div>
+          <div class="tl-right">
+            <div class="tl-place"><span class="redacted">████████</span></div>
+            <div class="tl-role">운영지원팀 · 사원 / 사회복지사 · <strong>1년 11개월</strong></div>
+            <div class="tl-bullets">
+              <div class="tl-bullet">사회복지 행정 업무 전반 — 입소자 관리, 생활기록부 작성, 보고 문서 처리</div>
+              <div class="tl-bullet">입소 어르신 상담·서비스 연계·돌봄 지원</div>
+              <div class="tl-bullet">소방안전관리 — 정기 점검, 비상대응 훈련, 안전관리계획 수립</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-group g-exp">
+        <div class="tl-group-header">
+          <span class="tl-group-label g-exp">경험</span>
+          <div class="tl-group-rule"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2025.08<br>— 2025.10</div>
+          <div class="tl-right">
+            <div class="tl-place"><span class="redacted">████████</span></div>
+            <div class="tl-role">기록물 관리 업무 · 아르바이트</div>
+            <div class="tl-bullets">
+              <div class="tl-bullet">기록물 전산 입력 및 문서 분류·정리, 보관 재배치</div>
+              <div class="tl-bullet">행정 기록 관리 효율화 지원 및 기록물 아카이빙</div>
+            </div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2025.04<br>— 2025.07</div>
+          <div class="tl-right">
+            <div class="tl-place"><span class="redacted">██████████</span></div>
+            <div class="tl-role">사업단 행정 지원 · 인턴</div>
+            <div class="tl-bullets">
+              <div class="tl-bullet">사업단 행정업무 (문서·전산·공문) 및 행사 지원</div>
+              <div class="tl-bullet">노인 일자리 사업처 조사 및 연계처 발굴 지원</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-group g-edu">
+        <div class="tl-group-header">
+          <span class="tl-group-label g-edu">교육</span>
+          <div class="tl-group-rule"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2025.12<br>— 2026.06</div>
+          <div class="tl-right">
+            <div class="tl-place">청년취업사관학교 새싹 (SeSAC)</div>
+            <div class="tl-role">제조 AI 특화 과정 · 수료</div>
+            <div class="tl-bullets">
+              <div class="tl-bullet">제조 도메인 기초 이해 및 데이터 분석 통계·파이썬 심화</div>
+              <div class="tl-bullet">컴퓨터비전, 시계열·센서 데이터 분석, 공정 최적화 / 수요예측</div>
+              <div class="tl-bullet">생성형 AI 활용 및 응용 프로젝트 수행</div>
+            </div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2021.11<br>— 2022.04</div>
+          <div class="tl-right">
+            <div class="tl-place">스마트인재개발원</div>
+            <div class="tl-role">K-Digital Training · 빅데이터 분석 서비스 개발자 과정 (NCS)</div>
+            <div class="tl-bullets">
+              <div class="tl-bullet">빅데이터 분석·처리·시각화 전반 학습</div>
+              <div class="tl-bullet">머신러닝·딥러닝 기초 프로젝트 수행</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-group g-school">
+        <div class="tl-group-header">
+          <span class="tl-group-label g-school">학력</span>
+          <div class="tl-group-rule"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2014.03<br>— 2020.02</div>
+          <div class="tl-right">
+            <div class="tl-place"><span class="redacted">███████</span></div>
+            <div class="tl-role">생활복지학과 · 4년제 · 주간 · 졸업</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2011.03<br>— 2014.02</div>
+          <div class="tl-right">
+            <div class="tl-place"><span class="redacted">███████</span></div>
+            <div class="tl-role">문과계열 · 졸업</div>
+          </div>
+        </div>
+      </div>
+
+      </div><!-- /tl-col left -->
+
+      <!-- ── 오른쪽: 공모전·자격증·어학 ── -->
+      <div class="tl-col">
+
+      <div class="tl-group g-contest">
+        <div class="tl-group-header">
+          <span class="tl-group-label g-contest">공모전</span>
+          <div class="tl-group-rule"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2026.05</div>
+          <div class="tl-right">
+            <div class="tl-place">스마트 창고 출고 지연 예측 AI 경진대회</div>
+            <div class="tl-role">데이콘 주관 · <strong style="color:#9333EA">Private 11위 · 상위 4%</strong></div>
+            <div class="tl-bullets">
+              <div class="tl-bullet">로봇 상태·주문량·배터리·혼잡도 등 90개 피처 기반 물류 창고 운영 데이터 분석</div>
+              <div class="tl-bullet">향후 30분 평균 출고 지연 시간 예측 회귀 모델 설계 — 평가 지표: MAE</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-group g-cert">
+        <div class="tl-group-header">
+          <span class="tl-group-label g-cert">자격증</span>
+          <div class="tl-group-rule"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2025.03</div>
+          <div class="tl-right">
+            <div class="tl-place">데이터분석준전문가 ADsP</div>
+            <div class="tl-role">한국데이터베이스진흥원 · <strong>최종합격</strong></div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2025.02</div>
+          <div class="tl-right">
+            <div class="tl-place">정보처리기사</div>
+            <div class="tl-role">한국산업인력공단 · 필기합격</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2024.01</div>
+          <div class="tl-right">
+            <div class="tl-place">소방안전관리자 2급</div>
+            <div class="tl-role">한국소방안전원 · <strong>최종합격</strong></div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2022.12</div>
+          <div class="tl-right">
+            <div class="tl-place">SQL개발자 SQLD</div>
+            <div class="tl-role">한국데이터베이스진흥센터 · <strong>최종합격</strong></div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2022.12</div>
+          <div class="tl-right">
+            <div class="tl-place">리눅스마스터 2급</div>
+            <div class="tl-role">한국정보통신인력개발센터 · <strong>최종합격</strong></div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2019.09</div>
+          <div class="tl-right">
+            <div class="tl-place">1종 대형 운전면허</div>
+            <div class="tl-role">경찰청 · <strong>최종합격</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-group g-lang">
+        <div class="tl-group-header">
+          <span class="tl-group-label g-lang">어학</span>
+          <div class="tl-group-rule"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2024.12</div>
+          <div class="tl-right">
+            <div class="tl-place">OPIc Intermediate Mid 2</div>
+            <div class="tl-role">영어 · PASS</div>
+          </div>
+        </div>
+      </div>
+
+      </div><!-- /tl-col right -->
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
 <footer class="site-footer">
   <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-wordmark">김희태</div>
-      <div class="footer-desc">ML Engineering · Data · AI Systems</div>
-    </div>
 
-    <div class="footer-contacts">
-      <a href="mailto:heetae104@gmail.com" class="footer-link">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="14" height="10" rx="1.5"/><path d="M1 4l7 5 7-5"/></svg>
-        heetae104@gmail.com
-      </a>
-      <a href="https://github.com/kimheetae0104" target="_blank" rel="noopener noreferrer" class="footer-link">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-        github.com/kimheetae0104
-      </a>
+    <div class="footer-body">
+      <!-- 왼쪽: 브랜드 -->
+      <div class="footer-brand">
+        <div class="footer-wordmark">HK</div>
+        <div class="footer-name">김희태</div>
+        <p class="footer-tagline">AI Engineering · Data · Systems</p>
+      </div>
+
+      <!-- 가운데: 내비게이션 -->
+      <div class="footer-nav-group">
+        <div class="footer-nav-label">Navigate</div>
+        <a href="#projects" class="footer-nav-link">Projects</a>
+        <a href="#about" class="footer-nav-link">About</a>
+        <a href="#career" class="footer-nav-link">Career</a>
+      </div>
+
+      <!-- 오른쪽: 연락처 -->
+      <div class="footer-nav-group">
+        <div class="footer-nav-label">Contact</div>
+        <a href="mailto:heetae104@gmail.com" class="footer-nav-link">
+          heetae104@gmail.com
+        </a>
+        <a href="https://github.com/kimheetae0104" target="_blank" rel="noopener" class="footer-nav-link">
+          github.com/kimheetae0104
+        </a>
+      </div>
     </div>
 
     <div class="footer-bottom">
-      <span class="footer-copy">© 2026 김희태 — Portfolio</span>
+      <span class="footer-copy">© 2026 김희태</span>
+      <span class="footer-loc">Seoul, Korea</span>
     </div>
+
   </div>
 </footer>
 
-<script src="shared/scroll-anim.js"></script>
+<script>
+(function(){
+  var counters = document.querySelectorAll('.counter');
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var el = e.target;
+      var target = parseFloat(el.dataset.target);
+      var suffix = el.dataset.suffix || '';
+      var decimals = parseInt(el.dataset.decimals || '0');
+      var dur = 1400; var start = performance.now();
+      function tick(now){
+        var p = Math.min((now-start)/dur,1);
+        var ease = 1-Math.pow(1-p,3);
+        el.textContent = (target*ease).toFixed(decimals)+suffix;
+        if(p<1) requestAnimationFrame(tick);
+        else el.textContent = target.toFixed(decimals)+suffix;
+      }
+      requestAnimationFrame(tick);
+      obs.unobserve(el);
+    });
+  },{threshold:0.4});
+  counters.forEach(function(c){obs.observe(c);});
+})();
+(function(){
+  var fades = document.querySelectorAll('.js-fade');
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}
+    });
+  },{threshold:0.08});
+  fades.forEach(function(el){obs.observe(el);});
+})();
+</script>
 </body>
 </html>

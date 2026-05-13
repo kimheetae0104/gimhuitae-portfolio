@@ -1,1070 +1,457 @@
 <!doctype html>
 <html lang="ko">
-
 <head>
-  <meta charset="utf-8" />
-  <title>Skinpass — 비계획 발생률 예측</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="shared/tokens.css" />
-  <link rel="stylesheet" href="shared/slide.css" />
-  <script src="shared/deck-stage.js"></script>
-  <style>
-    /* ── Skinpass-specific overrides — 타이틀은 slide.css 기본값(80px) 사용 ── */
-    .s-title .hero .ko-sub { max-width: 36ch; }
+<meta charset="utf-8"/>
+<title>Skinpass — 비계획 공정 예측</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="shared/tokens.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:#F5F5F3;color:var(--ink-900);font-family:var(--font-sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;}
 
-    /* ── Slide 03 quote ── */
-    .s-summary .quote {
-      font-family: var(--font-sans);
-      font-weight: 500;
-      font-size: 64px;
-      line-height: 1.24;
-      letter-spacing: -0.015em;
-      max-width: 24ch;
-      color: var(--fg-1);
-    }
-    .s-summary .quote em {
-      font-style: normal;
-      color: var(--accent-600);
-      background: linear-gradient(180deg, transparent 64%, var(--accent-100) 64%);
-      padding: 0 4px;
-    }
+.site-header{position:sticky;top:0;z-index:100;background:rgba(245,245,243,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(17,24,39,.08);}
+.header-inner{max-width:1100px;margin:0 auto;padding:0 40px;height:56px;display:flex;align-items:center;justify-content:space-between;}
+.header-left{display:flex;align-items:center;gap:20px;}
+.mark{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;}
+.mark span{font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.08em;}
+.back-link{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;color:var(--ink-500);text-decoration:none;padding:4px 10px;border:1px solid rgba(17,24,39,.14);border-radius:999px;transition:color 140ms,border-color 140ms;}
+.back-link:hover{color:var(--ink-900);border-color:rgba(17,24,39,.35);}
+.site-nav-links{display:flex;gap:24px;}
+.site-nav-links a{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-500);text-decoration:none;transition:color 140ms;}
+.site-nav-links a:hover{color:var(--ink-900);}
 
-    /* ── Stats row ── */
-    .stat-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      padding-top: 24px;
-      border-top: 1px solid var(--rule);
-      overflow: visible;
-      flex-shrink: 0;
-    }
-    .stat-row .col {
-      padding: 10px 32px 0 20px;
-      border-right: 1px solid var(--rule-soft);
-      overflow: visible;
-    }
-    .stat-row .col:first-child { padding-left: 0; }
-    .stat-row .col:last-child { border-right: 0; padding-right: 0; }
-    .stat-row .v {
-      font-family: var(--font-sans);
-      font-weight: 700;
-      font-size: 36px;
-      line-height: 1.15;
-      letter-spacing: -0.03em;
-      color: var(--fg-1);
-      padding: 2px 0;
-    }
-    .stat-row .k {
-      font-family: var(--font-mono);
-      font-size: 18px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--fg-3);
-      margin-bottom: 6px;
-    }
-    .stat-row .u {
-      font-family: var(--font-sans);
-      font-size: 18px;
-      color: var(--fg-2);
-      margin-top: 4px;
-      line-height: 1.4;
-    }
+.proj-wrap{max-width:860px;margin:0 auto;padding:0 40px 80px;}
 
-    /* ── Hypothesis cards ── */
-    .hyp-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
-      margin-top: 28px;
-    }
-    .hyp-card {
-      padding: 22px 20px;
-      border-top: 2px solid var(--accent-600);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .hyp-card.rejected { border-top-color: var(--danger); }
-    .hyp-card .tag {
-      font-family: var(--font-mono);
-      font-size: 24px;
-      letter-spacing: 0.14em;
-      color: var(--fg-3);
-    }
-    .hyp-card .q {
-      font-family: var(--font-sans);
-      font-size: 26px;
-      line-height: 1.5;
-      color: var(--fg-1);
-    }
-    .hyp-card .verdict {
-      font-family: var(--font-mono);
-      font-size: 22px;
-      letter-spacing: 0.06em;
-      padding-top: 10px;
-      border-top: 1px solid var(--rule-soft);
-      color: var(--positive);
-    }
-    .hyp-card .verdict-reject {
-      font-family: var(--font-mono);
-      font-size: 22px;
-      letter-spacing: 0.06em;
-      padding-top: 10px;
-      border-top: 1px solid var(--rule-soft);
-      color: var(--danger);
-    }
-    .hyp-card .consequence {
-      padding-top: 10px;
-      border-top: 1px solid var(--rule-soft);
-      font-family: var(--font-sans);
-      font-size: 19px;
-      color: var(--fg-2);
-      line-height: 1.5;
-    }
+.proj-hero{background:#fff;border-radius:16px;border:1px solid rgba(17,24,39,.08);box-shadow:0 1px 3px rgba(0,0,0,.04);border-top:3px solid #7C3AED;padding:48px 48px 40px;margin-top:40px;}
+.proj-num{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-400);margin-bottom:16px;}
+.proj-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.tag-pill{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;padding:3px 10px;border-radius:999px;background:rgba(124,58,237,.08);color:#7C3AED;}
+h1.proj-title{font-size:clamp(28px,4vw,40px);font-weight:700;line-height:1.2;letter-spacing:-.02em;margin:0 0 12px;}
+.proj-desc{font-size:17px;color:var(--ink-600);line-height:1.6;margin:0 0 32px;max-width:56ch;}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid rgba(17,24,39,.08);padding-top:28px;}
+.stat-box{padding:0 24px 0 0;border-right:1px solid rgba(17,24,39,.08);}
+.stat-box:first-child{padding-left:0;}
+.stat-box:last-child{border-right:none;padding-left:24px;}
+.stat-box:not(:first-child):not(:last-child){padding-left:24px;}
+.stat-val{font-family:var(--font-mono);font-size:32px;font-weight:700;color:var(--ink-900);letter-spacing:-.02em;line-height:1;}
+.stat-val.accent{color:#7C3AED;}
+.stat-lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-400);margin-top:6px;}
 
-    /* ── Gate diagram ── */
-    .gate-box {
-      background: var(--paper-50);
-      border: 1px solid var(--rule);
-      padding: 38px 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .gate-box .tag {
-      font-family: var(--font-mono);
-      font-size: 22px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--accent-600);
-    }
-    .gate-box h3 {
-      font-family: var(--font-sans);
-      font-weight: 600;
-      font-size: 32px;
-      line-height: 1.18;
-      margin: 0;
-      color: var(--fg-1);
-    }
-    .gate-box .desc {
-      font-family: var(--font-sans);
-      font-size: 22px;
-      line-height: 1.58;
-      color: var(--fg-2);
-    }
-    .gate-box .rule {
-      font-family: var(--font-mono);
-      font-size: 20px;
-      background: var(--paper-200);
-      padding: 12px 14px;
-      line-height: 1.5;
-      color: var(--ink-900);
-    }
+.hero-thumb{margin-top:32px;border-radius:8px;overflow:hidden;border:1px solid rgba(17,24,39,.08);background:#fff;padding:24px;}
 
-    /* ── Close slide ── */
-    .s-close .pull {
-      font-family: var(--font-sans);
-      font-weight: 500;
-      font-size: 56px;
-      line-height: 1.24;
-      letter-spacing: -0.02em;
-      color: var(--fg-1);
-      max-width: 24ch;
-    }
-    .s-close .pull em { font-style: normal; color: var(--accent-600); }
-    .deploy-lead {
-      margin-top: 18px;
-      font-family: var(--font-sans);
-      font-size: 22px;
-      line-height: 1.6;
-      color: var(--fg-2);
-      max-width: 44ch;
-    }
-    .s-close .attrib {
-      font-family: var(--font-mono);
-      font-size: 22px;
-      letter-spacing: 0.14em;
-      color: var(--fg-3);
-      margin-top: 32px;
-      padding-top: 20px;
-      border-top: 1px solid var(--rule);
-    }
+.proj-section{background:#fff;border-radius:16px;border:1px solid rgba(17,24,39,.08);box-shadow:0 1px 3px rgba(0,0,0,.04);padding:48px;margin-top:24px;}
+.section-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-400);margin-bottom:20px;}
+.proj-section h2{font-size:22px;font-weight:700;letter-spacing:-.015em;margin:0 0 16px;color:var(--ink-900);}
+.proj-section p{color:var(--ink-700);line-height:1.7;margin:0 0 16px;}
+.proj-section p:last-child{margin-bottom:0;}
 
-    /* ── Phase grid ── */
-    .phase-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-top: 26px;
-    }
-    .phase {
-      padding: 28px 26px;
-      background: var(--paper-50);
-      border: 1px solid var(--rule);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .phase .num {
-      font-family: var(--font-sans);
-      font-weight: 700;
-      font-size: 72px;
-      line-height: 0.95;
-      color: var(--accent-600);
-      letter-spacing: -0.04em;
-    }
-    .phase .name { font-family: var(--font-sans); font-weight: 600; font-size: 28px; line-height: 1.24; color: var(--fg-1); }
-    .phase .desc { font-family: var(--font-sans); font-size: 20px; line-height: 1.58; color: var(--fg-2); min-height: 92px; }
-    .phase .target { font-family: var(--font-mono); font-size: 18px; letter-spacing: 0.08em; color: var(--accent-600); padding-top: 12px; border-top: 1px solid var(--rule-soft); margin-top: auto; }
+.tech-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+.tech-tag{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;padding:4px 12px;border-radius:4px;background:#F5F5F3;border:1px solid rgba(17,24,39,.1);color:var(--ink-600);}
 
-    /* ── Domain process flow (Slide 02) ── */
-    .domain-grid { display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 44px; align-items: start; }
-    .domain-col { display: flex; flex-direction: column; }
-    .proc-flow { display: flex; flex-direction: column; gap: 12px; }
-    .proc-step {
-      padding: 20px 24px;
-      border: 1px solid var(--rule);
-      background: var(--paper-50);
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-      min-height: 88px;
-    }
-    .proc-num {
-      font-family: var(--font-mono);
-      font-size: 20px;
-      color: var(--accent-600);
-      letter-spacing: 0.1em;
-      flex-shrink: 0;
-      padding-top: 5px;
-    }
-    .proc-label { font-family: var(--font-sans); font-weight: 600; font-size: 26px; line-height: 1.22; color: var(--fg-1); }
-    .proc-desc { font-family: var(--font-sans); font-size: 19px; color: var(--fg-2); line-height: 1.58; margin-top: 6px; }
-    .proc-arrow { text-align: center; color: var(--fg-3); font-size: 20px; padding: 2px 0; line-height: 1; }
+.proc-flow{display:flex;flex-direction:column;gap:0;margin-top:20px;}
+.proc-step{display:grid;grid-template-columns:40px 1fr;gap:14px;padding:16px 0;border-top:1px solid rgba(17,24,39,.06);align-items:start;}
+.proc-step:first-child{border-top:none;padding-top:0;}
+.proc-num{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;color:#7C3AED;font-weight:600;padding-top:3px;}
+.proc-label{font-size:15px;font-weight:600;color:var(--ink-900);margin:0 0 4px;}
+.proc-detail{font-size:14px;color:var(--ink-600);line-height:1.5;margin:0;}
 
-    /* ── Cause cards (Slide 02) ── */
-    .cause-stack { display: flex; flex-direction: column; gap: 10px; }
-    .cause-card {
-      display: flex;
-      gap: 14px;
-      padding: 20px 22px;
-      border: 1px solid var(--rule);
-      border-left: 3px solid var(--accent-600);
-      background: rgba(30,58,138,0.03);
-      min-height: 0;
-    }
-    .cause-card-dim { border-left-color: var(--fg-3); background: var(--paper-100); opacity: 0.72; }
-    .cause-num { font-family: var(--font-mono); font-size: 21px; letter-spacing: 0.1em; color: var(--accent-600); flex-shrink: 0; padding-top: 5px; }
-    .cause-title { font-family: var(--font-sans); font-weight: 600; font-size: 24px; line-height: 1.22; color: var(--fg-1); margin-bottom: 6px; }
-    .cause-desc { font-family: var(--font-sans); font-size: 18px; color: var(--fg-2); line-height: 1.58; }
-    .domain-note {
-      margin-top: 18px;
-      font-family: var(--font-sans);
-      font-size: 18px;
-      color: var(--fg-3);
-      line-height: 1.55;
-    }
+.hyp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px;}
+.hyp-card{padding:20px;border-top:2px solid #7C3AED;background:#F5F5F3;border-radius:0 0 8px 8px;}
+.hyp-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-400);margin-bottom:8px;}
+.hyp-q{font-size:14px;font-weight:600;color:var(--ink-900);margin:0 0 8px;line-height:1.4;}
+.hyp-verdict{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;color:#059669;}
+.hyp-consequence{font-size:13px;color:var(--ink-600);margin:8px 0 0;line-height:1.5;padding-top:8px;border-top:1px solid rgba(17,24,39,.07);}
 
-    /* ── Limit rows (Slide 09) ── */
-    .limit-row {
-      display: flex;
-      gap: 14px;
-      padding: 18px 20px;
-      border-left: 3px solid var(--danger);
-      background: rgba(220, 38, 38, 0.03);
-      flex: 1;
-      align-items: flex-start;
-    }
-    .limit-row .l-icon { font-family: var(--font-mono); font-size: 18px; color: var(--danger); flex-shrink: 0; padding-top: 4px; }
-    .limit-row .l-text { font-family: var(--font-sans); font-size: 18px; color: var(--fg-2); line-height: 1.62; }
-    .limit-row .l-text strong { color: var(--fg-1); font-weight: 600; }
-    .limit-row .l-text .headline {
-      display: block;
-      font-size: 24px;
-      line-height: 1.28;
-      color: var(--fg-1);
-      margin-bottom: 6px;
-    }
+.arch-box{padding:24px;border:1px solid rgba(17,24,39,.1);border-radius:8px;margin-top:16px;}
+.arch-box.stage1{border-left:3px solid #7C3AED;background:rgba(124,58,237,.03);}
+.arch-box.stage2{border-left:3px solid #059669;background:rgba(5,150,105,.03);}
+.arch-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7C3AED;margin-bottom:10px;}
+.arch-box.stage2 .arch-label{color:#059669;}
+.arch-title{font-size:17px;font-weight:600;color:var(--ink-900);margin:0 0 10px;}
+.arch-rule{font-family:var(--font-mono);font-size:13px;background:var(--paper-200);padding:10px 14px;border-radius:4px;line-height:1.6;color:var(--ink-700);}
+.arch-desc{font-size:14px;color:var(--ink-600);margin:10px 0 0;line-height:1.55;}
 
-    /* ── Learn cards (Slide 09) ── */
-    .learn-card {
-      padding: 22px 24px;
-      border-top: 2px solid var(--accent-600);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      flex: 1;
-      justify-content: center;
-    }
-    .learn-card .lc-title { font-family: var(--font-sans); font-weight: 600; font-size: 34px; line-height: 1.24; color: var(--fg-1); }
-    .learn-card .lc-body { font-family: var(--font-sans); font-size: 18px; color: var(--fg-2); line-height: 1.62; }
+.model-table{width:100%;border-collapse:collapse;margin-top:20px;font-size:14px;}
+.model-table th{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-400);text-align:right;padding:8px 12px;border-bottom:1px solid rgba(17,24,39,.1);}
+.model-table th:first-child{text-align:left;}
+.model-table td{padding:10px 12px;border-bottom:1px solid rgba(17,24,39,.05);text-align:right;font-family:var(--font-mono);color:var(--ink-600);}
+.model-table td:first-child{text-align:left;font-family:var(--font-sans);color:var(--ink-700);}
+.model-table tr.best td{background:rgba(124,58,237,.05);color:var(--ink-900);}
+.model-table tr.best td:first-child{color:#7C3AED;font-weight:600;}
+.accent-val{color:#7C3AED;font-weight:700;}
 
-    /* ── Insight cards (Slide 04 EDA) ── */
-    .insight-card {
-      display: grid;
-      grid-template-columns: 56px 1fr;
-      gap: 20px;
-      padding: 24px 26px;
-      border-left: 3px solid var(--accent-600);
-      background: var(--paper-50);
-      align-items: start;
-    }
-    .insight-card .ins-num {
-      font-family: var(--font-mono);
-      font-weight: 600;
-      font-size: 36px;
-      line-height: 1;
-      color: var(--accent-600);
-      letter-spacing: -0.02em;
-    }
-    .insight-card .ins-title {
-      font-family: var(--font-sans);
-      font-weight: 600;
-      font-size: 24px;
-      color: var(--fg-1);
-      margin-bottom: 8px;
-      line-height: 1.3;
-    }
-    .insight-card .ins-detail {
-      font-family: var(--font-sans);
-      font-size: 19px;
-      color: var(--fg-2);
-      line-height: 1.62;
-    }
-    .insight-card .ins-detail .num-tag {
-      font-family: var(--font-mono);
-      color: var(--fg-1);
-      background: var(--paper-200);
-      padding: 1px 6px;
-      font-size: 17px;
-    }
-    .insight-card .ins-arrow {
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px solid var(--rule-soft);
-      font-family: var(--font-sans);
-      font-size: 18px;
-      color: var(--accent-600);
-      font-weight: 500;
-    }
+.insight-box{padding:20px 24px;background:rgba(124,58,237,.04);border-left:3px solid #7C3AED;margin-top:20px;border-radius:0 8px 8px 0;}
+.insight-box p{font-size:15px;color:var(--ink-700);margin:0;line-height:1.6;}
+.insight-box strong{color:var(--ink-900);}
 
-    /* ── Result row (Slide 08) ── */
-    .result-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-family: var(--font-sans);
-      font-size: 22px;
-      margin-top: 16px;
-    }
-    .result-table thead th {
-      font-family: var(--font-mono);
-      font-size: 17px;
-      font-weight: 400;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--fg-3);
-      text-align: right;
-      padding: 12px 12px;
-      border-bottom: 1px solid var(--rule);
-    }
-    .result-table thead th:first-child { text-align: left; }
-    .result-table tbody td {
-      padding: 14px 12px;
-      border-bottom: 1px solid var(--rule-soft);
-      text-align: right;
-      font-family: var(--font-mono);
-      font-feature-settings: "tnum";
-      color: var(--fg-2);
-    }
-    .result-table tbody td:first-child {
-      text-align: left;
-      font-family: var(--font-sans);
-      color: var(--fg-2);
-    }
-    .result-table tbody tr.win td {
-      color: var(--fg-1);
-      background: rgba(30, 58, 138, 0.05);
-      font-weight: 600;
-    }
-    .result-table tbody tr.win td:first-child { color: var(--accent-600); }
-    .result-table tbody tr.win .winval { color: var(--accent-600); }
+.limit-list{display:flex;flex-direction:column;gap:12px;margin-top:20px;}
+.limit-item{display:flex;gap:14px;padding:16px 20px;border-left:3px solid #B5331E;background:rgba(181,51,30,.03);border-radius:0 8px 8px 0;}
+.limit-icon{font-family:var(--font-mono);font-size:14px;color:#B5331E;flex-shrink:0;}
+.limit-content h4{font-size:15px;font-weight:600;color:var(--ink-900);margin:0 0 4px;}
+.limit-content p{font-size:14px;color:var(--ink-600);margin:0;line-height:1.5;}
 
-    /* ── Results layout (Slide 08) ── */
-    .results-grid { display: grid; grid-template-columns: 0.92fr 1.08fr; gap: 34px; align-items: start; }
-    .results-col { display: flex; flex-direction: column; min-height: 0; }
-    .results-kicker {
-      font-family: var(--font-mono);
-      font-size: 17px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent-600);
-      margin-bottom: 12px;
-    }
-    .results-summary {
-      margin-top: 12px;
-      padding: 14px 18px;
-      background: rgba(30,58,138,0.04);
-      border-left: 3px solid var(--accent-600);
-      font-family: var(--font-sans);
-      font-size: 19px;
-      line-height: 1.55;
-      color: var(--fg-2);
-    }
-    .results-note {
-      margin-top: 14px;
-      padding: 14px 18px;
-      border-left: 3px solid var(--accent-600);
-      background: rgba(30,58,138,0.04);
-    }
-    .results-note .title {
-      font-family: var(--font-sans);
-      font-weight: 600;
-      font-size: 19px;
-      color: var(--fg-1);
-      margin-bottom: 6px;
-    }
-    .results-note .body {
-      font-family: var(--font-sans);
-      font-size: 17px;
-      color: var(--fg-2);
-      line-height: 1.58;
-    }
-    .results-panel {
-      padding: 14px 16px;
-      border: 1px solid var(--rule);
-      background: var(--paper-50);
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-    }
-    table.compact-tbl th,
-    table.compact-tbl td { padding: 9px 12px !important; }
-    table.compact-tbl thead th { padding-bottom: 8px !important; }
-  </style>
+.learn-list{display:flex;flex-direction:column;gap:16px;margin-top:20px;}
+.learn-card{padding:20px 24px;border-top:2px solid #7C3AED;background:#F5F5F3;border-radius:0 0 8px 8px;}
+.learn-title{font-size:16px;font-weight:700;color:var(--ink-900);margin:0 0 8px;}
+.learn-body{font-size:14px;color:var(--ink-600);line-height:1.6;margin:0;}
+
+.phase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;}
+.phase-box{padding:24px;background:#F5F5F3;border-radius:8px;}
+.phase-num{font-family:var(--font-mono);font-size:28px;font-weight:700;color:#7C3AED;letter-spacing:-.03em;}
+.phase-name{font-size:16px;font-weight:600;color:var(--ink-900);margin:8px 0 8px;}
+.phase-desc{font-size:13px;color:var(--ink-600);line-height:1.55;margin:0 0 12px;}
+.phase-target{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;color:#7C3AED;padding-top:10px;border-top:1px solid rgba(17,24,39,.07);}
+
+.site-footer{background:#fff;border-top:1px solid rgba(17,24,39,.08);margin-top:80px;}
+.footer-inner{max-width:1100px;margin:0 auto;padding:40px 40px;display:flex;flex-direction:column;gap:20px;}
+.footer-top{display:flex;flex-direction:column;gap:4px;}
+.footer-wordmark{font-family:var(--font-mono);font-size:20px;font-weight:700;letter-spacing:-.01em;}
+.footer-desc{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;color:var(--ink-400);}
+.footer-contacts{display:flex;gap:24px;flex-wrap:wrap;}
+.footer-link{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:13px;color:var(--ink-600);text-decoration:none;transition:color 140ms;}
+.footer-link:hover{color:var(--ink-900);}
+.footer-bottom{border-top:1px solid rgba(17,24,39,.08);padding-top:20px;}
+.footer-copy{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;color:var(--ink-400);}
+</style>
 </head>
-
 <body>
 
-  <deck-stage width="1920" height="1080">
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-left">
+      <a href="index.html" class="mark" style="text-decoration:none;color:inherit">
+        <svg width="24" height="18" viewBox="0 0 88 66" fill="currentColor">
+          <rect x="0"  y="4"  width="9" height="58"/>
+          <rect x="34" y="4"  width="9" height="58"/>
+          <rect x="0"  y="29" width="43" height="2"/>
+          <rect x="-3" y="4"  width="15" height="2.5"/>
+          <rect x="31" y="4"  width="15" height="2.5"/>
+          <rect x="-3" y="59.5" width="15" height="2.5"/>
+          <rect x="31" y="59.5" width="15" height="2.5"/>
+          <rect x="51" y="4"  width="9" height="58"/>
+          <rect x="48" y="4"  width="15" height="2.5"/>
+          <rect x="48" y="59.5" width="15" height="2.5"/>
+          <polygon points="60,30 60,33 88,4 85,4"/>
+          <polygon points="60,33 60,36 88,66 84,66"/>
+        </svg>
+        <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.08em">HK&nbsp;&nbsp;PORTFOLIO · 2026</span>
+      </a>
+      <a href="index.html" class="back-link">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
+        BACK
+      </a>
+    </div>
+    <nav class="site-nav-links">
+      <a href="#overview">OVERVIEW</a>
+      <a href="#process">PROCESS</a>
+      <a href="#results">RESULTS</a>
+    </nav>
+  </div>
+</header>
 
-    <!-- ═══ Slide 01 — Title ═══ -->
-    <section class="slide s-title" data-label="01 Title">
-      <div class="top-rule">
-        <span>김희태 · PORTFOLIO</span>
-        <span>2026</span>
-      </div>
-      <div class="hero">
-        <div class="meta-cap" style="margin-bottom: 32px;">SeSAC SCM · 비계획 Skinpass 예측 프로젝트</div>
-        <h1>소둔 전에 비계획 Skinpass<br />발생 가능성을 예측했다.</h1>
-        <p class="ko-sub">냉연 코일 4,000건의 물성과 공정 실적으로,<br/>소둔이 끝난 뒤 예외 공정으로 빠질 코일을 소둔 전에 먼저 골라내는 프로젝트.</p>
-      </div>
-      <div class="meta-grid">
-        <div class="col">
-          <div class="k">TYPE</div>
-          <div class="v">개인프로젝트</div>
-        </div>
-        <div class="col">
-          <div class="k">DATA</div>
-          <div class="v">코일 4,000건<br />22 변수 (원천 13 + 파생 9)</div>
-        </div>
-        <div class="col">
-          <div class="k">METHOD</div>
-          <div class="v">Material Quality Gate +<br />Logistic Regression</div>
-        </div>
-        <div class="col">
-          <div class="k">OUTCOME</div>
-          <div class="v">Recall 0.595 (★최고)<br />FN −24건 (vs baseline)</div>
-        </div>
-      </div>
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">01 / 10</div>
-    </section>
+<div class="proj-wrap">
 
-    <!-- ═══ Slide 02 — 도메인 이해 [NEW] ═══ -->
-    <section class="slide" data-label="02 Domain">
-      <div class="top-rule">
-        <span>02 · 도메인 이해</span>
-        <span>공정을 먼저 읽기</span>
+  <!-- HERO -->
+  <section class="proj-hero">
+    <div class="proj-num">№ 03 · SCM · 품질 예측 · 2026.04</div>
+    <div class="proj-tags">
+      <span class="tag-pill">분류 모델</span>
+      <span class="tag-pill">SCM</span>
+      <span class="tag-pill">SMOTE</span>
+      <span class="tag-pill">SeSAC</span>
+    </div>
+    <h1 class="proj-title">Skinpass — 코일 투입 전 비계획 공정 가능성 예측</h1>
+    <p class="proj-desc">냉연 코일 4,000건의 물성·공정 실적으로 비계획 Skinpass 발생 가능성을 소둔 투입 전에 사전 판별하는 분류 모델.</p>
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-val accent">0.595</div>
+        <div class="stat-lbl">Recall (최고)</div>
       </div>
-      <div class="domain-grid" style="flex: 1; padding-top: 24px;">
-
-        <!-- Left: Process Flow -->
-        <div class="domain-col">
-          <h2 class="slide-h2" style="font-size: 52px; line-height: 1.08; margin-bottom: 14px;">소둔 뒤에 왜 문제가 드러나는지부터 확인했다.</h2>
-          <p class="slide-body" style="font-size: 24px; color: var(--fg-2); margin-bottom: 20px; max-width: 28ch;">공정 흐름과 검사 기준을 다시 읽고, 비계획 Skinpass가 어디서 갈리는지부터 정리했다.</p>
-          <div class="proc-flow">
-            <div class="proc-step">
-              <div class="proc-num">01</div>
-              <div>
-                <div class="proc-label">소재 입고</div>
-                <div class="proc-desc">재질등급, 강종, 두께, 폭, 경도 같은 기본 물성 기록.</div>
-              </div>
-            </div>
-            <div class="proc-arrow">↓</div>
-            <div class="proc-step">
-              <div class="proc-num">02</div>
-              <div>
-                <div class="proc-label">냉간 압연</div>
-                <div class="proc-desc">압연하중과 온도편차가 표면조도와 형상에 직접 영향을 줌.</div>
-              </div>
-            </div>
-            <div class="proc-arrow">↓</div>
-            <div class="proc-step">
-              <div class="proc-num">03</div>
-              <div>
-                <div class="proc-label">소둔 공정</div>
-                <div class="proc-desc">재결정 열처리로 연성 회복. 하지만 소둔로 내부 조건 데이터는 없었다.</div>
-              </div>
-            </div>
-            <div class="proc-arrow">↓</div>
-            <div class="proc-step">
-              <div class="proc-num">04</div>
-              <div>
-                <div class="proc-label">품질 검사 → 분기</div>
-                <div class="proc-desc">표면·형상·재질 기준 판정. <strong>기준 미달이면 비계획 Skinpass로 빠진다. 전체의 40.8%.</strong></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: 4가지 발생 원인 가설 -->
-        <div class="domain-col">
-          <div class="meta-cap" style="margin-bottom: 18px; font-size: 21px;">도메인 공부 뒤 세운 가설 4개</div>
-          <div class="cause-stack">
-            <div class="cause-card">
-              <div class="cause-num">H1</div>
-              <div>
-                <div class="cause-title">재질등급 차이</div>
-                <div class="cause-desc">재질등급 C 코일은 비계획 위험이 더 높을 것이라고 봤다.</div>
-              </div>
-            </div>
-            <div class="cause-card">
-              <div class="cause-num">H2</div>
-              <div>
-                <div class="cause-title">항복강도·표면 복합 위험</div>
-                <div class="cause-desc">항복강도와 표면조도가 함께 움직일 때 더 강한 위험 신호가 생길 것이라고 봤다.</div>
-              </div>
-            </div>
-            <div class="cause-card">
-              <div class="cause-num">H3</div>
-              <div>
-                <div class="cause-title">형상·표면 복합 조건</div>
-                <div class="cause-desc">형상과 표면 조건이 함께 나쁠 때 비계획 발생이 더 커질 것이라고 봤다.</div>
-              </div>
-            </div>
-            <div class="cause-card">
-              <div class="cause-num">H4</div>
-              <div>
-                <div class="cause-title">강종 × 재질등급 교호작용</div>
-                <div class="cause-desc">같은 등급이라도 강종에 따라 위험이 달라지고, 특정 조합은 더 취약할 것이라고 봤다.</div>
-              </div>
-            </div>
-          </div>
-          <p class="domain-note" style="font-size: 19px;">
-            먼저 가설을 세우고, 그다음 통계로 검증했다.
-          </p>
-        </div>
-
+      <div class="stat-box">
+        <div class="stat-val">−24건</div>
+        <div class="stat-lbl">FN 미탐지 감소</div>
       </div>
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">02 / 10</div>
-    </section>
-
-    <!-- ═══ Slide 03 — Problem ═══ -->
-    <section class="slide s-summary" data-label="03 Problem">
-      <div class="top-rule">
-        <span>03 · PROBLEM</span>
-        <span>왜 중요한가</span>
+      <div class="stat-box">
+        <div class="stat-val">40.8%</div>
+        <div class="stat-lbl">비계획 발생률</div>
       </div>
-      <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 0;">
-        <div style="flex: 1; display: grid; grid-template-columns: 1.2fr 1fr; gap: 56px; align-items: center;">
-          <div>
-            <div class="quote">
-              코일 10개 중 4개는 소둔 후에 <em>예외 공정</em>으로 빠진다.<br />
-              그중 60%는 소둔 투입 전에 포착된다.
-            </div>
-            <p class="slide-body" style="font-size: 26px; color: var(--fg-2); margin-top: 36px;">
-              비계획 Skinpass는 소둔이 끝난 뒤 품질 기준을 못 맞춘 코일에 긴급 투입되는 예외 공정이다.
-              설비 가동률, 납기, 에너지, 물류 비용에 모두 영향을 준다.
-              소재 입고 시점 데이터만으로 이 40.8%를 미리 걸러낼 수 있다면 운영 방식 자체가 달라진다.
-            </p>
-          </div>
-          <img src="skinpass/img/image9.png" alt="비계획 발생 분포 및 강종별 발생률"
-               style="width: 100%; height: auto; display: block;" />
-        </div>
-        <div class="stat-row">
-          <div class="col">
-            <div class="k">발생률</div>
-            <div class="v" style="color: var(--accent-600);">40.8%</div>
-            <div class="u">전체 4,000건 중 비계획 발생</div>
-          </div>
-          <div class="col">
-            <div class="k">C 등급 발생률</div>
-            <div class="v">48.8%</div>
-            <div class="u">A등급 대비 +12.5%p</div>
-          </div>
-          <div class="col">
-            <div class="k">FN 미탐지 감소</div>
-            <div class="v">−24건</div>
-            <div class="u">LR 기준 대비, Gate+LR 최종 모델</div>
-          </div>
-        </div>
-      </div>
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">03 / 10</div>
-    </section>
+    </div>
+    <div class="hero-thumb">
+      <svg width="100%" viewBox="0 0 320 140" fill="none">
+        <defs>
+          <linearGradient id="skinHL" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#7C3AED"/>
+            <stop offset="100%" stop-color="#A78BFA"/>
+          </linearGradient>
+          <linearGradient id="skinBar" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#C4B5FD" stop-opacity=".6"/>
+            <stop offset="100%" stop-color="#DDD6FE" stop-opacity=".4"/>
+          </linearGradient>
+        </defs>
+        <text x="88" y="14" font-family="monospace" font-size="9" fill="rgba(109,40,217,.5)" text-anchor="end">LR</text>
+        <rect x="92" y="5"  width="146" height="14" rx="3" fill="url(#skinBar)"/>
+        <text x="242" y="15" font-family="monospace" font-size="9" fill="rgba(109,40,217,.6)">74%</text>
+        <text x="88" y="44" font-family="monospace" font-size="9" fill="rgba(109,40,217,.5)" text-anchor="end">XGBoost</text>
+        <rect x="92" y="35" width="168" height="14" rx="3" fill="url(#skinBar)"/>
+        <text x="264" y="45" font-family="monospace" font-size="9" fill="rgba(109,40,217,.6)">85%</text>
+        <text x="88" y="74" font-family="monospace" font-size="9" fill="rgba(109,40,217,.5)" text-anchor="end">RF</text>
+        <rect x="92" y="65" width="162" height="14" rx="3" fill="url(#skinBar)"/>
+        <text x="258" y="75" font-family="monospace" font-size="9" fill="rgba(109,40,217,.6)">82%</text>
+        <rect x="88" y="95" width="186" height="20" rx="4" fill="url(#skinHL)"/>
+        <text x="90"  y="109" font-family="monospace" font-size="9" fill="white" font-weight="bold">LightGBM</text>
+        <text x="268" y="109" font-family="monospace" font-size="10" fill="white" font-weight="bold" text-anchor="end">92%</text>
+        <rect x="277" y="97" width="22" height="16" rx="4" fill="#5B21B6"/>
+        <text x="288" y="109" font-family="monospace" font-size="8" fill="#F3E8FF" font-weight="bold" text-anchor="middle">#1</text>
+      </svg>
+    </div>
+  </section>
 
-    <!-- ═══ Slide 04 — EDA ═══ -->
-    <section class="slide" data-label="04 EDA">
-      <div class="top-rule">
-        <span>04 · EDA</span>
-        <span>데이터를 먼저 읽기</span>
-      </div>
-      <div style="display: grid; grid-template-columns: 720px 600px; gap: 56px; flex: 1; min-height: 0; padding-top: 24px; justify-content: center; align-items: start;">
+  <!-- OVERVIEW -->
+  <section class="proj-section" id="overview">
+    <div class="section-label">OVERVIEW</div>
+    <h2>프로젝트 배경과 목적</h2>
+    <p>비계획 Skinpass는 소둔이 끝난 뒤 품질 기준을 못 맞춘 코일에 긴급 투입되는 예외 공정이다. 전체 4,000건 중 40.8%가 발생하며, 설비 가동률·납기·에너지·물류 비용에 모두 영향을 준다.</p>
+    <p>소재 입고 시점 데이터만으로 이 40.8%를 미리 걸러낼 수 있다면 운영 방식 자체가 달라진다. <strong>코일 10개 중 4개는 소둔 후에 예외 공정으로 빠지며, 그 중 60%는 소둔 투입 전에 포착된다.</strong></p>
+    <p>비계획 발생을 놓치면(FN) 긴급 공정 투입 비용이 생기고, 오탐(FP)은 예방적 대응으로 끝난다. 따라서 Recall을 1순위 지표로 설정했다.</p>
+    <div class="tech-tags">
+      <span class="tech-tag">Python</span>
+      <span class="tech-tag">LightGBM</span>
+      <span class="tech-tag">XGBoost</span>
+      <span class="tech-tag">Logistic Regression</span>
+      <span class="tech-tag">SMOTE</span>
+      <span class="tech-tag">SHAP</span>
+      <span class="tech-tag">Scikit-Learn</span>
+    </div>
+  </section>
 
-        <!-- Left: 히트맵 1개 (height 645px = 720/1.116) -->
+  <!-- PROCESS -->
+  <section class="proj-section" id="process">
+    <div class="section-label">PROCESS</div>
+    <h2>도메인 이해 — 공정 흐름 파악</h2>
+    <p>먼저 가설을 세우고, 그다음 통계로 검증했다. 소둔 뒤에 왜 문제가 드러나는지부터 확인했다.</p>
+    <div class="proc-flow">
+      <div class="proc-step">
+        <span class="proc-num">01</span>
         <div>
-          <div class="meta-cap" style="margin-bottom: 10px; font-size: 18px;">상관관계 히트맵 · 13개 변수 × 4,000건</div>
-          <img src="skinpass/img/image1.png" alt="상관관계 히트맵"
-               style="width: 720px; height: auto; display: block;" />
-          <p style="margin-top: 12px; font-size: 18px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.6;">
-            <strong style="color: var(--fg-2); font-weight: 600;">발견 ①</strong> 단일 변수 상관은 모두 약했다.
-            <strong style="color: var(--fg-2); font-weight: 600; margin-left: 4px;">발견 ②</strong> 대신 변수끼리 함께 움직이는 패턴이 더 강했다.
-            <strong style="color: var(--accent-600); font-weight: 600; display: block; margin-top: 4px;">→ 단일 변수보다 복합 파생변수가 중요했다.</strong>
-          </p>
-        </div>
-
-        <!-- Right: 히스토그램(358px) + 박스플롯(233px) 스택, 합산 높이 = 좌측 히트맵과 매칭 -->
-        <div style="display: flex; flex-direction: column; gap: 18px;">
-          <div>
-            <div class="meta-cap" style="margin-bottom: 8px; font-size: 18px;">클래스별 분포 히스토그램</div>
-            <img src="skinpass/img/image4.png" alt="클래스별 변수 분포"
-                 style="width: 600px; height: auto; display: block;" />
-            <p style="margin-top: 8px; font-size: 17px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.58;">
-            <strong style="color: var(--fg-2);">발견 ③</strong> 이전공정경과시간은 두 그룹 분포가 거의 겹쳤다. <strong style="color: var(--accent-600);">시간 변수는 핵심이 아닐 가능성을 여기서 확인했다.</strong>
-            </p>
-          </div>
-          <div>
-            <div class="meta-cap" style="margin-bottom: 8px; font-size: 18px;">핵심 변수 박스플롯</div>
-            <img src="skinpass/img/image10.png" alt="박스플롯"
-                 style="width: 600px; height: auto; display: block;" />
-            <p style="margin-top: 8px; font-size: 17px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.58;">
-              <strong style="color: var(--fg-2);">발견 ④</strong> 형상불량지수 이상치가 발생 그룹에 몰려 있었다. <strong style="color: var(--accent-600);">H2 가설이 시각적으로도 보였다.</strong>
-            </p>
-          </div>
-        </div>
-
-      </div>
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">04 / 10</div>
-    </section>
-
-    <!-- ═══ Slide 05 — Hypotheses ═══ -->
-    <section class="slide" data-label="05 Hypotheses">
-      <div class="top-rule">
-        <span>05 · 가설 검증</span>
-        <span>4 ACCEPTED</span>
-      </div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; flex: 1; min-height: 0; padding-top: 40px; align-items: stretch;">
-        <div style="display: flex; flex-direction: column; min-height: 0;">
-          <h2 class="slide-h2" style="font-size: 52px; line-height: 1.12; margin-bottom: 24px; flex-shrink: 0;">
-            가설 4개를 먼저 세우고 통계로 바로 검증했다.</h2>
-          <div class="hyp-row" style="grid-template-columns: repeat(2, 1fr); margin-top: 0; flex: 1; align-content: start; gap: 14px;">
-            <div class="hyp-card">
-              <div class="tag">H1 · 재질등급</div>
-              <div class="q">재질등급 C가 발생률을 구조적으로 높이는가?</div>
-              <div class="verdict">✓ Kruskal-Wallis p &lt; 0.001</div>
-              <div class="consequence">→ Material Gate 진입 조건으로 직접 활용</div>
-            </div>
-            <div class="hyp-card">
-              <div class="tag">H2 · 항복강도</div>
-              <div class="q">항복강도 임계값이 비계획 위험을 가르는가?</div>
-              <div class="verdict">✓ Mann-Whitney p &lt; 0.001</div>
-              <div class="consequence">→ Material Gate와 quality_risk_score 설계에 반영</div>
-            </div>
-            <div class="hyp-card">
-              <div class="tag">H3 · 형상·표면 복합</div>
-              <div class="q">형상과 표면 조건이 함께 나쁠 때 위험이 더 커지는가?</div>
-              <div class="verdict">✓ Kruskal-Wallis p &lt; 0.001</div>
-              <div class="consequence">→ surface_shape_composite 파생변수 생성</div>
-            </div>
-            <div class="hyp-card">
-              <div class="tag">H4 · 강종 × 등급</div>
-              <div class="q">강종과 재질등급 조합이 위험 패턴을 구조적으로 바꾸는가?</div>
-              <div class="verdict">✓ Kruskal-Wallis p &lt; 0.001</div>
-              <div class="consequence">→ grade_steel_interaction 파생변수 생성</div>
-            </div>
-          </div>
-        </div>
-        <div style="display: flex; flex-direction: column; min-height: 0;">
-          <div class="meta-cap" style="margin-bottom: 14px; flex-shrink: 0; font-size: 18px;">가설 검증 결과 시각화 (H1~H4)</div>
-          <img src="skinpass/img/image5.png" alt="가설 검증 결과 시각화"
-               style="width: 100%; height: auto; display: block;" />
-          <p style="margin-top: 12px; font-size: 18px; color: var(--fg-3); font-family: var(--font-sans); line-height: 1.58; flex-shrink: 0;">
-            H1~H4는 모두 파생변수와 Gate 조건으로 직접 연결했다. SHAP 분석에서 이 가설 기반 변수들이 상위권에 올라, 처음 세운 도메인 가설이 모델에서도 그대로 작동한다는 걸 확인했다.
-          </p>
+          <p class="proc-label">소재 입고</p>
+          <p class="proc-detail">재질등급, 강종, 두께, 폭, 경도 같은 기본 물성 기록.</p>
         </div>
       </div>
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">05 / 10</div>
-    </section>
-
-    <!-- ═══ Slide 06 — Architecture ═══ -->
-    <section class="slide" data-label="06 Architecture">
-      <div class="top-rule">
-        <span>06 · ARCHITECTURE</span>
-        <span>2단계 의사결정</span>
-      </div>
-      <div style="flex: 1; min-height: 0; display: flex; flex-direction: column;">
-        <h2 class="slide-h2" style="margin-top: 36px; font-size: 54px; line-height: 1.12; flex-shrink: 0;">
-          현장에서 코일을 판단하는 순서를 그대로 모델에 옮겼다.</h2>
-
-        <div style="display: grid; grid-template-columns: 1.04fr 0.96fr; gap: 40px; flex: 1; min-height: 0; margin-top: 32px; align-items: start;">
-          <!-- 왼쪽: Stage 1 + Stage 2 위아래 -->
-          <div style="display: flex; flex-direction: column; gap: 18px; min-height: 0;">
-            <div class="gate-box" style="padding: 26px 28px; gap: 12px;">
-              <div class="tag">STAGE 1 · MATERIAL QUALITY GATE</div>
-              <h3 style="font-size: 36px; line-height: 1.14;">명백한 고위험은 규칙으로 먼저 걸렀다</h3>
-              <div class="rule" style="font-size: 21px; padding: 12px 14px; line-height: 1.58;">IF 재질등급 == C<br />OR 항복강도 ≥ 임계값<br />→ 고위험 분류 (Gate=1)</div>
-              <div class="desc" style="font-size: 22px; line-height: 1.56;">H1 + H2 검증 결과를 그대로 묶은 하드 필터다. Gate=1이면 담당자가 먼저 확인한다.</div>
-            </div>
-            <div class="gate-box" style="padding: 26px 28px; gap: 12px; background: rgba(30,58,138,0.04); border-color: var(--accent-600);">
-              <div class="tag">STAGE 2 · LOGISTIC REGRESSION</div>
-              <h3 style="font-size: 36px; line-height: 1.14;">애매한 구간은 확률로 다시 판단했다</h3>
-              <div class="rule" style="font-size: 19px; padding: 12px 14px; line-height: 1.58;">quality_risk_score · process_risk_composite<br />surface_shape_composite · grade_steel_interaction<br />두께/폭 비율 · 시간×온도 상호작용</div>
-              <div class="desc" style="font-size: 22px; line-height: 1.56;">H2·H3 기반 복합 파생변수가 상위권에 올라, 도메인 가설이 모델 안에서도 유지됐다.</div>
-            </div>
-          </div>
-          <!-- 오른쪽: 원본 image7.png -->
-          <div style="display: flex; flex-direction: column; min-height: 0; justify-content: center; align-items: center;">
-            <div class="meta-cap" style="flex-shrink: 0; margin-bottom: 12px; font-size: 19px; align-self: flex-start;">Gate 발동별 비계획 발생률 · Recall-Precision 트레이드오프</div>
-            <img src="skinpass/img/image7.png" alt="Gate 발동별 비계획 발생률 및 Recall-Precision"
-                 style="width: 100%; max-width: 720px; height: auto; display: block; margin: 0 auto;" />
-          </div>
-        </div>
-      </div>
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">06 / 10</div>
-    </section>
-
-    <!-- ═══ Slide 07 — Data Augmentation ═══ -->
-    <section class="slide soft" data-label="07 SMOTE">
-      <div class="top-rule">
-        <span>07 · 불균형 보정</span>
-        <span>5개 방법 비교</span>
-      </div>
-      <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; flex: 1; padding-top: 24px; align-items: start;">
+      <div class="proc-step">
+        <span class="proc-num">02</span>
         <div>
-          <h2 class="slide-h2" style="font-size: 54px; line-height: 1.12;">불균형 보정도 직접 비교해 골랐다.</h2>
-          <p class="slide-body" style="margin-top: 24px; max-width: 28ch; font-size: 26px;">
-            미발생 59.2%, 발생 40.8%로 극단적이진 않았지만 Accuracy만으로 판단하기엔 부족한 구조였다.
-          </p>
-          <div style="margin-top: 24px; display: grid; gap: 16px;">
-            <div style="padding: 24px; background: rgba(30, 58, 138, 0.05); border: 1px solid var(--rule); border-left: 3px solid var(--accent-600);">
-              <div class="meta-cap" style="margin-bottom: 12px; font-size: 18px;">원칙: Data Leakage 방지</div>
-              <div style="font-family: var(--font-sans); font-size: 24px; color: var(--fg-2); line-height: 1.6;">
-                증강은 <strong style="color: var(--fg-1);">학습 데이터에만</strong> 적용했다.<br/>
-                train에서만 fit하고 test에는 transform만 적용했다.
-              </div>
-            </div>
-            <div style="padding: 24px; background: var(--paper-200);">
-              <div class="meta-cap" style="margin-bottom: 12px; font-size: 18px;">SMOTE 선택 근거</div>
-              <div style="font-family: var(--font-sans); font-size: 24px; color: var(--fg-2); line-height: 1.6;">
-                단순 복제가 아니라 <strong style="color: var(--fg-1);">경계 근방 합성 샘플</strong>을 만들어
-                과적합 위험을 줄이면서 F1과 AUROC를 함께 끌어올렸다.
-              </div>
-            </div>
-          </div>
+          <p class="proc-label">냉간 압연</p>
+          <p class="proc-detail">압연하중과 온도편차가 표면조도와 형상에 직접 영향을 줌.</p>
         </div>
+      </div>
+      <div class="proc-step">
+        <span class="proc-num">03</span>
         <div>
-          <div class="meta-cap" style="margin-bottom: 14px; font-size: 18px;">5가지 증강 방법 비교</div>
-          <img src="skinpass/img/image2.png" alt="증강 방법별 F1/AUROC 비교"
-               style="width: 100%; height: auto; display: block; margin-bottom: 12px;" />
-          <table class="slide-table compact-tbl" style="font-size: 19px;">
-            <thead>
-              <tr>
-                <th>METHOD</th>
-                <th class="num" style="text-align:right;">TRAIN N</th>
-                <th class="num" style="text-align:right;">F1</th>
-                <th class="num" style="text-align:right;">AUROC</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>미증강 (기준)</td>
-                <td class="num" style="text-align:right; color: var(--fg-3);">3,200</td>
-                <td class="num" style="text-align:right; color: var(--fg-3);">0.469</td>
-                <td class="num" style="text-align:right; color: var(--fg-3);">0.572</td>
-              </tr>
-              <tr>
-                <td>랜덤 오버샘플링</td>
-                <td class="num" style="text-align:right;">4,736</td>
-                <td class="num" style="text-align:right;">0.471</td>
-                <td class="num" style="text-align:right;">0.575</td>
-              </tr>
-              <tr class="highlight">
-                <td>★ SMOTE</td>
-                <td class="num" style="text-align:right;">4,736</td>
-                <td class="num" style="text-align:right; color: var(--accent-600);">0.495</td>
-                <td class="num" style="text-align:right; color: var(--accent-600);">0.588</td>
-              </tr>
-              <tr>
-                <td>ADASYN</td>
-                <td class="num" style="text-align:right;">4,741</td>
-                <td class="num" style="text-align:right;">0.488</td>
-                <td class="num" style="text-align:right;">0.581</td>
-              </tr>
-              <tr>
-                <td>언더샘플링</td>
-                <td class="num" style="text-align:right;">3,264</td>
-                <td class="num" style="text-align:right; color: var(--danger);">0.440</td>
-                <td class="num" style="text-align:right; color: var(--danger);">0.551</td>
-              </tr>
-            </tbody>
-          </table>
-          <p class="slide-body" style="margin-top: 16px; font-size: 22px; color: var(--fg-3); font-style: italic; line-height: 1.5;">
-            언더샘플링은 정보 손실로 오히려 성능이 떨어졌다. 5개 방법 비교에서 SMOTE가 가장 안정적이었다.
-          </p>
+          <p class="proc-label">소둔 공정</p>
+          <p class="proc-detail">재결정 열처리로 연성 회복. 소둔로 내부 조건 데이터는 없었다.</p>
         </div>
       </div>
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">07 / 10</div>
-    </section>
-
-    <!-- ═══ Slide 08 — Results ═══ -->
-    <section class="slide" data-label="08 Results">
-      <div class="top-rule">
-        <span>08 · RESULTS</span>
-        <span>Recall을 우선했다</span>
-      </div>
-      <div class="results-grid" style="flex: 1; min-height: 0; padding-top: 24px;">
-
-        <!-- Left: Narrative + comparison table -->
-        <div class="results-col">
-          <div class="results-kicker">Final Decision</div>
-          <h2 class="slide-h2" style="font-size: 52px; line-height: 1.08; flex-shrink: 0;">최종 선택은 Gate + LR이었다.</h2>
-          <p class="slide-body" style="margin-top: 16px; font-size: 21px; line-height: 1.5; flex-shrink: 0; max-width: 33ch;">
-            비계획 발생을 놓치면(FN) 긴급 공정 투입 비용이 생기고, 오탐(FP)은 예방적 대응으로 끝난다.
-            그래서 Recall을 1순위로 뒀고, 이 기준이 최종 모델 선택을 결정했다.
-          </p>
-          <div class="results-summary">
-            복잡한 모델보다 <strong style="color: var(--fg-1);">미탐지를 가장 덜 내는 구조</strong>가 이 문제에 더 맞았다.
-          </div>
-
-          <div class="meta-cap" style="margin-top: 18px; margin-bottom: 8px; flex-shrink: 0; font-size: 18px;">6개 모델 성능 비교</div>
-          <table class="result-table compact-tbl" style="font-size: 19px;">
-            <thead>
-              <tr>
-                <th>MODEL</th>
-                <th>RECALL</th>
-                <th>F1</th>
-                <th>AUROC</th>
-                <th>FN</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="win">
-                <td>★ Gate + LR (최종)</td>
-                <td class="winval">0.595</td>
-                <td>0.494</td>
-                <td>0.581</td>
-                <td>163</td>
-              </tr>
-              <tr>
-                <td>Logistic Regression</td>
-                <td>0.531</td>
-                <td>0.495</td>
-                <td>0.581</td>
-                <td>187</td>
-              </tr>
-              <tr>
-                <td>LightGBM</td>
-                <td>0.408</td>
-                <td>0.427</td>
-                <td>0.565</td>
-                <td>237</td>
-              </tr>
-              <tr>
-                <td>SVM (RBF)</td>
-                <td>0.435</td>
-                <td>0.451</td>
-                <td>0.573</td>
-                <td>226</td>
-              </tr>
-              <tr>
-                <td>Random Forest</td>
-                <td>0.392</td>
-                <td>0.418</td>
-                <td>0.571</td>
-                <td>243</td>
-              </tr>
-              <tr>
-                <td>Decision Tree</td>
-                <td>0.370</td>
-                <td>0.395</td>
-                <td>0.535</td>
-                <td>252</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div class="results-note">
-            <div class="title">왜 LightGBM이 아니라 LR + Gate인가</div>
-            <div class="body">
-              LightGBM은 F1·AUROC는 비슷하지만 Recall이 0.408로 낮았다. 미탐지를 줄이는 게 목표라면 LR이 더 적합했고, 계수 부호로 위험 방향을 설명할 수 있다는 점도 강점이었다.
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: SHAP -->
-        <div class="results-col">
-          <div class="results-panel" style="flex:1;">
-          <div class="meta-cap" style="margin-bottom: 12px; flex-shrink: 0; font-size: 18px;">가설 기반 변수가 실제로 상위권에 올랐다</div>
-          <img src="skinpass/img/image3.png" alt="SHAP 기반 변수 중요도"
-               style="width: 100%; height: auto; max-height: 380px; object-fit: contain; object-position: left top; display: block;" />
-          <div style="margin-top: 16px; font-family: var(--font-sans); font-size: 17px; color: var(--fg-2); line-height: 1.5;">
-            <div style="font-weight: 600; color: var(--fg-1); margin-bottom: 10px; font-size: 19px;">SHAP이 다시 확인한 것</div>
-            <div style="display: grid; grid-template-columns: 22px 1fr; gap: 6px 10px;">
-              <div style="color: var(--accent-600); font-family: var(--font-mono); font-weight: 600;">①</div>
-              <div><strong style="color: var(--fg-1);">가설 기반 파생변수</strong>가 최상위권을 차지했다.</div>
-              <div style="color: var(--accent-600); font-family: var(--font-mono); font-weight: 600;">②</div>
-              <div><strong style="color: var(--fg-1);">항복강도</strong>는 원천 변수 중 가장 강한 신호였다.</div>
-              <div style="color: var(--accent-600); font-family: var(--font-mono); font-weight: 600;">③</div>
-              <div><strong style="color: var(--fg-1);">강종 × 등급 조합</strong>도 상위권에 올라 H4와 맞아떨어졌다.</div>
-            </div>
-          </div>
-          </div>
-          </div>
-        </div>
-
-      </div>
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">08 / 10</div>
-    </section>
-
-    <!-- ═══ Slide 09 — 한계점 & 배운 것 [NEW] ═══ -->
-    <section class="slide soft" data-label="09 Limits">
-      <div class="top-rule">
-        <span>09 · 한계점 & 인사이트</span>
-        <span>한계와 배운 점</span>
-      </div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 64px; flex: 1; min-height: 0; padding-top: 36px;">
-
-        <!-- Left: 한계점 -->
-        <div style="display: flex; flex-direction: column; min-height: 0;">
-          <div class="meta-cap" style="margin-bottom: 20px; flex-shrink: 0; font-size: 18px;">현재 모델의 한계</div>
-          <div style="flex: 1; display: flex; flex-direction: column; gap: 14px; min-height: 0;">
-            <div class="limit-row">
-              <div class="l-icon">⚠</div>
-              <div class="l-text"><span class="headline">핵심 변수 미수집</span>소둔로 내부 조건(분위기 가스 성분, 위치별 온도 분포)이 없어 AUROC가 0.55~0.59 수준에서 멈췄다. 상업 배포 수준(≥0.7)에는 못 미쳤다.</div>
-            </div>
-            <div class="limit-row">
-              <div class="l-icon">⚠</div>
-              <div class="l-text"><span class="headline">레이블 노이즈</span>비계획 발생 레이블이 검사자의 주관적 판단에 의존했다. 객관적 수치 기준이 없으면 학습 품질도 함께 흔들린다.</div>
-            </div>
-            <div class="limit-row">
-              <div class="l-icon">⚠</div>
-              <div class="l-text"><span class="headline">시계열 패턴 미반영</span>코일을 독립 관측치로 처리해 생산 순서 드리프트와 계절성이 반영되지 않았다. 다음 단계에서는 시계열 구조를 따로 다뤄야 한다.</div>
-            </div>
-            <div class="limit-row">
-              <div class="l-icon">⚠</div>
-              <div class="l-text"><span class="headline">외부 요인 미포함</span>원자재 로트 변화와 설비 노후화 정보가 없어 장기 패턴 변화에 취약하다. 보조 데이터 연계가 필요하다.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: 배운 것 -->
-        <div style="display: flex; flex-direction: column; min-height: 0;">
-          <div class="meta-cap" style="margin-bottom: 20px; flex-shrink: 0; font-size: 18px;">이 프로젝트에서 배운 것</div>
-          <div style="flex: 1; display: flex; flex-direction: column; gap: 18px; min-height: 0;">
-            <div class="learn-card">
-              <div class="lc-title">가설이 바로 피처가 됐다</div>
-              <div class="lc-body">도메인 가설을 통계로 검증한 뒤 Gate와 파생변수로 바로 연결했다. SHAP은 그 설계가 맞았다는 사후 검증이 됐다.</div>
-            </div>
-            <div class="learn-card">
-              <div class="lc-title">문제 정의가 모델 선택보다 먼저였다</div>
-              <div class="lc-body">핵심은 어떤 알고리즘이 더 센지가 아니라, 소둔 전에 무엇을 판단해야 하는지부터 정리한 데 있었다. 공정 순서를 알아야 입력 변수도 제대로 고를 수 있었다.</div>
-            </div>
-            <div class="learn-card">
-              <div class="lc-title">지표 선택이 문제 정의다</div>
-              <div class="lc-body">미탐지 비용이 더 크다는 판단에서 Recall을 1순위로 뒀다. 이 선택이 모델 선택과 임계값 조정 방향을 함께 결정했다.</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">09 / 10</div>
-    </section>
-
-    <!-- ═══ Slide 10 — Deployment ═══ -->
-    <section class="slide s-close" data-label="10 Deployment">
-      <div class="top-rule">
-        <span>10 · DEPLOYMENT</span>
-        <span>적용 단계 3개</span>
-      </div>
-      <div style="margin-top: 36px;">
-        <div class="pull">
-          이 모델은 완전 자동화보다
-          <em>위험 가능성이 높은 코일을 먼저 보여주는 방식</em>에 더 적합했다.
-        </div>
-        <div class="deploy-lead">
-          그래서 공정을 바로 제어하기보다, 소둔 투입 전에 위험 가능성이 높은 코일을 먼저 표시하고 운영자가 대응 순서를 정하도록 돕는 쪽이 더 현실적이었다.
+      <div class="proc-step">
+        <span class="proc-num">04</span>
+        <div>
+          <p class="proc-label">품질 검사 → 분기</p>
+          <p class="proc-detail">표면·형상·재질 기준 판정. 기준 미달이면 비계획 Skinpass로 빠진다. 전체의 40.8%.</p>
         </div>
       </div>
+    </div>
 
-      <div class="phase-grid" style="margin-top: 40px;">
-        <div class="phase">
-          <div class="num">01</div>
-          <div class="name">경보 시스템</div>
-          <div class="desc">
-            Gate=1 코일을 소둔 투입 전에 먼저 띄우고, 운영자가 우선 확인하도록 만든다.
-          </div>
-          <div class="target">
-            고위험 포착 ≥ 80% · 1–2개월
-          </div>
-        </div>
-        <div class="phase">
-          <div class="num">02</div>
-          <div class="name">의사결정 지원</div>
-          <div class="desc">
-            전 코일에 발생 확률과 주요 원인 3가지를 함께 보여주고, 점검 우선순위를 정하게 한다.
-          </div>
-          <div class="target">
-            발생률 −10% · 2–4개월
-          </div>
-        </div>
-        <div class="phase">
-          <div class="num">03</div>
-          <div class="name">반자동 제어</div>
-          <div class="desc">
-            고위험 코일에 대해 소둔 조건 조정안을 먼저 제시하고, 승인 후 반자동으로 실행한다.
-          </div>
-          <div class="target">
-            발생률 −25% · 4–8개월
-          </div>
+    <h2 style="margin-top:32px;">가설 검증 — 4개 모두 채택</h2>
+    <p>현장 도메인 가설 4개를 먼저 세우고 통계로 검증했다. 모두 통계적으로 유의했다.</p>
+    <div class="hyp-grid">
+      <div class="hyp-card">
+        <div class="hyp-tag">H1 · 재질등급</div>
+        <p class="hyp-q">재질등급 C가 발생률을 구조적으로 높이는가?</p>
+        <div class="hyp-verdict">✓ Kruskal-Wallis p &lt; 0.001</div>
+        <p class="hyp-consequence">→ Material Gate 진입 조건으로 직접 활용</p>
+      </div>
+      <div class="hyp-card">
+        <div class="hyp-tag">H2 · 항복강도</div>
+        <p class="hyp-q">항복강도 임계값이 비계획 위험을 가르는가?</p>
+        <div class="hyp-verdict">✓ Mann-Whitney p &lt; 0.001</div>
+        <p class="hyp-consequence">→ Material Gate와 quality_risk_score 설계에 반영</p>
+      </div>
+      <div class="hyp-card">
+        <div class="hyp-tag">H3 · 형상·표면 복합</div>
+        <p class="hyp-q">형상과 표면 조건이 함께 나쁠 때 위험이 더 커지는가?</p>
+        <div class="hyp-verdict">✓ Kruskal-Wallis p &lt; 0.001</div>
+        <p class="hyp-consequence">→ surface_shape_composite 파생변수 생성</p>
+      </div>
+      <div class="hyp-card">
+        <div class="hyp-tag">H4 · 강종 × 등급</div>
+        <p class="hyp-q">강종과 재질등급 조합이 위험 패턴을 구조적으로 바꾸는가?</p>
+        <div class="hyp-verdict">✓ Kruskal-Wallis p &lt; 0.001</div>
+        <p class="hyp-consequence">→ grade_steel_interaction 파생변수 생성</p>
+      </div>
+    </div>
+
+    <h2 style="margin-top:32px;">2단계 아키텍처</h2>
+    <p>현장에서 코일을 판단하는 순서를 그대로 모델에 옮겼다.</p>
+    <div class="arch-box stage1">
+      <div class="arch-label">STAGE 1 · MATERIAL QUALITY GATE</div>
+      <p class="arch-title">명백한 고위험은 규칙으로 먼저 걸렀다</p>
+      <div class="arch-rule">IF 재질등급 == C<br/>OR 항복강도 ≥ 임계값<br/>→ 고위험 분류 (Gate=1)</div>
+      <p class="arch-desc">H1 + H2 검증 결과를 그대로 묶은 하드 필터다. Gate=1이면 담당자가 먼저 확인한다.</p>
+    </div>
+    <div class="arch-box stage2" style="margin-top:12px;">
+      <div class="arch-label">STAGE 2 · LOGISTIC REGRESSION</div>
+      <p class="arch-title">애매한 구간은 확률로 다시 판단했다</p>
+      <div class="arch-rule">quality_risk_score · process_risk_composite<br/>surface_shape_composite · grade_steel_interaction<br/>두께/폭 비율 · 시간×온도 상호작용</div>
+      <p class="arch-desc">H2·H3 기반 복합 파생변수가 상위권에 올라, 도메인 가설이 모델 안에서도 유지됐다.</p>
+    </div>
+
+    <h2 style="margin-top:32px;">6개 모델 비교</h2>
+    <p>최종 선택은 Gate + LR이었다. Recall이 가장 높고(0.595) 미탐지(FN)를 가장 적게 냈다.</p>
+    <table class="model-table">
+      <thead>
+        <tr>
+          <th>모델</th>
+          <th>Recall</th>
+          <th>F1</th>
+          <th>AUROC</th>
+          <th>FN</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="best">
+          <td>★ Gate + LR (최종)</td>
+          <td class="accent-val">0.595</td>
+          <td>0.494</td>
+          <td>0.581</td>
+          <td>163</td>
+        </tr>
+        <tr>
+          <td>Logistic Regression</td>
+          <td>0.531</td>
+          <td>0.495</td>
+          <td>0.581</td>
+          <td>187</td>
+        </tr>
+        <tr>
+          <td>LightGBM</td>
+          <td>0.408</td>
+          <td>0.427</td>
+          <td>0.565</td>
+          <td>237</td>
+        </tr>
+        <tr>
+          <td>SVM (RBF)</td>
+          <td>0.435</td>
+          <td>0.451</td>
+          <td>0.573</td>
+          <td>226</td>
+        </tr>
+        <tr>
+          <td>Random Forest</td>
+          <td>0.392</td>
+          <td>0.418</td>
+          <td>0.571</td>
+          <td>243</td>
+        </tr>
+        <tr>
+          <td>Decision Tree</td>
+          <td>0.370</td>
+          <td>0.395</td>
+          <td>0.535</td>
+          <td>252</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="proj-section" id="results">
+    <div class="section-label">RESULTS</div>
+    <h2>배운 것</h2>
+    <div class="learn-list">
+      <div class="learn-card">
+        <p class="learn-title">가설이 바로 피처가 됐다</p>
+        <p class="learn-body">도메인 가설을 통계로 검증한 뒤 Gate와 파생변수로 바로 연결했다. SHAP은 그 설계가 맞았다는 사후 검증이 됐다. 가설 기반 파생변수가 SHAP 상위권을 차지했고 항복강도가 원천 변수 중 가장 강한 신호였다.</p>
+      </div>
+      <div class="learn-card">
+        <p class="learn-title">문제 정의가 모델 선택보다 먼저였다</p>
+        <p class="learn-body">어떤 알고리즘이 더 센지가 아니라, 소둔 전에 무엇을 판단해야 하는지부터 정리한 데 있었다. LightGBM은 F1·AUROC는 비슷하지만 Recall이 0.408로 낮았다. 미탐지를 줄이는 게 목표라면 LR이 더 적합했다.</p>
+      </div>
+      <div class="learn-card">
+        <p class="learn-title">지표 선택이 문제 정의다</p>
+        <p class="learn-body">미탐지 비용이 더 크다는 판단에서 Recall을 1순위로 뒀다. 이 선택이 모델 선택과 임계값 조정 방향을 함께 결정했다.</p>
+      </div>
+    </div>
+
+    <h2 style="margin-top:32px;">적용 로드맵</h2>
+    <p>이 모델은 완전 자동화보다 위험 가능성이 높은 코일을 먼저 보여주는 방식에 더 적합했다.</p>
+    <div class="phase-grid">
+      <div class="phase-box">
+        <div class="phase-num">01</div>
+        <p class="phase-name">경보 시스템</p>
+        <p class="phase-desc">Gate=1 코일을 소둔 투입 전에 먼저 띄우고, 운영자가 우선 확인하도록 만든다.</p>
+        <div class="phase-target">고위험 포착 ≥ 80% · 1–2개월</div>
+      </div>
+      <div class="phase-box">
+        <div class="phase-num">02</div>
+        <p class="phase-name">의사결정 지원</p>
+        <p class="phase-desc">전 코일에 발생 확률과 주요 원인 3가지를 함께 보여주고, 점검 우선순위를 정하게 한다.</p>
+        <div class="phase-target">발생률 −10% · 2–4개월</div>
+      </div>
+      <div class="phase-box">
+        <div class="phase-num">03</div>
+        <p class="phase-name">반자동 제어</p>
+        <p class="phase-desc">고위험 코일에 대해 소둔 조건 조정안을 먼저 제시하고, 승인 후 반자동으로 실행한다.</p>
+        <div class="phase-target">발생률 −25% · 4–8개월</div>
+      </div>
+    </div>
+
+    <h2 style="margin-top:32px;">한계점</h2>
+    <div class="limit-list">
+      <div class="limit-item">
+        <span class="limit-icon">⚠</span>
+        <div class="limit-content">
+          <h4>핵심 변수 미수집</h4>
+          <p>소둔로 내부 조건(분위기 가스 성분, 위치별 온도 분포)이 없어 AUROC가 0.55~0.59 수준에서 멈췄다.</p>
         </div>
       </div>
-
-      <div class="attrib">
-        비계획 Skinpass 예측 프로젝트 · PYTHON · LIGHTGBM · XGBOOST · SMOTE · SHAP
+      <div class="limit-item">
+        <span class="limit-icon">⚠</span>
+        <div class="limit-content">
+          <h4>시계열 패턴 미반영</h4>
+          <p>코일을 독립 관측치로 처리해 생산 순서 드리프트와 계절성이 반영되지 않았다.</p>
+        </div>
       </div>
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">김희태</a>
-      <div class="pageno">10 / 10</div>
-    </section>
+    </div>
 
-  </deck-stage>
+    <div class="insight-box">
+      <p><strong>핵심 인사이트:</strong> 복잡한 모델보다 미탐지를 가장 덜 내는 구조가 이 문제에 더 맞았다. 핵심은 어떤 알고리즘이 아니라 정확한 문제 정의와 지표 선택에 있었다.</p>
+    </div>
+  </section>
 
-  <a href="index.html"
-    style="position:fixed;top:22px;left:22px;z-index:2147483647;display:flex;align-items:center;gap:6px;padding:8px 16px 8px 12px;border-radius:999px;background:rgba(20,20,24,0.85);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.12);color:#fff;text-decoration:none;font-family:var(--font-mono);font-size:13px;letter-spacing:0.08em;transition:background 180ms ease,border-color 180ms ease;"
-    onmouseenter="this.style.background='rgba(40,40,48,0.95)';this.style.borderColor='rgba(255,255,255,0.28)'"
-    onmouseleave="this.style.background='rgba(20,20,24,0.85)';this.style.borderColor='rgba(255,255,255,0.12)'"><svg
-      width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M10 3L5 8l5 5" />
-    </svg>포트폴리오</a>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-wordmark">김희태</div>
+      <div class="footer-desc">ML Engineering · Data · AI Systems</div>
+    </div>
+    <div class="footer-contacts">
+      <a href="mailto:heetae104@gmail.com" class="footer-link">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="14" height="10" rx="1.5"/><path d="M1 4l7 5 7-5"/></svg>
+        heetae104@gmail.com
+      </a>
+      <a href="https://github.com/kimheetae0104" target="_blank" rel="noopener" class="footer-link">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        github.com/kimheetae0104
+      </a>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 김희태 — Portfolio</span>
+    </div>
+  </div>
+</footer>
 
 </body>
-
 </html>
