@@ -27,7 +27,7 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
 
 .cover-top{position:absolute;top:48px;left:80px;right:80px;
   display:flex;justify-content:space-between;align-items:center}
-.cover-top .mark{font-family:var(--font-mono);font-weight:700;font-size:16px;
+.cover-top .mark{font-family:var(--font-mono);font-weight:700;font-size:14px;
   letter-spacing:0.12em;color:#18181b;text-decoration:none}
 .cover-top nav{display:flex;gap:32px}
 .cover-top nav a{font-family:var(--font-mono);font-size:12px;letter-spacing:0.16em;
@@ -41,7 +41,7 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
   text-transform:uppercase;color:rgba(24,24,27,0.4);margin-bottom:36px}
 .hero .tag-line .dot{width:6px;height:6px;border-radius:50%;background:var(--accent-600);
   box-shadow:0 0 8px rgba(30,58,138,0.3)}
-.hero h1{font-weight:700;font-size:96px;line-height:1.1;letter-spacing:-0.035em;color:#18181b}
+.hero h1{font-weight:700;font-size:72px;line-height:1.1;letter-spacing:-0.035em;color:#18181b}
 .hero .sub{font-size:20px;line-height:1.7;color:rgba(24,24,27,0.55);
   max-width:52ch;margin-top:36px}
 .hero .sub strong{color:#18181b;font-weight:500}
