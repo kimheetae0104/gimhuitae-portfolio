@@ -132,7 +132,8 @@
   grid-template-columns: 1fr 1fr;
   gap: 56px;
   margin-top: 48px;
-  align-items: start;
+  align-items: stretch;
+  align-content: stretch;
 }
 .problem-text h2 {
   font-family: var(--font-sans);
@@ -169,6 +170,7 @@
   display: flex;
   flex-direction: column;
   gap: 0;
+  justify-content: space-between;
 }
 .cost-row {
   display: grid;
@@ -202,6 +204,8 @@
   grid-template-columns: 1fr 1fr;
   gap: 28px;
   margin-top: 36px;
+  align-content: stretch;
+  align-items: stretch;
 }
 .data-block {
   padding: 32px;
@@ -276,6 +280,8 @@
   grid-template-columns: 1fr 1fr;
   gap: 28px;
   margin-top: 36px;
+  align-items: stretch;
+  align-content: stretch;
 }
 .eda-img-wrap {
   border: 1px solid var(--rule-soft);
@@ -315,6 +321,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  justify-content: space-between;
 }
 table.model-table {
   width: 100%;
@@ -377,6 +384,7 @@ table.model-table tr.best td:first-child { color: var(--skin); }
   display: flex;
   flex-direction: column;
   gap: 20px;
+  justify-content: space-between;
 }
 .model-img-wrap {
   flex: 1;
@@ -410,6 +418,8 @@ table.model-table tr.best td:first-child { color: var(--skin); }
   grid-template-columns: 1fr 1fr;
   gap: 40px;
   margin-top: 36px;
+  align-items: stretch;
+  align-content: stretch;
 }
 .result-img-wrap {
   border: 1px solid var(--rule-soft);
@@ -438,6 +448,7 @@ table.model-table tr.best td:first-child { color: var(--skin); }
   display: flex;
   flex-direction: column;
   gap: 16px;
+  justify-content: space-between;
 }
 .metric-card {
   padding: 24px 28px;
@@ -482,11 +493,14 @@ table.model-table tr.best td:first-child { color: var(--skin); }
   grid-template-columns: 1fr 1fr;
   gap: 40px;
   margin-top: 36px;
+  align-content: stretch;
+  align-items: stretch;
 }
 .learning-col {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  justify-content: space-between;
 }
 .learning-card {
   padding: 24px 28px;

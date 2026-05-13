@@ -10,7 +10,7 @@
   <style>
     /* ── Stack node ── */
     .stack-row {
-      flex: 1; display: flex; flex-direction: column; gap: 20px; margin-top: 40px;
+      flex: 1; display: flex; flex-direction: column; gap: 20px; margin-top: 40px; justify-content: space-between;
     }
     .stack-item {
       display: flex; align-items: flex-start; gap: 32px;
@@ -57,7 +57,7 @@
     }
 
     /* ── Learn item ── */
-    .learn-list { flex: 1; display: flex; flex-direction: column; gap: 0; margin-top: 40px; }
+    .learn-list { flex: 1; display: flex; flex-direction: column; gap: 0; margin-top: 40px; justify-content: space-between; }
     .learn-item { display: flex; gap: 28px; align-items: flex-start; padding: 26px 0; border-bottom: 1px solid var(--rule-soft); }
     .learn-item:last-child { border-bottom: none; }
     .learn-idx { font-family: var(--font-mono); font-size: 18px; color: var(--fg-4); width: 32px; flex-shrink: 0; padding-top: 4px; }
@@ -248,7 +248,7 @@
         <span>Local AI Agent</span>
         <span>Result</span>
       </div>
-      <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;">
+      <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;justify-content:space-between;">
         <div>
           <div class="meta-cap" style="margin-bottom:14px;">실험 결과</div>
           <h2 class="slide-h2" style="font-size:54px;">클라우드 없이 돌아가는 AI 워크플로우</h2>

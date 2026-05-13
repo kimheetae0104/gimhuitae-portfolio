@@ -350,7 +350,7 @@
 
   <div style="display:grid; grid-template-columns:auto 1fr; gap:80px; flex:1; padding-top:48px; align-items:center;">
 
-    <div style="display:flex; flex-direction:column; gap:32px; max-width:340px;">
+    <div style="display:flex; flex-direction:column; gap:32px; max-width:340px; justify-content:space-between;">
       <h2 class="slide-h2">스캔 →<br/>분석 →<br/>레시피</h2>
       <p class="slide-body">
         카메라로 식재료를 스캔하면 YOLOv8n이 인식하고,
@@ -420,7 +420,7 @@
       </p>
     </div>
 
-    <div style="display:flex; flex-direction:column; border:1px solid var(--rule);">
+    <div style="display:flex; flex-direction:column; border:1px solid var(--rule); flex:1; justify-content:space-between;">
       <div style="padding:44px 52px; border-bottom:1px solid var(--rule-soft);">
         <div class="big-num">18<span style="font-size:48px; font-weight:400;">MB</span></div>
         <div class="big-num-unit">YOLO CoreML 모델 크기</div>
@@ -488,9 +488,9 @@
     <span>배운 것 · 한계 · 다음 단계</span>
   </div>
 
-  <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:80px; flex:1; padding-top:48px; align-items:start;">
+  <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:80px; flex:1; padding-top:48px; align-items:stretch;">
 
-    <div style="display:flex; flex-direction:column; gap:32px;">
+    <div style="display:flex; flex-direction:column; gap:32px; justify-content:space-between;">
       <div class="pull">
         재료 이름보다<br/>
         <em>화합물 유사도</em>가<br/>더 정확한 추천 기준이었다.
@@ -505,7 +505,7 @@
       </p>
     </div>
 
-    <div class="learn-grid" style="display:flex; flex-direction:column; gap:20px;">
+    <div class="learn-grid" style="display:flex; flex-direction:column; gap:20px; justify-content:space-between;">
       <div class="learn-card accent">
         <div class="ltag">LEARNED · CoreML 통합</div>
         <h3>Python → CoreML → SwiftUI 연결</h3>

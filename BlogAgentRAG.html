@@ -30,7 +30,7 @@
       gap: 2px; flex: 1; margin-top: 40px;
       border: 1px solid var(--rule-soft); border-radius: var(--r-3); overflow: hidden;
     }
-    .val-cell { padding: 28px 32px; background: var(--bg); border-right: 1px solid var(--rule-soft); border-bottom: 1px solid var(--rule-soft); }
+    .val-cell { padding: 36px 32px; background: var(--bg); border-right: 1px solid var(--rule-soft); border-bottom: 1px solid var(--rule-soft); }
     .val-cell:nth-child(even) { border-right: none; }
     .val-cell:nth-last-child(-n+2) { border-bottom: none; }
     .val-num { font-family: var(--font-mono); font-size: 42px; font-weight: 700; color: var(--accent-600); line-height: 1; margin-bottom: 10px; }
@@ -38,8 +38,8 @@
     .val-desc { font-family: var(--font-sans); font-size: 20px; color: var(--fg-3); line-height: 1.55; }
 
     /* ── Iteration timeline ── */
-    .iter-list { flex: 1; margin-top: 40px; display: flex; flex-direction: column; gap: 0; }
-    .iter-item { display: flex; gap: 28px; align-items: flex-start; padding: 22px 0; border-bottom: 1px solid var(--rule-soft); }
+    .iter-list { flex: 1; margin-top: 40px; display: flex; flex-direction: column; gap: 0; justify-content: space-between; }
+    .iter-item { display: flex; gap: 28px; align-items: flex-start; padding: 26px 0; border-bottom: 1px solid var(--rule-soft); }
     .iter-item:last-child { border-bottom: none; }
     .iter-ver { font-family: var(--font-mono); font-size: 18px; font-weight: 700; color: var(--accent-600); width: 52px; flex-shrink: 0; padding-top: 4px; }
     .iter-title { font-family: var(--font-sans); font-weight: 600; font-size: 24px; color: var(--fg-1); margin-bottom: 6px; }
@@ -336,7 +336,7 @@
           <div class="meta-cap" style="margin-bottom:14px;">반자동화를 선택한 이유</div>
           <h2 class="slide-h2" style="font-size:52px;">완전 자동화보다 신뢰할 수 있는 반자동화</h2>
         </div>
-        <div style="flex:1;display:flex;flex-direction:column;gap:0;margin-top:40px;">
+        <div style="flex:1;display:flex;flex-direction:column;gap:0;margin-top:40px;justify-content:space-between;">
           <div style="display:flex;gap:28px;align-items:flex-start;padding:28px 0;border-bottom:1px solid var(--rule-soft);">
             <div style="font-family:var(--font-mono);font-size:18px;color:var(--fg-4);width:32px;flex-shrink:0;padding-top:4px;">01</div>
             <div>
