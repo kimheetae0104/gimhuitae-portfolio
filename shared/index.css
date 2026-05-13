@@ -108,7 +108,7 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
   background:#fff;transition:border-color 280ms ease,transform 280ms ease,box-shadow 280ms ease}
 .card:hover{border-color:rgba(24,24,27,0.18);transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,0,0,0.06)}
 
-.card .thumb{height:160px;position:relative;overflow:hidden;
+.card .thumb{aspect-ratio:1/1;position:relative;overflow:hidden;
   display:flex;align-items:center;justify-content:center}
 .card:hover .thumb::after{opacity:0}
 .card .thumb::after{content:'';position:absolute;inset:0;
