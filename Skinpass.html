@@ -665,6 +665,11 @@ table.model-table tr.best td:first-child { color: var(--skin); }
             <span class="feature-desc">비계획 공정 발생 여부 (0/1 이진 분류)</span>
           </div>
         </div>
+        <div style="margin-top:20px; padding:18px 24px; background:var(--skin-100); border-left:3px solid var(--skin); border-radius:0 var(--r-3) var(--r-3) 0;">
+          <p style="font-family:var(--font-mono);font-size:19px;color:var(--fg-2);margin:0;line-height:1.6;">
+            <strong style="color:var(--skin);">피처 선택 전략</strong>: 강종·두께 등 사양 피처 외에 <strong style="color:var(--fg-1);">직전 N건 이력 lag feature</strong>가 성능 향상의 핵심 — 동일 강종의 반복 패턴을 포착
+          </p>
+        </div>
       </div>
     </div>
 
@@ -822,7 +827,7 @@ table.model-table tr.best td:first-child { color: var(--skin); }
     </div>
 
     <div class="learning-layout">
-      <div class="learning-col">
+      <div class="learning-col" style="justify-content:flex-start;gap:24px;">
         <div class="learning-card key">
           <div class="learning-card-label">핵심 판단: Recall 우선</div>
           <div class="learning-card-title">왜 정확도(Accuracy)를 버렸나</div>

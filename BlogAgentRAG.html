@@ -38,7 +38,7 @@
     .val-desc { font-family: var(--font-sans); font-size: 20px; color: var(--fg-3); line-height: 1.55; }
 
     /* ── Iteration timeline ── */
-    .iter-list { flex: 1; margin-top: 40px; display: flex; flex-direction: column; gap: 0; justify-content: space-between; }
+    .iter-list { flex: 1; margin-top: 40px; display: flex; flex-direction: column; gap: 28px; }
     .iter-item { display: flex; gap: 28px; align-items: flex-start; padding: 26px 0; border-bottom: 1px solid var(--rule-soft); }
     .iter-item:last-child { border-bottom: none; }
     .iter-ver { font-family: var(--font-mono); font-size: 18px; font-weight: 700; color: var(--accent-600); width: 52px; flex-shrink: 0; padding-top: 4px; }
@@ -314,6 +314,17 @@
               <div style="font-family:var(--font-mono);font-size:30px;font-weight:700;color:var(--accent-600);">~40%</div>
             </div>
           </div>
+          <div style="margin-top:16px; padding:20px 28px; border:1px solid var(--rule-soft); border-radius:var(--r-3); background:var(--bg);">
+            <p style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-3);margin-bottom:10px;">자동화 범위</p>
+            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.6;margin:0;">
+              DART API 공시 수집 → RAG 검색 → 4중 검증 → LLM 생성 → Google Sheets 저장까지 <strong style="color:var(--fg-1);">전 과정 무인 실행</strong>. 사용자 개입 없이 스케줄러가 매일 실행
+            </p>
+          </div>
+          <div style="margin-top:16px; padding:20px 28px; border-left:3px solid var(--accent-600); background:var(--accent-100); border-radius:0 var(--r-3) var(--r-3) 0;">
+            <p style="font-family:var(--font-mono);font-size:20px;color:var(--fg-2);margin:0;line-height:1.6;">
+              <strong style="color:var(--accent-600);">v12 기준</strong>: Salt-critique 검증 + Self-critique 반자동화로 팩트 오류율 최소화 달성
+            </p>
+          </div>
         </div>
         <div style="flex:1.2;display:flex;align-items:center;justify-content:center;">
           <img src="blog-agent-RAG/img/sheets-result.png"
@@ -336,7 +347,7 @@
           <div class="meta-cap" style="margin-bottom:14px;">반자동화를 선택한 이유</div>
           <h2 class="slide-h2" style="font-size:52px;">완전 자동화보다 신뢰할 수 있는 반자동화</h2>
         </div>
-        <div style="flex:1;display:flex;flex-direction:column;gap:0;margin-top:40px;justify-content:space-between;">
+        <div class="iter-list">
           <div style="display:flex;gap:28px;align-items:flex-start;padding:28px 0;border-bottom:1px solid var(--rule-soft);">
             <div style="font-family:var(--font-mono);font-size:18px;color:var(--fg-4);width:32px;flex-shrink:0;padding-top:4px;">01</div>
             <div>
@@ -358,6 +369,12 @@
               <div style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.6;">청크 크기·overlap·임베딩 모델이 최종 글 품질에 직결. LLM 프롬프트 개선보다 검색 품질 개선이 더 큰 효과를 냈다. 데이터 파이프라인의 중요성 재확인.</div>
             </div>
           </div>
+        </div>
+        <div style="margin-top:32px; padding:24px 32px; border:1px solid var(--rule-soft); border-radius:var(--r-3); background:var(--bg);">
+          <p style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-3);margin-bottom:10px;">다음 단계</p>
+          <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.6;margin:0;">
+            LLM 성능 향상에 따라 Self-critique 자동화 비율을 높이고, 다종목 병렬 분석으로 확장 예정. <strong style="color:var(--fg-1);">신뢰성과 속도의 트레이드오프</strong>를 사용자가 조절할 수 있는 구조가 목표
+          </p>
         </div>
       </div>
       <div class="pageno">07 / 07</div>

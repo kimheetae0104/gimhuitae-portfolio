@@ -768,6 +768,11 @@ table.model-table tr.best td:first-child { color: var(--accent-600); }
             <span class="tag-desc">5분 후 발열량 — 예측 타깃</span>
           </div>
         </div>
+        <div style="margin-top:20px; padding:18px 24px; background:var(--accent-100); border-left:3px solid var(--accent-600); border-radius:0 var(--r-3) var(--r-3) 0;">
+          <p style="font-family:var(--font-mono);font-size:19px;color:var(--fg-2);margin:0;line-height:1.6;">
+            <strong style="color:var(--accent-600);">시계열 특성</strong>: LHV는 5분 주기 연속 측정값 — <strong style="color:var(--fg-1);">lag 피처(t-1, t-3)</strong>로 자기상관 패턴을 포착하여 Ridge 모델의 예측 안정성 확보
+          </p>
+        </div>
       </div>
     </div>
 
