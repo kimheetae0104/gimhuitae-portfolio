@@ -350,24 +350,24 @@
 
   <div style="display:grid; grid-template-columns:auto 1fr; gap:80px; flex:1; padding-top:48px; align-items:center;">
 
-    <div style="display:flex; flex-direction:column; gap:32px; max-width:340px; justify-content:space-between;">
-      <h2 class="slide-h2">스캔 →<br/>분석 →<br/>레시피</h2>
-      <p class="slide-body">
+    <div style="display:flex; flex-direction:column; gap:28px; max-width:380px;">
+      <h2 style="font-family:var(--font-sans);font-weight:600;font-size:52px;line-height:1.1;letter-spacing:-0.02em;color:var(--fg-1);margin:0;">스캔 →<br/>분석 →<br/>레시피</h2>
+      <p style="font-family:var(--font-sans);font-size:26px;line-height:1.65;color:var(--fg-2);margin:0;">
         카메라로 식재료를 스캔하면 YOLOv8n이 인식하고,
         Flavor Network DB가 향미 유사도를 계산해 레시피를 추천한다.
       </p>
       <div style="display:flex; flex-direction:column; gap:0; border-top:1px solid var(--rule);">
-        <div style="display:grid; grid-template-columns:32px 1fr; gap:20px; align-items:baseline; padding:20px 0; border-bottom:1px solid var(--rule-soft);">
-          <div style="font-family:var(--font-mono); font-size:18px; color:var(--accent-600);">01</div>
-          <div style="font-family:var(--font-sans); font-size:26px; color:var(--fg-1); line-height:1.5;"><strong>스캔</strong> — YOLOv8n + GPT-4o Vision 병렬 인식</div>
+        <div style="display:grid; grid-template-columns:32px 1fr; gap:16px; align-items:baseline; padding:16px 0; border-bottom:1px solid var(--rule-soft);">
+          <div style="font-family:var(--font-mono); font-size:17px; color:var(--accent-600);">01</div>
+          <div style="font-family:var(--font-sans); font-size:22px; color:var(--fg-1); line-height:1.5;"><strong>스캔</strong> — YOLOv8n + GPT-4o Vision 병렬 인식</div>
         </div>
-        <div style="display:grid; grid-template-columns:32px 1fr; gap:20px; align-items:baseline; padding:20px 0; border-bottom:1px solid var(--rule-soft);">
-          <div style="font-family:var(--font-mono); font-size:18px; color:var(--accent-600);">02</div>
-          <div style="font-family:var(--font-sans); font-size:26px; color:var(--fg-1); line-height:1.5;"><strong>분석</strong> — SQLite Flavor DB 오프라인 향미 매칭</div>
+        <div style="display:grid; grid-template-columns:32px 1fr; gap:16px; align-items:baseline; padding:16px 0; border-bottom:1px solid var(--rule-soft);">
+          <div style="font-family:var(--font-mono); font-size:17px; color:var(--accent-600);">02</div>
+          <div style="font-family:var(--font-sans); font-size:22px; color:var(--fg-1); line-height:1.5;"><strong>분석</strong> — SQLite Flavor DB 오프라인 향미 매칭</div>
         </div>
-        <div style="display:grid; grid-template-columns:32px 1fr; gap:20px; align-items:baseline; padding:20px 0;">
-          <div style="font-family:var(--font-mono); font-size:18px; color:var(--accent-600);">03</div>
-          <div style="font-family:var(--font-sans); font-size:26px; color:var(--fg-1); line-height:1.5;"><strong>생성</strong> — GPT-4o-mini가 화합물 시너지 근거 포함 레시피 출력</div>
+        <div style="display:grid; grid-template-columns:32px 1fr; gap:16px; align-items:baseline; padding:16px 0;">
+          <div style="font-family:var(--font-mono); font-size:17px; color:var(--accent-600);">03</div>
+          <div style="font-family:var(--font-sans); font-size:22px; color:var(--fg-1); line-height:1.5;"><strong>생성</strong> — GPT-4o-mini, 화합물 시너지 근거 포함 레시피 출력</div>
         </div>
       </div>
     </div>
