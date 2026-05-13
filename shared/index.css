@@ -100,7 +100,7 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
 .group-label{font-family:var(--font-mono);font-size:13px;letter-spacing:0.18em;
   text-transform:uppercase;color:rgba(24,24,27,0.34);margin-bottom:10px}
 
-.cards{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.cards{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .cards-single{grid-template-columns:1fr 1fr}
 
 .card{display:flex;flex-direction:column;text-decoration:none;color:inherit;
@@ -108,7 +108,7 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
   background:#fff;transition:border-color 280ms ease,transform 280ms ease,box-shadow 280ms ease}
 .card:hover{border-color:rgba(24,24,27,0.18);transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,0,0,0.06)}
 
-.card .thumb{height:200px;position:relative;overflow:hidden;
+.card .thumb{height:160px;position:relative;overflow:hidden;
   display:flex;align-items:center;justify-content:center}
 .card:hover .thumb::after{opacity:0}
 .card .thumb::after{content:'';position:absolute;inset:0;
@@ -192,11 +192,11 @@ body{background:#F8F7F4;color:#18181b;font-family:var(--font-sans);overflow-x:hi
 .thumb-bot .prob-k{font-family:var(--font-mono);font-size:11px;letter-spacing:0.16em;
   color:rgba(91,141,239,0.55);margin-top:8px}
 
-.card .info{padding:22px 22px 24px;flex:1;display:flex;flex-direction:column}
+.card .info{padding:16px 18px 18px;flex:1;display:flex;flex-direction:column}
 .card .info .num{font-family:var(--font-mono);font-size:12px;letter-spacing:0.18em;
   text-transform:uppercase;color:rgba(24,24,27,0.35);margin-bottom:10px}
-.card .info h2{font-weight:600;font-size:18px;line-height:1.32;color:#18181b;margin-bottom:8px}
-.card .info .pdesc{font-size:14px;line-height:1.6;color:rgba(24,24,27,0.56);flex:1}
+.card .info h2{font-weight:600;font-size:16px;line-height:1.32;color:#18181b;margin-bottom:6px}
+.card .info .pdesc{font-size:13px;line-height:1.55;color:rgba(24,24,27,0.56);flex:1}
 .card .info .tags{margin-top:14px;padding-top:14px;border-top:1px solid rgba(24,24,27,0.08);
   font-family:var(--font-mono);font-size:11px;letter-spacing:0.1em;color:rgba(24,24,27,0.5)}
 .card .info .tags::before{content:'TECH';display:block;margin-bottom:10px;
