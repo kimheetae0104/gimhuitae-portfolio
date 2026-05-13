@@ -922,18 +922,22 @@ table.model-table tr.best td:first-child { color: var(--accent-600); }
       <!-- 왼쪽: 임팩트 -->
       <div style="display:flex;flex-direction:column;">
         <p style="font-family:var(--font-mono);font-size:20px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:20px;">비즈니스 임팩트</p>
-        <div style="display:flex;flex-direction:column;gap:24px;flex:1;">
-          <div style="flex:1;padding:32px 28px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-50);display:flex;flex-direction:column;justify-content:center;">
-            <div style="font-family:var(--font-mono);font-size:52px;font-weight:700;color:var(--accent-600);letter-spacing:-0.03em;line-height:1;margin-bottom:8px;">2%</div>
-            <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-3);">COG 투입량 절감 목표</div>
+        <div style="display:flex;flex-direction:column;gap:20px;flex:1;">
+          <div style="flex:1;padding:28px 32px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-50);display:flex;flex-direction:column;justify-content:center;">
+            <div style="font-family:var(--font-mono);font-size:52px;font-weight:700;color:var(--accent-600);letter-spacing:-0.03em;line-height:1;margin-bottom:10px;">2%</div>
+            <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-3);margin-bottom:12px;">COG 투입량 절감 목표</div>
+            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.55;margin:0;">COG 유량 예측 기반 운전 최적화 시뮬레이션으로 도출한 실현 가능 목표치</p>
           </div>
-          <div style="flex:1;padding:32px 28px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-50);display:flex;flex-direction:column;justify-content:center;">
-            <div style="font-family:var(--font-mono);font-size:52px;font-weight:700;color:var(--accent-600);letter-spacing:-0.03em;line-height:1;margin-bottom:8px;">1.24M</div>
-            <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-3);">Nm³/year 절감 추정</div>
+          <div style="flex:1;padding:28px 32px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-50);display:flex;flex-direction:column;justify-content:center;">
+            <div style="font-family:var(--font-mono);font-size:52px;font-weight:700;color:var(--accent-600);letter-spacing:-0.03em;line-height:1;margin-bottom:10px;">1.24M</div>
+            <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-3);margin-bottom:12px;">Nm³/year 절감 추정</div>
+            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.55;margin:0;">연간 COG 총 사용량(약 62M Nm³) 대비 2% 절감 적용 시 추정치</p>
           </div>
-          <div style="flex:1;padding:28px 28px;border-left:3px solid var(--accent-600);background:var(--accent-100);border-radius:0 var(--r-3) var(--r-3) 0;display:flex;align-items:center;">
-            <p style="font-family:var(--font-sans);font-size:24px;color:var(--fg-2);line-height:1.6;margin:0;">
-              예측값 활용 → 운전자 수동 조정 보조 → <strong style="color:var(--accent-600)">에너지 원단위 개선</strong>
+          <div style="flex:1;padding:28px 32px;border-left:3px solid var(--accent-600);background:var(--accent-100);border-radius:0 var(--r-3) var(--r-3) 0;display:flex;flex-direction:column;justify-content:center;">
+            <p style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent-600);margin:0 0 12px;">실용화 시나리오</p>
+            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.65;margin:0;">
+              예측값 활용 → 운전자 수동 조정 보조 → <strong style="color:var(--accent-600)">에너지 원단위 개선</strong><br>
+              현장 DCS 시스템 연동 시 실시간 가이드라인 제공 가능
             </p>
           </div>
         </div>
@@ -942,18 +946,18 @@ table.model-table tr.best td:first-child { color: var(--accent-600); }
       <!-- 오른쪽: 인사이트 -->
       <div style="display:flex;flex-direction:column;">
         <p style="font-family:var(--font-mono);font-size:20px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:20px;">핵심 인사이트</p>
-        <div style="display:flex;flex-direction:column;gap:24px;flex:1;">
-          <div style="flex:1;padding:28px 28px;border:1px solid var(--accent-600);border-left:3px solid var(--accent-600);border-radius:var(--r-3);background:var(--accent-100);display:flex;flex-direction:column;justify-content:center;">
-            <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent-600);margin-bottom:10px;">모델 선택</div>
-            <p style="font-family:var(--font-sans);font-size:24px;color:var(--fg-2);line-height:1.55;margin:0;">Ridge가 XGBoost를 이겼다는 사실이 핵심. 복잡한 모델보다 <strong style="color:var(--fg-1)">선형성을 먼저 확인</strong>하는 습관의 중요성</p>
+        <div style="display:flex;flex-direction:column;gap:20px;flex:1;">
+          <div style="flex:1;padding:28px 32px;border:1px solid var(--accent-600);border-left:3px solid var(--accent-600);border-radius:var(--r-3);background:var(--accent-100);display:flex;flex-direction:column;justify-content:center;">
+            <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent-600);margin-bottom:10px;">모델 선택</div>
+            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.6;margin:0;">Ridge가 XGBoost를 이겼다는 사실이 핵심.<br>복잡한 모델보다 <strong style="color:var(--fg-1)">선형성을 먼저 확인</strong>하는 습관의 중요성 — EDA 단계에서 상관계수 확인만으로도 모델 방향 결정 가능</p>
           </div>
-          <div style="flex:1;padding:28px 28px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-50);display:flex;flex-direction:column;justify-content:center;">
-            <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:10px;">SHAP 해석</div>
-            <p style="font-family:var(--font-sans);font-size:24px;color:var(--fg-2);line-height:1.55;margin:0;">COG_FLOW, BFG_FLOW, COG_RATIO 순으로 기여. 도메인 지식과 SHAP 결과가 일치 → 모델 신뢰도 확보</p>
+          <div style="flex:1;padding:28px 32px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-50);display:flex;flex-direction:column;justify-content:center;">
+            <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:10px;">SHAP 해석</div>
+            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.6;margin:0;">COG_FLOW → BFG_FLOW → COG_RATIO 순으로 기여도 높음.<br>도메인 전문가의 직관과 SHAP 결과가 일치 → <strong style="color:var(--fg-1)">블랙박스 탈피, 현장 설득력 확보</strong></p>
           </div>
-          <div style="flex:1;padding:28px 28px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-50);display:flex;flex-direction:column;justify-content:center;">
-            <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:10px;">한계 & 다음 단계</div>
-            <p style="font-family:var(--font-sans);font-size:24px;color:var(--fg-2);line-height:1.55;margin:0;">R² 0.428은 개선 여지. LSTM 등 시계열 특화 모델 적용 및 더 긴 lag 피처 실험 예정</p>
+          <div style="flex:1;padding:28px 32px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-50);display:flex;flex-direction:column;justify-content:center;">
+            <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:10px;">한계 & 다음 단계</div>
+            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.6;margin:0;">R² 0.428은 개선 여지.<br>LSTM·Transformer 등 시계열 특화 모델 적용, 더 긴 lag 피처 실험, <strong style="color:var(--fg-1)">공정 변수 추가 수집</strong> 예정</p>
           </div>
         </div>
       </div>
