@@ -924,14 +924,14 @@ table.model-table tr.best td:first-child { color: var(--accent-600); }
         </div>
       </div>
 
-      <!-- 오른쪽: SHAP 이미지 위 + 모델 비교 이미지 아래 -->
-      <div style="display:grid;grid-template-rows:1fr auto;gap:20px;">
-        <div class="shap-img-wrap">
-          <img src="lhv/img/image3-45.png" alt="SHAP 피처 중요도"/>
+      <!-- 오른쪽: SHAP 이미지 위(2fr) + 모델 비교 이미지 아래(1fr) -->
+      <div style="display:grid;grid-template-rows:2fr 1fr;gap:20px;">
+        <div class="shap-img-wrap" style="min-height:0;">
+          <img src="lhv/img/image3-45.png" alt="SHAP 피처 중요도" style="object-fit:contain;"/>
           <div class="shap-img-cap">SHAP — 피처 중요도 및 방향성</div>
         </div>
-        <div class="model-img-wrap" style="height:160px;">
-          <img src="lhv/img/image10-39.png" alt="모델 성능 비교"/>
+        <div class="model-img-wrap" style="min-height:0;">
+          <img src="lhv/img/image10-39.png" alt="모델 성능 비교" style="object-fit:contain;"/>
           <div class="model-img-cap">5개 모델 성능 비교</div>
         </div>
       </div>
