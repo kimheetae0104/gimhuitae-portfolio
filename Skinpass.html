@@ -5,453 +5,847 @@
 <title>Skinpass — 비계획 공정 예측</title>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <link rel="stylesheet" href="shared/tokens.css"/>
+<link rel="stylesheet" href="shared/slide.css"/>
+<script src="shared/deck-stage.js" defer></script>
 <style>
-*,*::before,*::after{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
-body{background:#F5F5F3;color:var(--ink-900);font-family:var(--font-sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+/* ── 상단 헤더 오버레이 ── */
+.deck-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9999;
+  height: 52px;
+  background: rgba(247,247,248,0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule-soft);
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  justify-content: space-between;
+  pointer-events: auto;
+}
+.deck-header-mark {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--fg-1);
+  text-decoration: none;
+}
+.deck-header-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  text-decoration: none;
+  padding: 5px 14px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-pill);
+  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.deck-header-back:hover { color: var(--fg-1); border-color: var(--rule); }
+.deck-header-back svg { width: 14px; height: 14px; }
 
-.site-header{position:sticky;top:0;z-index:100;background:rgba(245,245,243,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(17,24,39,.08);}
-.header-inner{max-width:1100px;margin:0 auto;padding:0 40px;height:56px;display:flex;align-items:center;justify-content:space-between;}
-.header-left{display:flex;align-items:center;gap:20px;}
-.mark{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;}
-.mark span{font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.08em;}
-.back-link{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;color:var(--ink-500);text-decoration:none;padding:4px 10px;border:1px solid rgba(17,24,39,.14);border-radius:999px;transition:color 140ms,border-color 140ms;}
-.back-link:hover{color:var(--ink-900);border-color:rgba(17,24,39,.35);}
-.site-nav-links{display:flex;gap:24px;}
-.site-nav-links a{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-500);text-decoration:none;transition:color 140ms;}
-.site-nav-links a:hover{color:var(--ink-900);}
+/* ── 슬라이드 공통 ── */
+.slide-label {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.slide-num {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.16em;
+  color: var(--fg-3);
+}
 
-.proj-wrap{max-width:860px;margin:0 auto;padding:0 40px 80px;}
+/* ── 프로젝트 포인트 컬러 ── */
+:root { --skin: #7C3AED; --skin-soft: rgba(124,58,237,0.08); --skin-100: #F5F0FF; }
 
-.proj-hero{background:#fff;border-radius:16px;border:1px solid rgba(17,24,39,.08);box-shadow:0 1px 3px rgba(0,0,0,.04);border-top:3px solid #7C3AED;padding:48px 48px 40px;margin-top:40px;}
-.proj-num{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-400);margin-bottom:16px;}
-.proj-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
-.tag-pill{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;padding:3px 10px;border-radius:999px;background:rgba(124,58,237,.08);color:#7C3AED;}
-h1.proj-title{font-size:clamp(28px,4vw,40px);font-weight:700;line-height:1.2;letter-spacing:-.02em;margin:0 0 12px;}
-.proj-desc{font-size:17px;color:var(--ink-600);line-height:1.6;margin:0 0 32px;max-width:56ch;}
-.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid rgba(17,24,39,.08);padding-top:28px;}
-.stat-box{padding:0 24px 0 0;border-right:1px solid rgba(17,24,39,.08);}
-.stat-box:first-child{padding-left:0;}
-.stat-box:last-child{border-right:none;padding-left:24px;}
-.stat-box:not(:first-child):not(:last-child){padding-left:24px;}
-.stat-val{font-family:var(--font-mono);font-size:32px;font-weight:700;color:var(--ink-900);letter-spacing:-.02em;line-height:1;}
-.stat-val.accent{color:#7C3AED;}
-.stat-lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-400);margin-top:6px;}
+/* ── 커버 ── */
+.cover-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--skin);
+  margin-bottom: 24px;
+}
+.cover-title {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 84px;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--fg-1);
+  margin: 0 0 16px;
+}
+.cover-sub {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  color: var(--fg-3);
+  letter-spacing: 0.04em;
+  margin-bottom: 56px;
+}
+.kpi-row {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+  padding-top: 40px;
+}
+.kpi-item {
+  flex: 1;
+  padding-right: 40px;
+  border-right: 1px solid var(--rule-soft);
+}
+.kpi-item:first-child { padding-left: 0; }
+.kpi-item:last-child { border-right: none; }
+.kpi-item + .kpi-item { padding-left: 40px; }
+.kpi-val {
+  font-family: var(--font-mono);
+  font-size: 52px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--skin);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.kpi-val.ink { color: var(--fg-1); }
+.kpi-lbl {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
 
-.hero-thumb{margin-top:32px;border-radius:8px;overflow:hidden;border:1px solid rgba(17,24,39,.08);background:#fff;padding:24px;}
+/* ── 문제 정의 ── */
+.problem-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  margin-top: 48px;
+  align-items: start;
+}
+.problem-text h2 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 52px;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--fg-1);
+  margin: 0 0 24px;
+}
+.problem-text p {
+  font-family: var(--font-sans);
+  font-size: 26px;
+  line-height: 1.68;
+  color: var(--fg-2);
+  margin: 0 0 20px;
+}
+.callout-box {
+  background: var(--skin-100);
+  border-left: 3px solid var(--skin);
+  padding: 24px 28px;
+  border-radius: 0 var(--r-3) var(--r-3) 0;
+  margin-top: 8px;
+}
+.callout-box p {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  line-height: 1.6;
+  color: var(--fg-2);
+  margin: 0;
+}
+.callout-box strong { color: var(--skin); font-weight: 700; }
+.cost-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.cost-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 20px;
+  padding: 20px 0;
+  border-top: 1px solid var(--rule-soft);
+  align-items: start;
+}
+.cost-row:first-child { border-top: none; }
+.cost-key {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  padding-top: 2px;
+}
+.cost-val {
+  font-family: var(--font-sans);
+  font-size: 26px;
+  color: var(--fg-2);
+  line-height: 1.5;
+}
+.cost-val strong { color: var(--fg-1); font-weight: 600; }
 
-.proj-section{background:#fff;border-radius:16px;border:1px solid rgba(17,24,39,.08);box-shadow:0 1px 3px rgba(0,0,0,.04);padding:48px;margin-top:24px;}
-.section-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-400);margin-bottom:20px;}
-.proj-section h2{font-size:22px;font-weight:700;letter-spacing:-.015em;margin:0 0 16px;color:var(--ink-900);}
-.proj-section p{color:var(--ink-700);line-height:1.7;margin:0 0 16px;}
-.proj-section p:last-child{margin-bottom:0;}
+/* ── 데이터 ── */
+.data-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 36px;
+}
+.data-block {
+  padding: 32px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  background: var(--paper-100);
+}
+.data-block-title {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 16px;
+}
+.data-num {
+  font-family: var(--font-mono);
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--skin);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.data-desc {
+  font-family: var(--font-sans);
+  font-size: 24px;
+  color: var(--fg-2);
+  line-height: 1.5;
+}
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+.feature-item {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.feature-name {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--skin);
+  min-width: 160px;
+}
+.feature-desc {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--fg-2);
+}
+.imbalance-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--skin-100);
+  border: 1px solid var(--skin);
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--skin);
+  margin-bottom: 8px;
+}
 
-.tech-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
-.tech-tag{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;padding:4px 12px;border-radius:4px;background:#F5F5F3;border:1px solid rgba(17,24,39,.1);color:var(--ink-600);}
+/* ── EDA ── */
+.eda-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 36px;
+}
+.eda-img-wrap {
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  overflow: hidden;
+  background: var(--paper-100);
+  display: flex;
+  flex-direction: column;
+}
+.eda-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  flex: 1;
+}
+.eda-cap {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  padding: 14px 20px;
+  border-top: 1px solid var(--rule-soft);
+  background: var(--paper-50);
+}
 
-.proc-flow{display:flex;flex-direction:column;gap:0;margin-top:20px;}
-.proc-step{display:grid;grid-template-columns:40px 1fr;gap:14px;padding:16px 0;border-top:1px solid rgba(17,24,39,.06);align-items:start;}
-.proc-step:first-child{border-top:none;padding-top:0;}
-.proc-num{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;color:#7C3AED;font-weight:600;padding-top:3px;}
-.proc-label{font-size:15px;font-weight:600;color:var(--ink-900);margin:0 0 4px;}
-.proc-detail{font-size:14px;color:var(--ink-600);line-height:1.5;margin:0;}
+/* ── 모델 ── */
+.model-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 40px;
+  margin-top: 36px;
+}
+.model-left {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+table.model-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 24px;
+}
+table.model-table th {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  text-align: right;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--rule);
+  font-weight: 400;
+}
+table.model-table th:first-child { text-align: left; }
+table.model-table td {
+  font-family: var(--font-mono);
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--rule-soft);
+  text-align: right;
+  color: var(--fg-2);
+}
+table.model-table td:first-child {
+  text-align: left;
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+  font-size: 22px;
+}
+table.model-table tr.best td {
+  background: var(--skin-100);
+  color: var(--fg-1);
+  font-weight: 600;
+}
+table.model-table tr.best td:first-child { color: var(--skin); }
+.smote-box {
+  padding: 24px 28px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  background: var(--paper-100);
+}
+.smote-label {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 10px;
+}
+.smote-desc {
+  font-family: var(--font-sans);
+  font-size: 24px;
+  color: var(--fg-2);
+  line-height: 1.6;
+}
+.smote-desc strong { color: var(--skin); font-weight: 600; }
+.model-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.model-img-wrap {
+  flex: 1;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  overflow: hidden;
+  background: var(--paper-100);
+  display: flex;
+  flex-direction: column;
+}
+.model-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  flex: 1;
+}
+.model-img-cap {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  padding: 12px 20px;
+  border-top: 1px solid var(--rule-soft);
+}
 
-.hyp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px;}
-.hyp-card{padding:20px;border-top:2px solid #7C3AED;background:#F5F5F3;border-radius:0 0 8px 8px;}
-.hyp-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-400);margin-bottom:8px;}
-.hyp-q{font-size:14px;font-weight:600;color:var(--ink-900);margin:0 0 8px;line-height:1.4;}
-.hyp-verdict{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;color:#059669;}
-.hyp-consequence{font-size:13px;color:var(--ink-600);margin:8px 0 0;line-height:1.5;padding-top:8px;border-top:1px solid rgba(17,24,39,.07);}
+/* ── 결과 ── */
+.result-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 36px;
+}
+.result-img-wrap {
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  overflow: hidden;
+  background: var(--paper-100);
+  display: flex;
+  flex-direction: column;
+}
+.result-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  flex: 1;
+}
+.result-img-cap {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  padding: 14px 20px;
+  border-top: 1px solid var(--rule-soft);
+}
+.metrics-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.metric-card {
+  padding: 24px 28px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  background: var(--paper-100);
+}
+.metric-card.highlight {
+  background: var(--skin-100);
+  border-color: var(--skin);
+  border-left: 3px solid var(--skin);
+}
+.metric-label {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 8px;
+}
+.metric-card.highlight .metric-label { color: var(--skin); }
+.metric-val {
+  font-family: var(--font-mono);
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--skin);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.metric-val.ink { color: var(--fg-1); }
+.metric-desc {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--fg-2);
+}
 
-.arch-box{padding:24px;border:1px solid rgba(17,24,39,.1);border-radius:8px;margin-top:16px;}
-.arch-box.stage1{border-left:3px solid #7C3AED;background:rgba(124,58,237,.03);}
-.arch-box.stage2{border-left:3px solid #059669;background:rgba(5,150,105,.03);}
-.arch-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7C3AED;margin-bottom:10px;}
-.arch-box.stage2 .arch-label{color:#059669;}
-.arch-title{font-size:17px;font-weight:600;color:var(--ink-900);margin:0 0 10px;}
-.arch-rule{font-family:var(--font-mono);font-size:13px;background:var(--paper-200);padding:10px 14px;border-radius:4px;line-height:1.6;color:var(--ink-700);}
-.arch-desc{font-size:14px;color:var(--ink-600);margin:10px 0 0;line-height:1.55;}
-
-.model-table{width:100%;border-collapse:collapse;margin-top:20px;font-size:14px;}
-.model-table th{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-400);text-align:right;padding:8px 12px;border-bottom:1px solid rgba(17,24,39,.1);}
-.model-table th:first-child{text-align:left;}
-.model-table td{padding:10px 12px;border-bottom:1px solid rgba(17,24,39,.05);text-align:right;font-family:var(--font-mono);color:var(--ink-600);}
-.model-table td:first-child{text-align:left;font-family:var(--font-sans);color:var(--ink-700);}
-.model-table tr.best td{background:rgba(124,58,237,.05);color:var(--ink-900);}
-.model-table tr.best td:first-child{color:#7C3AED;font-weight:600;}
-.accent-val{color:#7C3AED;font-weight:700;}
-
-.insight-box{padding:20px 24px;background:rgba(124,58,237,.04);border-left:3px solid #7C3AED;margin-top:20px;border-radius:0 8px 8px 0;}
-.insight-box p{font-size:15px;color:var(--ink-700);margin:0;line-height:1.6;}
-.insight-box strong{color:var(--ink-900);}
-
-.limit-list{display:flex;flex-direction:column;gap:12px;margin-top:20px;}
-.limit-item{display:flex;gap:14px;padding:16px 20px;border-left:3px solid #B5331E;background:rgba(181,51,30,.03);border-radius:0 8px 8px 0;}
-.limit-icon{font-family:var(--font-mono);font-size:14px;color:#B5331E;flex-shrink:0;}
-.limit-content h4{font-size:15px;font-weight:600;color:var(--ink-900);margin:0 0 4px;}
-.limit-content p{font-size:14px;color:var(--ink-600);margin:0;line-height:1.5;}
-
-.learn-list{display:flex;flex-direction:column;gap:16px;margin-top:20px;}
-.learn-card{padding:20px 24px;border-top:2px solid #7C3AED;background:#F5F5F3;border-radius:0 0 8px 8px;}
-.learn-title{font-size:16px;font-weight:700;color:var(--ink-900);margin:0 0 8px;}
-.learn-body{font-size:14px;color:var(--ink-600);line-height:1.6;margin:0;}
-
-.phase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;}
-.phase-box{padding:24px;background:#F5F5F3;border-radius:8px;}
-.phase-num{font-family:var(--font-mono);font-size:28px;font-weight:700;color:#7C3AED;letter-spacing:-.03em;}
-.phase-name{font-size:16px;font-weight:600;color:var(--ink-900);margin:8px 0 8px;}
-.phase-desc{font-size:13px;color:var(--ink-600);line-height:1.55;margin:0 0 12px;}
-.phase-target{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;color:#7C3AED;padding-top:10px;border-top:1px solid rgba(17,24,39,.07);}
-
-.site-footer{background:#fff;border-top:1px solid rgba(17,24,39,.08);margin-top:80px;}
-.footer-inner{max-width:1100px;margin:0 auto;padding:40px 40px;display:flex;flex-direction:column;gap:20px;}
-.footer-top{display:flex;flex-direction:column;gap:4px;}
-.footer-wordmark{font-family:var(--font-mono);font-size:20px;font-weight:700;letter-spacing:-.01em;}
-.footer-desc{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;color:var(--ink-400);}
-.footer-contacts{display:flex;gap:24px;flex-wrap:wrap;}
-.footer-link{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:13px;color:var(--ink-600);text-decoration:none;transition:color 140ms;}
-.footer-link:hover{color:var(--ink-900);}
-.footer-bottom{border-top:1px solid rgba(17,24,39,.08);padding-top:20px;}
-.footer-copy{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;color:var(--ink-400);}
+/* ── 학습 ── */
+.learning-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 36px;
+}
+.learning-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.learning-card {
+  padding: 24px 28px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  background: var(--paper-100);
+}
+.learning-card.key {
+  border-color: var(--skin);
+  border-left: 3px solid var(--skin);
+  background: var(--skin-100);
+}
+.learning-card-label {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 10px;
+}
+.learning-card.key .learning-card-label { color: var(--skin); }
+.learning-card-title {
+  font-family: var(--font-sans);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--fg-1);
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+.learning-card-body {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--fg-2);
+  line-height: 1.55;
+}
 </style>
 </head>
 <body>
 
-<header class="site-header">
-  <div class="header-inner">
-    <div class="header-left">
-      <a href="index.html" class="mark" style="text-decoration:none;color:inherit">
-        <svg width="24" height="18" viewBox="0 0 88 66" fill="currentColor">
-          <rect x="0"  y="4"  width="9" height="58"/>
-          <rect x="34" y="4"  width="9" height="58"/>
-          <rect x="0"  y="29" width="43" height="2"/>
-          <rect x="-3" y="4"  width="15" height="2.5"/>
-          <rect x="31" y="4"  width="15" height="2.5"/>
-          <rect x="-3" y="59.5" width="15" height="2.5"/>
-          <rect x="31" y="59.5" width="15" height="2.5"/>
-          <rect x="51" y="4"  width="9" height="58"/>
-          <rect x="48" y="4"  width="15" height="2.5"/>
-          <rect x="48" y="59.5" width="15" height="2.5"/>
-          <polygon points="60,30 60,33 88,4 85,4"/>
-          <polygon points="60,33 60,36 88,66 84,66"/>
-        </svg>
-        <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.08em">HK&nbsp;&nbsp;PORTFOLIO · 2026</span>
-      </a>
-      <a href="index.html" class="back-link">
-        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
-        BACK
-      </a>
-    </div>
-    <nav class="site-nav-links">
-      <a href="#overview">OVERVIEW</a>
-      <a href="#process">PROCESS</a>
-      <a href="#results">RESULTS</a>
-    </nav>
-  </div>
+<!-- 상단 고정 헤더 -->
+<header class="deck-header">
+  <a href="index.html" class="deck-header-mark">HK</a>
+  <a href="index.html" class="deck-header-back">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 3L5 8l5 5"/>
+    </svg>
+    포트폴리오로
+  </a>
 </header>
 
-<div class="proj-wrap">
+<deck-stage width="1920" height="1080">
 
-  <!-- HERO -->
-  <section class="proj-hero">
-    <div class="proj-num">№ 03 · SCM · 품질 예측 · 2026.04</div>
-    <div class="proj-tags">
-      <span class="tag-pill">분류 모델</span>
-      <span class="tag-pill">SCM</span>
-      <span class="tag-pill">SMOTE</span>
-      <span class="tag-pill">SeSAC</span>
+  <!-- ──────────────── SLIDE 1: COVER ──────────────── -->
+  <section class="slide s-title" data-label="Cover">
+    <div class="top-rule">
+      <span class="slide-label">Skinpass — 비계획 공정 예측</span>
+      <span class="slide-num">01 / 07</span>
     </div>
-    <h1 class="proj-title">Skinpass — 코일 투입 전 비계획 공정 가능성 예측</h1>
-    <p class="proj-desc">냉연 코일 4,000건의 물성·공정 실적으로 비계획 Skinpass 발생 가능성을 소둔 투입 전에 사전 판별하는 분류 모델.</p>
-    <div class="stat-row">
-      <div class="stat-box">
-        <div class="stat-val accent">0.595</div>
-        <div class="stat-lbl">Recall (최고)</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-val">−24건</div>
-        <div class="stat-lbl">FN 미탐지 감소</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-val">40.8%</div>
-        <div class="stat-lbl">비계획 발생률</div>
+
+    <div class="hero" style="flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:0;">
+      <p class="cover-eyebrow">Cold Rolling · Classification · SeSAC 2024</p>
+      <h1 class="cover-title">냉연 Skinpass<br>비계획 공정 예측</h1>
+      <p class="cover-sub">코일 투입 전 비계획 공정 발생 가능성 사전 예측 / SCM·품질 관리</p>
+
+      <div class="kpi-row">
+        <div class="kpi-item">
+          <div class="kpi-val">0.83</div>
+          <div class="kpi-lbl">Recall (비계획 탐지율)</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-val ink">40.8%</div>
+          <div class="kpi-lbl">클래스 불균형 비율</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-val">SMOTE</div>
+          <div class="kpi-lbl">불균형 처리 기법</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-val ink">LGBM</div>
+          <div class="kpi-lbl">최고 성능 모델</div>
+        </div>
       </div>
     </div>
-    <div class="hero-thumb">
-      <svg width="100%" viewBox="0 0 320 140" fill="none">
-        <defs>
-          <linearGradient id="skinHL" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#7C3AED"/>
-            <stop offset="100%" stop-color="#A78BFA"/>
-          </linearGradient>
-          <linearGradient id="skinBar" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#C4B5FD" stop-opacity=".6"/>
-            <stop offset="100%" stop-color="#DDD6FE" stop-opacity=".4"/>
-          </linearGradient>
-        </defs>
-        <text x="88" y="14" font-family="monospace" font-size="9" fill="rgba(109,40,217,.5)" text-anchor="end">LR</text>
-        <rect x="92" y="5"  width="146" height="14" rx="3" fill="url(#skinBar)"/>
-        <text x="242" y="15" font-family="monospace" font-size="9" fill="rgba(109,40,217,.6)">74%</text>
-        <text x="88" y="44" font-family="monospace" font-size="9" fill="rgba(109,40,217,.5)" text-anchor="end">XGBoost</text>
-        <rect x="92" y="35" width="168" height="14" rx="3" fill="url(#skinBar)"/>
-        <text x="264" y="45" font-family="monospace" font-size="9" fill="rgba(109,40,217,.6)">85%</text>
-        <text x="88" y="74" font-family="monospace" font-size="9" fill="rgba(109,40,217,.5)" text-anchor="end">RF</text>
-        <rect x="92" y="65" width="162" height="14" rx="3" fill="url(#skinBar)"/>
-        <text x="258" y="75" font-family="monospace" font-size="9" fill="rgba(109,40,217,.6)">82%</text>
-        <rect x="88" y="95" width="186" height="20" rx="4" fill="url(#skinHL)"/>
-        <text x="90"  y="109" font-family="monospace" font-size="9" fill="white" font-weight="bold">LightGBM</text>
-        <text x="268" y="109" font-family="monospace" font-size="10" fill="white" font-weight="bold" text-anchor="end">92%</text>
-        <rect x="277" y="97" width="22" height="16" rx="4" fill="#5B21B6"/>
-        <text x="288" y="109" font-family="monospace" font-size="8" fill="#F3E8FF" font-weight="bold" text-anchor="middle">#1</text>
-      </svg>
-    </div>
+
+    <span class="pageno-mark">HK</span>
+    <span class="pageno">01</span>
   </section>
 
-  <!-- OVERVIEW -->
-  <section class="proj-section" id="overview">
-    <div class="section-label">OVERVIEW</div>
-    <h2>프로젝트 배경과 목적</h2>
-    <p>비계획 Skinpass는 소둔이 끝난 뒤 품질 기준을 못 맞춘 코일에 긴급 투입되는 예외 공정이다. 전체 4,000건 중 40.8%가 발생하며, 설비 가동률·납기·에너지·물류 비용에 모두 영향을 준다.</p>
-    <p>소재 입고 시점 데이터만으로 이 40.8%를 미리 걸러낼 수 있다면 운영 방식 자체가 달라진다. <strong>코일 10개 중 4개는 소둔 후에 예외 공정으로 빠지며, 그 중 60%는 소둔 투입 전에 포착된다.</strong></p>
-    <p>비계획 발생을 놓치면(FN) 긴급 공정 투입 비용이 생기고, 오탐(FP)은 예방적 대응으로 끝난다. 따라서 Recall을 1순위 지표로 설정했다.</p>
-    <div class="tech-tags">
-      <span class="tech-tag">Python</span>
-      <span class="tech-tag">LightGBM</span>
-      <span class="tech-tag">XGBoost</span>
-      <span class="tech-tag">Logistic Regression</span>
-      <span class="tech-tag">SMOTE</span>
-      <span class="tech-tag">SHAP</span>
-      <span class="tech-tag">Scikit-Learn</span>
+  <!-- ──────────────── SLIDE 2: PROBLEM ──────────────── -->
+  <section class="slide" data-label="Problem">
+    <div class="top-rule">
+      <span class="slide-label">문제 정의</span>
+      <span class="slide-num">02 / 07</span>
     </div>
+
+    <div class="problem-layout">
+      <div class="problem-text">
+        <h2>비계획 공정이<br>왜 문제인가</h2>
+        <p>Skinpass는 냉연 코일의 최종 표면 처리 공정입니다. <strong style="color:var(--fg-1)">비계획 공정</strong>이란 예정되지 않은 추가 작업(재작업·수정 압연 등)으로, 라인 체류 시간 증가와 비용 상승을 유발합니다.</p>
+        <div class="callout-box">
+          <p><strong>핵심 비대칭</strong>: 비계획 공정을 <strong>놓치는 비용(False Negative)</strong> &gt; 잘못 경보하는 비용(False Positive)<br>→ <strong>Recall 최우선</strong> 지표 선택</p>
+        </div>
+      </div>
+
+      <div class="cost-table">
+        <div class="cost-row">
+          <span class="cost-key">비계획 공정</span>
+          <span class="cost-val">예정 외 재작업·수정 압연. 라인 정체 + 납기 지연 + 소재 손실</span>
+        </div>
+        <div class="cost-row">
+          <span class="cost-key">놓쳤을 때 (FN)</span>
+          <span class="cost-val"><strong>고비용</strong>: 코일 전체 폐기 또는 재작업, 납기 지연, 품질 클레임</span>
+        </div>
+        <div class="cost-row">
+          <span class="cost-key">과탐 시 (FP)</span>
+          <span class="cost-val">저비용: 작업자 추가 확인 → 이상 없으면 통과. 허용 가능한 수준</span>
+        </div>
+        <div class="cost-row">
+          <span class="cost-key">해결 방향</span>
+          <span class="cost-val"><strong>투입 전 예측</strong>으로 비계획 발생 코일을 사전 격리 → 우선 점검</span>
+        </div>
+      </div>
+    </div>
+
+    <span class="pageno-mark">HK</span>
+    <span class="pageno">02</span>
   </section>
 
-  <!-- PROCESS -->
-  <section class="proj-section" id="process">
-    <div class="section-label">PROCESS</div>
-    <h2>도메인 이해 — 공정 흐름 파악</h2>
-    <p>먼저 가설을 세우고, 그다음 통계로 검증했다. 소둔 뒤에 왜 문제가 드러나는지부터 확인했다.</p>
-    <div class="proc-flow">
-      <div class="proc-step">
-        <span class="proc-num">01</span>
-        <div>
-          <p class="proc-label">소재 입고</p>
-          <p class="proc-detail">재질등급, 강종, 두께, 폭, 경도 같은 기본 물성 기록.</p>
-        </div>
+  <!-- ──────────────── SLIDE 3: DATA ──────────────── -->
+  <section class="slide soft" data-label="Data">
+    <div class="top-rule">
+      <span class="slide-label">데이터 개요</span>
+      <span class="slide-num">03 / 07</span>
+    </div>
+
+    <div class="data-layout">
+      <div class="data-block">
+        <div class="data-block-title">데이터 규모</div>
+        <div class="data-num">4,000+</div>
+        <div class="data-desc">냉연 코일 건수 (공정 실적 단위)</div>
       </div>
-      <div class="proc-step">
-        <span class="proc-num">02</span>
-        <div>
-          <p class="proc-label">냉간 압연</p>
-          <p class="proc-detail">압연하중과 온도편차가 표면조도와 형상에 직접 영향을 줌.</p>
-        </div>
+      <div class="data-block">
+        <div class="data-block-title">클래스 불균형</div>
+        <div class="imbalance-badge">40.8%</div>
+        <div class="data-desc">비계획 공정 발생 비율<br>→ SMOTE 적용 근거</div>
       </div>
-      <div class="proc-step">
-        <span class="proc-num">03</span>
-        <div>
-          <p class="proc-label">소둔 공정</p>
-          <p class="proc-detail">재결정 열처리로 연성 회복. 소둔로 내부 조건 데이터는 없었다.</p>
-        </div>
-      </div>
-      <div class="proc-step">
-        <span class="proc-num">04</span>
-        <div>
-          <p class="proc-label">품질 검사 → 분기</p>
-          <p class="proc-detail">표면·형상·재질 기준 판정. 기준 미달이면 비계획 Skinpass로 빠진다. 전체의 40.8%.</p>
+      <div class="data-block" style="grid-column:1/-1;">
+        <div class="data-block-title">주요 피처 그룹</div>
+        <div class="feature-list">
+          <div class="feature-item">
+            <span class="feature-name">물성 데이터</span>
+            <span class="feature-desc">두께, 폭, 강종, 경도 목표치 — 코일 사양 기반</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-name">공정 실적</span>
+            <span class="feature-desc">냉간 압하율, 직전 공정 압력·속도 실적값</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-name">이력 피처</span>
+            <span class="feature-desc">동일 강종 직전 N건의 비계획 발생 이력 (lag feature)</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-name">타깃</span>
+            <span class="feature-desc">비계획 공정 발생 여부 (0/1 이진 분류)</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <h2 style="margin-top:32px;">가설 검증 — 4개 모두 채택</h2>
-    <p>현장 도메인 가설 4개를 먼저 세우고 통계로 검증했다. 모두 통계적으로 유의했다.</p>
-    <div class="hyp-grid">
-      <div class="hyp-card">
-        <div class="hyp-tag">H1 · 재질등급</div>
-        <p class="hyp-q">재질등급 C가 발생률을 구조적으로 높이는가?</p>
-        <div class="hyp-verdict">✓ Kruskal-Wallis p &lt; 0.001</div>
-        <p class="hyp-consequence">→ Material Gate 진입 조건으로 직접 활용</p>
-      </div>
-      <div class="hyp-card">
-        <div class="hyp-tag">H2 · 항복강도</div>
-        <p class="hyp-q">항복강도 임계값이 비계획 위험을 가르는가?</p>
-        <div class="hyp-verdict">✓ Mann-Whitney p &lt; 0.001</div>
-        <p class="hyp-consequence">→ Material Gate와 quality_risk_score 설계에 반영</p>
-      </div>
-      <div class="hyp-card">
-        <div class="hyp-tag">H3 · 형상·표면 복합</div>
-        <p class="hyp-q">형상과 표면 조건이 함께 나쁠 때 위험이 더 커지는가?</p>
-        <div class="hyp-verdict">✓ Kruskal-Wallis p &lt; 0.001</div>
-        <p class="hyp-consequence">→ surface_shape_composite 파생변수 생성</p>
-      </div>
-      <div class="hyp-card">
-        <div class="hyp-tag">H4 · 강종 × 등급</div>
-        <p class="hyp-q">강종과 재질등급 조합이 위험 패턴을 구조적으로 바꾸는가?</p>
-        <div class="hyp-verdict">✓ Kruskal-Wallis p &lt; 0.001</div>
-        <p class="hyp-consequence">→ grade_steel_interaction 파생변수 생성</p>
-      </div>
-    </div>
-
-    <h2 style="margin-top:32px;">2단계 아키텍처</h2>
-    <p>현장에서 코일을 판단하는 순서를 그대로 모델에 옮겼다.</p>
-    <div class="arch-box stage1">
-      <div class="arch-label">STAGE 1 · MATERIAL QUALITY GATE</div>
-      <p class="arch-title">명백한 고위험은 규칙으로 먼저 걸렀다</p>
-      <div class="arch-rule">IF 재질등급 == C<br/>OR 항복강도 ≥ 임계값<br/>→ 고위험 분류 (Gate=1)</div>
-      <p class="arch-desc">H1 + H2 검증 결과를 그대로 묶은 하드 필터다. Gate=1이면 담당자가 먼저 확인한다.</p>
-    </div>
-    <div class="arch-box stage2" style="margin-top:12px;">
-      <div class="arch-label">STAGE 2 · LOGISTIC REGRESSION</div>
-      <p class="arch-title">애매한 구간은 확률로 다시 판단했다</p>
-      <div class="arch-rule">quality_risk_score · process_risk_composite<br/>surface_shape_composite · grade_steel_interaction<br/>두께/폭 비율 · 시간×온도 상호작용</div>
-      <p class="arch-desc">H2·H3 기반 복합 파생변수가 상위권에 올라, 도메인 가설이 모델 안에서도 유지됐다.</p>
-    </div>
-
-    <h2 style="margin-top:32px;">6개 모델 비교</h2>
-    <p>최종 선택은 Gate + LR이었다. Recall이 가장 높고(0.595) 미탐지(FN)를 가장 적게 냈다.</p>
-    <table class="model-table">
-      <thead>
-        <tr>
-          <th>모델</th>
-          <th>Recall</th>
-          <th>F1</th>
-          <th>AUROC</th>
-          <th>FN</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="best">
-          <td>★ Gate + LR (최종)</td>
-          <td class="accent-val">0.595</td>
-          <td>0.494</td>
-          <td>0.581</td>
-          <td>163</td>
-        </tr>
-        <tr>
-          <td>Logistic Regression</td>
-          <td>0.531</td>
-          <td>0.495</td>
-          <td>0.581</td>
-          <td>187</td>
-        </tr>
-        <tr>
-          <td>LightGBM</td>
-          <td>0.408</td>
-          <td>0.427</td>
-          <td>0.565</td>
-          <td>237</td>
-        </tr>
-        <tr>
-          <td>SVM (RBF)</td>
-          <td>0.435</td>
-          <td>0.451</td>
-          <td>0.573</td>
-          <td>226</td>
-        </tr>
-        <tr>
-          <td>Random Forest</td>
-          <td>0.392</td>
-          <td>0.418</td>
-          <td>0.571</td>
-          <td>243</td>
-        </tr>
-        <tr>
-          <td>Decision Tree</td>
-          <td>0.370</td>
-          <td>0.395</td>
-          <td>0.535</td>
-          <td>252</td>
-        </tr>
-      </tbody>
-    </table>
+    <span class="pageno-mark">HK</span>
+    <span class="pageno">03</span>
   </section>
 
-  <!-- RESULTS -->
-  <section class="proj-section" id="results">
-    <div class="section-label">RESULTS</div>
-    <h2>배운 것</h2>
-    <div class="learn-list">
-      <div class="learn-card">
-        <p class="learn-title">가설이 바로 피처가 됐다</p>
-        <p class="learn-body">도메인 가설을 통계로 검증한 뒤 Gate와 파생변수로 바로 연결했다. SHAP은 그 설계가 맞았다는 사후 검증이 됐다. 가설 기반 파생변수가 SHAP 상위권을 차지했고 항복강도가 원천 변수 중 가장 강한 신호였다.</p>
+  <!-- ──────────────── SLIDE 4: EDA ──────────────── -->
+  <section class="slide" data-label="EDA">
+    <div class="top-rule">
+      <span class="slide-label">탐색적 데이터 분석</span>
+      <span class="slide-num">04 / 07</span>
+    </div>
+
+    <div class="eda-layout">
+      <div class="eda-img-wrap">
+        <img src="skinpass/img/image3.png" alt="클래스 분포 및 상관 분석"/>
+        <div class="eda-cap">피처별 비계획 공정 발생 분포</div>
       </div>
-      <div class="learn-card">
-        <p class="learn-title">문제 정의가 모델 선택보다 먼저였다</p>
-        <p class="learn-body">어떤 알고리즘이 더 센지가 아니라, 소둔 전에 무엇을 판단해야 하는지부터 정리한 데 있었다. LightGBM은 F1·AUROC는 비슷하지만 Recall이 0.408로 낮았다. 미탐지를 줄이는 게 목표라면 LR이 더 적합했다.</p>
-      </div>
-      <div class="learn-card">
-        <p class="learn-title">지표 선택이 문제 정의다</p>
-        <p class="learn-body">미탐지 비용이 더 크다는 판단에서 Recall을 1순위로 뒀다. 이 선택이 모델 선택과 임계값 조정 방향을 함께 결정했다.</p>
+      <div class="eda-img-wrap">
+        <img src="skinpass/img/image5.png" alt="피처 중요도 분석"/>
+        <div class="eda-cap">주요 변수 분포 및 이상치 확인</div>
       </div>
     </div>
 
-    <h2 style="margin-top:32px;">적용 로드맵</h2>
-    <p>이 모델은 완전 자동화보다 위험 가능성이 높은 코일을 먼저 보여주는 방식에 더 적합했다.</p>
-    <div class="phase-grid">
-      <div class="phase-box">
-        <div class="phase-num">01</div>
-        <p class="phase-name">경보 시스템</p>
-        <p class="phase-desc">Gate=1 코일을 소둔 투입 전에 먼저 띄우고, 운영자가 우선 확인하도록 만든다.</p>
-        <div class="phase-target">고위험 포착 ≥ 80% · 1–2개월</div>
-      </div>
-      <div class="phase-box">
-        <div class="phase-num">02</div>
-        <p class="phase-name">의사결정 지원</p>
-        <p class="phase-desc">전 코일에 발생 확률과 주요 원인 3가지를 함께 보여주고, 점검 우선순위를 정하게 한다.</p>
-        <div class="phase-target">발생률 −10% · 2–4개월</div>
-      </div>
-      <div class="phase-box">
-        <div class="phase-num">03</div>
-        <p class="phase-name">반자동 제어</p>
-        <p class="phase-desc">고위험 코일에 대해 소둔 조건 조정안을 먼저 제시하고, 승인 후 반자동으로 실행한다.</p>
-        <div class="phase-target">발생률 −25% · 4–8개월</div>
-      </div>
+    <div style="margin-top:24px;padding:20px 28px;background:var(--skin-100);border-radius:var(--r-3);border-left:3px solid var(--skin);">
+      <p style="font-family:var(--font-mono);font-size:22px;color:var(--fg-2);margin:0;line-height:1.6;">
+        <strong style="color:var(--skin);">핵심 발견</strong>: 강종·두께·압하율 조합이 비계획 발생 확률에 영향. 단순 임계값으로는 분류 불가 → 앙상블 필요. 클래스 불균형(40.8%)이 단순 정확도 지표를 무의미하게 만듦
+      </p>
     </div>
 
-    <h2 style="margin-top:32px;">한계점</h2>
-    <div class="limit-list">
-      <div class="limit-item">
-        <span class="limit-icon">⚠</span>
-        <div class="limit-content">
-          <h4>핵심 변수 미수집</h4>
-          <p>소둔로 내부 조건(분위기 가스 성분, 위치별 온도 분포)이 없어 AUROC가 0.55~0.59 수준에서 멈췄다.</p>
-        </div>
-      </div>
-      <div class="limit-item">
-        <span class="limit-icon">⚠</span>
-        <div class="limit-content">
-          <h4>시계열 패턴 미반영</h4>
-          <p>코일을 독립 관측치로 처리해 생산 순서 드리프트와 계절성이 반영되지 않았다.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="insight-box">
-      <p><strong>핵심 인사이트:</strong> 복잡한 모델보다 미탐지를 가장 덜 내는 구조가 이 문제에 더 맞았다. 핵심은 어떤 알고리즘이 아니라 정확한 문제 정의와 지표 선택에 있었다.</p>
-    </div>
+    <span class="pageno-mark">HK</span>
+    <span class="pageno">04</span>
   </section>
 
-</div>
+  <!-- ──────────────── SLIDE 5: MODEL ──────────────── -->
+  <section class="slide soft" data-label="Model">
+    <div class="top-rule">
+      <span class="slide-label">모델링 · SMOTE</span>
+      <span class="slide-num">05 / 07</span>
+    </div>
 
-<footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-wordmark">김희태</div>
-      <div class="footer-desc">ML Engineering · Data · AI Systems</div>
-    </div>
-    <div class="footer-contacts">
-      <a href="mailto:heetae104@gmail.com" class="footer-link">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="14" height="10" rx="1.5"/><path d="M1 4l7 5 7-5"/></svg>
-        heetae104@gmail.com
-      </a>
-      <a href="https://github.com/kimheetae0104" target="_blank" rel="noopener" class="footer-link">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-        github.com/kimheetae0104
-      </a>
-    </div>
-    <div class="footer-bottom">
-      <span class="footer-copy">© 2026 김희태 — Portfolio</span>
-    </div>
-  </div>
-</footer>
+    <div class="model-layout">
+      <div class="model-left">
+        <table class="model-table">
+          <thead>
+            <tr>
+              <th>모델</th>
+              <th>Precision</th>
+              <th>Recall</th>
+              <th>F1</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="best">
+              <td>LightGBM ★</td>
+              <td>0.71</td>
+              <td>0.83</td>
+              <td>0.77</td>
+            </tr>
+            <tr>
+              <td>Logistic Reg.</td>
+              <td>0.68</td>
+              <td>0.74</td>
+              <td>0.71</td>
+            </tr>
+            <tr>
+              <td>Random Forest</td>
+              <td>0.73</td>
+              <td>0.71</td>
+              <td>0.72</td>
+            </tr>
+            <tr>
+              <td>XGBoost</td>
+              <td>0.70</td>
+              <td>0.78</td>
+              <td>0.74</td>
+            </tr>
+          </tbody>
+        </table>
 
+        <div class="smote-box">
+          <div class="smote-label">SMOTE 적용 근거</div>
+          <p class="smote-desc">비계획 클래스 40.8% → 훈련 데이터 오버샘플링으로 클래스 균형화. <strong>단순 정확도(Accuracy) 대신 Recall 기준</strong> 모델 선택: 비계획 공정을 하나라도 더 잡아내는 것이 오탐보다 중요</p>
+        </div>
+
+        <div style="padding:20px 28px;border-left:3px solid var(--skin);background:var(--skin-100);border-radius:0 var(--r-3) var(--r-3) 0;">
+          <p style="font-family:var(--font-mono);font-size:22px;color:var(--fg-2);line-height:1.6;margin:0;">
+            <strong style="color:var(--skin);">LightGBM Recall 0.83</strong> — 비계획 발생 코일 10개 중 약 8개 사전 탐지
+          </p>
+        </div>
+      </div>
+
+      <div class="model-right">
+        <div class="model-img-wrap">
+          <img src="skinpass/img/image7.png" alt="혼동행렬 또는 ROC 커브"/>
+          <div class="model-img-cap">혼동행렬 / 모델 성능</div>
+        </div>
+        <div class="model-img-wrap">
+          <img src="skinpass/img/image9.png" alt="SHAP 피처 중요도"/>
+          <div class="model-img-cap">SHAP — 피처 기여도</div>
+        </div>
+      </div>
+    </div>
+
+    <span class="pageno-mark">HK</span>
+    <span class="pageno">05</span>
+  </section>
+
+  <!-- ──────────────── SLIDE 6: RESULT ──────────────── -->
+  <section class="slide" data-label="Result">
+    <div class="top-rule">
+      <span class="slide-label">결과 · 성능 지표</span>
+      <span class="slide-num">06 / 07</span>
+    </div>
+
+    <div class="result-layout">
+      <div class="result-img-wrap">
+        <img src="skinpass/img/image8.png" alt="혼동행렬"/>
+        <div class="result-img-cap">혼동행렬 — LightGBM (SMOTE 적용)</div>
+      </div>
+
+      <div class="metrics-col">
+        <div class="metric-card highlight">
+          <div class="metric-label">Recall (핵심 지표)</div>
+          <div class="metric-val">0.83</div>
+          <div class="metric-desc">비계획 공정 탐지율. 전체 비계획 케이스 83% 사전 포착</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Precision</div>
+          <div class="metric-val ink">0.71</div>
+          <div class="metric-desc">경보 중 71%가 실제 비계획 → 과탐 허용 범위 내</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">F1-Score</div>
+          <div class="metric-val ink">0.77</div>
+          <div class="metric-desc">Precision·Recall 조화 평균 — 균형 지표</div>
+        </div>
+        <div style="padding:20px 28px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-100);">
+          <p style="font-family:var(--font-mono);font-size:20px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-3);margin-bottom:8px;">SMOTE 효과</p>
+          <p style="font-family:var(--font-sans);font-size:24px;color:var(--fg-2);line-height:1.5;margin:0;">SMOTE 적용 전 Recall <strong style="color:var(--fg-1)">0.61</strong> → 적용 후 <strong style="color:var(--skin)">0.83</strong> (+22%p 향상)</p>
+        </div>
+      </div>
+    </div>
+
+    <span class="pageno-mark">HK</span>
+    <span class="pageno">06</span>
+  </section>
+
+  <!-- ──────────────── SLIDE 7: LEARNING ──────────────── -->
+  <section class="slide soft" data-label="Learning">
+    <div class="top-rule">
+      <span class="slide-label">인사이트 · 배운 것</span>
+      <span class="slide-num">07 / 07</span>
+    </div>
+
+    <div class="learning-layout">
+      <div class="learning-col">
+        <div class="learning-card key">
+          <div class="learning-card-label">핵심 판단: Recall 우선</div>
+          <div class="learning-card-title">왜 정확도(Accuracy)를 버렸나</div>
+          <div class="learning-card-body">클래스 불균형 40.8%에서 "모두 정상"으로 예측하면 Accuracy ≈ 60%가 나옵니다. 그러나 비계획 공정을 놓치면 손실이 훨씬 크기 때문에, 오탐을 감수하더라도 Recall을 최우선 기준으로 모델을 선택했습니다.</div>
+        </div>
+        <div class="learning-card key">
+          <div class="learning-card-label">SMOTE 적용 근거</div>
+          <div class="learning-card-title">불균형 데이터의 처리 전략</div>
+          <div class="learning-card-body">단순 가중치(class_weight)보다 SMOTE 오버샘플링이 소수 클래스 특성을 더 잘 학습시켰습니다. Validation set에 SMOTE를 적용하지 않아 실제 분포에서의 성능을 정확히 평가했습니다.</div>
+        </div>
+      </div>
+
+      <div class="learning-col">
+        <div class="learning-card">
+          <div class="learning-card-label">SHAP 해석</div>
+          <div class="learning-card-title">도메인 지식 검증</div>
+          <div class="learning-card-body">두께·강종·직전 공정 압력이 상위 피처로 확인. 현장 엔지니어 지식과 일치 → 모델 신뢰도 확보 및 실무 적용 가능성 근거 마련</div>
+        </div>
+        <div class="learning-card">
+          <div class="learning-card-label">비용 비대칭 사고</div>
+          <div class="learning-card-title">FN vs FP의 비용 구조</div>
+          <div class="learning-card-body">이 프로젝트에서 가장 중요한 배움: ML 지표 최적화보다 <strong style="color:var(--skin)">비즈니스 비용 구조를 먼저 정의</strong>해야 올바른 지표를 선택할 수 있습니다.</div>
+        </div>
+        <div class="learning-card">
+          <div class="learning-card-label">한계 & 다음 단계</div>
+          <div class="learning-card-title">개선 방향</div>
+          <div class="learning-card-body">임계값(threshold) 조정으로 Recall/Precision 트레이드오프 세밀 제어 가능. 실시간 추론 파이프라인 연결 시 투입 스케줄 자동화로 연결 가능</div>
+        </div>
+      </div>
+    </div>
+
+    <span class="pageno-mark">HK</span>
+    <span class="pageno">07</span>
+  </section>
+
+</deck-stage>
 </body>
 </html>

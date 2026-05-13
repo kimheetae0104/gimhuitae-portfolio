@@ -1,680 +1,398 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="utf-8"/>
-<title>Blog Agent — 국내 주식 상한가 이슈 블로그 자동 생성 시스템</title>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<link rel="stylesheet" href="shared/tokens.css"/>
-<link rel="stylesheet" href="shared/slide.css"/>
-<script src="shared/deck-stage.js"></script>
-<style>
-  /* ── 공통 ── */
-  .sec-label {
-    font-family: var(--font-mono);
-    font-size: 16px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--fg-3);
-    margin-bottom: 18px;
-  }
-  .pull-quote {
-    font-family: var(--font-sans);
-    font-weight: 500;
-    font-style: italic;
-    font-size: 32px;
-    line-height: 1.45;
-    color: var(--fg-1);
-    letter-spacing: -0.01em;
-  }
-  .pull-quote em {
-    font-style: normal;
-    color: var(--accent-600);
-    background: linear-gradient(180deg, transparent 64%, rgba(30,58,138,0.12) 64%);
-    padding: 0 4px;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog Agent RAG — Heetae Kim</title>
+  <link rel="stylesheet" href="shared/tokens.css" />
+  <link rel="stylesheet" href="shared/slide.css" />
+  <script src="shared/deck-stage.js" defer></script>
+  <style>
+    /* ── Back nav header ── */
+    .deck-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 9999;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--rule-soft);
+    }
+    .deck-nav a {
+      font-family: var(--font-mono);
+      font-size: var(--fs-xs);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: var(--fg-3);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .deck-nav a:hover { color: var(--fg-1); }
+    .deck-nav .sep { color: var(--fg-4); margin: 0 12px; }
+    .deck-nav .current { color: var(--fg-2); font-family: var(--font-mono); font-size: var(--fs-xs); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
 
-  /* ── 메타 row ── */
-  .meta-row {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 24px;
-    padding: 20px 0;
-    border-top: 1px solid var(--rule-soft);
-    align-items: start;
-  }
-  .meta-row:first-of-type { border-top: 1px solid var(--rule); }
-  .meta-row .mr-k {
-    font-family: var(--font-mono);
-    font-size: 16px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--fg-3);
-    padding-top: 4px;
-  }
-  .meta-row .mr-v {
-    font-family: var(--font-sans);
-    font-size: 24px;
-    line-height: 1.55;
-    color: var(--fg-1);
-  }
-  .meta-row .mr-v .accent { color: var(--accent-600); font-weight: 600; }
-  .meta-row .mr-v .danger { color: var(--danger); font-weight: 600; }
+    /* ── RAG stage row ── */
+    .rag-row {
+      display: flex; align-items: stretch; gap: 0; flex: 1; margin-top: 44px;
+    }
+    .rag-step {
+      flex: 1; padding: 26px 20px;
+      border: 1px solid var(--rule-soft); background: var(--bg);
+    }
+    .rag-step + .rag-step { border-left: none; }
+    .rag-step:first-child { border-radius: var(--r-3) 0 0 var(--r-3); }
+    .rag-step:last-child  { border-radius: 0 var(--r-3) var(--r-3) 0; }
+    .rag-num { font-family: var(--font-mono); font-size: 16px; letter-spacing: 0.14em; color: var(--fg-4); margin-bottom: 10px; }
+    .rag-name { font-family: var(--font-sans); font-weight: 600; font-size: 22px; color: var(--fg-1); line-height: 1.2; margin-bottom: 7px; }
+    .rag-desc { font-family: var(--font-mono); font-size: 15px; color: var(--fg-3); line-height: 1.65; }
+    .rag-arrow { width: 28px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--fg-4); }
 
-  /* ── 3-step flow (Slide 03) ── */
-  .flow-3step {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 0;
-  }
-  .flow-step {
-    padding: 28px 32px;
-    border-right: 1px solid var(--rule-soft);
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .flow-step:last-child { border-right: none; }
-  .flow-step .fs-tag {
-    font-family: var(--font-mono);
-    font-size: 15px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-  .flow-step.bg .fs-tag { color: var(--fg-3); }
-  .flow-step.pb .fs-tag { color: var(--danger); }
-  .flow-step.sv .fs-tag { color: var(--accent-600); }
-  .flow-step .fs-title {
-    font-family: var(--font-sans);
-    font-weight: 600;
-    font-size: 30px;
-    line-height: 1.2;
-    color: var(--fg-1);
-    letter-spacing: -0.015em;
-  }
-  .flow-step .fs-body {
-    font-family: var(--font-sans);
-    font-size: 19px;
-    line-height: 1.55;
-    color: var(--fg-2);
-  }
-  .flow-step .fs-body strong { color: var(--fg-1); }
-  .flow-step.bg { background: var(--paper-100); }
-  .flow-step.pb { background: rgba(181,51,30,0.04); border-top: 3px solid var(--danger); }
-  .flow-step.sv { background: rgba(30,58,138,0.04); border-top: 3px solid var(--accent-600); }
-  .flow-step.bg { border-top: 3px solid var(--rule); }
+    /* ── Validation grid ── */
+    .val-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2px; flex: 1; margin-top: 40px;
+      border: 1px solid var(--rule-soft); border-radius: var(--r-3); overflow: hidden;
+    }
+    .val-cell { padding: 28px 32px; background: var(--bg); border-right: 1px solid var(--rule-soft); border-bottom: 1px solid var(--rule-soft); }
+    .val-cell:nth-child(even) { border-right: none; }
+    .val-cell:nth-last-child(-n+2) { border-bottom: none; }
+    .val-num { font-family: var(--font-mono); font-size: 42px; font-weight: 700; color: var(--accent-600); line-height: 1; margin-bottom: 10px; }
+    .val-name { font-family: var(--font-sans); font-weight: 600; font-size: 26px; color: var(--fg-1); margin-bottom: 8px; }
+    .val-desc { font-family: var(--font-sans); font-size: 20px; color: var(--fg-3); line-height: 1.55; }
 
-  /* ── 액션 카드 (Slide 04) ── */
-  .action-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
-  }
-  .action-card {
-    padding: 22px 24px;
-    background: var(--paper-50);
-    border-left: 3px solid var(--accent-600);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .action-card .ac-num {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    letter-spacing: 0.14em;
-    color: var(--accent-600);
-  }
-  .action-card .ac-title {
-    font-family: var(--font-sans);
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 1.3;
-    color: var(--fg-1);
-  }
-  .action-card .ac-body {
-    font-family: var(--font-sans);
-    font-size: 16px;
-    line-height: 1.55;
-    color: var(--fg-2);
-  }
-  .action-card .ac-body code {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    background: var(--paper-200);
-    padding: 1px 5px;
-    border-radius: 2px;
-  }
-
-  /* ── 인사이트 인용 (Slide 04) ── */
-  .insight-quote {
-    padding: 18px 22px;
-    background: var(--paper-100);
-    border-left: 3px solid var(--fg-1);
-  }
-  .insight-quote .iq-label {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    letter-spacing: 0.14em;
-    color: var(--fg-3);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .insight-quote .iq-body {
-    font-family: var(--font-sans);
-    font-size: 18px;
-    line-height: 1.55;
-    color: var(--fg-1);
-    font-weight: 500;
-  }
-  .insight-quote .iq-body em {
-    font-style: normal;
-    color: var(--accent-600);
-    font-weight: 600;
-  }
-
-  /* ── 포인트 카드 (Slide 05) ── */
-  .point-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-  .point-card {
-    padding: 22px 24px;
-    border: 1px solid var(--rule);
-    background: var(--paper-50);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .point-card .pc-num {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    letter-spacing: 0.14em;
-    color: var(--accent-600);
-  }
-  .point-card .pc-title {
-    font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: 22px;
-    line-height: 1.25;
-    color: var(--fg-1);
-    letter-spacing: -0.01em;
-  }
-  .point-card .pc-body {
-    font-family: var(--font-sans);
-    font-size: 16px;
-    line-height: 1.55;
-    color: var(--fg-2);
-  }
-  .point-card .pc-body strong { color: var(--fg-1); }
-
-  /* ── 성과 stat ── */
-  .stat-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-  }
-  .stat-cell {
-    padding: 20px 24px 20px 0;
-    border-right: 1px solid var(--rule-soft);
-  }
-  .stat-cell:last-child { border-right: none; padding-right: 0; }
-  .stat-cell:not(:first-child) { padding-left: 24px; }
-  .stat-cell .sc-k {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--fg-3);
-    margin-bottom: 8px;
-  }
-  .stat-cell .sc-v {
-    font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: 46px;
-    line-height: 1.05;
-    color: var(--accent-600);
-    letter-spacing: -0.02em;
-  }
-  .stat-cell .sc-u {
-    font-family: var(--font-sans);
-    font-size: 15px;
-    color: var(--fg-2);
-    margin-top: 6px;
-    line-height: 1.4;
-  }
-
-  /* ── Slide 07 manifesto ── */
-  .manifesto-block {
-    padding: 36px 40px;
-    background: var(--paper-100);
-    border-left: 4px solid var(--accent-600);
-  }
-  .manifesto-block .mb-tag {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--accent-600);
-    margin-bottom: 14px;
-  }
-  .manifesto-block .mb-quote {
-    font-family: var(--font-sans);
-    font-weight: 600;
-    font-size: 28px;
-    line-height: 1.45;
-    color: var(--fg-1);
-    letter-spacing: -0.015em;
-  }
-  .manifesto-block .mb-body {
-    font-family: var(--font-sans);
-    font-size: 18px;
-    line-height: 1.6;
-    color: var(--fg-2);
-    margin-top: 16px;
-  }
-</style>
+    /* ── Iteration timeline ── */
+    .iter-list { flex: 1; margin-top: 40px; display: flex; flex-direction: column; gap: 0; }
+    .iter-item { display: flex; gap: 28px; align-items: flex-start; padding: 22px 0; border-bottom: 1px solid var(--rule-soft); }
+    .iter-item:last-child { border-bottom: none; }
+    .iter-ver { font-family: var(--font-mono); font-size: 18px; font-weight: 700; color: var(--accent-600); width: 52px; flex-shrink: 0; padding-top: 4px; }
+    .iter-title { font-family: var(--font-sans); font-weight: 600; font-size: 24px; color: var(--fg-1); margin-bottom: 6px; }
+    .iter-desc { font-family: var(--font-sans); font-size: 20px; color: var(--fg-2); line-height: 1.55; }
+  </style>
 </head>
 <body>
 
-<deck-stage width="1920" height="1080">
+  <!-- Back nav header -->
+  <nav class="deck-nav">
+    <a href="index.html">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2L4 7l5 5"/></svg>
+      포트폴리오로 돌아가기
+    </a>
+    <span class="sep">·</span>
+    <span class="current">Blog Agent RAG</span>
+  </nav>
 
-<!-- ═══ Slide 01 — 프로젝트 소개 ═══ -->
-<section class="slide s-title" data-label="01 프로젝트 소개">
-  <div class="top-rule">
-    <span>김희태 · PORTFOLIO</span>
-    <span>01 · 프로젝트 소개</span>
-  </div>
+  <deck-stage width="1920" height="1080">
 
-  <div style="display:flex; flex-direction:column; gap:48px; flex:1; justify-content:center;">
-    <div>
-      <div class="sec-label">PROJECT</div>
-      <h1 style="font-family:var(--font-sans); font-weight:700; font-size:80px; line-height:1.15; letter-spacing:-0.025em; color:var(--fg-1);">
-        Blog Agent
-      </h1>
-      <div style="font-family:var(--font-sans); font-size:34px; line-height:1.4; color:var(--fg-2); margin-top:18px; max-width:42ch;">
-        한국 주식 분석 블로그<br/>자동 생성·배포 시스템
+    <!-- 1. COVER -->
+    <section class="slide s-title dark" data-label="Cover">
+      <div class="top-rule">
+        <span>Heetae Kim</span>
+        <span>Personal Project · 2026.05</span>
       </div>
-    </div>
-
-    <div>
-      <div class="sec-label">프로젝트 특징 — 한 줄</div>
-      <div style="font-family:var(--font-sans); font-size:26px; line-height:1.6; color:var(--fg-1); max-width:54ch;">
-        매일 상한가·급등 종목을 자동 수집해 <strong style="color:var(--accent-600);">환각 없는 SEO 분석 블로그</strong>를 작성하고 네이버·Google Sheets·Obsidian에 동시 배포하는 <strong>RAG + 환각 방지 시스템</strong>
+      <div class="hero" style="flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:32px;">
+        <div class="meta-cap" style="margin-bottom:24px;">RAG + LLM Pipeline</div>
+        <h1 style="font-family:var(--font-mono);font-weight:700;font-size:88px;line-height:1.0;letter-spacing:-0.03em;color:#F4F4F6;margin:0 0 28px;">Blog<br>Agent RAG</h1>
+        <p style="font-family:var(--font-sans);font-size:29px;line-height:1.7;color:rgba(244,244,246,0.62);max-width:54ch;margin:0;">
+          상한가 종목 분석 블로그 글을 6단 RAG 파이프라인으로 자동 생성.<br>4중 검증 시스템으로 팩트 오류를 최소화한 반자동화 솔루션
+        </p>
       </div>
-    </div>
-
-    <div class="meta-grid" style="border-top:1px solid var(--rule); padding-top:28px;">
-      <div class="col">
-        <div class="k">기간</div>
-        <div class="v">2026.04–05<br/>약 4주</div>
-      </div>
-      <div class="col">
-        <div class="k">유형</div>
-        <div class="v">개인 프로젝트<br/>로컬 LLM 파이프라인</div>
-      </div>
-      <div class="col">
-        <div class="k">STACK</div>
-        <div class="v">Python · Gemini Flash<br/>DART API · Selenium</div>
-      </div>
-      <div class="col">
-        <div class="k">버전</div>
-        <div class="v">v1 → v12<br/>GitHub 30+ 커밋</div>
-      </div>
-    </div>
-  </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-  <div class="pageno">01 / 07</div>
-</section>
-
-<!-- ═══ Slide 02 — 프로젝트 개요 (배경과 목적) ═══ -->
-<section class="slide" data-label="02 프로젝트 개요">
-  <div class="top-rule">
-    <span>02 · 프로젝트 개요</span>
-    <span>배경 · 목적</span>
-  </div>
-
-  <div style="display:flex; flex-direction:column; gap:56px; flex:1; justify-content:center;">
-    <div>
-      <div class="sec-label">배경</div>
-      <p class="pull-quote" style="max-width:32ch;">
-        매일 +10% 이상 급등 종목 <em>5~15개</em>.<br/>
-        한 종목 분석은 시세·DART·뉴스·관계회사·1,500자 SEO 글·다중 배포까지 <em>1시간 이상</em>.<br/>
-        <span style="color:var(--fg-2); font-size:0.85em;">5종목이면 하루의 절반이 사라진다.</span>
-      </p>
-    </div>
-
-    <div>
-      <div class="sec-label">목적</div>
-      <div style="padding:28px 32px; background:var(--paper-100); border-left:4px solid var(--accent-600);">
-        <div style="font-family:var(--font-sans); font-size:30px; font-weight:600; line-height:1.45; color:var(--fg-1); max-width:50ch;">
-          매일 자동 수집·분석·작성·배포까지 <span style="color:var(--accent-600);">무인 운영</span>하면서,<br/>
-          LLM 환각으로 인한 <span style="color:var(--danger);">잘못된 투자 정보</span>를 차단한다.
+      <div style="display:flex;gap:0;border-top:1px solid rgba(244,244,246,0.15);padding-top:32px;">
+        <div style="flex:1;padding-right:24px;">
+          <div style="font-family:var(--font-mono);font-size:19px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,244,246,0.4);margin-bottom:12px;">RAG 구조</div>
+          <div style="font-family:var(--font-mono);font-size:60px;font-weight:700;letter-spacing:-0.03em;line-height:1;color:#9bb6f0;">6단</div>
+          <div style="font-family:var(--font-sans);font-size:21px;color:rgba(244,244,246,0.38);margin-top:9px;">DART → 크롤 → 청크 → 임베딩 → 검색 → LLM</div>
         </div>
-        <div style="font-family:var(--font-mono); font-size:16px; line-height:1.6; color:var(--fg-3); margin-top:18px; padding-top:18px; border-top:1px solid var(--rule);">
-          ※ 투자 콘텐츠 환각 = 자본시장법 위반 + 독자 피해 직결
+        <div style="flex:1;padding:0 24px;border-left:1px solid rgba(244,244,246,0.1);">
+          <div style="font-family:var(--font-mono);font-size:19px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,244,246,0.4);margin-bottom:12px;">검증 레이어</div>
+          <div style="font-family:var(--font-mono);font-size:60px;font-weight:700;letter-spacing:-0.03em;line-height:1;color:#9bb6f0;">4중</div>
+          <div style="font-family:var(--font-sans);font-size:21px;color:rgba(244,244,246,0.38);margin-top:9px;">형식 · 팩트 · 모순 · Self-critique</div>
+        </div>
+        <div style="flex:1;padding:0 24px;border-left:1px solid rgba(244,244,246,0.1);">
+          <div style="font-family:var(--font-mono);font-size:19px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,244,246,0.4);margin-bottom:12px;">반복 개선</div>
+          <div style="font-family:var(--font-mono);font-size:60px;font-weight:700;letter-spacing:-0.03em;line-height:1;color:#9bb6f0;">v12</div>
+          <div style="font-family:var(--font-sans);font-size:21px;color:rgba(244,244,246,0.38);margin-top:9px;">v1에서 v12까지 지속 이터레이션</div>
+        </div>
+        <div style="flex:1;padding-left:24px;border-left:1px solid rgba(244,244,246,0.1);">
+          <div style="font-family:var(--font-mono);font-size:19px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,244,246,0.4);margin-bottom:12px;">데이터 소스</div>
+          <div style="font-family:var(--font-mono);font-size:42px;font-weight:700;letter-spacing:-0.03em;line-height:1;color:#9bb6f0;">DART+크롤</div>
+          <div style="font-family:var(--font-sans);font-size:21px;color:rgba(244,244,246,0.38);margin-top:9px;">공시 + Selenium 뉴스 수집</div>
         </div>
       </div>
-    </div>
-  </div>
+      <div class="pageno" style="color:rgba(244,244,246,0.3);">01 / 07</div>
+      <div class="pageno-mark" style="color:rgba(244,244,246,0.3);">HK</div>
+    </section>
 
-  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-  <div class="pageno">02 / 07</div>
-</section>
-
-<!-- ═══ Slide 03 — 진행한 일 (배경/문제/해결) ═══ -->
-<section class="slide" data-label="03 진행한 일">
-  <div class="top-rule">
-    <span>03 · 진행한 일</span>
-    <span>배경 → 문제 (핵심) → 해결</span>
-  </div>
-
-  <div style="display:flex; flex-direction:column; gap:32px; flex:1; justify-content:center;">
-    <div class="flow-3step">
-      <div class="flow-step bg">
-        <div class="fs-tag">배경</div>
-        <div class="fs-title">통째로 LLM에 맡김</div>
-        <div class="fs-body">
-          초기 시도는 Ollama 로컬 LLM에게<br/>
-          <strong>"오늘 상한가 종목 분석 글 작성"</strong> 한 줄 프롬프트.
+    <!-- 2. PROBLEM -->
+    <section class="slide" data-label="Problem">
+      <div class="top-rule">
+        <span>Blog Agent RAG</span>
+        <span>Problem</span>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:48px;padding-top:32px;">
+        <div>
+          <div class="meta-cap" style="margin-bottom:18px;">출발점</div>
+          <h2 style="font-family:var(--font-sans);font-weight:700;font-size:66px;line-height:1.1;letter-spacing:-0.025em;color:var(--fg-1);max-width:24ch;margin:0;">
+            상한가 분석 글을<br>매일 쓰는 게 왜 힘든가
+          </h2>
         </div>
-      </div>
-
-      <div class="flow-step pb">
-        <div class="fs-tag">문제 — 핵심</div>
-        <div class="fs-title">LLM이 모르는 정보를<br/>추측으로 채움</div>
-        <div class="fs-body">
-          경인전자(가전 리모컨 제조)를 <strong>"엔터테이먼트 산업 강점, 매출 1조원"</strong>(실제 229억)으로 거짓 서술.<br/><br/>
-          <span style="color:var(--danger); font-weight:600;">더 똑똑한 모델로 바꿔도 해결 안 됨</span> — Gemini·Claude도 같은 패턴.
-        </div>
-      </div>
-
-      <div class="flow-step sv">
-        <div class="fs-tag">해결</div>
-        <div class="fs-title">데이터 파이프라인 보강<br/>+ 다층 검증</div>
-        <div class="fs-body">
-          DART·네이버·뉴스 <strong>6개 소스</strong>에서 사실을 명시 추출 (RAG)<br/>
-          + 형식·팩트체커·모순감지·Self-critique <strong>4중 검증</strong><br/>
-          + LLM이 못 고친 잔재는 <strong>코드가 강제 교정</strong>
-        </div>
-      </div>
-    </div>
-
-    <!-- 부연 박스 -->
-    <div style="padding:20px 28px; background:var(--paper-100); border-left:3px solid var(--accent-600); max-width:90%;">
-      <div style="font-family:var(--font-mono); font-size:14px; letter-spacing:0.1em; color:var(--accent-600); margin-bottom:8px;">왜 이 방향이 맞았나</div>
-      <div style="font-family:var(--font-sans); font-size:19px; line-height:1.55; color:var(--fg-1);">
-        정답글 작성자도 LLM이 아닌 <strong>사람</strong>. 검색·DART·뉴스에서 정보 모은 사람이 글을 쓴 것. → 정보 수집을 자동화하면 LLM이 같은 글을 쓸 수 있다.
-      </div>
-    </div>
-  </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-  <div class="pageno">03 / 07</div>
-</section>
-
-<!-- ═══ Slide 04 — 과정 (나의 액션 + 인사이트) ═══ -->
-<section class="slide soft" data-label="04 과정">
-  <div class="top-rule">
-    <span>04 · 과정</span>
-    <span>나의 직접적인 액션 · 인사이트</span>
-  </div>
-
-  <div style="display:grid; grid-template-columns:1.2fr 0.8fr; gap:40px; flex:1; padding-top:16px;">
-    <!-- 좌: 나의 액션 -->
-    <div>
-      <div class="sec-label">나의 직접적인 액션</div>
-      <div class="action-grid">
-        <div class="action-card">
-          <div class="ac-num">액션 01</div>
-          <div class="ac-title">DART 사업보고서 직접 파싱</div>
-          <div class="ac-body">
-            OPEN API의 XML 본문에서 <strong>"타법인 출자현황 시계열 변동"</strong>을 정규식으로 직접 추출 — 정답글 작성자가 가장 중시한 정보(고퀄 지분 21.52% 등)
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:44px;border-top:1px solid var(--rule-soft);padding-top:40px;">
+          <div>
+            <div style="font-family:var(--font-mono);font-size:16px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:12px;">Pain 01</div>
+            <div style="font-family:var(--font-sans);font-weight:600;font-size:27px;color:var(--fg-1);margin-bottom:10px;line-height:1.3;">팩트 오류 리스크</div>
+            <p style="font-family:var(--font-sans);font-size:21px;color:var(--fg-2);line-height:1.65;margin:0;">수급·재무·공시 데이터를 일일이 확인하지 않으면 LLM 할루시네이션이 틀린 수치를 생성한다</p>
           </div>
-        </div>
-        <div class="action-card">
-          <div class="ac-num">액션 02</div>
-          <div class="ac-title">룰베이스 모순 감지 13+ 룰</div>
-          <div class="ac-body">
-            PBR·PER·적자안정·상한가·시장구분·사업분야·재무강점 등 직접 룰 작성 → 재시도 트리거
+          <div>
+            <div style="font-family:var(--font-mono);font-size:16px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:12px;">Pain 02</div>
+            <div style="font-family:var(--font-sans);font-weight:600;font-size:27px;color:var(--fg-1);margin-bottom:10px;line-height:1.3;">매일 반복되는 리서치</div>
+            <p style="font-family:var(--font-sans);font-size:21px;color:var(--fg-2);line-height:1.65;margin:0;">상한가 종목마다 DART 공시 확인 + 뉴스 검색 + 재무 분석을 매번 수동으로 하면 한 글에 2시간 이상 소요</p>
           </div>
-        </div>
-        <div class="action-card">
-          <div class="ac-num">액션 03</div>
-          <div class="ac-title">코드 강제 교정 함수 도입</div>
-          <div class="ac-body">
-            LLM이 재시도해도 같은 모순을 <strong>변형 표현</strong>으로 반복하는 현상 발견 → <code>_auto_fix_contradictions</code>로 정규식 강제 교정
-          </div>
-        </div>
-        <div class="action-card">
-          <div class="ac-num">액션 04</div>
-          <div class="ac-title">외부 검토 → 룰 흡수 반복</div>
-          <div class="ac-body">
-            매 버전 결과를 외부에 노출, 새 환각 유형(시장 구분, 사업 분야 단정)을 룰로 흡수 → <strong>v12까지 반복 개선</strong>
+          <div>
+            <div style="font-family:var(--font-mono);font-size:16px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:12px;">Pain 03</div>
+            <div style="font-family:var(--font-sans);font-weight:600;font-size:27px;color:var(--fg-1);margin-bottom:10px;line-height:1.3;">품질 일관성 부재</div>
+            <p style="font-family:var(--font-sans);font-size:21px;color:var(--fg-2);line-height:1.65;margin:0;">작성자 컨디션에 따라 글의 구조와 깊이가 달라진다. 독자 신뢰를 위한 형식 표준화가 필요</p>
           </div>
         </div>
       </div>
-    </div>
+      <div class="pageno">02 / 07</div>
+      <div class="pageno-mark">HK</div>
+    </section>
 
-    <!-- 우: 인사이트 -->
-    <div>
-      <div class="sec-label">인사이트</div>
-      <div style="display:flex; flex-direction:column; gap:14px;">
-        <div class="insight-quote">
-          <div class="iq-label">INSIGHT 01</div>
-          <div class="iq-body">
-            "<em>LLM 크기 ≠ 환각 해소.</em> GPT-4도 데이터 없으면 똑같이 환각. 문제는 모델이 아니라 <em>입력 데이터 부족</em>."
-          </div>
-        </div>
-        <div class="insight-quote">
-          <div class="iq-label">INSIGHT 02</div>
-          <div class="iq-body">
-            "프롬프트 가이드만으론 안 잡힌다. <em>코드 검증·교정이 마지막 안전망.</em>"
-          </div>
-        </div>
-        <div class="insight-quote" style="border-left-color:var(--danger);">
-          <div class="iq-label" style="color:var(--danger);">INSIGHT 03 · 가장 큰 교훈</div>
-          <div class="iq-body">
-            "자기 측정 지표가 좁으면 <em>자기 합리화</em>에 빠진다. '환각 0건'은 외부 검토 전엔 신뢰 못 함."
-          </div>
-        </div>
+    <!-- 3. PIPELINE -->
+    <section class="slide soft" data-label="Pipeline">
+      <div class="top-rule">
+        <span>Blog Agent RAG</span>
+        <span>Pipeline</span>
       </div>
-    </div>
-  </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-  <div class="pageno">04 / 07</div>
-</section>
-
-<!-- ═══ Slide 05 — 결과물 (최종 내용 + 포인트) ═══ -->
-<section class="slide" data-label="05 결과물">
-  <div class="top-rule">
-    <span>05 · 결과물</span>
-    <span>최종 진행 내용 · 포인트</span>
-  </div>
-
-  <div style="display:flex; flex-direction:column; gap:24px; flex:1; padding-top:12px;">
-    <!-- 최종 내용 요약 -->
-    <div>
-      <div class="sec-label">최종 내용</div>
-      <div style="font-family:var(--font-mono); font-size:17px; line-height:1.85; color:var(--fg-1); background:var(--paper-100); padding:18px 24px; border:1px solid var(--rule);">
-        <span style="color:var(--accent-600); font-weight:700;">[COLLECT]</span> 6단 RAG (DART 재무·사업보고서·공시·지분 + 네이버 기업개요 + 시황)
-        &nbsp;&nbsp;<span style="color:var(--fg-3);">→</span>&nbsp;
-        <span style="color:var(--accent-600); font-weight:700;">[GENERATE]</span> Gemini Flash (Few-shot)
-        &nbsp;&nbsp;<span style="color:var(--fg-3);">→</span>&nbsp;
-        <span style="color:var(--accent-600); font-weight:700;">[VALIDATE]</span> 4중 검증 (형식·팩트·모순·Self-critique)
-        &nbsp;&nbsp;<span style="color:var(--fg-3);">→</span>&nbsp;
-        <span style="color:var(--accent-600); font-weight:700;">[FIX]</span> 자동 교정
-        &nbsp;&nbsp;<span style="color:var(--fg-3);">→</span>&nbsp;
-        <span style="color:var(--accent-600); font-weight:700;">[DEPLOY]</span> Sheets·Naver·Obsidian·Telegram
-      </div>
-    </div>
-
-    <!-- 포인트 4 + Sheets 스크린샷 -->
-    <div style="display:grid; grid-template-columns:1.15fr 0.85fr; gap:28px; flex:1; min-height:0;">
-      <div style="display:flex; flex-direction:column; gap:12px;">
-        <div class="sec-label" style="margin-bottom:4px;">차별화 포인트</div>
-        <div class="point-grid">
-          <div class="point-card">
-            <div class="pc-num">POINT 01</div>
-            <div class="pc-title">도메인 RAG 설계</div>
-            <div class="pc-body">단순 벡터 임베딩 RAG가 아니라 <strong>소스별 최적 추출</strong>. DART 사업보고서엔 정규식이 임베딩보다 정확.</div>
+      <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;">
+        <div>
+          <div class="meta-cap" style="margin-bottom:14px;">6단 RAG 구조</div>
+          <h2 class="slide-h2" style="font-size:52px;">데이터 수집 → 벡터 검색 → LLM 생성</h2>
+        </div>
+        <div class="rag-row">
+          <div class="rag-step" style="background:#fff;">
+            <div class="rag-num">01</div>
+            <div class="rag-name">DART API</div>
+            <div class="rag-desc">공시 수집<br>재무제표<br>사업보고서</div>
           </div>
-          <div class="point-card">
-            <div class="pc-num">POINT 02</div>
-            <div class="pc-title">시계열 지분 추적</div>
-            <div class="pc-body">"고퀄 34% → 32% → ... → <strong>21.52%</strong>" 시간순 변동에서 최신값만 추출 → 정답글 핵심 트리거 자동 인용.</div>
+          <div class="rag-arrow">→</div>
+          <div class="rag-step" style="background:#fff;">
+            <div class="rag-num">02</div>
+            <div class="rag-name">Selenium<br>크롤링</div>
+            <div class="rag-desc">뉴스·이슈<br>실시간 수집<br>JS 렌더링 대응</div>
           </div>
-          <div class="point-card">
-            <div class="pc-num">POINT 03</div>
-            <div class="pc-title">3중 안전망</div>
-            <div class="pc-body">프롬프트 가이드(1차) → 룰베이스 검증·재시도(2차) → <strong>코드 강제 교정(3차)</strong>. LLM이 못 고친 잔재까지.</div>
+          <div class="rag-arrow">→</div>
+          <div class="rag-step" style="background:#fff;">
+            <div class="rag-num">03</div>
+            <div class="rag-name">청킹</div>
+            <div class="rag-desc">RecursiveChar<br>TextSplitter<br>500 tokens</div>
           </div>
-          <div class="point-card" style="border-color:var(--accent-600); border-width:2px;">
-            <div class="pc-num">POINT 04</div>
-            <div class="pc-title">솔직한 메트릭</div>
-            <div class="pc-body">"환각 0건"이 아닌 <strong>"수치 환각(DART 50%+ 차이) 0건"</strong>으로 측정 기준 명시. 의미 환각은 v12에서 룰 보강.</div>
+          <div class="rag-arrow">→</div>
+          <div class="rag-step" style="background:#fff;">
+            <div class="rag-num">04</div>
+            <div class="rag-name">임베딩</div>
+            <div class="rag-desc">OpenAI<br>text-embed-3<br>FAISS 저장</div>
+          </div>
+          <div class="rag-arrow">→</div>
+          <div class="rag-step" style="background:#fff;">
+            <div class="rag-num">05</div>
+            <div class="rag-name">벡터 검색</div>
+            <div class="rag-desc">코사인 유사도<br>Top-K 청크<br>컨텍스트 구성</div>
+          </div>
+          <div class="rag-arrow">→</div>
+          <div class="rag-step" style="background:var(--accent-600);border-color:var(--accent-600);">
+            <div class="rag-num" style="color:rgba(255,255,255,0.45);">06</div>
+            <div class="rag-name" style="color:#fff;">LLM 생성</div>
+            <div class="rag-desc" style="color:rgba(255,255,255,0.65);">GPT-4o<br>구조화 프롬프트<br>블로그 초안</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-top:24px;">
+          <div style="background:#fff;border:1px solid var(--rule-soft);border-radius:var(--r-3);padding:20px 24px;">
+            <div style="font-family:var(--font-mono);font-size:15px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:5px;">청크 크기</div>
+            <div style="font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--fg-1);">500 tokens</div>
+            <div style="font-family:var(--font-sans);font-size:18px;color:var(--fg-3);margin-top:3px;">overlap 50 tokens</div>
+          </div>
+          <div style="background:#fff;border:1px solid var(--rule-soft);border-radius:var(--r-3);padding:20px 24px;">
+            <div style="font-family:var(--font-mono);font-size:15px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:5px;">검색 k값</div>
+            <div style="font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--fg-1);">Top-8 청크</div>
+            <div style="font-family:var(--font-sans);font-size:18px;color:var(--fg-3);margin-top:3px;">컨텍스트 윈도우 최적화</div>
+          </div>
+          <div style="background:#fff;border:1px solid var(--rule-soft);border-radius:var(--r-3);padding:20px 24px;">
+            <div style="font-family:var(--font-mono);font-size:15px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:5px;">평균 소요</div>
+            <div style="font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--fg-1);">4~6분</div>
+            <div style="font-family:var(--font-sans);font-size:18px;color:var(--fg-3);margin-top:3px;">수동 작성 2시간 대비</div>
           </div>
         </div>
       </div>
+      <div class="pageno">03 / 07</div>
+      <div class="pageno-mark">HK</div>
+    </section>
 
-      <!-- Sheets 스크린샷 -->
-      <div style="display:flex; flex-direction:column; gap:10px; min-height:0;">
-        <div style="font-family:var(--font-mono); font-size:13px; letter-spacing:0.12em; color:var(--fg-3);">실제 자동 배포 결과 — Google Sheets</div>
-        <div style="flex:1; min-height:0; overflow:hidden; border:1px solid var(--rule);">
-          <img src="blog-agent-rag/img/sheets-result.png"
-               alt="Google Sheets에 자동 배포된 블로그 초안"
-               style="width:100%; height:100%; object-fit:cover; object-position:top;"/>
-        </div>
+    <!-- 4. VALIDATION -->
+    <section class="slide" data-label="Validation">
+      <div class="top-rule">
+        <span>Blog Agent RAG</span>
+        <span>Validation</span>
       </div>
-    </div>
-  </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-  <div class="pageno">05 / 07</div>
-</section>
-
-<!-- ═══ Slide 06 — 성장한 점 (성과 + 배운점) ═══ -->
-<section class="slide" data-label="06 성장한 점">
-  <div class="top-rule">
-    <span>06 · 성장한 점</span>
-    <span>성과 · 배운점</span>
-  </div>
-
-  <div style="display:flex; flex-direction:column; gap:36px; flex:1; padding-top:12px;">
-    <!-- 성과 stat row -->
-    <div>
-      <div class="sec-label">성과 (v3 → v12)</div>
-      <div class="stat-grid">
-        <div class="stat-cell">
-          <div class="sc-k">수치 환각</div>
-          <div class="sc-v">3 → 0건</div>
-          <div class="sc-u">DART 50%+ 차이 / 5종목 기준</div>
+      <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;">
+        <div>
+          <div class="meta-cap" style="margin-bottom:14px;">품질 보증</div>
+          <h2 class="slide-h2" style="font-size:54px;">4중 검증 시스템으로 팩트 오류 최소화</h2>
         </div>
-        <div class="stat-cell">
-          <div class="sc-k">의미 환각</div>
-          <div class="sc-v">1 → 0건</div>
-          <div class="sc-u">외부 검토 평가 / v12 룰 보강</div>
-        </div>
-        <div class="stat-cell">
-          <div class="sc-k">작성 시간</div>
-          <div class="sc-v">1h → 30m</div>
-          <div class="sc-u">종목당 1시간 → 5종목 자동 30분</div>
-        </div>
-        <div class="stat-cell">
-          <div class="sc-k">반복 개선</div>
-          <div class="sc-v">v1 → v12</div>
-          <div class="sc-u">GitHub 30+ 의미 있는 커밋</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 배운점 -->
-    <div>
-      <div class="sec-label">배운점</div>
-      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:16px;">
-        <div style="padding:22px 24px; background:var(--paper-100); border-top:3px solid var(--accent-600);">
-          <div style="font-family:var(--font-mono); font-size:14px; letter-spacing:0.12em; color:var(--accent-600); margin-bottom:10px;">LESSON 01</div>
-          <div style="font-family:var(--font-sans); font-weight:600; font-size:21px; line-height:1.35; color:var(--fg-1); margin-bottom:8px;">LLM 응용의 본질은<br/>"데이터 파이프라인"</div>
-          <div style="font-family:var(--font-sans); font-size:16px; line-height:1.55; color:var(--fg-2);">
-            모델 교체·프롬프트 튜닝은 데이터 보강 다음 순위.
+        <div class="val-grid">
+          <div class="val-cell">
+            <div class="val-num">01</div>
+            <div class="val-name">형식 검증</div>
+            <div class="val-desc">제목·소제목·섹션 구조가 정의된 스키마에 맞는지 확인. JSON 파싱 실패 시 자동 재생성 트리거</div>
+          </div>
+          <div class="val-cell">
+            <div class="val-num">02</div>
+            <div class="val-name">팩트 검증</div>
+            <div class="val-desc">생성된 수치(주가·거래량·재무수치)를 원본 RAG 청크와 대조. 불일치 발견 시 해당 문장 플래그</div>
+          </div>
+          <div class="val-cell">
+            <div class="val-num">03</div>
+            <div class="val-name">모순 검증</div>
+            <div class="val-desc">글 내부에서 서로 상충하는 진술 탐지. "실적 개선"과 "매출 감소"가 동시에 언급되면 경고</div>
+          </div>
+          <div class="val-cell">
+            <div class="val-num">04</div>
+            <div class="val-name">Self-critique</div>
+            <div class="val-desc">LLM이 자신의 초안을 별도 프롬프트로 비판·개선. 검수자 관점에서 약점 식별 후 재작성</div>
           </div>
         </div>
-        <div style="padding:22px 24px; background:var(--paper-100); border-top:3px solid var(--warn);">
-          <div style="font-family:var(--font-mono); font-size:14px; letter-spacing:0.12em; color:var(--warn); margin-bottom:10px;">LESSON 02</div>
-          <div style="font-family:var(--font-sans); font-weight:600; font-size:21px; line-height:1.35; color:var(--fg-1); margin-bottom:8px;">자기 검증의 한계</div>
-          <div style="font-family:var(--font-sans); font-size:16px; line-height:1.55; color:var(--fg-2);">
-            같은 LLM은 자기 환각 못 잡고, 좁은 자기 기준은 자기 합리화. 외부 검토자 + 룰베이스 필수.
-          </div>
-        </div>
-        <div style="padding:22px 24px; background:var(--paper-100); border-top:3px solid var(--danger);">
-          <div style="font-family:var(--font-mono); font-size:14px; letter-spacing:0.12em; color:var(--danger); margin-bottom:10px;">LESSON 03</div>
-          <div style="font-family:var(--font-sans); font-weight:600; font-size:21px; line-height:1.35; color:var(--fg-1); margin-bottom:8px;">솔직한 한계 명시가<br/>신뢰의 기반</div>
-          <div style="font-family:var(--font-sans); font-size:16px; line-height:1.55; color:var(--fg-2);">
-            외부 검토 한 번에 무너지는 자기 평가는 무의미.
-          </div>
+        <div style="display:flex;align-items:center;gap:24px;margin-top:24px;padding:18px 24px;background:var(--bg-soft);border-radius:var(--r-3);border:1px solid var(--rule-soft);">
+          <div style="font-family:var(--font-mono);font-size:32px;font-weight:700;color:var(--accent-600);flex-shrink:0;">4단계</div>
+          <div style="width:1px;height:44px;background:var(--rule-soft);flex-shrink:0;"></div>
+          <p style="font-family:var(--font-sans);font-size:21px;color:var(--fg-2);line-height:1.6;margin:0;">
+            순차적으로 통과하지 못하면 해당 레이어에서 재처리. 최종 통과 글만 검수자(작성자)에게 전달 → <strong style="color:var(--fg-1);font-weight:600;">반자동화</strong> 워크플로우 완성
+          </p>
         </div>
       </div>
-    </div>
-  </div>
+      <div class="pageno">04 / 07</div>
+      <div class="pageno-mark">HK</div>
+    </section>
 
-  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-  <div class="pageno">06 / 07</div>
-</section>
-
-<!-- ═══ Slide 07 — 나의 역량 (느낀점 + 다짐) ═══ -->
-<section class="slide" data-label="07 나의 역량">
-  <div class="top-rule">
-    <span>07 · 나의 역량</span>
-    <span>입사 시 기여할 수 있는 부분</span>
-  </div>
-
-  <div style="display:flex; flex-direction:column; gap:32px; flex:1; justify-content:center;">
-    <!-- 느낀점 + 다짐 -->
-    <div class="manifesto-block">
-      <div class="mb-tag">느낀점 · 다짐</div>
-      <div class="mb-quote">
-        "환각 방지는 모델이 아니라 <span style="color:var(--accent-600);">시스템 설계의 문제</span>다.<br/>
-        데이터 입력 → LLM → 검증 → 교정 → 배포까지 <span style="color:var(--accent-600);">완결된 파이프라인</span>을 설계할 수 있어야 한다."
+    <!-- 5. ITERATION -->
+    <section class="slide soft" data-label="Iteration">
+      <div class="top-rule">
+        <span>Blog Agent RAG</span>
+        <span>Iteration</span>
       </div>
-      <div class="mb-body">
-        앞으로는 LLM을 단일 모델이 아닌 <strong>시스템의 한 컴포넌트</strong>로 보고, 검증·교정 레이어를 처음부터 설계에 포함시키는 방식으로 일하고 싶다.
+      <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;">
+        <div>
+          <div class="meta-cap" style="margin-bottom:14px;">v1 → v12</div>
+          <h2 class="slide-h2" style="font-size:52px;">반복 개선 프로세스</h2>
+        </div>
+        <div class="iter-list">
+          <div class="iter-item">
+            <div class="iter-ver">v1~3</div>
+            <div>
+              <div class="iter-title">기본 파이프라인 구축</div>
+              <div class="iter-desc">DART API 연결, 단순 프롬프트 생성. 구조화 없이 자유 형식 출력 → 품질 불일치 심각</div>
+            </div>
+          </div>
+          <div class="iter-item">
+            <div class="iter-ver">v4~6</div>
+            <div>
+              <div class="iter-title">RAG 도입 + 청킹 최적화</div>
+              <div class="iter-desc">FAISS 벡터 검색 추가. chunk_size 실험 (200→500). 팩트 오류 20% 감소. 하지만 모순 문제 남음</div>
+            </div>
+          </div>
+          <div class="iter-item">
+            <div class="iter-ver">v7~9</div>
+            <div>
+              <div class="iter-title">검증 레이어 추가</div>
+              <div class="iter-desc">형식 검증 + 팩트 대조 로직 구현. Selenium 크롤러 안정화(JS 렌더링 타임아웃 처리). 모순 검출기 v1 적용</div>
+            </div>
+          </div>
+          <div class="iter-item">
+            <div class="iter-ver">v10~12</div>
+            <div>
+              <div class="iter-title">Self-critique + 반자동화 전환</div>
+              <div class="iter-desc">완전 자동화 포기 → 검수 포함 반자동화 채택. Self-critique 레이어 추가로 초안 품질 대폭 향상. 현재 안정 운영 중</div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+      <div class="pageno">05 / 07</div>
+      <div class="pageno-mark">HK</div>
+    </section>
 
-    <!-- 배운점 + 다짐 -->
-    <div class="manifesto-block" style="border-left-color:var(--fg-1); background:var(--paper-200);">
-      <div class="mb-tag" style="color:var(--fg-1);">배운점 · 다짐</div>
-      <div class="mb-quote">
-        "외부 검토에서 무너지지 않는 지표를 만든다.<br/>
-        <span style="color:var(--fg-1);">자기 측정으로 끝나지 않는다.</span>"
+    <!-- 6. RESULT -->
+    <section class="slide" data-label="Result">
+      <div class="top-rule">
+        <span>Blog Agent RAG</span>
+        <span>Result</span>
       </div>
-      <div class="mb-body">
-        매 버전 결과를 외부에 노출해 사각지대를 발견하고, 그 발견을 시스템에 흡수하는 <strong>반복 개선 능력</strong>을 기여할 수 있다.<br/>
-        <span style="color:var(--fg-3); font-style:italic;">v1~v12 GitHub 커밋 로그가 이 사이클의 실제 기록.</span>
+      <div style="display:flex;gap:56px;flex:1;padding-top:32px;">
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+          <div class="meta-cap" style="margin-bottom:18px;">실제 결과물</div>
+          <h2 class="slide-h2" style="font-size:52px;margin-bottom:32px;">Google Sheets 연동<br>자동 저장 파이프라인</h2>
+          <p class="slide-body" style="font-size:26px;margin-bottom:28px;">생성된 블로그 초안이 Google Sheets에 자동 저장됨. 날짜·종목명·버전·검증 결과가 함께 기록되어 검수자가 빠르게 리뷰할 수 있는 구조.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div style="padding:18px 22px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--bg-soft);">
+              <div style="font-family:var(--font-mono);font-size:15px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:5px;">작성 시간</div>
+              <div style="font-family:var(--font-mono);font-size:30px;font-weight:700;color:var(--accent-600);">4~6분</div>
+            </div>
+            <div style="padding:18px 22px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--bg-soft);">
+              <div style="font-family:var(--font-mono);font-size:15px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:5px;">팩트 오류 감소</div>
+              <div style="font-family:var(--font-mono);font-size:30px;font-weight:700;color:var(--accent-600);">~40%</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:1.2;display:flex;align-items:center;justify-content:center;">
+          <img src="blog-agent-RAG/img/sheets-result.png"
+               alt="Google Sheets 자동 저장 결과"
+               style="width:100%;max-height:700px;object-fit:contain;border-radius:var(--r-3);border:1px solid var(--rule-soft);box-shadow:var(--shadow-3);" />
+        </div>
       </div>
-    </div>
+      <div class="pageno">06 / 07</div>
+      <div class="pageno-mark">HK</div>
+    </section>
 
-    <!-- GitHub 링크 -->
-    <div style="display:flex; align-items:center; gap:24px; padding-top:8px;">
-      <div style="font-family:var(--font-mono); font-size:14px; letter-spacing:0.12em; color:var(--fg-3);">GITHUB</div>
-      <a href="https://github.com/kimheetae0104/Agent/tree/blog-agent-pr"
-         target="_blank" rel="noopener noreferrer"
-         style="font-family:var(--font-mono); font-size:18px; color:var(--accent-600); text-decoration:underline; text-underline-offset:4px;">
-        github.com/kimheetae0104/Agent (blog-agent-pr)
-      </a>
-    </div>
-  </div>
+    <!-- 7. LEARNING -->
+    <section class="slide soft" data-label="Learning">
+      <div class="top-rule">
+        <span>Blog Agent RAG</span>
+        <span>What I Learned</span>
+      </div>
+      <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;">
+        <div>
+          <div class="meta-cap" style="margin-bottom:14px;">반자동화를 선택한 이유</div>
+          <h2 class="slide-h2" style="font-size:52px;">완전 자동화보다 신뢰할 수 있는 반자동화</h2>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:0;margin-top:40px;">
+          <div style="display:flex;gap:28px;align-items:flex-start;padding:28px 0;border-bottom:1px solid var(--rule-soft);">
+            <div style="font-family:var(--font-mono);font-size:18px;color:var(--fg-4);width:32px;flex-shrink:0;padding-top:4px;">01</div>
+            <div>
+              <div style="font-family:var(--font-sans);font-weight:600;font-size:26px;color:var(--fg-1);margin-bottom:8px;">완전 자동화의 실패</div>
+              <div style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.6;">v8에서 완전 자동화 시도. 4중 검증을 모두 통과해도 미묘한 뉘앙스 오류가 발생. "숫자는 맞지만 맥락이 틀린" 유형은 자동 탐지 불가. 검수 단계를 제거할 수 없다고 결론.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:28px;align-items:flex-start;padding:28px 0;border-bottom:1px solid var(--rule-soft);">
+            <div style="font-family:var(--font-mono);font-size:18px;color:var(--fg-4);width:32px;flex-shrink:0;padding-top:4px;">02</div>
+            <div>
+              <div style="font-family:var(--font-sans);font-weight:600;font-size:26px;color:var(--fg-1);margin-bottom:8px;">반복 개선이 실력이다</div>
+              <div style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.6;">v1과 v12는 코드 구조가 완전히 다르다. 각 버전에서 실제 출력 결과를 보고 다음 문제를 정의하는 루프. "완성"이 아니라 "개선"이 목표임을 체감.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:28px;align-items:flex-start;padding:28px 0;">
+            <div style="font-family:var(--font-mono);font-size:18px;color:var(--fg-4);width:32px;flex-shrink:0;padding-top:4px;">03</div>
+            <div>
+              <div style="font-family:var(--font-sans);font-weight:600;font-size:26px;color:var(--fg-1);margin-bottom:8px;">RAG의 한계 — 검색 품질이 생성 품질을 결정</div>
+              <div style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.6;">청크 크기·overlap·임베딩 모델이 최종 글 품질에 직결. LLM 프롬프트 개선보다 검색 품질 개선이 더 큰 효과를 냈다. 데이터 파이프라인의 중요성 재확인.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pageno">07 / 07</div>
+      <div class="pageno-mark">HK</div>
+    </section>
 
-  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-  <div class="pageno">07 / 07</div>
-</section>
-
-</deck-stage>
-
-<!-- 플로팅 홈 버튼 (LHV/Skinpass와 동일 스타일) -->
-<a href="index.html" style="position:fixed;top:22px;left:22px;z-index:2147483647;display:flex;align-items:center;gap:6px;padding:8px 16px 8px 12px;border-radius:999px;background:rgba(20,20,24,0.85);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.12);color:#fff;text-decoration:none;font-family:var(--font-mono);font-size:13px;letter-spacing:0.08em;transition:background 180ms ease,border-color 180ms ease;" onmouseenter="this.style.background='rgba(40,40,48,0.95)';this.style.borderColor='rgba(255,255,255,0.28)'" onmouseleave="this.style.background='rgba(20,20,24,0.85)';this.style.borderColor='rgba(255,255,255,0.12)'"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>포트폴리오</a>
+  </deck-stage>
 </body>
 </html>

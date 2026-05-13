@@ -1,679 +1,533 @@
 <!doctype html>
 <html lang="ko">
-
 <head>
-  <meta charset="utf-8" />
-  <title>JANN — 향미 데이터 기반 레시피 추천 실험</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="shared/tokens.css" />
-  <link rel="stylesheet" href="shared/slide.css" />
-  <script src="shared/deck-stage.js"></script>
-  <style>
-    /* JANN custom tokens */
-    :root {
-      --jann-bg-1: #1a120a;
-      --jann-bg-2: #110a05;
-      --jann-amber-1: #f5b556;
-      --jann-amber-2: #e89a2e;
-      --jann-amber-soft: rgba(245, 181, 86, 0.14);
-      --jann-text-1: #f4ead8;
-      --jann-text-2: #b8a98e;
-      --jann-text-3: #6e6453;
-    }
+<meta charset="utf-8" />
+<title>JANN — 분자 미식학 기반 iOS 레시피 추천 앱</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="shared/tokens.css" />
+<link rel="stylesheet" href="shared/index.css" />
+<link rel="stylesheet" href="shared/slide.css" />
+<script src="shared/deck-stage.js"></script>
+<style>
+/* ── iPhone 목업 ── */
+.iphone {
+  width: 240px;
+  border-radius: 36px;
+  background: #111;
+  padding: 6px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.26), 0 0 0 1px rgba(0,0,0,0.12);
+  flex-shrink: 0;
+}
+.iphone .screen {
+  width: 100%;
+  border-radius: 30px;
+  overflow: hidden;
+  display: block;
+}
+.iphone .screen img { width: 100%; display: block; }
 
-    /* JANN-specific slide variant */
-    section.slide.jann-dark {
-      background: linear-gradient(180deg, #0e0a06 0%, #1a1208 100%);
-      color: #f4ead8;
-    }
+/* ── 큰 숫자 ── */
+.big-num {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 96px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--fg-1);
+}
+.big-num-unit {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  letter-spacing: 0.1em;
+  color: var(--fg-3);
+  margin-top: 10px;
+}
 
-    .jann-dark .top-rule {
-      border-color: rgba(245, 181, 86, 0.25);
-      color: rgba(245, 181, 86, 0.55);
-    }
+/* ── 강조 박스 ── */
+.accent-box {
+  padding: 28px 32px;
+  background: rgba(30,58,138,0.05);
+  border-left: 3px solid var(--accent-600);
+}
+.accent-box .ab-label {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-600);
+  margin-bottom: 12px;
+}
+.accent-box .ab-body {
+  font-family: var(--font-sans);
+  font-size: 26px;
+  color: var(--fg-2);
+  line-height: 1.6;
+}
+.accent-box .ab-cite {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--fg-4);
+  margin-top: 10px;
+  line-height: 1.5;
+}
 
-    .jann-dark .pageno {
-      color: rgba(245, 181, 86, 0.35);
-    }
+/* ── 파이프라인 카드 ── */
+.pipe-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--rule);
+  flex: 1;
+}
+.pipe-card {
+  padding: 40px 36px;
+  border-right: 1px solid var(--rule-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.pipe-card:last-child { border-right: 0; background: rgba(30,58,138,0.04); }
+.pipe-card .pstep {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-600);
+}
+.pipe-card h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 1.2;
+  color: var(--fg-1);
+  margin: 0;
+}
+.pipe-card .pdesc {
+  font-family: var(--font-sans);
+  font-size: 24px;
+  color: var(--fg-2);
+  line-height: 1.6;
+  flex: 1;
+}
+.pipe-card .pmeta {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--fg-3);
+  line-height: 1.65;
+}
+.tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  background: var(--accent-100);
+  color: var(--accent-600);
+  padding: 4px 12px;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+}
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
 
-    .jann-dark .pageno-mark { color: rgba(245, 181, 86, 0.35); }
+/* ── 학습 카드 ── */
+.learn-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  flex: 1;
+}
+.learn-card {
+  padding: 36px 32px;
+  background: var(--paper-100);
+  border-top: 2px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.learn-card.accent { border-top-color: var(--accent-600); }
+.learn-card.warn   { border-top-color: var(--warn); }
+.learn-card.good   { border-top-color: var(--positive); }
+.learn-card .ltag {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.learn-card.accent .ltag { color: var(--accent-600); }
+.learn-card.warn .ltag   { color: var(--warn); }
+.learn-card.good .ltag   { color: var(--positive); }
+.learn-card h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.2;
+  color: var(--fg-1);
+  margin: 0;
+}
+.learn-card .lbody {
+  font-family: var(--font-sans);
+  font-size: 24px;
+  color: var(--fg-2);
+  line-height: 1.6;
+}
 
-    /* title slide overrides — 타이틀은 slide.css 기본값(80px) 사용 */
-    .s-title .hero .ko-sub { max-width: 36ch; }
-    /* JANN uses 5-column meta-grid */
-    .s-title .meta-grid { grid-template-columns: repeat(5, 1fr); }
-
-    /* gallery */
-    .gallery-row {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      align-items: flex-start;
-      flex: 1;
-      padding-top: 8px;
-    }
-
-    .gallery-lbl {
-      display: flex;
-      justify-content: space-between;
-      font-family: var(--font-mono);
-      font-size: 18px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(245, 181, 86, 0.55);
-      margin-bottom: 8px;
-    }
-
-    .device-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .device-wrap .cap {
-      font-family: var(--font-mono);
-      font-size: 16px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(245, 181, 86, 0.75);
-      text-align: center;
-    }
-
-    .device-wrap .cap-ko {
-      color: rgba(244, 234, 216, 0.85);
-      font-size: 17px;
-    }
-
-    .soft .device-wrap .cap {
-      color: var(--fg-3);
-    }
-
-    .soft .device-wrap .cap-ko {
-      color: var(--fg-1);
-    }
-
-    .soft .gallery-lbl {
-      color: var(--fg-3);
-    }
-
-    .iphone {
-      width: 280px;
-      border-radius: 36px;
-      background: #000;
-      padding: 6px;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(245, 181, 86, 0.1);
-      position: relative;
-      flex-shrink: 0;
-    }
-
-    .iphone .screen {
-      width: 100%;
-      border-radius: 30px;
-      overflow: hidden;
-      background: var(--jann-bg-2);
-      position: relative;
-      display: block;
-    }
-
-    .iphone .screen img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .ds-status {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 14px 3px;
-      font-size: 9px;
-      font-weight: 600;
-      color: var(--jann-text-1);
-      position: relative;
-      z-index: 25;
-    }
-
-    .ds-status .right {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-    }
-
-    .ds-status svg {
-      display: block;
-    }
-
-    /* comparison table */
-    table.cmp {
-      width: 100%;
-      border-collapse: collapse;
-      font-family: var(--font-sans);
-      font-size: 28px;
-      line-height: 1.5;
-      color: var(--fg-2);
-    }
-
-    table.cmp th,
-    table.cmp td {
-      padding: 28px 22px;
-      text-align: left;
-      border-bottom: 1px solid var(--rule-soft);
-      vertical-align: top;
-    }
-
-    table.cmp thead th {
-      font-family: var(--font-mono);
-      font-size: 24px;
-      font-weight: 400;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--fg-3);
-      border-bottom: 1px solid var(--rule);
-      padding-bottom: 16px;
-    }
-
-    table.cmp .col-a {
-      width: 22%;
-      color: var(--fg-1);
-      font-weight: 500;
-    }
-
-    table.cmp tr.ours td {
-      background: rgba(30, 58, 138, 0.05);
-      color: var(--fg-1);
-    }
-
-    table.cmp .pill {
-      font-family: var(--font-mono);
-      font-size: 18px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      background: var(--accent-100);
-      color: var(--accent-600);
-      padding: 3px 10px;
-      border-radius: 999px;
-      margin-left: 8px;
-    }
-
-    /* stats */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      border-top: 1px solid var(--rule);
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .stat {
-      padding: 36px 28px;
-      border-right: 1px solid var(--rule-soft);
-    }
-
-    .stat:last-child {
-      border-right: 0;
-    }
-
-    .stat .k {
-      font-family: var(--font-mono);
-      font-size: 24px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--fg-3);
-      margin-bottom: 14px;
-    }
-
-    .stat .v {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 96px;
-      line-height: 1;
-      color: var(--fg-1);
-      letter-spacing: -0.03em;
-    }
-
-    .stat .u {
-      font-family: var(--font-mono);
-      font-size: 22px;
-      color: var(--fg-3);
-      margin-top: 10px;
-    }
-
-    /* palette */
-    .palette-row {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0;
-      border-top: 1px solid var(--rule);
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .swatch {
-      padding: 36px 24px;
-    }
-
-    .swatch .label {
-      font-family: var(--font-mono);
-      font-size: 22px;
-      letter-spacing: 0.16em;
-      opacity: 0.6;
-    }
-
-    .swatch .hex {
-      font-family: var(--font-mono);
-      font-size: 26px;
-      margin-top: 18px;
-    }
-
-    /* close */
-    .s-close .pull {
-      font-family: var(--font-sans);
-      font-weight: 500;
-      font-size: 80px;
-      line-height: 1.18;
-      letter-spacing: -0.02em;
-      color: #F4F4F6;
-      max-width: 22ch;
-    }
-
-    .s-close .pull em {
-      font-style: normal;
-      color: #F5B556;
-    }
-
-    .s-close .attrib {
-      font-family: var(--font-mono);
-      font-size: 24px;
-      letter-spacing: 0.14em;
-      color: rgba(244, 244, 246, 0.5);
-      margin-top: 32px;
-      padding-top: 24px;
-      border-top: 1px solid rgba(244, 244, 246, 0.16);
-    }
-
-    /* s-close 라이트 모드 오버라이드 */
-    .slide:not(.dark).s-close .pull {
-      color: var(--fg-1);
-    }
-    .slide:not(.dark).s-close .pull em {
-      color: var(--accent-600);
-    }
-    .slide:not(.dark).s-close .attrib {
-      color: var(--fg-3);
-      border-top-color: var(--rule);
-    }
-    /* dark overrides for jann-dark title slide */
-    .jann-dark .s-title .meta-cap { color: rgba(245,181,86,0.55); }
-    .jann-dark .s-title .meta-grid .k { color: rgba(245,181,86,0.45); }
-    .jann-dark .s-title .meta-grid .v { color: var(--jann-text-1); }
-    .jann-dark .s-title .ko-sub { color: var(--jann-text-2); }
-    .jann-dark .s-title h1 { color: var(--jann-text-1); }
-  </style>
+/* ── 닫기 슬라이드 pull quote ── */
+.pull {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 64px;
+  line-height: 1.16;
+  letter-spacing: -0.025em;
+  color: var(--fg-1);
+  max-width: 22ch;
+}
+.pull em { font-style: normal; color: var(--accent-600); }
+</style>
 </head>
-
 <body>
 
-  <deck-stage width="1920" height="1080">
+<deck-stage width="1920" height="1080">
 
-    <!-- ═══ Slide 1 — Title ═══ -->
-    <section class="slide s-title" data-label="01 Title">
-      <div class="top-rule">
-        <span>김희태 · PORTFOLIO</span>
-        <span>2026</span>
-      </div>
-      <div class="hero">
-        <div class="meta-cap" style="margin-bottom: 32px;">iOS 앱 · 향미 기반 레시피 실험</div>
-        <h1>남은 식재료를<br/>향미 데이터 기준으로 추천해봤다.</h1>
-        <p class="ko-sub">JANN은 분자 미식학(<em>flavor network</em>) 관점으로 냉장고 속 재료를 다시 해석한 iOS 레시피 앱이다.
-          재료 이름이 아니라 화학적 향미 화합물의 겹침을 기준으로, 더 잘 맞는 조합을 제안한다.</p>
-      </div>
-      <div class="meta-grid">
-        <div class="col">
-          <div class="k">유형</div>
-          <div class="v">개인프로젝트</div>
-        </div>
-        <div class="col">
-          <div class="k">역할</div>
-          <div class="v">디자인 · iOS · ML</div>
-        </div>
-        <div class="col">
-          <div class="k">상태</div>
-          <div class="v">프로토타입</div>
-        </div>
-        <div class="col">
-          <div class="k">기술</div>
-          <div class="v">SwiftUI · Python<br />Flavor Network</div>
-        </div>
-        <div class="col">
-          <div class="k">데이터</div>
-          <div class="v">1,530종 식재료<br />1,107 향미 화합물</div>
-        </div>
-      </div>
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">01 / 07</div>
-    </section>
+<!-- ═══ 01 Cover ═══ -->
+<section class="slide s-title" data-label="01 Cover">
+  <div class="top-rule">
+    <span>김희태 · PORTFOLIO</span>
+    <span>2026</span>
+  </div>
 
-    <!-- ═══ Slide 2 — Problem ═══ -->
-    <section class="slide" data-label="02 Problem">
-      <div class="top-rule">
-        <span> 02 · PROBLEM</span>
-        <span>왜 중요한가</span>
-      </div>
-      <div
-        style="display: grid; grid-template-columns: 1fr 1fr; gap: 72px; flex: 1; padding-top: 28px; align-items: center;">
-        <div>
-          <h2 class="slide-h2" style="font-size:58px;line-height:1.08;">레시피 앱은 재료를 찾는다. <span
-              style="color:var(--fg-3);font-weight:400;">JANN은 맛의 조합을 찾는다.</span></h2>
-          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:32px;margin-bottom:4px;">
-            <div style="border-left:3px solid var(--accent-400);padding-left:14px;">
-              <div style="font-family:var(--font-mono);font-weight:700;font-size:48px;line-height:1;color:var(--fg-1);">20조</div>
-              <div style="font-family:var(--font-mono);font-size:15px;letter-spacing:0.1em;color:var(--fg-3);margin-top:6px;">음식물 쓰레기 손실액 / 년<br/>(환경부 2024)</div>
-            </div>
-            <div style="border-left:3px solid var(--accent-400);padding-left:14px;">
-              <div style="font-family:var(--font-mono);font-weight:700;font-size:48px;line-height:1;color:var(--fg-1);">70%</div>
-              <div style="font-family:var(--font-mono);font-size:15px;letter-spacing:0.1em;color:var(--fg-3);margin-top:6px;">냉장고 식재료<br/>미사용 폐기율</div>
-            </div>
-          </div>
-          <p class="slide-body" style="margin-top: 28px; max-width: 28ch;">
-            대부분의 레시피 앱은 재료 이름이나 인기 메뉴를 기준으로 추천한다. 하지만 남은 재료를 어떻게 조합해야 더 맛있어지는지는 잘 설명하지 못한다.
-          </p>
-          <div style="border-top: 1px solid var(--rule); margin-top: 24px; padding-top: 24px;">
-            <div class="meta-cap" style="margin-bottom: 14px; font-size:18px;">JANN의 접근</div>
-            <p class="slide-body" style="max-width: 28ch;">
-              음식의 향미는 결국 화학 화합물이다. 두 재료가 공유하는 향미 분자가 많을수록, 사람은 그 조합을 더 자연스럽게 느낀다.
-            </p>
-            <p class="slide-body"
-              style="margin-top: 20px; color: var(--accent-600); font-weight: 500; font-size: 22px;">
-              <sup style="font-size:16px;">†</sup> <a href="https://doi.org/10.1038/srep00196" target="_blank" rel="noopener noreferrer"
-                style="color:var(--accent-600);text-decoration:underline;">"Flavor network and the principles of food
-                pairing"</a><br />&nbsp;&nbsp;Yong-Yeol Ahn et al., <em>Scientific Reports</em>, 2011
-            </p>
-          </div>
-        </div>
-        <div style="background:#fff; border:1px solid var(--rule-soft); padding:16px;">
-          <img src="jann/img/flavor-network.png" alt="Flavor Network Graph" style="width:100%; display:block;">
-          <div style="font-family:var(--font-mono);font-size:15px;letter-spacing:0.1em;
-                  color:var(--fg-3);margin-top:10px;">그림 01 — 향미 네트워크 · <a
-              href="https://github.com/lingcheng99/Flavor-Network" target="_blank" rel="noopener noreferrer"
-              style="color:var(--accent-600);text-decoration:none;">lingcheng99/Flavor-Network</a></div>
-        </div>
-      </div>
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">02 / 07</div>
-    </section>
+  <div class="hero" style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;">
+    <div>
+      <div class="meta-cap" style="margin-bottom:32px;">iOS APP · MOLECULAR GASTRONOMY · 2026</div>
+      <h1 class="slide-title">JANN</h1>
+      <p class="ko-sub" style="margin-top:28px;">
+        향미 화합물 데이터로 식재료 조합을 분석하고,<br/>
+        과학적 근거와 함께 레시피를 추천하는 iOS 앱.
+      </p>
+      <p class="ko-sub" style="margin-top:20px; color:var(--fg-3);">
+        직관이 아닌 <strong style="color:var(--fg-1);">화합물 유사도</strong>로 —<br/>두 재료가 공유하는 향미 분자가 많을수록 더 잘 어울린다.
+      </p>
+    </div>
 
-    <!-- ═══ Slide 3 — Data (t-SNE) ═══ -->
-    <section class="slide" data-label="03 Data">
-      <div class="top-rule">
-        <span> 03 · DATA</span>
-        <span>향미 프로필 클러스터링</span>
+    <div style="display:flex; justify-content:center; align-items:flex-end; gap:28px;">
+      <div style="transform:translateY(20px);">
+        <div class="iphone"><div class="screen"><img src="jann/img/splash.jpg" alt="스플래시"></div></div>
       </div>
-      <div
-        style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 72px; flex: 1; padding-top: 28px; align-items: center;">
-        <div style="background:#fff; border:1px solid var(--rule-soft); padding:16px;">
-          <img src="jann/img/tsne-clustering.png" alt="t-SNE Clustering" style="width:100%; display:block;">
-          <div style="font-family:var(--font-mono);font-size:15px;letter-spacing:0.1em;
-                  color:var(--fg-3);margin-top:10px;">그림 02 — t-SNE 클러스터링 · <a
-              href="https://github.com/lingcheng99/Flavor-Network" target="_blank" rel="noopener noreferrer"
-              style="color:var(--accent-600);text-decoration:none;">lingcheng99/Flavor-Network</a></div>
-        </div>
-        <div>
-          <h2 class="slide-h2" style="font-size: 56px;">재료 이름보다 향미 프로필이 더 잘 설명한다.</h2>
-          <p class="slide-body" style="margin-top: 36px; max-width: 28ch;">
-            재료 이름만 보면 뒤섞여 보이는 4개국 요리도,
-            향미 프로필로 바꾸면 <strong style="color:var(--fg-1);">뚜렷한 클러스터</strong>로 나뉜다.
-          </p>
-          <p class="slide-body" style="margin-top: 28px; max-width: 28ch; color: var(--accent-600); font-weight: 500;">
-            식재료 이름이 아니라 향미 화합물로 봐야 조합의 본질이 보인다. JANN은 이 관점에서 출발했다.
-          </p>
+      <div>
+        <div class="iphone" style="width:260px; box-shadow:0 32px 80px rgba(0,0,0,0.32), 0 0 0 1px rgba(0,0,0,0.14);">
+          <div class="screen"><img src="jann/img/home.jpg" alt="홈"></div>
         </div>
       </div>
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">03 / 07</div>
-    </section>
+      <div style="transform:translateY(20px);">
+        <div class="iphone"><div class="screen"><img src="jann/img/recipe.jpg" alt="레시피"></div></div>
+      </div>
+    </div>
+  </div>
 
-    <!-- ═══ Slide 3 — Product (iPhone Gallery) ═══ -->
-    <section class="slide soft" data-label="04 Product" style="padding: 60px 56px 120px;">
-      <div class="top-rule">
-        <span> 04 · PRODUCT</span>
-        <span>주요 화면</span>
-      </div>
-      <div class="gallery-lbl" style="margin-top: 20px; color: var(--fg-3);">
-        <span>주요 화면 구성</span>
-        <span>iPhone 15 Pro · 393 × 852 pt</span>
-      </div>
-      <div class="gallery-row" style="align-items: center; padding-top: 12px;">
-        <div class="device-wrap">
-          <div class="iphone" style="width:320px;box-shadow:0 24px 60px rgba(0,0,0,0.2),0 0 0 1px rgba(0,0,0,0.08);">
-            <div class="screen"><img src="jann/img/splash.jpg" alt="스플래시"></div>
-          </div>
-          <div class="cap" style="color:var(--fg-2);">
-            <div class="cap-ko" style="color:var(--fg-1);">스플래시</div>
-            <div>스플래시 · 브랜딩</div>
-          </div>
-        </div>
-        <div class="device-wrap">
-          <div class="iphone" style="width:320px;box-shadow:0 24px 60px rgba(0,0,0,0.2),0 0 0 1px rgba(0,0,0,0.08);">
-            <div class="screen"><img src="jann/img/home.jpg" alt="홈"></div>
-          </div>
-          <div class="cap" style="color:var(--fg-2);">
-            <div class="cap-ko" style="color:var(--fg-1);">홈 · 냉장고 인사이트</div>
-            <div>홈 · 인사이트</div>
-          </div>
-        </div>
-        <div class="device-wrap">
-          <div class="iphone" style="width:320px;box-shadow:0 24px 60px rgba(0,0,0,0.2),0 0 0 1px rgba(0,0,0,0.08);">
-            <div class="screen"><img src="jann/img/scan.jpg" alt="스캔"></div>
-          </div>
-          <div class="cap" style="color:var(--fg-2);">
-            <div class="cap-ko" style="color:var(--fg-1);">식재료 스캔</div>
-            <div>스캔 · 비전 파이프라인</div>
-          </div>
-        </div>
-        <div class="device-wrap">
-          <div class="iphone" style="width:320px;box-shadow:0 24px 60px rgba(0,0,0,0.2),0 0 0 1px rgba(0,0,0,0.08);">
-            <div class="screen"><img src="jann/img/recipe.jpg" alt="레시피"></div>
-          </div>
-          <div class="cap" style="color:var(--fg-2);">
-            <div class="cap-ko" style="color:var(--fg-1);">생성된 레시피</div>
-            <div>레시피 · 근거 포함</div>
-          </div>
-        </div>
-      </div>
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">04 / 07</div>
-    </section>
+  <div class="meta-grid">
+    <div class="col"><div class="k">TYPE</div><div class="v">개인 프로젝트 · 2026</div></div>
+    <div class="col"><div class="k">ROLE</div><div class="v">디자인 · iOS · ML</div></div>
+    <div class="col"><div class="k">STACK</div><div class="v">SwiftUI · Python · YOLOv8n · CoreML</div></div>
+    <div class="col"><div class="k">DATA</div><div class="v">1,530 식재료 · 1,107 향미 화합물</div></div>
+  </div>
 
-    <!-- ═══ Slide 4 — Differentiator ═══ -->
-    <section class="slide soft" data-label="05 Differentiator">
-      <div class="top-rule">
-        <span> 05 · DIFFERENTIATOR</span>
-        <span>유행이 아닌 과학</span>
-      </div>
-      <h2 class="slide-h2" style="margin-top: 36px; max-width: 24ch; font-size:56px; line-height:1.08;">인기 메뉴가 아니라 향미 근거로 추천한다.</h2>
-      <table class="cmp" style="margin-top: 44px;">
-        <thead>
-          <tr>
-            <th class="col-a">관점</th>
-            <th>기존 레시피 앱</th>
-            <th>JANN <span class="pill">OURS</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="col-a">분석 단위</td>
-            <td>재료 이름 — "토마토 → 파스타"</td>
-            <td>화학 향미 화합물의 공유도</td>
-          </tr>
-          <tr>
-            <td class="col-a">데이터 출처</td>
-            <td>편집자가 큐레이션한 레시피 풀</td>
-            <td><em>Nature</em> 등재 향미 네트워크 데이터셋</td>
-          </tr>
-          <tr>
-            <td class="col-a">추천 방식</td>
-            <td>인기·태그·구매 이력 기반</td>
-            <td>보유 재료의 향미 거리 최소화</td>
-          </tr>
-          <tr>
-            <td class="col-a">설명 가능성</td>
-            <td>"이 메뉴가 인기예요"</td>
-            <td>"리모넨 + 에틸 아세테이트의 시너지"</td>
-          </tr>
-          <tr class="ours">
-            <td class="col-a">사용자 가치</td>
-            <td>오늘 뭐 먹지? 의 답</td>
-            <td>왜 그게 맛있는지까지 함께</td>
-          </tr>
-        </tbody>
-      </table>
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">05 / 07</div>
-    </section>
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">01 / 07</div>
+</section>
 
-    <!-- ═══ Slide 6 — Pipeline & Metrics ═══ -->
-    <section class="slide" data-label="06 Pipeline" style="padding: 64px 80px 120px;">
-      <div class="top-rule">
-        <span>06 · PIPELINE & METRICS</span>
-        <span>하이브리드 ML 아키텍처</span>
-      </div>
-      <!-- 상단: 제목 + 핵심 통계 -->
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:56px; margin-top:40px; align-items:center;">
-        <div>
-          <h2 class="slide-h2" style="font-size:56px;line-height:1.08;">인식은 가볍게, 추천은 깊게 나눴다.</h2>
-          <p class="slide-body" style="margin-top:24px; max-width:26ch; font-size:28px;">
-            YOLOv8n + GPT-4o Vision으로 식재료를 인식하고, Flavor Network DB로 향미 조합을 분석한 뒤 GPT-4o-mini가 레시피를 생성한다.
-          </p>
+<!-- ═══ 02 Problem ═══ -->
+<section class="slide" data-label="02 Problem">
+  <div class="top-rule">
+    <span>02 · PROBLEM</span>
+    <span>왜 분자 미식학인가</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:80px; flex:1; padding-top:48px; align-items:center;">
+
+    <div style="display:flex; flex-direction:column; gap:36px;">
+      <h2 class="slide-h2">
+        레시피 앱은 재료를 찾는다.<br/>
+        <span style="color:var(--fg-3); font-weight:400;">JANN은 맛의 조합을 찾는다.</span>
+      </h2>
+      <p class="slide-body">
+        대부분의 레시피 앱은 재료 이름·인기 메뉴·태그로 추천한다.
+        <strong style="color:var(--fg-1);">왜 이 재료가 잘 어울리는지</strong>는 설명하지 못한다.
+      </p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);">
+        <div style="padding:32px 0; border-right:1px solid var(--rule-soft);">
+          <div class="big-num">20조</div>
+          <div class="big-num-unit">음식물 쓰레기 손실 / 년<br/>(환경부 2024)</div>
         </div>
-        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0;
-                    border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);">
-          <div style="text-align:center; padding:32px 16px; border-right:1px solid var(--rule-soft);">
-            <div style="font-family:var(--font-sans);font-weight:700;font-size:72px;line-height:1;color:var(--fg-1);">1,530</div>
-            <div style="font-family:var(--font-mono);font-size:16px;letter-spacing:0.12em;color:var(--fg-3);margin-top:12px;">식재료</div>
-          </div>
-          <div style="text-align:center; padding:32px 16px; border-right:1px solid var(--rule-soft);">
-            <div style="font-family:var(--font-sans);font-weight:700;font-size:72px;line-height:1;color:var(--fg-1);">1,107</div>
-            <div style="font-family:var(--font-mono);font-size:16px;letter-spacing:0.12em;color:var(--fg-3);margin-top:12px;">향미 화합물</div>
-          </div>
-          <div style="text-align:center; padding:32px 16px;">
-            <div style="font-family:var(--font-sans);font-weight:700;font-size:72px;line-height:1;color:var(--fg-1);">3</div>
-            <div style="font-family:var(--font-mono);font-size:16px;letter-spacing:0.12em;color:var(--fg-3);margin-top:12px;">폴백 단계</div>
-          </div>
+        <div style="padding:32px 0 32px 40px;">
+          <div class="big-num">70%</div>
+          <div class="big-num-unit">냉장고 식재료<br/>미사용 폐기율</div>
         </div>
       </div>
 
-      <!-- 파이프라인 4열 그리드 -->
-      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0;
-                  border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); margin-top:48px; margin-bottom:60px; flex:1;">
-        <div style="padding:44px 28px; border-right:1px solid var(--rule-soft);">
-          <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.14em;color:var(--accent-600);margin-bottom:18px;">01 · 인식</div>
-          <div style="font-family:var(--font-sans);font-weight:600;font-size:30px;color:var(--fg-1);margin-bottom:14px;">YOLOv8n + GPT-4o</div>
-          <div style="font-size:24px;color:var(--fg-2);line-height:1.55;">온디바이스 YOLO와 GPT-4o Vision을 Parallel 실행. YOLO 미인식 시 Apple Vision Framework 폴백.</div>
-          <div style="margin-top:20px; font-size:20px; color:var(--fg-3); line-height:1.6;">모델 크기: ~18MB<br/>학습 161분 → 17분 (↓90%)<br/>box_loss 1.376 → 0.963 (↓30%)</div>
-          <div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;">
-            <span style="font-family:var(--font-mono);font-size:14px;background:var(--accent-100);color:var(--accent-600);padding:5px 12px;border-radius:4px;">CoreML</span>
-            <span style="font-family:var(--font-mono);font-size:14px;background:var(--accent-100);color:var(--accent-600);padding:5px 12px;border-radius:4px;">3-Fallback</span>
-          </div>
+      <div class="accent-box">
+        <div class="ab-label">JANN의 접근</div>
+        <div class="ab-body">음식의 향미는 결국 화학 화합물이다. 두 재료가 공유하는 향미 분자가 많을수록, 사람은 그 조합을 더 자연스럽게 느낀다.</div>
+        <div class="ab-cite">출처: Ahn et al. "Flavor network and the principles of food pairing", Scientific Reports, 2011</div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <div style="background:var(--paper-50); border:1px solid var(--rule-soft); padding:20px;">
+        <img src="jann/img/flavor-network.png" alt="Flavor Network Graph" style="width:100%; display:block;">
+      </div>
+      <div class="meta-cap">FIG 01 — 향미 네트워크 그래프. 노드 = 식재료, 엣지 = 공유 화합물 수.</div>
+    </div>
+
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">02 / 07</div>
+</section>
+
+<!-- ═══ 03 Data ═══ -->
+<section class="slide soft" data-label="03 Data">
+  <div class="top-rule">
+    <span>03 · DATA</span>
+    <span>향미 화합물 분석 · t-SNE 클러스터링</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:80px; flex:1; padding-top:48px; align-items:center;">
+
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <div style="background:var(--paper-50); border:1px solid var(--rule-soft); padding:20px;">
+        <img src="jann/img/tsne-clustering.png" alt="t-SNE Clustering" style="width:100%; display:block;">
+      </div>
+      <div class="meta-cap">FIG 02 — t-SNE 클러스터링. 재료 이름이 아닌 향미 프로필로 차원 축소한 결과.</div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:32px;">
+      <h2 class="slide-h2">
+        재료 이름보다<br/>향미 프로필이 더 잘 나눈다.
+      </h2>
+      <p class="slide-body">
+        t-SNE로 향미 화합물 벡터를 2D로 압축하면,
+        재료 이름만으로는 뒤섞여 보이는 식재료들이
+        <strong style="color:var(--fg-1);">뚜렷한 클러스터</strong>로 분리된다.
+      </p>
+      <p class="slide-body" style="color:var(--accent-600);">
+        식재료 이름이 아니라 향미 화합물로 봐야<br/>조합의 본질이 보인다.
+      </p>
+
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--rule); margin-top:8px;">
+        <div style="padding:28px 0; border-right:1px solid var(--rule-soft); padding-right:24px;">
+          <div style="font-family:var(--font-mono); font-weight:700; font-size:56px; line-height:1; color:var(--fg-1);">1,530</div>
+          <div class="meta-cap" style="margin-top:10px;">식재료</div>
         </div>
-        <div style="padding:44px 28px; border-right:1px solid var(--rule-soft);">
-          <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.14em;color:var(--accent-600);margin-bottom:18px;">02 · 분석</div>
-          <div style="font-family:var(--font-sans);font-weight:600;font-size:30px;color:var(--fg-1);margin-bottom:14px;">Flavor Network DB</div>
-          <div style="font-size:24px;color:var(--fg-2);line-height:1.55;">SQLite 내장 DB로 오프라인 작동. 자카드 유사도로 공유 향미 화합물 수를 계산.</div>
-          <div style="margin-top:20px; font-size:20px; color:var(--fg-3); line-height:1.6;">1,530종 × 1,107 화합물<br/>한영 매핑 완료</div>
-          <div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;">
-            <span style="font-family:var(--font-mono);font-size:14px;background:var(--accent-100);color:var(--accent-600);padding:5px 12px;border-radius:4px;">오프라인</span>
-            <span style="font-family:var(--font-mono);font-size:14px;background:var(--accent-100);color:var(--accent-600);padding:5px 12px;border-radius:4px;">SQLite</span>
-          </div>
+        <div style="padding:28px 24px; border-right:1px solid var(--rule-soft);">
+          <div style="font-family:var(--font-mono); font-weight:700; font-size:56px; line-height:1; color:var(--fg-1);">1,107</div>
+          <div class="meta-cap" style="margin-top:10px;">향미 화합물</div>
         </div>
-        <div style="padding:44px 28px; border-right:1px solid var(--rule-soft);">
-          <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.14em;color:var(--accent-600);margin-bottom:18px;">03 · 생성</div>
-          <div style="font-family:var(--font-sans);font-weight:600;font-size:30px;color:var(--fg-1);margin-bottom:14px;">GPT-4o-mini</div>
-          <div style="font-size:24px;color:var(--fg-2);line-height:1.55;">화합물 분석 결과를 프롬프트에 주입해 향미 시너지 근거와 함께 레시피 생성.</div>
-          <div style="margin-top:20px; font-size:20px; color:var(--fg-3); line-height:1.6;">출력: 제목 / 재료 / 조리법 / 팁<br/>화합물명 기반 시너지 근거 포함</div>
-          <div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;">
-            <span style="font-family:var(--font-mono);font-size:14px;background:var(--accent-100);color:var(--accent-600);padding:5px 12px;border-radius:4px;">Cloud API</span>
-          </div>
-        </div>
-        <div style="padding:44px 28px; background:rgba(30,58,138,0.03);">
-          <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.14em;color:var(--accent-600);margin-bottom:18px;">결과</div>
-          <div style="font-family:var(--font-sans);font-weight:600;font-size:30px;color:var(--fg-1);margin-bottom:14px;">레시피 + 분자 해설</div>
-          <div style="font-size:24px;color:var(--fg-2);line-height:1.55;">Furaneol, Butyric acid 등 실제 화합물명과 향미 시너지 근거를 함께 표시.</div>
-          <div style="margin-top:20px; font-size:20px; color:var(--fg-3); line-height:1.6;">"왜 이 조합인가"<br/>설명 가능한 추천 (XAI)</div>
-          <div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;">
-            <span style="font-family:var(--font-mono);font-size:14px;background:var(--accent-100);color:var(--accent-600);padding:5px 12px;border-radius:4px;">XAI</span>
-          </div>
+        <div style="padding:28px 0 28px 24px;">
+          <div style="font-family:var(--font-mono); font-weight:700; font-size:36px; line-height:1.2; color:var(--fg-1);">자카드<br/>유사도</div>
+          <div class="meta-cap" style="margin-top:10px;">메트릭</div>
         </div>
       </div>
+    </div>
 
+  </div>
 
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">06 / 07</div>
-    </section>
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">03 / 07</div>
+</section>
 
-    <!-- ═══ Slide 7 — Learnings + Close ═══ -->
-    <section class="slide s-close" data-label="07 Close">
-      <div class="top-rule">
-        <span>07 · 적용과 다음 단계</span>
-        <span>회고</span>
-      </div>
-      <div style="margin-top: 64px;">
-        <div class="pull">
-          이 프로젝트에서는 <em>재료 이름보다 향미 조합 데이터</em>가
-          추천 기준으로 더 적절했다.
+<!-- ═══ 04 App ═══ -->
+<section class="slide soft" data-label="04 App">
+  <div class="top-rule">
+    <span>04 · APP</span>
+    <span>iOS SwiftUI · 스캔 → 분석 → 레시피</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:auto 1fr; gap:80px; flex:1; padding-top:48px; align-items:center;">
+
+    <div style="display:flex; flex-direction:column; gap:32px; max-width:340px;">
+      <h2 class="slide-h2">스캔 →<br/>분석 →<br/>레시피</h2>
+      <p class="slide-body">
+        카메라로 식재료를 스캔하면 YOLOv8n이 인식하고,
+        Flavor Network DB가 향미 유사도를 계산해 레시피를 추천한다.
+      </p>
+      <div style="display:flex; flex-direction:column; gap:0; border-top:1px solid var(--rule);">
+        <div style="display:grid; grid-template-columns:32px 1fr; gap:20px; align-items:baseline; padding:20px 0; border-bottom:1px solid var(--rule-soft);">
+          <div style="font-family:var(--font-mono); font-size:18px; color:var(--accent-600);">01</div>
+          <div style="font-family:var(--font-sans); font-size:26px; color:var(--fg-1); line-height:1.5;"><strong>스캔</strong> — YOLOv8n + GPT-4o Vision 병렬 인식</div>
+        </div>
+        <div style="display:grid; grid-template-columns:32px 1fr; gap:20px; align-items:baseline; padding:20px 0; border-bottom:1px solid var(--rule-soft);">
+          <div style="font-family:var(--font-mono); font-size:18px; color:var(--accent-600);">02</div>
+          <div style="font-family:var(--font-sans); font-size:26px; color:var(--fg-1); line-height:1.5;"><strong>분석</strong> — SQLite Flavor DB 오프라인 향미 매칭</div>
+        </div>
+        <div style="display:grid; grid-template-columns:32px 1fr; gap:20px; align-items:baseline; padding:20px 0;">
+          <div style="font-family:var(--font-mono); font-size:18px; color:var(--accent-600);">03</div>
+          <div style="font-family:var(--font-sans); font-size:26px; color:var(--fg-1); line-height:1.5;"><strong>생성</strong> — GPT-4o-mini가 화합물 시너지 근거 포함 레시피 출력</div>
         </div>
       </div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 64px; margin-top: 28px;
-              padding-top: 32px; border-top: 1px solid var(--rule);">
-        <div>
-          <p class="slide-body" style="font-size: 28px; max-width: 28ch;">
-            냉장고에서 남은 식재료를 분자 단위로 다시 보고, 예상하지 못했던 조합을 추천하는 방식을 시도했다.
-            단순 태그 매칭보다 <strong style="color:var(--fg-1);">화학적 향미 유사도</strong>가 추천 근거로 더 설득력 있었다.
-          </p>
-          <p class="slide-body"
-            style="color: var(--fg-3); font-size: 26px; margin-top: 28px; max-width: 28ch;">
-            향미 네트워크라는 연구 개념을 실제 레시피 추천 문제에 어떻게 옮길 수 있는지 확인해본 프로젝트였다.
-          </p>
-        </div>
-        <div>
-          <div class="meta-cap" style="margin-bottom: 20px;">다음 단계</div>
-          <p class="slide-body" style="font-size: 28px; max-width: 28ch;">
-            현재 레시피가 대부분 외국 음식 기반이라, 한국 식재료(김치·된장·고추장 등)와 한국 음식 데이터셋을 추가 학습할 예정이다.
-          </p>
-          <p class="slide-body"
-            style="color: var(--fg-3); font-size: 26px; margin-top: 28px; max-width: 28ch;">
-            또한 용기 안에 담긴 식재료를 인식하지 못하는 한계가 있어, 라벨 OCR과 용기 맥락 분석을 결합한 인식 방안을 모색 중이다.
-          </p>
-        </div>
+    </div>
+
+    <div style="display:flex; gap:36px; align-items:flex-end; justify-content:center;">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:16px; transform:translateY(20px);">
+        <div class="iphone"><div class="screen"><img src="jann/img/splash.jpg" alt="스플래시"></div></div>
+        <div class="meta-cap">SPLASH</div>
       </div>
-      <div class="attrib">
-        iOS · SwiftUI · Python · YOLOv8n · Flavor Network · GPT-4o
+      <div style="display:flex; flex-direction:column; align-items:center; gap:16px;">
+        <div class="iphone"><div class="screen"><img src="jann/img/home.jpg" alt="홈"></div></div>
+        <div class="meta-cap">HOME</div>
       </div>
-      <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-      <div class="pageno">07 / 07</div>
-    </section>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:16px; transform:translateY(20px);">
+        <div class="iphone"><div class="screen"><img src="jann/img/scan.jpg" alt="스캔"></div></div>
+        <div class="meta-cap">SCAN</div>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:16px;">
+        <div class="iphone"><div class="screen"><img src="jann/img/recipe.jpg" alt="레시피"></div></div>
+        <div class="meta-cap">RECIPE</div>
+      </div>
+    </div>
 
-  </deck-stage>
+  </div>
 
-  <a href="index.html" style="
-  position:fixed; top:22px; left:22px; z-index:2147483647;
-  display:flex; align-items:center; gap:6px;
-  padding:8px 16px 8px 12px; border-radius:999px;
-  background:rgba(20,20,24,0.85); backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,0.12);
-  color:#fff; text-decoration:none;
-  font-family:var(--font-mono); font-size:13px; letter-spacing:0.08em;
-  transition:background 180ms ease, border-color 180ms ease;
-" onmouseenter="this.style.background='rgba(40,40,48,0.95)';this.style.borderColor='rgba(255,255,255,0.28)'"
-    onmouseleave="this.style.background='rgba(20,20,24,0.85)';this.style.borderColor='rgba(255,255,255,0.12)'">
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M10 3L5 8l5 5" />
-    </svg>
-    포트폴리오
-  </a>
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">04 / 07</div>
+</section>
 
+<!-- ═══ 05 Pipeline Overview ═══ -->
+<section class="slide" data-label="05 Pipeline">
+  <div class="top-rule">
+    <span>05 · PIPELINE</span>
+    <span>인식은 온디바이스, 추천은 오프라인 DB</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:80px; flex:1; padding-top:48px; align-items:center;">
+
+    <div style="display:flex; flex-direction:column; gap:32px;">
+      <h2 class="slide-h2">
+        인식은 온디바이스,<br/>추천은 오프라인 DB.
+      </h2>
+      <p class="slide-body">
+        YOLOv8n(CoreML)과 GPT-4o Vision을 병렬 실행해 인식 정확도를 높이고,
+        SQLite 내장 Flavor DB로 오프라인에서 향미 분석을 완성한다.
+      </p>
+      <p class="slide-body" style="color:var(--fg-3);">
+        YOLO 미인식 시 GPT-4o Vision → Apple Vision Framework 순으로 폴백.
+        네트워크 없이도 향미 분석은 항상 동작한다.
+      </p>
+    </div>
+
+    <div style="display:flex; flex-direction:column; border:1px solid var(--rule);">
+      <div style="padding:44px 52px; border-bottom:1px solid var(--rule-soft);">
+        <div class="big-num">18<span style="font-size:48px; font-weight:400;">MB</span></div>
+        <div class="big-num-unit">YOLO CoreML 모델 크기</div>
+      </div>
+      <div style="padding:44px 52px; border-bottom:1px solid var(--rule-soft);">
+        <div class="big-num" style="color:var(--accent-600);">↓90<span style="font-size:48px; font-weight:400;">%</span></div>
+        <div class="big-num-unit">학습 시간 단축 · 161분 → 17분</div>
+      </div>
+      <div style="padding:44px 52px;">
+        <div class="big-num">3</div>
+        <div class="big-num-unit">폴백 단계 · YOLO → GPT → Vision</div>
+      </div>
+    </div>
+
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">05 / 07</div>
+</section>
+
+<!-- ═══ 06 Pipeline Steps ═══ -->
+<section class="slide" data-label="06 Steps">
+  <div class="top-rule">
+    <span>06 · PIPELINE STEPS</span>
+    <span>스캔 → 분석 → 생성 → 결과</span>
+  </div>
+  <div class="pipe-row">
+    <div class="pipe-card">
+      <div class="pstep">01 · 인식</div>
+      <h3>YOLOv8n + GPT-4o Vision</h3>
+      <div class="pdesc">온디바이스 YOLO와 클라우드 Vision을 병렬 실행. YOLO 미인식 시 Apple Vision Framework 폴백.</div>
+      <div class="pmeta" style="margin-top:auto;">box_loss: 1.376 → 0.963 (↓30%)<br/>3단계 폴백 파이프라인</div>
+      <div class="tags"><span class="tag">CoreML</span><span class="tag">3-Fallback</span></div>
+    </div>
+    <div class="pipe-card">
+      <div class="pstep">02 · 분석</div>
+      <h3>Flavor Network DB</h3>
+      <div class="pdesc">SQLite 내장 DB로 오프라인 작동. 자카드 유사도로 공유 향미 화합물 수를 계산해 최적 조합 선정.</div>
+      <div class="pmeta" style="margin-top:auto;">1,530종 × 1,107 화합물<br/>한-영 매핑 완료</div>
+      <div class="tags"><span class="tag">오프라인</span><span class="tag">SQLite</span><span class="tag">Jaccard</span></div>
+    </div>
+    <div class="pipe-card">
+      <div class="pstep">03 · 생성</div>
+      <h3>GPT-4o-mini</h3>
+      <div class="pdesc">화합물 분석 결과를 프롬프트에 주입해 향미 시너지 근거와 함께 레시피를 생성한다.</div>
+      <div class="pmeta" style="margin-top:auto;">출력: 제목 / 재료 / 조리법 / 팁<br/>화합물명 기반 시너지 근거 포함</div>
+      <div class="tags"><span class="tag">Cloud API</span><span class="tag">Prompt Injection</span></div>
+    </div>
+    <div class="pipe-card">
+      <div class="pstep">결과</div>
+      <h3>레시피 + 분자 해설</h3>
+      <div class="pdesc">Furaneol, Butyric acid 등 실제 화합물명과 향미 시너지 근거를 함께 표시. 설명 가능한 추천.</div>
+      <div class="pmeta" style="margin-top:auto;">"왜 이 조합인가"<br/>XAI (설명 가능한 AI)</div>
+      <div class="tags"><span class="tag">XAI</span><span class="tag">근거 포함</span></div>
+    </div>
+  </div>
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">06 / 07</div>
+</section>
+
+<!-- ═══ 07 Learning ═══ -->
+<section class="slide s-close" data-label="07 Learning">
+  <div class="top-rule">
+    <span>07 · LEARNING</span>
+    <span>배운 것 · 한계 · 다음 단계</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:80px; flex:1; padding-top:48px; align-items:start;">
+
+    <div style="display:flex; flex-direction:column; gap:32px;">
+      <div class="pull">
+        재료 이름보다<br/>
+        <em>화합물 유사도</em>가<br/>더 정확한 추천 기준이었다.
+      </div>
+      <p class="slide-body">
+        분자 미식학이라는 연구 개념을 실제 레시피 추천 문제에 옮기는 과정에서,
+        데이터 기반 접근이 직관보다 더 설득력 있다는 걸 확인했다.
+      </p>
+      <p class="slide-body" style="color:var(--fg-3);">
+        SwiftUI + Python/CoreML 연결, 오프라인 DB 구조,
+        3단계 폴백 파이프라인까지 실제 앱 구현 전 과정을 완성한 프로젝트.
+      </p>
+    </div>
+
+    <div class="learn-grid" style="display:flex; flex-direction:column; gap:20px;">
+      <div class="learn-card accent">
+        <div class="ltag">LEARNED · CoreML 통합</div>
+        <h3>Python → CoreML → SwiftUI 연결</h3>
+        <div class="lbody">YOLOv8n을 Python으로 학습한 뒤 CoreML로 변환해 온디바이스 추론을 구현했다. 학습 시간을 161분 → 17분으로 단축하면서 box_loss도 30% 개선됐다.</div>
+      </div>
+      <div class="learn-card warn">
+        <div class="ltag">CHALLENGE · 데이터 품질</div>
+        <h3>외국 식재료 편향 + 용기 내 인식 불가</h3>
+        <div class="lbody">향미 네트워크 DB가 서양 식재료 중심이라 한국 재료(김치·된장·고추장)의 매핑이 부족했다. 용기에 담긴 식재료 인식의 한계도 확인됐다.</div>
+      </div>
+      <div class="learn-card good">
+        <div class="ltag">NEXT · 다음 단계</div>
+        <h3>한국 식재료 데이터셋 + 라벨 OCR</h3>
+        <div class="lbody">한국 음식 데이터와 향미 화합물 매핑을 추가 학습하고, 용기 라벨 OCR과 맥락 분석을 결합해 인식 범위를 확장할 계획이다.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="padding-top:32px; border-top:1px solid var(--rule); margin-top:auto;">
+    <div class="meta-cap">iOS · SwiftUI · Python · YOLOv8n · CoreML · SQLite · Flavor Network · GPT-4o · GPT-4o-mini</div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">김희태</a>
+  <div class="pageno">07 / 07</div>
+</section>
+
+</deck-stage>
+
+<a href="index.html" style="position:fixed;top:22px;left:22px;z-index:2147483647;display:flex;align-items:center;gap:6px;padding:8px 16px 8px 12px;border-radius:999px;background:rgba(20,20,24,0.85);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.12);color:#fff;text-decoration:none;font-family:var(--font-mono);font-size:13px;letter-spacing:0.08em;transition:background 180ms ease,border-color 180ms ease;" onmouseenter="this.style.background='rgba(40,40,48,0.95)';this.style.borderColor='rgba(255,255,255,0.28)'" onmouseleave="this.style.background='rgba(20,20,24,0.85)';this.style.borderColor='rgba(255,255,255,0.12)'"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>포트폴리오</a>
 
 </body>
-
 </html>

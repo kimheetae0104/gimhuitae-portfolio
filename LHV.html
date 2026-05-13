@@ -5,453 +5,965 @@
 <title>LHV — 열풍로 발열량 예측</title>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <link rel="stylesheet" href="shared/tokens.css"/>
+<link rel="stylesheet" href="shared/slide.css"/>
+<script src="shared/deck-stage.js" defer></script>
 <style>
-*,*::before,*::after{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
-body{background:#F5F5F3;color:var(--ink-900);font-family:var(--font-sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+/* ── 상단 헤더 오버레이 ── */
+.deck-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9999;
+  height: 52px;
+  background: rgba(247,247,248,0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule-soft);
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  justify-content: space-between;
+  pointer-events: auto;
+}
+.deck-header-mark {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--fg-1);
+  text-decoration: none;
+}
+.deck-header-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  text-decoration: none;
+  padding: 5px 14px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-pill);
+  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.deck-header-back:hover { color: var(--fg-1); border-color: var(--rule); }
+.deck-header-back svg { width: 14px; height: 14px; }
 
-/* HEADER */
-.site-header{position:sticky;top:0;z-index:100;background:rgba(245,245,243,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(17,24,39,.08);}
-.header-inner{max-width:1100px;margin:0 auto;padding:0 40px;height:56px;display:flex;align-items:center;justify-content:space-between;}
-.header-left{display:flex;align-items:center;gap:20px;}
-.mark{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;}
-.mark span{font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.08em;}
-.back-link{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;color:var(--ink-500);text-decoration:none;padding:4px 10px;border:1px solid rgba(17,24,39,.14);border-radius:999px;transition:color 140ms,border-color 140ms;}
-.back-link:hover{color:var(--ink-900);border-color:rgba(17,24,39,.35);}
-.site-nav-links{display:flex;gap:24px;}
-.site-nav-links a{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-500);text-decoration:none;transition:color 140ms;}
-.site-nav-links a:hover{color:var(--ink-900);}
+/* ── 슬라이드 내부 공통 ── */
+.slide-label {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.slide-num {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.16em;
+  color: var(--fg-3);
+}
 
-/* LAYOUT */
-.proj-wrap{max-width:860px;margin:0 auto;padding:0 40px 80px;}
+/* ── 커버 슬라이드 ── */
+.cover-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-600);
+  margin-bottom: 24px;
+}
+.cover-title {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 92px;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--fg-1);
+  margin: 0 0 16px;
+}
+.cover-sub {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  color: var(--fg-3);
+  letter-spacing: 0.04em;
+  margin-bottom: 56px;
+}
+.kpi-row {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+  padding-top: 40px;
+}
+.kpi-item {
+  flex: 1;
+  padding-right: 40px;
+  border-right: 1px solid var(--rule-soft);
+}
+.kpi-item:first-child { padding-left: 0; }
+.kpi-item:last-child { border-right: none; }
+.kpi-item + .kpi-item { padding-left: 40px; }
+.kpi-val {
+  font-family: var(--font-mono);
+  font-size: 52px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--accent-600);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.kpi-val.ink { color: var(--fg-1); }
+.kpi-lbl {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
 
-/* HERO */
-.proj-hero{background:#fff;border-radius:16px;border:1px solid rgba(17,24,39,.08);box-shadow:0 1px 3px rgba(0,0,0,.04);border-top:3px solid #1E3A8A;padding:48px 48px 40px;margin-top:40px;}
-.proj-num{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-400);margin-bottom:16px;}
-.proj-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
-.tag-pill{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;padding:3px 10px;border-radius:999px;background:rgba(30,58,138,.08);color:#1E3A8A;}
-.proj-hero h1{font-size:clamp(28px,4vw,40px);font-weight:700;line-height:1.2;letter-spacing:-.02em;margin:0 0 12px;}
-.proj-desc{font-size:17px;color:var(--ink-600);line-height:1.6;margin:0 0 32px;max-width:56ch;}
-.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid rgba(17,24,39,.08);padding-top:28px;}
-.stat-box{padding:0 24px 0 0;border-right:1px solid rgba(17,24,39,.08);}
-.stat-box:first-child{padding-left:0;}
-.stat-box:last-child{border-right:none;padding-left:24px;}
-.stat-box:not(:first-child):not(:last-child){padding-left:24px;}
-.stat-val{font-family:var(--font-mono);font-size:32px;font-weight:700;color:var(--ink-900);letter-spacing:-.02em;line-height:1;}
-.stat-val.accent{color:#1E3A8A;}
-.stat-lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-400);margin-top:6px;}
-.hero-thumb{margin-top:32px;border-radius:8px;overflow:hidden;border:1px solid rgba(17,24,39,.08);}
-.hero-thumb svg{display:block;width:100%;}
+/* ── 문제 슬라이드 ── */
+.problem-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: start;
+  margin-top: 48px;
+}
+.problem-text h2 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 56px;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--fg-1);
+  margin: 0 0 28px;
+}
+.problem-text p {
+  font-family: var(--font-sans);
+  font-size: 28px;
+  line-height: 1.7;
+  color: var(--fg-2);
+  margin: 0 0 20px;
+}
+.callout-box {
+  background: var(--paper-100);
+  border-left: 3px solid var(--accent-600);
+  padding: 28px 32px;
+  border-radius: 0 var(--r-3) var(--r-3) 0;
+  margin-top: 8px;
+}
+.callout-box p {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  line-height: 1.6;
+  color: var(--fg-2);
+  margin: 0;
+}
+.callout-box strong {
+  color: var(--accent-600);
+  font-weight: 700;
+}
+.problem-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 8px;
+}
+.diag-row {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+}
+.diag-box {
+  flex: 1;
+  padding: 20px 24px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  background: var(--paper-50);
+}
+.diag-box.accent {
+  background: var(--accent-100);
+  border-color: var(--accent-600);
+}
+.diag-label {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 8px;
+}
+.diag-box.accent .diag-label { color: var(--accent-600); }
+.diag-val {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--fg-1);
+  line-height: 1.1;
+}
+.diag-desc {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--fg-3);
+  margin-top: 4px;
+}
+.diag-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-3);
+  font-size: 32px;
+  flex-shrink: 0;
+}
 
-/* SECTIONS */
-.proj-section{background:#fff;border-radius:16px;border:1px solid rgba(17,24,39,.08);box-shadow:0 1px 3px rgba(0,0,0,.04);padding:48px;margin-top:24px;}
-.section-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-400);margin-bottom:20px;}
-.proj-section h2{font-size:22px;font-weight:700;letter-spacing:-.015em;margin:0 0 16px;color:var(--ink-900);}
-.proj-section p{color:var(--ink-700);line-height:1.7;margin:0 0 16px;}
-.proj-section p:last-child{margin-bottom:0;}
+/* ── 데이터 슬라이드 ── */
+.data-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 40px;
+  flex: 1;
+}
+.data-block {
+  padding: 32px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  background: var(--paper-100);
+}
+.data-block-title {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 20px;
+}
+.data-num {
+  font-family: var(--font-mono);
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--accent-600);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.data-desc {
+  font-family: var(--font-sans);
+  font-size: 24px;
+  color: var(--fg-2);
+  line-height: 1.5;
+}
+.tag-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 4px;
+}
+.tag-item {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.tag-name {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  letter-spacing: 0.04em;
+  color: var(--fg-1);
+  min-width: 180px;
+}
+.tag-desc {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--fg-2);
+}
 
-/* TECH TAGS */
-.tech-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
-.tech-tag{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;padding:4px 12px;border-radius:4px;background:#F5F5F3;border:1px solid rgba(17,24,39,.1);color:var(--ink-600);}
+/* ── EDA 슬라이드 ── */
+.eda-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 40px;
+}
+.eda-img-wrap {
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  overflow: hidden;
+  background: var(--paper-100);
+  display: flex;
+  flex-direction: column;
+}
+.eda-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  flex: 1;
+}
+.eda-cap {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  padding: 14px 20px;
+  border-top: 1px solid var(--rule-soft);
+  background: var(--paper-50);
+}
 
-/* STEP LIST */
-.step-list{display:flex;flex-direction:column;gap:0;margin-top:20px;}
-.step-item{display:grid;grid-template-columns:52px 1fr;gap:16px;padding:16px 0;border-top:1px solid rgba(17,24,39,.06);}
-.step-item:first-child{border-top:none;padding-top:0;}
-.step-num{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;color:var(--ink-400);padding-top:4px;}
-.step-content h4{font-size:15px;font-weight:600;margin:0 0 4px;color:var(--ink-900);}
-.step-content p{font-size:14px;color:var(--ink-600);margin:0;line-height:1.55;}
+/* ── Feature Engineering ── */
+.feat-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 36px;
+}
+.feat-item {
+  display: grid;
+  grid-template-columns: 40px 280px 1fr;
+  gap: 24px;
+  align-items: start;
+  padding: 28px 0;
+  border-top: 1px solid var(--rule-soft);
+}
+.feat-item:first-child { border-top: none; padding-top: 0; }
+.feat-num {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--fg-3);
+  padding-top: 2px;
+}
+.feat-code {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--accent-600);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+.feat-desc {
+  font-family: var(--font-sans);
+  font-size: 24px;
+  color: var(--fg-2);
+  line-height: 1.55;
+}
+.feat-highlight {
+  background: var(--accent-100);
+  padding: 20px 28px;
+  border-radius: var(--r-2);
+  margin-top: 24px;
+  border-left: 3px solid var(--accent-600);
+}
+.feat-highlight p {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--fg-2);
+  line-height: 1.6;
+  margin: 0;
+}
+.feat-highlight strong { color: var(--accent-600); }
 
-/* HYP GRID */
-.hyp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px;}
-.hyp-card{padding:20px;border-top:2px solid rgba(17,24,39,.1);background:#F5F5F3;border-radius:0 0 8px 8px;}
-.hyp-card.accept{border-top-color:#059669;}
-.hyp-card.reject{border-top-color:#B5331E;}
-.hyp-card.partial{border-top-color:#B58A1F;}
-.hyp-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-400);margin-bottom:8px;}
-.hyp-q{font-size:14px;font-weight:600;color:var(--ink-900);margin:0 0 8px;line-height:1.4;}
-.hyp-verdict{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;}
-.hyp-card.accept .hyp-verdict{color:#059669;}
-.hyp-card.reject .hyp-verdict{color:#B5331E;}
-.hyp-card.partial .hyp-verdict{color:#B58A1F;}
-.hyp-detail{font-size:13px;color:var(--ink-600);margin:8px 0 0;line-height:1.5;padding-top:8px;border-top:1px solid rgba(17,24,39,.07);}
+/* ── 모델 비교 슬라이드 ── */
+.model-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 40px;
+}
+.model-table-wrap {
+  overflow: auto;
+}
+table.model-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 24px;
+}
+table.model-table th {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  text-align: right;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--rule);
+  font-weight: 400;
+}
+table.model-table th:first-child { text-align: left; }
+table.model-table td {
+  font-family: var(--font-mono);
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--rule-soft);
+  text-align: right;
+  color: var(--fg-2);
+}
+table.model-table td:first-child {
+  text-align: left;
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+  font-size: 22px;
+}
+table.model-table tr.best td {
+  background: rgba(30,58,138,0.06);
+  color: var(--fg-1);
+  font-weight: 600;
+}
+table.model-table tr.best td:first-child { color: var(--accent-600); }
+.model-img-wrap {
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  overflow: hidden;
+  background: var(--paper-100);
+  display: flex;
+  flex-direction: column;
+}
+.model-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  flex: 1;
+}
+.model-img-cap {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  padding: 12px 20px;
+  border-top: 1px solid var(--rule-soft);
+}
 
-/* MODEL TABLE */
-.model-table{width:100%;border-collapse:collapse;margin-top:20px;font-size:14px;}
-.model-table th{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-400);text-align:right;padding:8px 12px;border-bottom:1px solid rgba(17,24,39,.1);}
-.model-table th:first-child{text-align:left;}
-.model-table td{padding:10px 12px;border-bottom:1px solid rgba(17,24,39,.05);text-align:right;font-family:var(--font-mono);color:var(--ink-600);}
-.model-table td:first-child{text-align:left;font-family:var(--font-sans);color:var(--ink-700);}
-.model-table tr.best td{background:rgba(30,58,138,.05);color:var(--ink-900);}
-.model-table tr.best td:first-child{color:#1E3A8A;font-weight:600;}
-.accent-val{color:#1E3A8A;font-weight:700;}
+/* ── SHAP 슬라이드 ── */
+.shap-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 40px;
+  margin-top: 40px;
+}
+.shap-findings {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.finding-item {
+  padding: 24px 28px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  background: var(--paper-100);
+}
+.finding-num {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-600);
+  margin-bottom: 8px;
+}
+.finding-title {
+  font-family: var(--font-sans);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--fg-1);
+  margin-bottom: 6px;
+}
+.finding-body {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--fg-2);
+  line-height: 1.5;
+}
+.shap-img-wrap {
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  overflow: hidden;
+  background: var(--paper-100);
+  display: flex;
+  flex-direction: column;
+}
+.shap-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  flex: 1;
+}
+.shap-img-cap {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  padding: 12px 20px;
+  border-top: 1px solid var(--rule-soft);
+}
 
-/* IMPACT BOXES */
-.impact-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;}
-.impact-box{padding:20px;background:#F5F5F3;border-radius:8px;text-align:center;}
-.impact-num{font-family:var(--font-mono);font-size:28px;font-weight:700;color:#1E3A8A;letter-spacing:-.02em;}
-.impact-lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-400);margin-top:6px;}
-.impact-sub{font-size:13px;color:var(--ink-600);margin-top:4px;}
+/* ── 임팩트 슬라이드 ── */
+.impact-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  margin-top: 40px;
+}
+.impact-card {
+  padding: 36px 32px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  background: var(--paper-100);
+  display: flex;
+  flex-direction: column;
+}
+.impact-card.accent {
+  background: var(--accent-600);
+  border-color: var(--accent-600);
+}
+.impact-card-label {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 16px;
+}
+.impact-card.accent .impact-card-label { color: rgba(255,255,255,0.6); }
+.impact-card-val {
+  font-family: var(--font-mono);
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--accent-600);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.impact-card.accent .impact-card-val { color: #fff; }
+.impact-card-sub {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--fg-2);
+  line-height: 1.5;
+  margin-top: auto;
+}
+.impact-card.accent .impact-card-sub { color: rgba(255,255,255,0.78); }
+.impact-scenario {
+  margin-top: 28px;
+  padding: 24px 32px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  background: var(--paper-100);
+  grid-column: 1 / -1;
+}
+.scenario-label {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 12px;
+}
+.scenario-text {
+  font-family: var(--font-sans);
+  font-size: 26px;
+  color: var(--fg-2);
+  line-height: 1.6;
+}
+.scenario-text strong { color: var(--accent-600); font-weight: 600; }
 
-/* INSIGHT BOX */
-.insight-box{padding:20px 24px;background:rgba(30,58,138,.04);border-left:3px solid #1E3A8A;margin-top:20px;border-radius:0 8px 8px 0;}
-.insight-box p{font-size:15px;color:var(--ink-700);margin:0;line-height:1.6;}
-.insight-box strong{color:var(--ink-900);}
-
-/* CORR BARS */
-.corr-list{display:flex;flex-direction:column;gap:12px;margin-top:20px;}
-.corr-item{display:grid;grid-template-columns:100px 1fr 60px;align-items:center;gap:12px;}
-.corr-name{font-family:var(--font-mono);font-size:13px;color:var(--ink-600);}
-.corr-bar-wrap{position:relative;height:8px;background:rgba(17,24,39,.06);border-radius:4px;}
-.corr-bar{position:absolute;top:0;height:100%;border-radius:4px;}
-.corr-bar.pos{left:50%;background:#1E3A8A;}
-.corr-bar.neg{right:50%;background:#B5331E;}
-.corr-val{font-family:var(--font-mono);font-size:13px;font-weight:700;text-align:right;}
-.corr-val.pos{color:#1E3A8A;}
-.corr-val.neg{color:#B5331E;}
-.corr-val.zero{color:var(--ink-400);}
-
-/* POLICY ITEMS */
-.policy-list{display:flex;flex-direction:column;gap:12px;margin-top:20px;}
-.policy-item{display:flex;gap:16px;padding:16px 20px;border:1px solid rgba(17,24,39,.08);border-radius:8px;background:#fff;}
-.policy-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;color:#1E3A8A;flex-shrink:0;padding-top:2px;}
-.policy-text{font-size:14px;color:var(--ink-700);line-height:1.55;}
-
-/* FOOTER */
-.site-footer{background:#fff;border-top:1px solid rgba(17,24,39,.08);margin-top:80px;}
-.footer-inner{max-width:1100px;margin:0 auto;padding:40px 40px;display:flex;flex-direction:column;gap:20px;}
-.footer-top{display:flex;flex-direction:column;gap:4px;}
-.footer-wordmark{font-family:var(--font-mono);font-size:20px;font-weight:700;letter-spacing:-.01em;}
-.footer-desc{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;color:var(--ink-400);}
-.footer-contacts{display:flex;gap:24px;flex-wrap:wrap;}
-.footer-link{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:13px;color:var(--ink-600);text-decoration:none;transition:color 140ms;}
-.footer-link:hover{color:var(--ink-900);}
-.footer-bottom{border-top:1px solid rgba(17,24,39,.08);padding-top:20px;}
-.footer-copy{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;color:var(--ink-400);}
+/* ── 학습 슬라이드 ── */
+.learning-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 40px;
+}
+.learning-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.learning-item {
+  padding: 24px 28px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  background: var(--paper-100);
+}
+.learning-item.key {
+  border-color: var(--accent-600);
+  border-left: 3px solid var(--accent-600);
+  background: var(--accent-100);
+}
+.learning-item-label {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 10px;
+}
+.learning-item.key .learning-item-label { color: var(--accent-600); }
+.learning-item-title {
+  font-family: var(--font-sans);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--fg-1);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.learning-item-body {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--fg-2);
+  line-height: 1.55;
+}
 </style>
 </head>
 <body>
 
-<header class="site-header">
-  <div class="header-inner">
-    <div class="header-left">
-      <a href="index.html" class="mark" style="text-decoration:none;color:inherit">
-        <svg width="24" height="18" viewBox="0 0 88 66" fill="currentColor">
-          <rect x="0"  y="4"  width="9" height="58"/>
-          <rect x="34" y="4"  width="9" height="58"/>
-          <rect x="0"  y="29" width="43" height="2"/>
-          <rect x="-3" y="4"  width="15" height="2.5"/>
-          <rect x="31" y="4"  width="15" height="2.5"/>
-          <rect x="-3" y="59.5" width="15" height="2.5"/>
-          <rect x="31" y="59.5" width="15" height="2.5"/>
-          <rect x="51" y="4"  width="9" height="58"/>
-          <rect x="48" y="4"  width="15" height="2.5"/>
-          <rect x="48" y="59.5" width="15" height="2.5"/>
-          <polygon points="60,30 60,33 88,4 85,4"/>
-          <polygon points="60,33 60,36 88,66 84,66"/>
-        </svg>
-        <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.08em">HK&nbsp;&nbsp;PORTFOLIO · 2026</span>
-      </a>
-      <a href="index.html" class="back-link">
-        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
-        BACK
-      </a>
-    </div>
-    <nav class="site-nav-links">
-      <a href="#overview">OVERVIEW</a>
-      <a href="#process">PROCESS</a>
-      <a href="#results">RESULTS</a>
-    </nav>
-  </div>
+<!-- 상단 고정 헤더 -->
+<header class="deck-header">
+  <a href="index.html" class="deck-header-mark">HK</a>
+  <a href="index.html" class="deck-header-back">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 3L5 8l5 5"/>
+    </svg>
+    포트폴리오로
+  </a>
 </header>
 
-<div class="proj-wrap">
+<deck-stage width="1920" height="1080">
 
-  <!-- HERO -->
-  <section class="proj-hero">
-    <div class="proj-num">№ 02 · 제조 AI · 2026.03</div>
-    <div class="proj-tags">
-      <span class="tag-pill">제조 AI</span>
-      <span class="tag-pill">회귀 예측</span>
-      <span class="tag-pill">SHAP</span>
-      <span class="tag-pill">SeSAC</span>
+  <!-- ──────────────── SLIDE 1: COVER ──────────────── -->
+  <section class="slide s-title" data-label="Cover">
+    <div class="top-rule">
+      <span class="slide-label">LHV — 열풍로 발열량 예측</span>
+      <span class="slide-num">01 / 07</span>
     </div>
-    <h1>LHV — 열풍로 발열량 5분 예측</h1>
-    <p class="proj-desc">열풍로 LHV를 5분 주기로 예측하는 모델을 만들고, 전환대기 직후 COG가 과하게 들어가는 낭비 구간을 데이터로 찾아낸 프로젝트.</p>
-    <div class="stat-row">
-      <div class="stat-box">
-        <div class="stat-val accent">11.99</div>
-        <div class="stat-lbl">Test MAE (kcal/Nm³)</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-val">1.24M</div>
-        <div class="stat-lbl">Nm³ 절감 시나리오 / 년</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-val">17,280</div>
-        <div class="stat-lbl">행 × 5분 주기 · 60일</div>
+
+    <div class="hero" style="flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:0;">
+      <p class="cover-eyebrow">Steel Industry · Regression · SeSAC 2024</p>
+      <h1 class="cover-title">열풍로 LHV<br>발열량 예측</h1>
+      <p class="cover-sub">고로 부대 설비 / 5분 주기 COG·BFG 혼합가스 발열량 예측</p>
+
+      <div class="kpi-row">
+        <div class="kpi-item">
+          <div class="kpi-val">11.99</div>
+          <div class="kpi-lbl">RMSE (kcal/Nm³)</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-val ink">0.428</div>
+          <div class="kpi-lbl">R² Score</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-val">1.24M</div>
+          <div class="kpi-lbl">Nm³/year 절감 추정</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-val ink">Ridge</div>
+          <div class="kpi-lbl">최고 성능 모델</div>
+        </div>
       </div>
     </div>
-    <div class="hero-thumb">
-      <svg width="100%" viewBox="0 0 640 200" fill="none">
-        <defs>
-          <linearGradient id="lhvBand" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#1E3A8A" stop-opacity="0.13"/>
-            <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.02"/>
-          </linearGradient>
-          <linearGradient id="lhvLine" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#4F6FE0"/>
-            <stop offset="100%" stop-color="#1E3A8A"/>
-          </linearGradient>
-        </defs>
-        <rect width="640" height="200" fill="#fff"/>
-        <line x1="65" y1="20" x2="65" y2="175" stroke="rgba(17,24,39,.14)" stroke-width="1.5"/>
-        <line x1="65" y1="175" x2="610" y2="175" stroke="rgba(17,24,39,.14)" stroke-width="1.5"/>
-        <line x1="68" y1="165" x2="598" y2="25" stroke="rgba(30,58,138,.18)" stroke-width="1.5" stroke-dasharray="6 4"/>
-        <path d="M80 162 Q180 132 280 108 Q380 82 480 56 Q540 40 598 26 L598 40 Q540 56 480 74 Q380 106 280 136 Q180 162 80 180Z" fill="url(#lhvBand)"/>
-        <path d="M80 162 Q180 132 280 108 Q380 82 480 56 Q540 40 598 26" stroke="url(#lhvLine)" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="118" cy="158" r="4" fill="#4F6FE0" opacity=".6"/>
-        <circle cx="182" cy="130" r="4" fill="#1E3A8A" opacity=".7"/>
-        <circle cx="252" cy="114" r="4" fill="#1E3A8A" opacity=".7"/>
-        <circle cx="320" cy="96" r="5" fill="#1E3A8A" opacity=".8"/>
-        <circle cx="392" cy="76" r="4" fill="#1E3A8A" opacity=".75"/>
-        <circle cx="462" cy="58" r="5" fill="#1E3A8A" opacity=".8"/>
-        <circle cx="535" cy="42" r="4" fill="#4F6FE0" opacity=".7"/>
-        <circle cx="580" cy="30" r="5" fill="#1E3A8A" opacity=".85"/>
-        <rect x="450" y="130" width="120" height="30" rx="8" fill="white" stroke="rgba(30,58,138,.15)" stroke-width="1" opacity=".95"/>
-        <text x="510" y="150" font-family="monospace" font-size="14" font-weight="bold" fill="#1E3A8A" text-anchor="middle">RMSE 0.31</text>
-        <text x="52" y="175" font-family="monospace" font-size="8" fill="rgba(17,24,39,.3)" text-anchor="middle" transform="rotate(-90,52,120)">실제 LHV</text>
-        <text x="338" y="192" font-family="monospace" font-size="8" fill="rgba(17,24,39,.3)" text-anchor="middle">예측 LHV</text>
-      </svg>
-    </div>
+
+    <span class="pageno-mark">HK</span>
+    <span class="pageno">01</span>
   </section>
 
-  <!-- OVERVIEW -->
-  <section class="proj-section" id="overview">
-    <div class="section-label">OVERVIEW</div>
-    <h2>프로젝트 배경과 목적</h2>
-    <p>열풍로는 <strong>연소중 → 축열중 → 전환대기</strong>를 반복하는 고로 부대 설비다. 목표 LHV는 1,012 kcal/Nm³ (±15). 이 범위를 벗어나면 연료 과잉 소모 또는 선철 품질 저하가 발생한다.</p>
-    <p>상관분석 결과 COG 유량(r=+0.49), BFG 유량(r=−0.44)이 주요 제어 변수였고, Dome 온도와 공정 단계는 r≈0으로 예측력이 없었다. LHV 과다(>1,027)는 원가 손실, LHV 부족(<997)은 고로 조업 불안정으로 이어진다.</p>
-    <p><strong>예측 모델을 만든 것보다, 전환대기 직후 COG 과잉 투입이라는 낭비 구간을 구분해낸 일이 더 중요했다.</strong></p>
-    <div class="corr-list">
-      <div class="corr-item">
-        <span class="corr-name">COG 유량</span>
-        <div class="corr-bar-wrap"><div class="corr-bar pos" style="width:49%"></div></div>
-        <span class="corr-val pos">+0.49</span>
+  <!-- ──────────────── SLIDE 2: PROBLEM ──────────────── -->
+  <section class="slide" data-label="Problem">
+    <div class="top-rule">
+      <span class="slide-label">문제 정의</span>
+      <span class="slide-num">02 / 07</span>
+    </div>
+
+    <div class="problem-body">
+      <div class="problem-text">
+        <h2>COG 과잉<br>투입 문제</h2>
+        <p>열풍로는 고로에 열풍을 공급하는 핵심 설비입니다. 코크스 오프가스(COG)와 고로가스(BFG)를 혼합 연소하여 열풍을 만드는데, <strong style="color:var(--fg-1)">발열량(LHV)을 실시간으로 측정하기 어렵습니다.</strong></p>
+        <p>발열량 예측 실패 → COG 과잉 투입 → 에너지 낭비 및 원가 상승이 반복되는 구조입니다.</p>
+        <div class="callout-box">
+          <p><strong>목표</strong>: 현재 운전 조건(유량·온도·압력)으로 <strong>5분 후 LHV를 예측</strong>하여 COG 투입량을 최적화</p>
+        </div>
       </div>
-      <div class="corr-item">
-        <span class="corr-name">BFG 유량</span>
-        <div class="corr-bar-wrap"><div class="corr-bar neg" style="width:44%"></div></div>
-        <span class="corr-val neg">−0.44</span>
-      </div>
-      <div class="corr-item">
-        <span class="corr-name">Dome 온도</span>
-        <div class="corr-bar-wrap"><div class="corr-bar pos" style="width:1%"></div></div>
-        <span class="corr-val zero">≈ 0</span>
-      </div>
-      <div class="corr-item">
-        <span class="corr-name">공정 단계</span>
-        <div class="corr-bar-wrap"><div class="corr-bar pos" style="width:1%"></div></div>
-        <span class="corr-val zero">≈ 0</span>
+
+      <div class="problem-diagram">
+        <div class="diag-row">
+          <div class="diag-box">
+            <div class="diag-label">가스 입력</div>
+            <div class="diag-val">COG + BFG</div>
+            <div class="diag-desc">코크스·고로 오프가스 혼합</div>
+          </div>
+          <div class="diag-arrow">→</div>
+          <div class="diag-box accent">
+            <div class="diag-label">예측 대상</div>
+            <div class="diag-val">LHV</div>
+            <div class="diag-desc">발열량 (kcal/Nm³)</div>
+          </div>
+        </div>
+        <div class="diag-row">
+          <div class="diag-box" style="flex:1;">
+            <div class="diag-label">현재 문제</div>
+            <div class="diag-val" style="font-size:24px;color:var(--danger);">측정 지연 + 과잉 투입</div>
+            <div class="diag-desc">운전자 경험에 의존한 수동 조정</div>
+          </div>
+        </div>
+        <div class="diag-row">
+          <div class="diag-box" style="flex:1;border-color:var(--positive);background:rgba(79,122,61,0.05);">
+            <div class="diag-label" style="color:var(--positive);">해결 방향</div>
+            <div class="diag-val" style="color:var(--positive);">ML 예측 모델</div>
+            <div class="diag-desc">5분 주기 센서 데이터로 LHV 사전 예측</div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="tech-tags">
-      <span class="tech-tag">Python</span>
-      <span class="tech-tag">Scikit-Learn</span>
-      <span class="tech-tag">Ridge</span>
-      <span class="tech-tag">XGBoost</span>
-      <span class="tech-tag">Random Forest</span>
-      <span class="tech-tag">SHAP</span>
-      <span class="tech-tag">Pandas</span>
-      <span class="tech-tag">NumPy</span>
-    </div>
+
+    <span class="pageno-mark">HK</span>
+    <span class="pageno">02</span>
   </section>
 
-  <!-- PROCESS -->
-  <section class="proj-section" id="process">
-    <div class="section-label">PROCESS</div>
-    <h2>접근 방법 — 도메인 이해부터</h2>
-    <p>내가 먼저 한 일은 모델링이 아니라 태그의 선후관계를 정리하는 일이었다. 열풍로 사이클과 가스 혼합 구조를 이해하고 나서야 어떤 변수를 입력으로 써야 하는지 판단할 수 있었다.</p>
-    <div class="step-list">
-      <div class="step-item">
-        <span class="step-num">STEP 1</span>
-        <div class="step-content">
-          <h4>공정 흐름 도식화</h4>
-          <p>어디서 조정하고 어디서 측정되는지 선후관계를 정리했다. COG와 BFG의 발열량 차이부터 정리해 핵심 변수를 좁혔다.</p>
-        </div>
+  <!-- ──────────────── SLIDE 3: DATA ──────────────── -->
+  <section class="slide soft" data-label="Data">
+    <div class="top-rule">
+      <span class="slide-label">데이터 개요</span>
+      <span class="slide-num">03 / 07</span>
+    </div>
+
+    <div class="data-grid">
+      <div class="data-block">
+        <div class="data-block-title">규모</div>
+        <div class="data-num">17,280</div>
+        <div class="data-desc">행 (5분 주기 × 약 60일)</div>
       </div>
-      <div class="step-item">
-        <span class="step-num">STEP 2</span>
-        <div class="step-content">
-          <h4>현장 경험칙을 4개 가설로 분리 검증</h4>
-          <p>BFG 성분, Dome 온도, 파생변수, 전환 직후 구간을 각각 따로 검증했다.</p>
-        </div>
+      <div class="data-block">
+        <div class="data-block-title">수집 주기</div>
+        <div class="data-num">5min</div>
+        <div class="data-desc">실시간 공정 센서 태그 데이터</div>
       </div>
-      <div class="step-item">
-        <span class="step-num">STEP 3</span>
-        <div class="step-content">
-          <h4>입력 변수 선별 기준 재설정</h4>
-          <p>상관계수보다 실제로 조정 가능한 변수를 먼저 확인했다. LHV는 결과값이고 유량 태그는 원인 변수라는 기준으로 입력을 골랐다.</p>
-        </div>
-      </div>
-      <div class="step-item">
-        <span class="step-num">STEP 4</span>
-        <div class="step-content">
-          <h4>피처 엔지니어링 — 4개 파생변수</h4>
-          <p><code>is_post_standby</code>(H4 채택 가설 반영 이진 플래그), <code>COG_per_Air</code>(공기 대비 COG 투입 비율), <code>CO_CH4_ratio</code>, <code>LHV_diff</code>(직전 5분 대비 변화량)</p>
-        </div>
-      </div>
-      <div class="step-item">
-        <span class="step-num">STEP 5</span>
-        <div class="step-content">
-          <h4>5개 모델 비교 및 선택</h4>
-          <p>Ridge, Linear Regression, XGBoost, Random Forest, Decision Tree를 비교했다. COG·BFG 유량과 LHV 사이의 선형 관계가 생각보다 훨씬 강해 Ridge(α=1)가 최종 선택됐다.</p>
+      <div class="data-block" style="grid-column:1/-1;">
+        <div class="data-block-title">주요 피처 태그</div>
+        <div class="tag-list">
+          <div class="tag-item">
+            <span class="tag-name">COG_FLOW</span>
+            <span class="tag-desc">코크스 오프가스 유량 (Nm³/h) — 핵심 피처</span>
+          </div>
+          <div class="tag-item">
+            <span class="tag-name">BFG_FLOW</span>
+            <span class="tag-desc">고로가스 유량 (Nm³/h) — 핵심 피처</span>
+          </div>
+          <div class="tag-item">
+            <span class="tag-name">MIX_TEMP</span>
+            <span class="tag-desc">혼합가스 온도 (°C)</span>
+          </div>
+          <div class="tag-item">
+            <span class="tag-name">MIX_PRESS</span>
+            <span class="tag-desc">혼합가스 압력 (kPa)</span>
+          </div>
+          <div class="tag-item">
+            <span class="tag-name">LHV (t+1)</span>
+            <span class="tag-desc">5분 후 발열량 — 예측 타깃</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <h2 style="margin-top:32px;">가설 검증 결과</h2>
-    <p>현장에서 쓰이던 설명을 4개의 가설로 나눠 검증했다.</p>
-    <div class="hyp-grid">
-      <div class="hyp-card reject">
-        <div class="hyp-tag">H1 · BFG CO함량</div>
-        <p class="hyp-q">BFG CO함량 1% 증가 → LHV +20 kcal?</p>
-        <div class="hyp-verdict">✕ 기각 · p = 0.41</div>
-        <p class="hyp-detail">실제 영향은 거의 없었다. 성분 변수 하나로 LHV를 설명할 수 없다는 걸 분명히 확인했다.</p>
-      </div>
-      <div class="hyp-card reject">
-        <div class="hyp-tag">H2 · Dome 온도</div>
-        <p class="hyp-q">Dome 온도가 높을수록 LHV가 상승한다?</p>
-        <div class="hyp-verdict">✕ 기각 · ANOVA p=0.576</div>
-        <p class="hyp-detail">r≈0, F통계량 &lt;1. 오래 쓰이던 지표였지만 원인이 아니라 결과에 더 가까웠다.</p>
-      </div>
-      <div class="hyp-card partial">
-        <div class="hyp-tag">H3 · 파생변수</div>
-        <p class="hyp-q">COG/BFG 비율 파생변수가 예측력을 높인다?</p>
-        <div class="hyp-verdict">△ 부분기각 · R² 동일</div>
-        <p class="hyp-detail">원본 COG유량보다 더 잘 설명하지 못했다. 대신 다중공선성 문제를 분명하게 드러냈다.</p>
-      </div>
-      <div class="hyp-card accept">
-        <div class="hyp-tag">H4 · 전환대기 직후</div>
-        <p class="hyp-q">전환대기 직후 구간에서 COG가 과잉 투입된다?</p>
-        <div class="hyp-verdict">✓ 채택 → 절감 시나리오</div>
-        <p class="hyp-detail">COG효율 0.08457이 연소중 0.08460보다 낮았다. 낭비 구간을 플래그로 바꿔 모델에 직접 넣었다.</p>
-      </div>
-    </div>
-
-    <h2 style="margin-top:32px;">5개 모델 비교</h2>
-    <p>복잡한 모델보다 단순한 모델이 더 잘 맞았다. Ridge(α=1)가 XGBoost보다 Test MAE가 낮았다.</p>
-    <table class="model-table">
-      <thead>
-        <tr>
-          <th>모델</th>
-          <th>Train MAE</th>
-          <th>Test MAE</th>
-          <th>R²</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="best">
-          <td>★ Ridge (α=1)</td>
-          <td>11.84</td>
-          <td class="accent-val">11.99</td>
-          <td>0.428</td>
-        </tr>
-        <tr>
-          <td>Linear Regression</td>
-          <td>11.84</td>
-          <td>11.99</td>
-          <td>0.428</td>
-        </tr>
-        <tr>
-          <td>XGBoost</td>
-          <td>9.21</td>
-          <td>12.12</td>
-          <td>0.417</td>
-        </tr>
-        <tr>
-          <td>Random Forest</td>
-          <td>4.18</td>
-          <td>12.36</td>
-          <td>0.389</td>
-        </tr>
-        <tr>
-          <td>Decision Tree</td>
-          <td>0.00 ⚠ 과적합</td>
-          <td>12.53</td>
-          <td>0.363</td>
-        </tr>
-      </tbody>
-    </table>
+    <span class="pageno-mark">HK</span>
+    <span class="pageno">03</span>
   </section>
 
-  <!-- RESULTS -->
-  <section class="proj-section" id="results">
-    <div class="section-label">RESULTS</div>
-    <h2>성과 및 임팩트</h2>
-    <p>SHAP 분석과 Feature Importance 모두 COG 유량이 1위, BFG 유량이 2위라는 같은 결론을 가리켰다. 이 결과는 두 가스의 발열량 차이와도 정확히 맞아떨어졌다.</p>
-    <div class="impact-row">
-      <div class="impact-box">
-        <div class="impact-num">2%</div>
-        <div class="impact-lbl">절감률</div>
-        <div class="impact-sub">전환대기 직후 구간 한정</div>
+  <!-- ──────────────── SLIDE 4: EDA ──────────────── -->
+  <section class="slide" data-label="EDA">
+    <div class="top-rule">
+      <span class="slide-label">탐색적 데이터 분석</span>
+      <span class="slide-num">04 / 07</span>
+    </div>
+
+    <div class="eda-layout">
+      <div class="eda-img-wrap">
+        <img src="lhv/img/image4-35.png" alt="상관행렬 히트맵"/>
+        <div class="eda-cap">상관행렬 히트맵 — COG·BFG 유량과 LHV의 강한 선형 상관</div>
       </div>
-      <div class="impact-box">
-        <div class="impact-num">±0.2</div>
-        <div class="impact-lbl">LHV 영향</div>
-        <div class="impact-sub">목표 ±15 허용 범위 내</div>
-      </div>
-      <div class="impact-box">
-        <div class="impact-num">1.24M</div>
-        <div class="impact-lbl">연간 절감</div>
-        <div class="impact-sub">Nm³ COG / year</div>
+      <div class="eda-img-wrap">
+        <img src="lhv/img/image2-31.png" alt="핵심 변수 히스토그램"/>
+        <div class="eda-cap">핵심 변수 분포 — 정규성·이상치 확인</div>
       </div>
     </div>
 
-    <h2 style="margin-top:32px;">정책 제언 및 향후 확장</h2>
-    <div class="policy-list">
-      <div class="policy-item">
-        <span class="policy-label">제언 ①</span>
-        <p class="policy-text">5분 주기 실시간 LHV 예측 경보 체계로 확장할 수 있다</p>
-      </div>
-      <div class="policy-item">
-        <span class="policy-label">제언 ②</span>
-        <p class="policy-text">전환대기 직후 COG 1~2% 감축 로직 검토로 이어질 수 있다</p>
-      </div>
-      <div class="policy-item">
-        <span class="policy-label">향후 확장</span>
-        <p class="policy-text">COG 중심 연소 파생변수와 시계열 검증을 더하면 모델 정확도를 더 높일 수 있다</p>
-      </div>
+    <div style="margin-top:24px;padding:20px 28px;background:var(--paper-100);border-radius:var(--r-3);border-left:3px solid var(--accent-600);">
+      <p style="font-family:var(--font-mono);font-size:22px;color:var(--fg-2);margin:0;line-height:1.6;">
+        <strong style="color:var(--accent-600);">핵심 발견</strong>: COG 유량과 LHV 사이 <strong style="color:var(--fg-1)">r ≈ 0.82</strong>의 강한 선형 상관 → Ridge 같은 선형 모델도 충분히 경쟁력 있음을 사전에 시사
+      </p>
     </div>
 
-    <div class="insight-box">
-      <p><strong>핵심 인사이트:</strong> 제조 AI에서는 성능보다 인과 순서를 먼저 정리해야 했다. 결과 지표와 제어 변수를 구분해야 현장에서 쓸 수 있는 모델이 된다. SHAP으로 왜 그런 판단이 나왔는지 설명할 수 있다는 점도 중요했다.</p>
-    </div>
+    <span class="pageno-mark">HK</span>
+    <span class="pageno">04</span>
   </section>
 
-</div>
+  <!-- ──────────────── SLIDE 5: FEATURE ENGINEERING ──────────────── -->
+  <section class="slide soft" data-label="Feature Engineering">
+    <div class="top-rule">
+      <span class="slide-label">피처 엔지니어링</span>
+      <span class="slide-num">05 / 07</span>
+    </div>
 
-<footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-wordmark">김희태</div>
-      <div class="footer-desc">ML Engineering · Data · AI Systems</div>
+    <div class="feat-list">
+      <div class="feat-item">
+        <span class="feat-num">01</span>
+        <span class="feat-code">COG_RATIO</span>
+        <span class="feat-desc">COG / (COG + BFG) — 전체 가스 중 COG 비율. 발열량을 결정하는 핵심 혼합 비율 피처</span>
+      </div>
+      <div class="feat-item">
+        <span class="feat-num">02</span>
+        <span class="feat-code">FLOW_SUM</span>
+        <span class="feat-desc">COG + BFG 총 유량. 절대 연소량을 나타내는 스케일 피처</span>
+      </div>
+      <div class="feat-item">
+        <span class="feat-num">03</span>
+        <span class="feat-code">LHV_lag1 / lag3</span>
+        <span class="feat-desc">직전 1·3 스텝(5분·15분) LHV 값. 시계열 자기상관 패턴 포착</span>
+      </div>
+      <div class="feat-item">
+        <span class="feat-num">04</span>
+        <span class="feat-code">is_post_standby</span>
+        <span class="feat-desc">대기 → 운전 전환 직후 플래그. 전환 구간 특이값 분리 목적의 이진 피처</span>
+      </div>
     </div>
-    <div class="footer-contacts">
-      <a href="mailto:heetae104@gmail.com" class="footer-link">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="14" height="10" rx="1.5"/><path d="M1 4l7 5 7-5"/></svg>
-        heetae104@gmail.com
-      </a>
-      <a href="https://github.com/kimheetae0104" target="_blank" rel="noopener" class="footer-link">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-        github.com/kimheetae0104
-      </a>
-    </div>
-    <div class="footer-bottom">
-      <span class="footer-copy">© 2026 김희태 — Portfolio</span>
-    </div>
-  </div>
-</footer>
 
+    <div class="feat-highlight">
+      <p><strong>is_post_standby</strong>: 열풍로 대기 상태에서 운전으로 전환되는 순간 LHV가 급변하는 패턴을 감지. 이 구간을 별도 플래그로 처리해 모델 혼란을 줄임.</p>
+    </div>
+
+    <span class="pageno-mark">HK</span>
+    <span class="pageno">05</span>
+  </section>
+
+  <!-- ──────────────── SLIDE 6: MODEL ──────────────── -->
+  <section class="slide" data-label="Model">
+    <div class="top-rule">
+      <span class="slide-label">모델 비교 · SHAP 해석</span>
+      <span class="slide-num">06 / 07</span>
+    </div>
+
+    <div class="model-layout">
+      <div class="model-table-wrap">
+        <table class="model-table">
+          <thead>
+            <tr>
+              <th>모델</th>
+              <th>RMSE</th>
+              <th>R²</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="best">
+              <td>Ridge ★</td>
+              <td>11.99</td>
+              <td>0.428</td>
+            </tr>
+            <tr>
+              <td>Lasso</td>
+              <td>12.34</td>
+              <td>0.401</td>
+            </tr>
+            <tr>
+              <td>Random Forest</td>
+              <td>12.88</td>
+              <td>0.374</td>
+            </tr>
+            <tr>
+              <td>XGBoost</td>
+              <td>13.21</td>
+              <td>0.348</td>
+            </tr>
+            <tr>
+              <td>SVR</td>
+              <td>14.07</td>
+              <td>0.290</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:28px;padding:20px 24px;background:var(--accent-100);border-radius:var(--r-3);border-left:3px solid var(--accent-600);">
+          <p style="font-family:var(--font-mono);font-size:20px;color:var(--fg-2);margin:0;line-height:1.6;">
+            <strong style="color:var(--accent-600);">Ridge &gt; XGBoost</strong><br>
+            COG·BFG 유량과 LHV 사이 선형 관계가 지배적 → 트리 기반 앙상블보다 정규화 선형 모델이 유리
+          </p>
+        </div>
+
+        <div style="margin-top:20px;padding:20px 24px;background:var(--paper-100);border-radius:var(--r-3);">
+          <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);margin:0;line-height:1.6;">
+            5개 모델 전체 비교 이미지 →
+          </p>
+        </div>
+        <div class="model-img-wrap" style="margin-top:16px;height:180px;">
+          <img src="lhv/img/image10-39.png" alt="모델 성능 비교"/>
+          <div class="model-img-cap">5개 모델 성능 비교</div>
+        </div>
+      </div>
+
+      <div class="shap-img-wrap">
+        <img src="lhv/img/image3-45.png" alt="SHAP 피처 중요도"/>
+        <div class="shap-img-cap">SHAP — 피처 중요도 및 방향성</div>
+      </div>
+    </div>
+
+    <span class="pageno-mark">HK</span>
+    <span class="pageno">06</span>
+  </section>
+
+  <!-- ──────────────── SLIDE 7: IMPACT + LEARNING ──────────────── -->
+  <section class="slide soft" data-label="Impact">
+    <div class="top-rule">
+      <span class="slide-label">임팩트 · 인사이트</span>
+      <span class="slide-num">07 / 07</span>
+    </div>
+
+    <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:40px;">
+      <!-- 왼쪽: 임팩트 -->
+      <div>
+        <p style="font-family:var(--font-mono);font-size:20px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:24px;">비즈니스 임팩트</p>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="padding:24px 28px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-50);">
+            <div style="font-family:var(--font-mono);font-size:48px;font-weight:700;color:var(--accent-600);letter-spacing:-0.03em;line-height:1;margin-bottom:6px;">2%</div>
+            <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-3);">COG 투입량 절감 목표</div>
+          </div>
+          <div style="padding:24px 28px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-50);">
+            <div style="font-family:var(--font-mono);font-size:48px;font-weight:700;color:var(--accent-600);letter-spacing:-0.03em;line-height:1;margin-bottom:6px;">1.24M</div>
+            <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-3);">Nm³/year 절감 추정</div>
+          </div>
+          <div style="padding:20px 28px;border-left:3px solid var(--accent-600);background:var(--accent-100);border-radius:0 var(--r-3) var(--r-3) 0;">
+            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.6;margin:0;">
+              예측값 활용 → 운전자 수동 조정 보조 → <strong style="color:var(--accent-600)">에너지 원단위 개선</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 오른쪽: 인사이트 -->
+      <div>
+        <p style="font-family:var(--font-mono);font-size:20px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:24px;">핵심 인사이트</p>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="padding:24px 28px;border:1px solid var(--accent-600);border-left:3px solid var(--accent-600);border-radius:var(--r-3);background:var(--accent-100);">
+            <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent-600);margin-bottom:8px;">모델 선택</div>
+            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.5;margin:0;">Ridge가 XGBoost를 이겼다는 사실이 핵심. 복잡한 모델보다 <strong style="color:var(--fg-1)">선형성을 먼저 확인</strong>하는 습관의 중요성</p>
+          </div>
+          <div style="padding:24px 28px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-50);">
+            <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:8px;">SHAP 해석</div>
+            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.5;margin:0;">COG_FLOW, BFG_FLOW, COG_RATIO 순으로 기여. 도메인 지식과 SHAP 결과가 일치 → 모델 신뢰도 확보</p>
+          </div>
+          <div style="padding:24px 28px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-50);">
+            <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:8px;">한계 & 다음 단계</div>
+            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.5;margin:0;">R² 0.428은 개선 여지. LSTM 등 시계열 특화 모델 적용 및 더 긴 lag 피처 실험 예정</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <span class="pageno-mark">HK</span>
+    <span class="pageno">07</span>
+  </section>
+
+</deck-stage>
 </body>
 </html>

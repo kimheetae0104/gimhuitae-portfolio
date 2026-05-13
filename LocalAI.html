@@ -1,636 +1,366 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
-
 <head>
-  <meta charset="utf-8" />
-  <title>Local AI Agent — 로컬에서 완결되는 AI 워크플로우</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Local AI Agent — Heetae Kim</title>
   <link rel="stylesheet" href="shared/tokens.css" />
   <link rel="stylesheet" href="shared/slide.css" />
-  <script src="shared/deck-stage.js"></script>
+  <script src="shared/deck-stage.js" defer></script>
   <style>
-    /* LocalAI-specific styles */
-    section.slide {
-      padding-bottom: 128px;
-    }
-
-    .pageno,
-    .pageno-mark {
-      bottom: 30px;
-    }
-
-    /* stack cards */
-    .stack-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 36px; align-items: stretch; }
-    .stack-card { padding: 24px 22px; border-top: 2px solid var(--accent-600);
-                  display: flex; flex-direction: column; gap: 12px;
-                  background: var(--paper-50); }
-    .stack-card .tag { font-family: var(--font-mono); font-size: 16px;
-                       letter-spacing: 0.12em; color: var(--accent-600);
-                       text-transform: uppercase; }
-    .stack-card .name { font-family: var(--font-sans); font-weight: 600;
-                        font-size: 28px; line-height: 1.15; color: var(--fg-1); }
-    .stack-card .role { font-family: var(--font-sans); font-size: 18px;
-                        line-height: 1.58; color: var(--fg-2); }
-    .stack-card .why {
-      font-family: var(--font-sans); font-size: 17px;
-      line-height: 1.56; color: var(--fg-3); font-style: italic;
-      padding-top: 10px; border-top: 1px dashed var(--rule-soft);
-    }
-    .stack-card .did {
-      font-family: var(--font-mono); font-size: 16px;
-      line-height: 1.52; color: var(--accent-600);
-      padding-top: 10px; border-top: 1px solid var(--rule-soft);
-      margin-top: auto;
-    }
-
-    /* terminal block */
-    .term-block { background: #111116; border: 1px solid rgba(80,220,120,0.18);
-                  padding: 28px 28px;
-                  font-family: var(--font-mono); font-size: 19px; line-height: 1.7;
-                  color: rgba(80,220,120,0.85); }
-    .term-block .prompt { color: rgba(80,220,120,0.5); }
-    .term-block .cmd { color: #e0e0e8; }
-    .term-block .out { color: rgba(80,220,120,0.7); }
-    .term-block .comment { color: rgba(255,255,255,0.3); }
-
-    /* flow diagram */
-    .flow-box { padding: 24px 22px; border: 1px solid var(--rule);
-                background: var(--paper-50); display: flex; flex-direction: column; gap: 10px; }
-    .flow-box .ftag { font-family: var(--font-mono); font-size: 17px;
-                      letter-spacing: 0.14em; text-transform: uppercase;
-                      color: var(--accent-600); }
-    .flow-box h3 { font-family: var(--font-sans); font-weight: 600;
-                   font-size: 26px; line-height: 1.2; margin: 0; color: var(--fg-1); }
-    .flow-box .fdesc { font-family: var(--font-sans); font-size: 19px;
-                       line-height: 1.5; color: var(--fg-2); }
-    .flow-arrow { display: flex; align-items: center; justify-content: center; color: var(--fg-3); }
-    .flow-arrow svg { width: 48px; height: 24px; }
-
-    /* journey steps (Slide 03) */
-    .journey-step {
-      display: grid; grid-template-columns: 46px 1fr; gap: 14px;
-      padding: 9px 0;
+    /* ── Back nav header ── */
+    .deck-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 9999;
+      height: 48px;
+      display: flex; align-items: center;
+      padding: 0 32px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--rule-soft);
-      align-items: start;
     }
-    .journey-step:last-child { border-bottom: none; padding-bottom: 0; }
-    .journey-step:first-child { padding-top: 0; }
-    .journey-step .js-num { font-family: var(--font-mono); font-size: 19px;
-                            color: var(--accent-600); letter-spacing: 0.08em; padding-top: 3px; }
-    .journey-step .js-title { font-family: var(--font-sans); font-weight: 600;
-                              font-size: 23px; color: var(--fg-1); margin-bottom: 3px; line-height: 1.2; }
-    .journey-step .js-body { font-family: var(--font-sans); font-size: 17px;
-                             color: var(--fg-2); line-height: 1.45; }
-    .journey-step .js-takeaway { font-family: var(--font-sans); font-size: 16px;
-                                 color: var(--accent-600); margin-top: 5px;
-                                 padding-top: 5px; border-top: 1px dashed var(--rule-soft); }
-
-    /* curiosity cards (Slide 08) — light theme */
-    .cur-card {
-      padding: 28px 30px;
-      border-left: 3px solid var(--accent-600);
-      background: var(--paper-50);
-      display: flex; flex-direction: column; gap: 14px;
-      flex: 1;
-    }
-    .cur-card .cur-tag {
+    .deck-nav a {
       font-family: var(--font-mono);
-      font-size: 18px;
-      letter-spacing: 0.12em;
-      color: var(--accent-600);
+      font-size: var(--fs-xs);
+      letter-spacing: var(--tracking-wide);
       text-transform: uppercase;
-    }
-    .cur-card .cur-title {
-      font-family: var(--font-sans);
-      font-weight: 600;
-      font-size: 28px;
-      color: var(--fg-1);
-      line-height: 1.25;
-    }
-    .cur-card .cur-body {
-      font-family: var(--font-sans);
-      font-size: 21px;
-      color: var(--fg-2);
-      line-height: 1.55;
-    }
-    .cur-card .cur-q {
-      font-family: var(--font-sans);
-      font-size: 19px;
       color: var(--fg-3);
-      font-style: italic;
-      margin-top: auto;
-      padding-top: 8px;
-      border-top: 1px dashed var(--rule-soft);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .deck-nav a:hover { color: var(--fg-1); }
+    .deck-nav .sep { color: var(--fg-4); margin: 0 12px; }
+    .deck-nav .current { color: var(--fg-2); font-family: var(--font-mono); font-size: var(--fs-xs); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
+
+    /* ── Stack node ── */
+    .stack-row {
+      flex: 1; display: flex; flex-direction: column; gap: 20px; margin-top: 40px;
+    }
+    .stack-item {
+      display: flex; align-items: flex-start; gap: 32px;
+      padding: 28px 32px; border: 1px solid var(--rule-soft);
+      border-radius: var(--r-3); background: var(--bg);
+    }
+    .stack-icon {
+      font-family: var(--font-mono); font-size: 32px; font-weight: 700;
+      color: var(--accent-600); width: 120px; flex-shrink: 0; line-height: 1.1;
+    }
+    .stack-name {
+      font-family: var(--font-sans); font-weight: 600; font-size: 28px;
+      color: var(--fg-1); margin-bottom: 7px;
+    }
+    .stack-role {
+      font-family: var(--font-mono); font-size: 17px;
+      letter-spacing: 0.1em; color: var(--fg-3); margin-bottom: 10px;
+    }
+    .stack-desc {
+      font-family: var(--font-sans); font-size: 21px;
+      color: var(--fg-2); line-height: 1.6;
     }
 
-    /* experiment cards (Slide 06) */
-    .exp-card {
-      padding: 24px 24px;
-      border-top: 2px solid var(--accent-600);
-      background: var(--paper-50);
-      display: flex; flex-direction: column; gap: 10px;
+    /* ── Result metric ── */
+    .result-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;
+      margin-top: 40px;
     }
-    .exp-card .exp-tag {
-      font-family: var(--font-mono); font-size: 16px;
-      letter-spacing: 0.12em; color: var(--accent-600);
+    .result-card {
+      padding: 32px 28px; border: 1px solid var(--rule-soft);
+      border-radius: var(--r-3); background: var(--bg);
     }
-    .exp-card .exp-title {
-      font-family: var(--font-sans); font-weight: 600;
-      font-size: 25px; color: var(--fg-1); line-height: 1.24;
+    .result-val {
+      font-family: var(--font-mono); font-size: 52px; font-weight: 700;
+      letter-spacing: -0.03em; line-height: 1; color: var(--fg-1); margin-bottom: 8px;
     }
-    .exp-card .exp-body {
-      font-family: var(--font-sans); font-size: 18px;
-      color: var(--fg-2); line-height: 1.58;
+    .result-unit {
+      font-family: var(--font-mono); font-size: 22px; color: var(--fg-3);
+      letter-spacing: 0.06em; margin-left: 4px;
     }
-    .exp-card .exp-body strong { color: var(--fg-1); font-weight: 600; }
-    .exp-card .exp-result {
-      margin-top: auto;
-      padding-top: 10px; border-top: 1px solid var(--rule-soft);
-      font-family: var(--font-sans); font-size: 18px;
-      color: var(--fg-2); line-height: 1.56;
-    }
-    .exp-card .exp-takeaway {
-      font-family: var(--font-sans); font-size: 18px;
-      color: var(--accent-600); font-weight: 500;
+    .result-label {
+      font-family: var(--font-mono); font-size: 16px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--fg-4);
     }
 
-    /* close — light theme */
-    .s-close .pull { font-family: var(--font-sans); font-weight: 500;
-                     font-size: 52px; line-height: 1.22; letter-spacing: -0.02em;
-                     color: var(--fg-1); max-width: 18ch; }
-    .s-close .pull em { font-style: normal; color: var(--accent-600); }
+    /* ── Learn item ── */
+    .learn-list { flex: 1; display: flex; flex-direction: column; gap: 0; margin-top: 40px; }
+    .learn-item { display: flex; gap: 28px; align-items: flex-start; padding: 26px 0; border-bottom: 1px solid var(--rule-soft); }
+    .learn-item:last-child { border-bottom: none; }
+    .learn-idx { font-family: var(--font-mono); font-size: 18px; color: var(--fg-4); width: 32px; flex-shrink: 0; padding-top: 4px; }
+    .learn-title { font-family: var(--font-sans); font-weight: 600; font-size: 26px; color: var(--fg-1); margin-bottom: 8px; }
+    .learn-desc { font-family: var(--font-sans); font-size: 21px; color: var(--fg-2); line-height: 1.6; }
   </style>
 </head>
-
 <body>
 
-<deck-stage width="1920" height="1080">
+  <!-- Back nav header -->
+  <nav class="deck-nav">
+    <a href="index.html">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2L4 7l5 5"/></svg>
+      포트폴리오로 돌아가기
+    </a>
+    <span class="sep">·</span>
+    <span class="current">Local AI Agent</span>
+  </nav>
 
-<!-- ═══ Slide 01 — Title ═══ -->
-<section class="slide s-title" data-label="01 Title">
-  <div class="top-rule">
-    <span>김희태 · PORTFOLIO</span>
-    <span>2026</span>
-  </div>
-  <div class="hero">
-    <div class="meta-cap" style="margin-bottom: 32px;">LOCAL AI · PERSONAL INFRASTRUCTURE EXPERIMENT</div>
-    <h1>로컬 AI 환경을 직접 만들고<br/>워크플로우 차이를 비교했다.</h1>
-    <p class="ko-sub">토큰 한도와 외부 의존성에 답답함을 느낀 뒤,<br/>Obsidian + Ollama + AntiGravity로 내 컴퓨터 안에서 끝까지 돌아가는<br/>로컬 AI 워크플로우를 직접 붙여본 학습 프로젝트.</p>
-  </div>
-  <div class="meta-grid">
-    <div class="col"><div class="k">TYPE</div><div class="v">개인 학습 프로젝트</div></div>
-    <div class="col"><div class="k">STACK</div><div class="v">Ollama · Obsidian<br/>AntiGravity · Python</div></div>
-    <div class="col"><div class="k">STARTING POINT</div><div class="v">토큰 한도 · 비용 ·<br/>외부 의존성 문제</div></div>
-    <div class="col"><div class="k">FOCUS</div><div class="v">로컬 LLM 인프라<br/>워크플로우 설계 실험</div></div>
-  </div>
-  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-  <div class="pageno">01 / 08</div>
-</section>
+  <deck-stage width="1920" height="1080">
 
-<!-- ═══ Slide 02 — Why I Started ═══ -->
-<section class="slide" data-label="02 Why">
-  <div class="top-rule">
-    <span>02 · WHY LOCAL AI</span>
-    <span>STARTING POINT</span>
-  </div>
-  <div style="display: grid; grid-template-columns: 1.15fr 1fr; gap: 64px; flex: 1; padding-top: 36px; align-items: stretch;">
-
-    <!-- 좌: 동기 서사 -->
-    <div style="display: flex; flex-direction: column; min-height: 0; justify-content: center;">
-      <h2 class="slide-h2" style="font-size: 66px; line-height: 1.06; flex-shrink: 0;">
-        AI를 쓰고 있었지만,<br/><span style="color:var(--fg-3);font-weight:400;">내가 통제하고 있진 않았다.</span>
-      </h2>
-      <p class="slide-body" style="margin-top: 32px; max-width: 30ch; font-size: 26px; line-height: 1.55; flex-shrink: 0;">
-        AI를 개발 도구로 쓰기 시작하면서 가장 먼저 부딪힌 건 비용보다 <strong style="color: var(--fg-1);">작업 흐름이 자주 끊기는 문제</strong>였다.
-        프롬프트가 길어지고 컨텍스트가 쌓일수록, 어느 순간 작업을 이어가기 어려워졌다.
-      </p>
-      <div style="margin-top: 32px; padding: 22px 26px; border-left: 3px solid var(--accent-600); background: rgba(30,58,138,0.04); flex-shrink: 0;">
-        <p style="font-family: var(--font-sans); font-size: 24px; color: var(--accent-600); font-weight: 500; line-height: 1.5; margin: 0;">
-          클라우드 AI를 쓸 때는 컨텍스트 길이, 비용, 연결 상태에 따라 작업 흐름이 자주 끊겼다.
+    <!-- 1. COVER -->
+    <section class="slide s-title dark" data-label="Cover">
+      <div class="top-rule">
+        <span>Heetae Kim</span>
+        <span>Personal Project · 2026.04</span>
+      </div>
+      <div class="hero" style="flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:32px;">
+        <div class="meta-cap" style="margin-bottom:24px;">Local AI Workflow</div>
+        <h1 style="font-family:var(--font-mono);font-weight:700;font-size:96px;line-height:1.0;letter-spacing:-0.03em;color:#F4F4F6;margin:0 0 28px;">Local<br>AI Agent</h1>
+        <p style="font-family:var(--font-sans);font-size:29px;line-height:1.7;color:rgba(244,244,246,0.62);max-width:52ch;margin:0;">
+          Obsidian + Ollama + AntiGravity로 클라우드 없이 구축한<br>완전 로컬 AI 워크플로우 실험
         </p>
-      </div>
-      <p class="slide-body" style="margin-top: 28px; max-width: 32ch; font-size: 23px; color: var(--fg-2); line-height: 1.55; flex-shrink: 0;">
-        그 답답함이 출발점이었다. 비용을 줄이려는 것보다,
-        <strong style="color: var(--fg-1);">AI를 도구처럼 호출하는 방식과 내 환경 안에 붙여 쓰는 방식</strong>이 어떻게 다른지 확인해보고 싶었다.
-      </p>
-      <p class="slide-body" style="margin-top: 28px; max-width: 32ch; font-size: 21px; color: var(--fg-3); font-style: italic; line-height: 1.5; flex-shrink: 0;">
-        토큰 걱정 없이, 인터넷 없이, 내 컴퓨터에서 끝까지 이어지는 워크플로우가 가능한지 궁금했다.
-      </p>
-    </div>
-
-    <!-- 우: 동기 → 호기심 전환 -->
-    <div style="display: flex; flex-direction: column; min-height: 0; justify-content: center;">
-      <div class="meta-cap" style="margin-bottom: 22px; font-size: 22px;">동기에서 호기심으로</div>
-      <div style="display: flex; flex-direction: column;">
-        <div style="display: grid; grid-template-columns: 44px 1fr; gap: 22px; padding: 22px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule-soft); align-items: start;">
-          <div style="font-family: var(--font-mono); font-size: 22px; color: var(--danger); padding-top: 4px;">01</div>
-          <div>
-            <div style="font-family: var(--font-sans); font-size: 26px; font-weight: 600; color: var(--fg-1);">컨텍스트 한도 초과</div>
-            <div style="font-family: var(--font-sans); font-size: 21px; color: var(--fg-2); margin-top: 6px; line-height: 1.5;">긴 작업 도중 강제 세션 초기화. 흐름이 끊긴다.</div>
+        <div style="display:flex;gap:32px;margin-top:40px;">
+          <div style="padding:16px 24px;border:1px solid rgba(244,244,246,0.15);border-radius:var(--r-3);">
+            <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,244,246,0.4);margin-bottom:6px;">클라우드</div>
+            <div style="font-family:var(--font-mono);font-size:28px;font-weight:700;color:#9bb6f0;">Zero</div>
           </div>
-        </div>
-        <div style="display: grid; grid-template-columns: 44px 1fr; gap: 22px; padding: 22px 0; border-bottom: 1px solid var(--rule-soft); align-items: start;">
-          <div style="font-family: var(--font-mono); font-size: 22px; color: var(--warn); padding-top: 4px;">02</div>
-          <div>
-            <div style="font-family: var(--font-sans); font-size: 26px; font-weight: 600; color: var(--fg-1);">월 비용 불안정</div>
-            <div style="font-family: var(--font-sans); font-size: 21px; color: var(--fg-2); margin-top: 6px; line-height: 1.5;">사용량에 따라 청구액 변동. 예산을 통제할 수 없다.</div>
+          <div style="padding:16px 24px;border:1px solid rgba(244,244,246,0.15);border-radius:var(--r-3);">
+            <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,244,246,0.4);margin-bottom:6px;">모델</div>
+            <div style="font-family:var(--font-mono);font-size:28px;font-weight:700;color:#9bb6f0;">llama3.2 3B</div>
           </div>
-        </div>
-        <div style="display: grid; grid-template-columns: 44px 1fr; gap: 22px; padding: 22px 0; border-bottom: 1px solid var(--rule-soft); align-items: start;">
-          <div style="font-family: var(--font-mono); font-size: 22px; color: var(--warn); padding-top: 4px;">03</div>
-          <div>
-            <div style="font-family: var(--font-sans); font-size: 26px; font-weight: 600; color: var(--fg-1);">데이터 외부 전송</div>
-            <div style="font-family: var(--font-sans); font-size: 21px; color: var(--fg-2); margin-top: 6px; line-height: 1.5;">모든 프롬프트가 외부 서버로 — 민감 데이터에 부담.</div>
+          <div style="padding:16px 24px;border:1px solid rgba(244,244,246,0.15);border-radius:var(--r-3);">
+            <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,244,246,0.4);margin-bottom:6px;">응답 속도</div>
+            <div style="font-family:var(--font-mono);font-size:28px;font-weight:700;color:#9bb6f0;">2.1s</div>
           </div>
-        </div>
-        <div style="display: grid; grid-template-columns: 44px 1fr; gap: 22px; padding: 26px 0 0; align-items: start;">
-          <div style="font-family: var(--font-mono); font-size: 26px; color: var(--positive); padding-top: 1px;">→</div>
-          <div>
-            <div style="font-family: var(--font-sans); font-size: 26px; font-weight: 600; color: var(--positive);">로컬 AI = 소유 가능한 인프라</div>
-            <div style="font-family: var(--font-sans); font-size: 21px; color: var(--fg-2); margin-top: 6px; line-height: 1.5;">제어할 수 있고 끊기지 않고 외부에 의존하지 않는 워크플로우. 그 가능성이 궁금해서 시작했다.</div>
+          <div style="padding:16px 24px;border:1px solid rgba(244,244,246,0.15);border-radius:var(--r-3);">
+            <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,244,246,0.4);margin-bottom:6px;">인터넷</div>
+            <div style="font-family:var(--font-mono);font-size:28px;font-weight:700;color:#9bb6f0;">불필요</div>
           </div>
         </div>
       </div>
-    </div>
+      <div class="pageno" style="color:rgba(244,244,246,0.3);">01 / 06</div>
+      <div class="pageno-mark" style="color:rgba(244,244,246,0.3);">HK</div>
+    </section>
 
-  </div>
-  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-  <div class="pageno">02 / 08</div>
-</section>
-
-<!-- ═══ Slide 03 — Learning Path ═══ -->
-<section class="slide soft" data-label="03 Learning">
-  <div class="top-rule">
-    <span>03 · LEARNING PATH</span>
-    <span>FOLLOW · BUILD · EXTEND</span>
-  </div>
-  <div style="display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; flex: 1; padding-top: 24px; align-items: stretch;">
-
-    <!-- 좌: 학습 출처 + 자세 -->
-    <div style="display: flex; flex-direction: column; min-height: 0; justify-content: flex-start;">
-      <div class="meta-cap" style="margin-bottom: 14px; font-size: 18px;">출발점 · Connect AI Lab</div>
-      <h2 class="slide-h2" style="font-size: 54px; line-height: 1.08;">따라 만든 다음 내 방식으로 다시 붙였다.</h2>
-      <p class="slide-body" style="margin-top: 32px; font-size: 23px; max-width: 31ch; line-height: 1.58;">
-        Connect AI Lab EP.3를 출발점으로 삼았다. 하지만 그대로 재현하는 데서 멈추지 않고, 같은 환경을 직접 구성하고 도구를 바꿔가며 왜 이 조합이 필요한지 살펴봤다.
-      </p>
-      <p class="slide-body" style="margin-top: 24px; font-size: 20px; color: var(--fg-3); font-style: italic; max-width: 31ch; line-height: 1.56;">
-        "왜 이 도구가 여기에 들어가는가?" 영상이 답하지 않은 질문을 스스로 묻고, 직접 바꿔보면서 기준을 정리했다.
-      </p>
-      <a href="https://youtu.be/TNEwF_WmgO4?si=fVxATGqH3J62VHgG" target="_blank" rel="noopener noreferrer" style="display:block; margin-top: auto; padding-top: 24px;">
-        <img src="localai/img/connect-ai-lab.jpg" alt="Connect AI Lab EP.3"
-             style="width: 100%; max-height: 320px; object-fit: cover; object-position: center; border: 1px solid var(--rule); display:block; box-shadow: 0 12px 36px rgba(0,0,0,0.15);" />
-      </a>
-      <p style="font-family: var(--font-mono); font-size: 17px; letter-spacing: 0.1em; color: var(--fg-3); margin-top: 12px;">
-        Fig. REF — Connect AI Lab · EP.3
-      </p>
-    </div>
-
-    <!-- 우: 5단계 학습 여정 -->
-    <div style="display: flex; flex-direction: column; min-height: 0;">
-      <div class="meta-cap" style="margin-bottom: 14px; font-size: 19px;">5단계로 본 학습 흐름</div>
-      <div style="flex: 1; display: flex; flex-direction: column;">
-        <div class="journey-step">
-          <div class="js-num">01</div>
-          <div>
-            <div class="js-title">환경 구성</div>
-            <div class="js-body">macOS에 Ollama를 설치하고 `llama3.2`, `gemma`, `qwen`을 직접 띄웠다. 4-bit 양자화 모델이 실제 환경에서 돌아가는지부터 확인했다.</div>
-            <div class="js-takeaway">→ 양자화·VRAM 사용량의 trade-off를 처음 체감.</div>
-          </div>
+    <!-- 2. PROBLEM -->
+    <section class="slide" data-label="Problem">
+      <div class="top-rule">
+        <span>Local AI Agent</span>
+        <span>Problem</span>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:48px;padding-top:32px;">
+        <div>
+          <div class="meta-cap" style="margin-bottom:18px;">왜 로컬 AI인가</div>
+          <h2 style="font-family:var(--font-sans);font-weight:700;font-size:66px;line-height:1.1;letter-spacing:-0.025em;color:var(--fg-1);max-width:22ch;margin:0;">
+            클라우드 없이도<br>AI 워크플로우를 돌릴 수 있는가
+          </h2>
         </div>
-        <div class="journey-step">
-          <div class="js-num">02</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:44px;border-top:1px solid var(--rule-soft);padding-top:40px;">
           <div>
-            <div class="js-title">Obsidian Vault 연결</div>
-            <div class="js-body">개인 노트 디렉토리를 컨텍스트 소스로 연결했다. Vault 구조와 백링크가 검색 품질에 어떤 차이를 만드는지 확인했다.</div>
-            <div class="js-takeaway">→ 좋은 노트 구조 = 좋은 컨텍스트 = 좋은 응답.</div>
+            <div style="font-family:var(--font-mono);font-size:16px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:12px;">동기 01</div>
+            <div style="font-family:var(--font-sans);font-weight:600;font-size:27px;color:var(--fg-1);margin-bottom:10px;line-height:1.3;">클라우드 API 비용</div>
+            <p style="font-family:var(--font-sans);font-size:21px;color:var(--fg-2);line-height:1.65;margin:0;">GPT-4o API 호출 비용이 개인 사용량에서도 무시할 수 없는 수준. 학습 목적 실험 비용을 제로에 가깝게 줄이고 싶었다</p>
           </div>
-        </div>
-        <div class="journey-step">
-          <div class="js-num">03</div>
           <div>
-            <div class="js-title">AntiGravity 파이프라인 결합</div>
-            <div class="js-body">Obsidian → Ollama → 출력 → 다시 Vault로 이어지는 흐름을 AntiGravity로 묶었다. 단발 호출이 아니라 루프형 워크플로우를 만들었다.</div>
-            <div class="js-takeaway">→ "모델 호출"이 아닌 "파이프라인 설계"라는 관점 획득.</div>
+            <div style="font-family:var(--font-mono);font-size:16px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:12px;">동기 02</div>
+            <div style="font-family:var(--font-sans);font-weight:600;font-size:27px;color:var(--fg-1);margin-bottom:10px;line-height:1.3;">프라이버시</div>
+            <p style="font-family:var(--font-sans);font-size:21px;color:var(--fg-2);line-height:1.65;margin:0;">개인 노트·아이디어·미완성 글을 외부 서버로 전송하지 않고 AI 어시스턴트로 활용하고 싶다</p>
           </div>
-        </div>
-        <div class="journey-step">
-          <div class="js-num">04</div>
           <div>
-            <div class="js-title">모델별 라우팅 실험</div>
-            <div class="js-body">텍스트 분석은 Gemma, 일반 추론은 Llama 3.2, 코드는 Qwen2.5-Coder로 나눠 같은 입력에서 결과를 비교했다.</div>
-            <div class="js-takeaway">→ "큰 모델 1개"보다 "작은 모델 여럿 + 라우팅"이 더 효율적인 경우 확인.</div>
-          </div>
-        </div>
-        <div class="journey-step">
-          <div class="js-num">05</div>
-          <div>
-            <div class="js-title">IDE 안으로 끌어오기 (확장)</div>
-            <div class="js-body">VS Code에 Connect AI 익스텐션을 붙여 편집기 안에서 로컬 모델과 직접 대화했다. 코드 컨텍스트와 노트 컨텍스트를 한 흐름으로 묶어봤다.</div>
-            <div class="js-takeaway">→ 영상에 없던 다음 단계를 스스로 시도한 지점.</div>
+            <div style="font-family:var(--font-mono);font-size:16px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:12px;">동기 03</div>
+            <div style="font-family:var(--font-sans);font-weight:600;font-size:27px;color:var(--fg-1);margin-bottom:10px;line-height:1.3;">오프라인 동작 검증</div>
+            <p style="font-family:var(--font-sans);font-size:21px;color:var(--fg-2);line-height:1.65;margin:0;">인터넷 없이도 작동하는 AI 툴을 직접 구축·운용해봄으로써 로컬 추론의 실질적 한계를 체감하고 싶었다</p>
           </div>
         </div>
       </div>
-    </div>
+      <div class="pageno">02 / 06</div>
+      <div class="pageno-mark">HK</div>
+    </section>
 
-  </div>
-  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-  <div class="pageno">03 / 08</div>
-</section>
-
-<!-- ═══ Slide 04 — Stack with Reasoning ═══ -->
-<section class="slide" data-label="04 Stack">
-  <div class="top-rule">
-    <span>04 · STACK</span>
-    <span>5 TOOLS · WHY THIS COMBO</span>
-  </div>
-  <h2 class="slide-h2" style="margin-top: 32px; font-size: 54px; line-height: 1.1;">
-    도구를 많이 쓴 게 아니라 역할을 나눠 붙였다.</h2>
-  <p class="slide-body" style="margin-top: 24px; font-size: 23px; color: var(--fg-2); line-height: 1.58; max-width: 50ch;">
-    5개를 한꺼번에 붙인 게 아니라, 각 도구가 다른 층을 맡도록 설계했다. 어느 하나가 빠져도 루프가 끊긴다.
-  </p>
-
-  <div class="stack-grid" style="flex: 1;">
-    <div class="stack-card">
-      <div class="tag">KNOWLEDGE LAYER</div>
-      <div class="name">Obsidian</div>
-      <div class="role">마크다운 기반 개인 지식 그래프. 백링크·태그로 노트가 자동 연결되며 Vault 전체가 컨텍스트 소스가 된다.</div>
-      <div class="why">→ Vault 구조 자체가 컨텍스트 큐레이션이다. 잘 정리된 노트 = 좋은 응답.</div>
-      <div class="did">800+ 노트 · 작업별 폴더 분리 · 모델 입력 토큰 자동 집계</div>
-    </div>
-    <div class="stack-card">
-      <div class="tag">INFERENCE LAYER</div>
-      <div class="name">Ollama</div>
-      <div class="role">로컬 LLM 실행 엔진. Llama·Gemma·Qwen·Mistral 등 양자화 모델을 단일 CLI로 다운로드·실행·교체.</div>
-      <div class="why">→ "모델 호출"을 추상화. 모델 교체가 하루치 작업이 아닌 한 줄 수정.</div>
-      <div class="did">6개 모델 동시 관리 · 4-bit 양자화 기본 · GPT4ALL에서 갈아탐</div>
-    </div>
-    <div class="stack-card" style="border-top-color: var(--positive);">
-      <div class="tag" style="color: var(--positive);">ORCHESTRATION</div>
-      <div class="name">AntiGravity</div>
-      <div class="role">AI 워크플로우 오케스트레이션 허브. 입력→처리→출력 루프와 작업별 모델 라우팅을 한 워크플로우로 묶는다.</div>
-      <div class="why">→ 이 한 칸이 빠지면 그냥 챗봇. 단발 호출을 자동 루프로 만드는 핵심.</div>
-      <div class="did" style="color: var(--positive);">분류 → 라우팅 → Vault 기록 자동 트리거</div>
-    </div>
-    <div class="stack-card">
-      <div class="tag">GLUE LAYER</div>
-      <div class="name">Python</div>
-      <div class="role">통합 구현 언어. Ollama API 호출, 파일 I/O, Vault 변경 감지 자동 기록까지 전부 Python으로 처리.</div>
-      <div class="why">→ 각 층을 잇는 접착제. 자유도 최고, AI 코드 생성과 궁합이 좋다.</div>
-      <div class="did">requests · watchdog · pyyaml · Vault 변경 → 자동 처리</div>
-    </div>
-    <div class="stack-card">
-      <div class="tag">PAIR PROGRAMMING</div>
-      <div class="name">Claude</div>
-      <div class="role">설계·코드 리뷰·디버깅 페어. AI로 AI 시스템을 만드는 메타 루프 — 로컬 모델로는 부족한 추론을 보완.</div>
-      <div class="why">→ 로컬 AI를 만드는 동안 클라우드 AI에게 검토받는 게 가장 빠른 학습.</div>
-      <div class="did">아키텍처 결정 · CSS 디버깅 · 이 포트폴리오 구성까지</div>
-    </div>
-  </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-  <div class="pageno">04 / 08</div>
-</section>
-
-<!-- ═══ Slide 05 — Architecture ═══ -->
-<section class="slide" data-label="05 Architecture">
-  <div class="top-rule">
-    <span>05 · ARCHITECTURE</span>
-    <span>3-STAGE LOOP</span>
-  </div>
-
-  <div style="display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; margin-top: 30px; align-items: center;">
-    <div>
-      <h2 class="slide-h2" style="font-size: 56px; line-height: 1.08;">
-        노트에서 꺼내고, 로컬에서 처리한 뒤 다시 노트로 보냈다.</h2>
-      <p class="slide-body" style="margin-top: 28px; max-width: 30ch; font-size: 24px; color: var(--fg-2);">
-        세 단계가 닫힌 루프를 만든다. 노트에서 컨텍스트를 꺼내 로컬 LLM이 처리하고, 결과를 다시 Vault에 기록하면서 지식 그래프가 스스로 자란다.
-      </p>
-      <p class="slide-body" style="margin-top: 32px; max-width: 30ch; font-size: 22px; color: var(--accent-600); font-weight: 500;">
-        외부 API 호출 0건 · 데이터 로컬 유지 · 토큰 한도 없음.
-      </p>
-    </div>
-    <div class="term-block" style="margin-top: 0; font-size: 21px; align-self: center;">
-      <div><span class="prompt">$</span> <span class="cmd">ollama run llama3.2 --context vault/notes/</span></div>
-      <div><span class="out">✓ Model loaded (3.2B params, 4-bit quantized)</span></div>
-      <div><span class="out">✓ Vault scanned: 12 notes, 4,200 tokens</span></div>
-      <div><span class="out">✓ Response generated in 2.1s (local GPU)</span></div>
-      <div><span class="out">✓ Output saved → vault/output/summary_240428.md</span></div>
-      <div><span class="comment"># 외부 API 호출 0건, 비용 $0, 데이터 로컬 유지</span></div>
-    </div>
-  </div>
-
-  <div style="display: grid; grid-template-columns: 1fr 48px 1fr 48px 1fr; align-items: stretch; gap: 0; margin-top: 36px; flex: 1;">
-    <div class="flow-box" style="padding: 28px 26px;">
-      <div class="ftag" style="font-size: 19px;">STAGE 1 · INPUT</div>
-      <h3 style="font-size: 30px;">Obsidian Vault</h3>
-      <div class="fdesc" style="font-size: 21px;">마크다운 노트에서 컨텍스트 추출. 백링크·태그를 따라 관련 문서를 자동 수집한다.</div>
-      <div style="margin-top: auto; padding-top: 12px; border-top: 1px solid var(--rule-soft); font-family: var(--font-mono); font-size: 17px; color: var(--fg-3);">.md · 링크 · 태그</div>
-    </div>
-    <div class="flow-arrow">
-      <svg viewBox="0 0 48 24" fill="none"><path d="M0 12 L40 12 M32 4 L40 12 L32 20" stroke="currentColor" stroke-width="1.5"/></svg>
-    </div>
-    <div class="flow-box" style="background: rgba(30,58,138,0.04); border-color: var(--accent-600); padding: 28px 26px;">
-      <div class="ftag" style="font-size: 19px;">STAGE 2 · PROCESS</div>
-      <h3 style="font-size: 30px;">Ollama + AntiGravity</h3>
-      <div class="fdesc" style="font-size: 21px;">작업 유형(분석·요약·코드)을 AntiGravity가 분류해 적합한 로컬 모델로 자동 라우팅.</div>
-      <div style="margin-top: auto; padding-top: 12px; border-top: 1px solid var(--rule-soft); font-family: var(--font-mono); font-size: 17px; color: var(--accent-600);">gemma · llama3.2 · qwen-coder</div>
-    </div>
-    <div class="flow-arrow">
-      <svg viewBox="0 0 48 24" fill="none"><path d="M0 12 L40 12 M32 4 L40 12 L32 20" stroke="currentColor" stroke-width="1.5"/></svg>
-    </div>
-    <div class="flow-box" style="border-color: var(--positive); padding: 28px 26px;">
-      <div class="ftag" style="color: var(--positive); font-size: 19px;">STAGE 3 · OUTPUT</div>
-      <h3 style="font-size: 30px;">Vault 자동 기록</h3>
-      <div class="fdesc" style="font-size: 21px;">생성된 요약·분석·태그를 다시 Obsidian으로. 지식 그래프가 유기적으로 성장.</div>
-      <div style="margin-top: auto; padding-top: 12px; border-top: 1px solid var(--rule-soft); font-family: var(--font-mono); font-size: 17px; color: var(--positive);">summary.md · backlinks</div>
-    </div>
-  </div>
-  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-  <div class="pageno">05 / 08</div>
-</section>
-
-<!-- ═══ Slide 06 — Experiments ═══ -->
-<section class="slide" data-label="06 Experiments">
-  <div class="top-rule">
-    <span>06 · EXPERIMENTS</span>
-    <span>TRIED · TESTED · DROPPED</span>
-  </div>
-  <h2 class="slide-h2" style="margin-top: 36px; font-size: 54px; line-height: 1.1;">
-    추천 스택보다 직접 바꿔보며 세운 기준이 더 중요했다.</h2>
-  <p class="slide-body" style="margin-top: 32px; font-size: 23px; color: var(--fg-2); line-height: 1.58; max-width: 56ch;">
-    "이게 좋다"는 말을 그대로 믿지 않고 같은 입력으로 직접 비교했다. 실제로는 처음에 잡은 스택 중 그대로 남은 게 거의 없었다. <strong style="color: var(--fg-1);">교체하고 제거하는 과정에서 기준이 더 분명해졌다.</strong>
-  </p>
-
-  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; flex: 1; margin-top: 44px; align-items: start;">
-
-    <!-- Experiment 01 · 모델 비교 -->
-    <div class="exp-card">
-      <div class="exp-tag">EXPERIMENT 01 · 모델 비교</div>
-      <div class="exp-title">3개 모델, 같은 작업으로 직접 돌리기</div>
-      <div class="exp-body">
-        <strong>무엇을:</strong> Llama 3.2 (3.2B) · Gemma 4 E4B (4B) · Qwen2.5-Coder (7B)
-        <br/><strong>어떻게:</strong> 같은 입력 3종으로 응답 품질과 속도를 직접 비교.
+    <!-- 3. STACK -->
+    <section class="slide soft" data-label="Stack">
+      <div class="top-rule">
+        <span>Local AI Agent</span>
+        <span>Stack</span>
       </div>
-      <div class="exp-result">
-        결과: 텍스트 분석은 Gemma, 코드는 Qwen, 일반 추론은 Llama가 더 잘 맞았다. 단일 모델로 전부 처리하는 방식은 비효율적이라는 걸 확인했다.
-      </div>
-      <div class="exp-takeaway">→ "큰 모델 1개"보다 "작은 모델 여럿 + 라우팅".</div>
-    </div>
-
-    <!-- Experiment 02 · 양자화 -->
-    <div class="exp-card">
-      <div class="exp-tag">EXPERIMENT 02 · 양자화</div>
-      <div class="exp-title">같은 모델을 4-bit / 8-bit로 비교</div>
-      <div class="exp-body">
-        <strong>무엇을:</strong> Llama 3.2 동일 모델, 양자화 수준만 변경.
-        <br/><strong>어떻게:</strong> 동일 입력으로 응답 시간·메모리·품질 차이를 비교.
-      </div>
-      <div class="exp-result">
-        결과: 4-bit가 더 빠르고 메모리도 적게 썼다. 일반 Q&amp;A는 차이가 작았지만, 코드 작업에선 8-bit가 더 안정적이었다.
-      </div>
-      <div class="exp-takeaway">→ 양자화 수준도 작업 유형별로 다르게.</div>
-    </div>
-
-    <!-- Experiment 03 · 시행착오 -->
-    <div class="exp-card">
-      <div class="exp-tag">EXPERIMENT 03 · 시행착오</div>
-      <div class="exp-title">썼다 뺀 것들</div>
-      <div class="exp-body">
-        <strong>GPT4ALL → Ollama:</strong> 모델 관리·CLI 통합 한계.
-        <br/><strong>13B → 3-4B 양자화:</strong> 응답 시간이 비실용적이라 다운사이즈.
-        <br/><strong>직접 짠 프롬프트 체인 → AntiGravity:</strong> 분기·상태 관리 복잡.
-      </div>
-      <div class="exp-result">
-        결과: 처음 정답처럼 보이던 도구들이 대부분 교체됐다. 비교·교체·제거 자체가 학습 과정의 본체였다.
-      </div>
-      <div class="exp-takeaway">→ 빼본 것이 가장 큰 배움이었다.</div>
-    </div>
-
-  </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-  <div class="pageno">06 / 08</div>
-</section>
-
-<!-- ═══ Slide 07 — Hands-on Extension ═══ -->
-<section class="slide soft" data-label="07 Extension">
-  <div class="top-rule">
-    <span>07 · HANDS-ON</span>
-    <span>VS CODE EXTENSION</span>
-  </div>
-  <div style="display: grid; grid-template-columns: 1fr 460px; gap: 72px; flex: 1; padding-top: 36px; align-items: center; justify-content: start;">
-
-    <!-- 좌: 텍스트 + 기능 카드 -->
-    <div style="display: flex; flex-direction: column; min-height: 0;">
-      <div class="meta-cap" style="margin-bottom: 18px; font-size: 18px;">영상 너머의 한 걸음</div>
-      <h2 class="slide-h2" style="font-size: 56px; line-height: 1.08;">노트 환경에 머물던 로컬 AI를 IDE까지 확장해봤다.</h2>
-      <p class="slide-body" style="margin-top: 36px; max-width: 31ch; font-size: 24px; line-height: 1.56;">
-        영상이 끝난 자리에서 VS Code 마켓플레이스의
-        <strong style="color: var(--fg-1);">Connect AI</strong> 익스텐션을 설치해 편집기 안에서 직접 Ollama 모델과 대화했다.
-        파이프라인 바깥에서 돌던 로컬 AI를 IDE 컨텍스트 안으로 끌어들이는 시도였다.
-      </p>
-      <p class="slide-body" style="margin-top: 28px; max-width: 32ch; font-size: 20px; color: var(--fg-3); font-style: italic;">
-        같은 노트 컨텍스트를 코드 작성 환경에서도 재사용했다. 노트와 코드가 같은 워크플로우 안으로 들어왔다.
-      </p>
-
-      <div style="margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
-        <div style="padding: 18px 20px; background: var(--paper-100); border-top: 2px solid var(--accent-600);">
-          <div style="font-family: var(--font-mono); font-size: 16px; letter-spacing: 0.1em; color: var(--accent-600); margin-bottom: 6px;">기능 01</div>
-          <div style="font-family: var(--font-sans); font-size: 23px; color: var(--fg-1); font-weight: 600;">지식 폴더 선택</div>
-          <div style="font-family: var(--font-sans); font-size: 19px; color: var(--fg-2); margin-top: 5px; line-height: 1.5;">Obsidian Vault 직접 연결</div>
+      <div style="display:flex;gap:56px;flex:1;padding-top:32px;">
+        <div style="flex:1;display:flex;flex-direction:column;">
+          <div>
+            <div class="meta-cap" style="margin-bottom:14px;">기술 스택 구성</div>
+            <h2 class="slide-h2" style="font-size:52px;">Obsidian + Ollama<br>+ AntiGravity</h2>
+          </div>
+          <div class="stack-row">
+            <div class="stack-item">
+              <div class="stack-icon">OBS</div>
+              <div>
+                <div class="stack-name">Obsidian</div>
+                <div class="stack-role">노트 컨텍스트 소스</div>
+                <div class="stack-desc">마크다운 기반 개인 지식 관리 툴. 현재 작업 중인 노트가 AI 질문의 컨텍스트가 된다</div>
+              </div>
+            </div>
+            <div class="stack-item">
+              <div class="stack-icon">OLL</div>
+              <div>
+                <div class="stack-name">Ollama</div>
+                <div class="stack-role">로컬 LLM 실행 엔진</div>
+                <div class="stack-desc">llama3.2:3b 모델을 로컬에서 구동. REST API 형태로 AntiGravity에 연결</div>
+              </div>
+            </div>
+            <div class="stack-item" style="background:rgba(30,58,138,0.04);border-color:var(--accent-100);">
+              <div class="stack-icon" style="color:var(--accent-600);">AGV</div>
+              <div>
+                <div class="stack-name">AntiGravity</div>
+                <div class="stack-role">Obsidian AI 플러그인 (연결 허브)</div>
+                <div class="stack-desc">Obsidian과 Ollama를 연결하는 플러그인. 노트 내용을 프롬프트에 자동 삽입하여 컨텍스트 인식 AI 응답 생성</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div style="padding: 18px 20px; background: var(--paper-100); border-top: 2px solid var(--accent-600);">
-          <div style="font-family: var(--font-mono); font-size: 16px; letter-spacing: 0.1em; color: var(--accent-600); margin-bottom: 6px;">기능 02</div>
-          <div style="font-family: var(--font-sans); font-size: 23px; color: var(--fg-1); font-weight: 600;">GitHub 연결</div>
-          <div style="font-family: var(--font-sans); font-size: 19px; color: var(--fg-2); margin-top: 5px; line-height: 1.5;">레포 컨텍스트 주입</div>
-        </div>
-        <div style="padding: 18px 20px; background: var(--paper-100); border-top: 2px solid var(--positive);">
-          <div style="font-family: var(--font-mono); font-size: 16px; letter-spacing: 0.1em; color: var(--positive); margin-bottom: 6px;">기능 03</div>
-          <div style="font-family: var(--font-sans); font-size: 23px; color: var(--fg-1); font-weight: 600;">AntiGravity 연동</div>
-          <div style="font-family: var(--font-sans); font-size: 19px; color: var(--fg-2); margin-top: 5px; line-height: 1.5;">파이프라인 그대로 연결</div>
-        </div>
-        <div style="padding: 18px 20px; background: var(--paper-100); border-top: 2px solid var(--fg-3);">
-          <div style="font-family: var(--font-mono); font-size: 16px; letter-spacing: 0.1em; color: var(--fg-3); margin-bottom: 6px;">모델 선택</div>
-          <div style="font-family: var(--font-sans); font-size: 23px; color: var(--fg-1); font-weight: 600;">드롭다운 교체</div>
-          <div style="font-family: var(--font-sans); font-size: 19px; color: var(--fg-2); margin-top: 5px; line-height: 1.5;">gemma · llama · qwen</div>
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+          <img src="localai/img/connect-ai-extension.jpg"
+               alt="AntiGravity 익스텐션 연결 화면"
+               style="width:100%;max-height:680px;object-fit:contain;border-radius:var(--r-3);border:1px solid var(--rule-soft);box-shadow:var(--shadow-3);" />
         </div>
       </div>
-    </div>
+      <div class="pageno">03 / 06</div>
+      <div class="pageno-mark">HK</div>
+    </section>
 
-    <!-- 우: 실제 스크린샷 -->
-    <div style="display: flex; align-items: center; justify-content: center;">
-      <div style="background: #0f1117; border-radius: 22px; padding: 7px;
-                  box-shadow: 0 20px 56px rgba(0,0,0,0.32), 0 0 0 1px rgba(80,220,120,0.15);">
-        <img src="localai/img/connect-ai-extension.jpg" alt="Connect AI VS Code Extension"
-             style="height: 600px; width: auto; max-width: 100%; border-radius: 16px; display: block;" />
+    <!-- 4. WORKFLOW -->
+    <section class="slide" data-label="Workflow">
+      <div class="top-rule">
+        <span>Local AI Agent</span>
+        <span>Workflow</span>
       </div>
-    </div>
-
-  </div>
-  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">[ HK ]</a>
-  <div class="pageno">07 / 08</div>
-</section>
-
-<!-- ═══ Slide 08 — What I Want to Learn Next ═══ -->
-<section class="slide s-close" data-label="08 Next">
-  <div class="top-rule">
-    <span>08 · WHAT'S NEXT</span>
-    <span>OPEN QUESTIONS</span>
-  </div>
-  <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 64px; flex: 1; padding-top: 40px; align-items: stretch;">
-
-    <!-- 좌: 깨달음 + 자세 -->
-    <div style="display: flex; flex-direction: column; justify-content: center; min-height: 0;">
-      <div class="pull">
-        이 실험을 통해 모델 성능보다 <em>워크플로우 연결 방식</em>이
-        사용 경험에 더 큰 영향을 준다는 걸 확인했다.
+      <div style="display:flex;gap:56px;flex:1;padding-top:32px;">
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+          <img src="localai/img/connect-ai-lab.jpg"
+               alt="AI Lab 워크플로우 실제 화면"
+               style="width:100%;max-height:680px;object-fit:contain;border-radius:var(--r-3);border:1px solid var(--rule-soft);box-shadow:var(--shadow-3);" />
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+          <div>
+            <div class="meta-cap" style="margin-bottom:14px;">실제 워크플로우</div>
+            <h2 class="slide-h2" style="font-size:50px;margin-bottom:32px;">노트 컨텍스트 →<br>AI 답변 → 노트 저장</h2>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0;">
+            <div style="display:flex;gap:24px;align-items:flex-start;padding:22px 0;border-bottom:1px solid var(--rule-soft);">
+              <div style="font-family:var(--font-mono);font-size:18px;color:var(--accent-600);width:28px;flex-shrink:0;font-weight:700;padding-top:3px;">1</div>
+              <div>
+                <div style="font-family:var(--font-sans);font-weight:600;font-size:25px;color:var(--fg-1);margin-bottom:5px;">컨텍스트 주입</div>
+                <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);line-height:1.6;">현재 열린 노트 내용이 자동으로 프롬프트에 삽입됨. 노트 주제와 관련된 AI 응답 생성</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:24px;align-items:flex-start;padding:22px 0;border-bottom:1px solid var(--rule-soft);">
+              <div style="font-family:var(--font-mono);font-size:18px;color:var(--accent-600);width:28px;flex-shrink:0;font-weight:700;padding-top:3px;">2</div>
+              <div>
+                <div style="font-family:var(--font-sans);font-weight:600;font-size:25px;color:var(--fg-1);margin-bottom:5px;">로컬 추론</div>
+                <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);line-height:1.6;">Ollama가 llama3.2:3b 모델로 완전 로컬 추론. 네트워크 요청 없음. 평균 2.1초 응답</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:24px;align-items:flex-start;padding:22px 0;">
+              <div style="font-family:var(--font-mono);font-size:18px;color:var(--accent-600);width:28px;flex-shrink:0;font-weight:700;padding-top:3px;">3</div>
+              <div>
+                <div style="font-family:var(--font-sans);font-weight:600;font-size:25px;color:var(--fg-1);margin-bottom:5px;">노트 저장</div>
+                <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);line-height:1.6;">AI 응답을 Obsidian 노트에 직접 삽입하여 지식 관리 시스템에 통합. 모든 데이터 로컬 보존</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <p style="margin-top: 40px; max-width: 34ch; font-family: var(--font-sans); font-size: 24px; line-height: 1.55; color: var(--fg-2);">
-        영상을 따라 만든 뒤에도 끝나지 않았다. 노트, 검색, 실행 환경을 실제로 연결해보면서
-        <strong style="color: var(--fg-1);">모델 자체보다 어떤 지점에 붙이느냐가 더 중요하다</strong>는 걸 배웠다.
-      </p>
-      <p style="margin-top: 40px; max-width: 34ch; font-family: var(--font-sans); font-size: 20px; line-height: 1.55; color: var(--accent-600); font-weight: 500;">
-        다음으로 더 살펴보고 싶은 주제들
-      </p>
-    </div>
+      <div class="pageno">04 / 06</div>
+      <div class="pageno-mark">HK</div>
+    </section>
 
-    <!-- 우: 호기심 카드 4개 -->
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; min-height: 0;">
-      <div class="cur-card">
-        <div class="cur-tag">NEXT 01 · RAG</div>
-        <div class="cur-title">Vault 전체를 벡터 DB로</div>
-        <div class="cur-body">노트 검색을 키워드가 아닌 의미 기반 retrieval로. 질문에 가장 관련 있는 노트를 자동 컨텍스트로 주입하는 RAG 파이프라인 구축.</div>
-        <div class="cur-q">한국어 노트에 잘 맞는 임베딩 모델은 뭘까? bge-m3 vs Qwen-embedding 비교 해보고 싶다.</div>
+    <!-- 5. RESULT -->
+    <section class="slide soft" data-label="Result">
+      <div class="top-rule">
+        <span>Local AI Agent</span>
+        <span>Result</span>
       </div>
-      <div class="cur-card">
-        <div class="cur-tag">NEXT 02 · MULTI-AGENT</div>
-        <div class="cur-title">역할 분담형 에이전트</div>
-        <div class="cur-body">단일 모델이 아닌 분석가·리뷰어·실행자로 역할 분리. LangGraph / CrewAI 같은 프레임워크 vs 직접 구현, 어느 쪽이 통제하기 좋은지.</div>
-        <div class="cur-q">에이전트 간 메시지 패싱과 상태 관리는 어떻게 깔끔하게 풀까?</div>
+      <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;">
+        <div>
+          <div class="meta-cap" style="margin-bottom:14px;">실험 결과</div>
+          <h2 class="slide-h2" style="font-size:54px;">클라우드 없이 돌아가는 AI 워크플로우</h2>
+        </div>
+        <div class="result-grid">
+          <div class="result-card">
+            <div class="result-val">2.1<span class="result-unit">s</span></div>
+            <div class="result-label">평균 응답 시간</div>
+            <div style="font-family:var(--font-sans);font-size:19px;color:var(--fg-3);margin-top:8px;line-height:1.5;">M2 MacBook Air 기준. 짧은 컨텍스트 쿼리에서 측정</div>
+          </div>
+          <div class="result-card">
+            <div class="result-val">3.2<span class="result-unit">B</span></div>
+            <div class="result-label">모델 파라미터</div>
+            <div style="font-family:var(--font-sans);font-size:19px;color:var(--fg-3);margin-top:8px;line-height:1.5;">llama3.2:3b — RAM 4GB 이하로 구동 가능한 경량 모델</div>
+          </div>
+          <div class="result-card">
+            <div class="result-val" style="font-size:42px;">완전<br>오프라인</div>
+            <div class="result-label">네트워크 의존성</div>
+            <div style="font-family:var(--font-sans);font-size:19px;color:var(--fg-3);margin-top:8px;line-height:1.5;">모델 다운로드 후 인터넷 연결 없이 전체 파이프라인 동작</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px;">
+          <div style="padding:22px 28px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--bg);">
+            <div style="font-family:var(--font-mono);font-size:15px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:6px;">운용 비용</div>
+            <div style="font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--fg-1);">$0 / 월</div>
+            <div style="font-family:var(--font-sans);font-size:19px;color:var(--fg-3);margin-top:4px;">API 비용 없음. 전력 비용만 존재</div>
+          </div>
+          <div style="padding:22px 28px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--bg);">
+            <div style="font-family:var(--font-mono);font-size:15px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:6px;">데이터 보안</div>
+            <div style="font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--fg-1);">100% 로컬</div>
+            <div style="font-family:var(--font-sans);font-size:19px;color:var(--fg-3);margin-top:4px;">개인 노트가 외부 서버로 전송되지 않음</div>
+          </div>
+        </div>
       </div>
-      <div class="cur-card">
-        <div class="cur-tag">NEXT 03 · QUANTIZATION</div>
-        <div class="cur-title">양자화 · 추론 최적화</div>
-        <div class="cur-body">GGUF, AWQ, 4-bit/8-bit 비교. 동일 모델이라도 양자화 방식에 따라 속도·메모리·품질 trade-off가 달라지는 지점을 직접 측정하고 싶다.</div>
-        <div class="cur-q">CPU-only 추론에서 어디까지 실용적 응답 시간을 뽑아낼 수 있을까?</div>
+      <div class="pageno">05 / 06</div>
+      <div class="pageno-mark">HK</div>
+    </section>
+
+    <!-- 6. LEARNING -->
+    <section class="slide" data-label="Learning">
+      <div class="top-rule">
+        <span>Local AI Agent</span>
+        <span>What I Learned</span>
       </div>
-      <div class="cur-card">
-        <div class="cur-tag">NEXT 04 · FINE-TUNING</div>
-        <div class="cur-title">도메인 특화 LoRA</div>
-        <div class="cur-body">LoRA로 특정 분야(제조 데이터 분석·한국어 기술문서)에 미세조정. 베이스 모델 선택부터 데이터셋 구성, 평가 지표까지 한 사이클 돌려보고 싶다.</div>
-        <div class="cur-q">소량 데이터로도 의미 있는 도메인 적응이 어디까지 가능한가?</div>
+      <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;">
+        <div>
+          <div class="meta-cap" style="margin-bottom:14px;">로컬 모델의 현실</div>
+          <h2 class="slide-h2" style="font-size:52px;">한계를 알면서도 얻은 것들</h2>
+        </div>
+        <div class="learn-list">
+          <div class="learn-item">
+            <div class="learn-idx">01</div>
+            <div class="learn-body">
+              <div class="learn-title">긴 컨텍스트의 약점</div>
+              <div class="learn-desc">2000 토큰 이상의 노트를 컨텍스트로 주면 응답 품질이 급격히 하락. 3B 파라미터 모델의 컨텍스트 윈도우 활용 능력 한계. 긴 노트는 청킹 전처리가 필수.</div>
+            </div>
+          </div>
+          <div class="learn-item">
+            <div class="learn-idx">02</div>
+            <div class="learn-body">
+              <div class="learn-title">한국어 품질 격차</div>
+              <div class="learn-desc">영어 프롬프트 대비 한국어 응답 품질이 눈에 띄게 낮다. 학습 데이터 불균형이 원인. 한국어 특화 로컬 모델(EXAONE, EEVE 등) 대안 탐색이 필요.</div>
+            </div>
+          </div>
+          <div class="learn-item">
+            <div class="learn-idx">03</div>
+            <div class="learn-body">
+              <div class="learn-title">그래도 얻은 것 — 실용적 실험 정신</div>
+              <div class="learn-desc">완벽하지 않아도 동작하는 시스템을 직접 구축했다. "가능성의 경계"를 손으로 만져본 경험. 클라우드 의존 없이 AI 툴을 조립하는 능력이 생겼다.</div>
+            </div>
+          </div>
+          <div class="learn-item">
+            <div class="learn-idx">04</div>
+            <div class="learn-body">
+              <div class="learn-title">작은 모델, 명확한 태스크</div>
+              <div class="learn-desc">범용 질문보다 "이 노트의 요점을 3줄로 정리해줘" 같은 명확한 태스크에서 3B 모델도 충분히 유용하다. 모델 크기보다 태스크 설계가 더 중요.</div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+      <div class="pageno">06 / 06</div>
+      <div class="pageno-mark">HK</div>
+    </section>
 
-  </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none; color:inherit;">김희태</a>
-  <div class="pageno">08 / 08</div>
-</section>
-
-</deck-stage>
-
-<a href="index.html" style="position:fixed;top:22px;left:22px;z-index:2147483647;display:flex;align-items:center;gap:6px;padding:8px 16px 8px 12px;border-radius:999px;background:rgba(20,20,24,0.85);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.12);color:#fff;text-decoration:none;font-family:var(--font-mono);font-size:13px;letter-spacing:0.08em;transition:background 180ms ease,border-color 180ms ease;" onmouseenter="this.style.background='rgba(40,40,48,0.95)';this.style.borderColor='rgba(255,255,255,0.28)'" onmouseleave="this.style.background='rgba(20,20,24,0.85)';this.style.borderColor='rgba(255,255,255,0.12)'"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>포트폴리오</a>
-
+  </deck-stage>
 </body>
 </html>
