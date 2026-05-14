@@ -215,3 +215,162 @@ def _make_driver(headless=True, browser="chrome"):
 ```
 
 → ChromeDriver/Chrome 버전 불일치로 인한 자동화 실패 방지
+
+---
+
+## 7. Obsidian RAG — 섹터 필터 2단계 검색
+
+과거 220개 Obsidian .md 포스트를 chromadb에 벡터화하고, 현재 종목과 유사한 포스트 2개를 LLM 프롬프트에 주입해 Few-shot 품질을 강화:
+
+```python
+# blog_agent/rag/retriever.py
+def get_similar_posts(stock_name: str, sector: str = "", top_k: int = 2) -> list[dict]:
+    """섹터 우선 검색 → 전체 폴백"""
+    query = f"{stock_name} 주가 상한가 분석"
+    # 1단계: 같은 섹터 내 검색
+    if sector:
+        results = _collection.query(
+            query_texts=[query],
+            where={"sector": sector},
+            n_results=top_k,
+        )
+        if results["documents"][0]:
+            return _format(results)
+    # 2단계: 전체 검색 (섹터 필터 없이)
+    results = _collection.query(query_texts=[query], n_results=top_k)
+    return _format(results)
+```
+
+- 임베딩 모델: `nomic-embed-text` (Ollama)
+- 섹터 필터: chromadb `where` 조건으로 같은 섹터 우선 → 없으면 전체 폴백
+- 결과: `_build_user_prompt` 내 `[유사 포스트 참고]` 섹션으로 주입
+
+---
+
+## 8. Gemini 무료 검증 (AI_MODE 무관)
+
+`gemini-2.0-flash` (Google AI Studio 무료 티어)로 블로그 최종 검증. `GEMINI_API_KEY` 있으면 AI_MODE에 관계없이 자동 활성화:
+
+```python
+# blog_agent/generator/gemini_validator.py
+def validate_with_gemini(
+    stock_name: str, stock_code: str, change_rate: float,
+    financial_data: str, raw_content: str,
+    market_cap: str = "", pbr: str = "", eps: str = "", per: str = "",
+) -> Optional[dict]:
+    """
+    Google AI Studio 무료 티어(gemini-2.0-flash)로 블로그 검증.
+    GEMINI_API_KEY 없으면 None 반환 (건너뜀).
+    검증 기준: 종목 혼동 / 수치 환각(30%+) / 종목코드 정확성 / 사실 창작 / 밸류에이션 모순
+    """
+    if not GEMINI_API_KEY:
+        return None
+    ...
+    return {"pass": bool, "critical": bool, "score": int, "issues": list[str]}
+```
+
+- `critical=True`: 종목 혼동·수치 30%+ 오류 등 배포 불가 수준 → Telegram 알림 + 배포 차단
+- `score`: 0~100점, Telegram 알림에 포함
+- 무료 한도: 15 RPM / 1M tokens/day — 검증 전용으로 충분
+
+---
+
+## 9. 종목코드 기반 네이버 금융 뉴스
+
+종목명 텍스트 검색은 동명이종 혼재(에이프로젠 vs 에이프로젠바이오로직스 등) 문제 → 종목코드 6자리 파라미터로 정확 매칭:
+
+```python
+# blog_agent/crawler/news_crawler.py
+NAVER_FINANCE_NEWS_URL = "https://finance.naver.com/item/news.naver?code={code}&page=1"
+
+async def _fetch_naver_finance_news(session, stock_code: str, stock_name: str, max_articles: int):
+    """종목코드로 네이버 금융 종목탭 뉴스 크롤 — 동명이종 혼재 차단"""
+    url = NAVER_FINANCE_NEWS_URL.format(code=stock_code)
+    # ... 파싱
+    articles.append({
+        "source": f"naver_finance:{stock_code}",  # 트레이서빌리티
+        ...
+    })
+```
+
+- 소스 태그 `naver_finance:{code}` → 어떤 경로로 수집된 뉴스인지 추적 가능
+- 기존 Google News RSS + 네이버 검색에 추가되는 3번째 뉴스 소스
+
+---
+
+## 10. 이슈 점수 계산 (calculate_issue_score)
+
+상한가 종목 중 실제 블로그를 작성할 가치가 있는 종목을 자동 선정합니다. generic 콘텐츠(뉴스 없는 테마주 추종) 방지가 핵심 목적입니다.
+
+**점수 공식**:
+```
+IssueScore = 거래량 가중치(30%) + 뉴스 수 가중치(40%) + 네이버 검색량(30%)
+통과 조건: IssueScore >= 30 AND 직접 관련 뉴스 >= 1건
+```
+
+```python
+# blog_agent/analyzer/issue_scorer.py
+def calculate_issue_score(
+    stock_name: str,
+    stock_code: str,
+    volume: int,
+    volume_avg: int,
+    news_count: int,
+    search_volume: int,
+) -> dict:
+    """
+    이슈 점수 계산 (0~100점).
+    30점 미만 또는 직접 관련 뉴스 없으면 should_write()=False → 스킵.
+    """
+    # 거래량 가중치 (30%) — 평균 대비 배수
+    volume_ratio = volume / max(volume_avg, 1)
+    if volume_ratio >= 10:
+        volume_score = 30
+    elif volume_ratio >= 5:
+        volume_score = 20
+    elif volume_ratio >= 2:
+        volume_score = 10
+    else:
+        volume_score = 0
+
+    # 뉴스 수 가중치 (40%) — 직접 관련 뉴스
+    if news_count >= 5:
+        news_score = 40
+    elif news_count >= 3:
+        news_score = 30
+    elif news_count >= 1:
+        news_score = 20
+    else:
+        news_score = 0  # 직접 뉴스 없으면 0 → 스킵 트리거
+
+    # 네이버 검색량 가중치 (30%)
+    if search_volume >= 1000:
+        search_score = 30
+    elif search_volume >= 500:
+        search_score = 20
+    elif search_volume >= 100:
+        search_score = 10
+    else:
+        search_score = 0
+
+    total = volume_score + news_score + search_score
+
+    return {
+        "score": total,
+        "should_write": total >= ISSUE_SCORE_MIN and news_count >= 1,
+        "breakdown": {
+            "volume": volume_score,
+            "news": news_score,
+            "search": search_score,
+        },
+    }
+```
+
+**실측 예시 (2026-05-14)**:
+
+| 종목 | 거래량 점수 | 뉴스 점수 | 검색 점수 | 합계 | 선정 |
+|---|---|---|---|---|---|
+| 천일고속 | 30 | 40 | 20 | **90점** | ✅ |
+| 동양고속 | 30 | 40 | 20 | **90점** | ✅ |
+| SK네트웍스 | 20 | 40 | 21 | **81점** | ✅ |
+| (기타 18개) | ... | ... | ... | < 30 또는 뉴스 0 | ❌ 스킵 |
