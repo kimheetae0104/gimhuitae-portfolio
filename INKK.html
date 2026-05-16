@@ -611,12 +611,12 @@
 
       <div style="background:var(--paper-100);border:1px solid var(--rule-soft);padding:20px 24px;font-family:var(--font-mono);font-size:16px;line-height:2;color:var(--fg-3);">
         <span style="color:var(--fg-1);">[사용자]</span> → <span style="color:var(--accent-600);">Next.js 16</span> (App Router + RSC)<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── /generate &nbsp;← LLM 생성 · 크레딧 차감/롤백<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── /result &nbsp;&nbsp;&nbsp;← 후편집 · PNG 저장<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── 생성 API &nbsp;&nbsp;← LLM 생성 · 크레딧 차감/롤백<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── 결과 페이지 ← 후편집 · PNG 저장<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span style="color:var(--accent-600);">Supabase</span>&nbsp;&nbsp;&nbsp;&nbsp;← Auth · Postgres · RLS<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span style="color:var(--accent-600);">LLM</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Groq / Claude (전환 가능)<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span style="color:var(--accent-600);">Stripe</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← 크레딧 결제 · webhook 멱등<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span style="color:var(--accent-600);">Upstash</span>&nbsp;&nbsp;&nbsp;&nbsp;← IP 기반 rate limit
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span style="color:var(--accent-600);">Rate Limit</span>&nbsp;← 요청 횟수 제한
       </div>
 
       <div class="arch-list" style="margin-top:4px;">
@@ -844,7 +844,7 @@
           3라운드에 걸쳐 수정: 1차 중복 차단 → 2차 race condition 발견 → 3차 DB 함수 타입 버그 발견.
         </div>
         <div class="csolution">
-          <strong>해결:</strong> DB 레벨 멱등 클레임 패턴 도입. status 컬럼 + stale 자동 복구 타임아웃. 직접 짠 SQL도 반드시 검증 대상이다.
+          <strong>해결:</strong> DB 레벨 멱등 클레임 패턴 도입. 멱등 상태 관리 + stale 자동 복구. 직접 짠 SQL도 반드시 검증 대상이다.
         </div>
       </div>
 
