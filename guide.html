@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<title>Design Guide — 김희태 Portfolio</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="shared/tokens.css"/>
+<style>
+/* ── Layout ── */
+body { background:#f4f4f5; }
+.guide { max-width:960px; margin:0 auto; padding:80px 48px 120px; }
+
+/* ── Section ── */
+.g-section { margin-bottom:80px; }
+.g-section + .g-section { border-top:1px solid rgba(14,14,16,0.1); padding-top:80px; }
+.g-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  margin-bottom: 8px;
+}
+.g-title {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  color: var(--ink-900);
+  margin-bottom: 40px;
+}
+.g-sub {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-500);
+  margin-bottom: 32px;
+  max-width: 60ch;
+}
+
+/* ── Color Swatches ── */
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+.swatch {
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(14,14,16,0.08);
+}
+.swatch-color { height: 64px; }
+.swatch-info { padding: 10px 12px; background: #fff; }
+.swatch-name { font-family: var(--font-sans); font-size: 13px; font-weight: 600; color: var(--ink-900); }
+.swatch-hex  { font-family: var(--font-mono); font-size: 11px; color: var(--ink-400); margin-top: 2px; }
+
+.swatch-row { display: flex; gap: 6px; margin-bottom: 16px; align-items: center; }
+.swatch-block { width: 40px; height: 40px; border-radius: 4px; border: 1px solid rgba(14,14,16,0.08); flex-shrink:0; }
+.swatch-desc { font-family: var(--font-mono); font-size: 12px; color: var(--ink-500); }
+
+/* ── Type Samples ── */
+.type-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 24px;
+  padding: 20px 0;
+  border-top: 1px solid rgba(14,14,16,0.07);
+  align-items: baseline;
+}
+.type-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-400); line-height: 1.6; }
+.type-sample { color: var(--ink-900); }
+
+/* ── Spacing ── */
+.space-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 0;
+  border-top: 1px solid rgba(14,14,16,0.06);
+}
+.space-bar { background: var(--accent-400); height: 8px; border-radius: 2px; flex-shrink:0; }
+.space-label { font-family: var(--font-mono); font-size: 12px; color: var(--ink-500); min-width: 120px; }
+.space-val { font-family: var(--font-mono); font-size: 12px; color: var(--ink-400); }
+
+/* ── Motion ── */
+.motion-demo {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.motion-box {
+  width: 56px; height: 56px;
+  background: var(--ink-900);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.motion-box.fast   { transition: transform var(--dur-fast)  var(--ease-out); }
+.motion-box.base   { transition: transform var(--dur-base)  var(--ease-out); }
+.motion-box.slow   { transition: transform var(--dur-slow)  var(--ease-out); }
+.motion-box.inout  { transition: transform var(--dur-slow)  var(--ease-in-out); }
+.motion-box:hover  { transform: translateY(-12px); }
+
+/* ── Components ── */
+.comp-group { margin-bottom: 48px; }
+.comp-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-400); margin-bottom: 16px; }
+.comp-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-start; }
+
+/* Button */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+  text-decoration: none; cursor: pointer; border: 1px solid transparent;
+  transition: all var(--dur-base) var(--ease-out);
+}
+.btn-primary { background: var(--ink-900); color: #fff; border-color: var(--ink-900); }
+.btn-primary:hover { background: transparent; color: var(--ink-900); }
+.btn-ghost { background: transparent; color: var(--ink-500); border-color: rgba(14,14,16,0.2); }
+.btn-ghost:hover { border-color: var(--ink-700); color: var(--ink-900); }
+.btn-accent { background: var(--accent-600); color: #fff; border-color: var(--accent-600); }
+.btn-accent:hover { background: var(--accent-500); }
+
+/* Tag */
+.tag {
+  display: inline-flex; align-items: center;
+  padding: 4px 10px;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-500); border: 1px solid rgba(14,14,16,0.12);
+}
+
+/* Card */
+.card-demo {
+  width: 280px;
+  border: 1px solid rgba(14,14,16,0.08);
+  background: #fff;
+  overflow: hidden;
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+.card-demo:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+}
+.card-thumb {
+  aspect-ratio: 16/9;
+  background: linear-gradient(135deg, var(--ink-900), var(--ink-700));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.2em;
+}
+.card-body { padding: 16px 18px 18px; }
+.card-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-400); margin-bottom: 8px; }
+.card-title { font-weight: 600; font-size: 15px; line-height: 1.35; color: var(--ink-900); margin-bottom: 6px; }
+.card-desc { font-size: 13px; line-height: 1.55; color: var(--ink-500); }
+.card-tags { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(14,14,16,0.07); font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--ink-400); }
+
+/* Stat chip */
+.stat-chip {
+  display: inline-flex; flex-direction: column; align-items: flex-start;
+  padding: 14px 18px;
+  border: 1px solid rgba(14,14,16,0.1);
+  background: #fff;
+  min-width: 100px;
+}
+.stat-v { font-family: var(--font-sans); font-weight: 700; font-size: 32px; letter-spacing: -0.03em; color: var(--ink-900); line-height: 1; }
+.stat-k { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-400); margin-top: 6px; }
+
+/* Nav */
+.nav-demo {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 24px;
+  border: 1px solid rgba(14,14,16,0.08);
+  background: #fff;
+  margin-bottom: 8px;
+}
+.nav-logo { font-family: var(--font-mono); font-weight: 700; font-size: 14px; letter-spacing: 0.1em; color: var(--ink-900); }
+.nav-links { display: flex; gap: 28px; }
+.nav-link { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-400); text-decoration: none; }
+.nav-link.active { color: var(--ink-900); }
+
+/* Section head */
+.sechead-demo {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding-bottom: 16px; border-bottom: 1px solid rgba(14,14,16,0.1);
+  margin-bottom: 8px;
+}
+.sechead-label { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-400); }
+.sechead-count { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.14em; color: var(--ink-300); }
+
+/* ── Rules / DO-DONT ── */
+.rules { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.rule-box { padding: 20px 24px; border-radius: 6px; }
+.rule-do   { background: rgba(79,122,61,0.08); border-left: 3px solid #4F7A3D; }
+.rule-dont { background: rgba(181,51,30,0.07); border-left: 3px solid #B5331E; }
+.rule-head { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 10px; }
+.rule-do   .rule-head { color: #4F7A3D; }
+.rule-dont .rule-head { color: #B5331E; }
+.rule-box ul { padding-left: 16px; margin: 0; }
+.rule-box li { font-size: 13px; line-height: 1.7; color: var(--ink-600); margin-bottom: 4px; }
+
+/* ── Hero demo ── */
+.hero-demo {
+  background: #F8F7F4;
+  border: 1px solid rgba(14,14,16,0.08);
+  padding: 48px 56px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 60px;
+  align-items: end;
+  margin-bottom: 8px;
+}
+.hero-tagline { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-400); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+.hero-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-600); }
+.hero-h1 { font-weight: 700; font-size: 40px; line-height: 1.1; letter-spacing: -0.03em; color: var(--ink-900); margin-bottom: 16px; }
+.hero-sub { font-size: 15px; line-height: 1.75; color: var(--ink-500); max-width: 44ch; margin-bottom: 28px; }
+.hero-cta-row { display: flex; gap: 12px; }
+.hero-stats { display: flex; flex-direction: column; gap: 24px; align-items: flex-end; }
+.hero-stat { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.hstat-v { font-weight: 700; font-size: 36px; letter-spacing: -0.04em; color: var(--ink-900); line-height: 1; }
+.hstat-k { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-400); }
+</style>
+</head>
+<body>
+<div class="guide">
+
+  <!-- Header -->
+  <div style="margin-bottom:64px; padding-bottom:32px; border-bottom: 2px solid var(--ink-900);">
+    <div class="g-label">김희태 포트폴리오</div>
+    <div style="font-weight:700;font-size:48px;letter-spacing:-0.03em;color:var(--ink-900);line-height:1;margin-bottom:12px;">Design Guide</div>
+    <div style="font-family:var(--font-mono);font-size:12px;color:var(--ink-400);letter-spacing:0.1em;">v1.0 · 2026 · Plus Jakarta Sans + Space Mono</div>
+  </div>
+
+  <!-- 1. Design Philosophy -->
+  <div class="g-section">
+    <div class="g-label">01</div>
+    <div class="g-title">Design Philosophy</div>
+    <div class="rules">
+      <div class="rule-box rule-do">
+        <div class="rule-head">✓ 원칙</div>
+        <ul>
+          <li>숫자와 결과로 말한다 — 텍스트보다 지표 강조</li>
+          <li>여백이 콘텐츠다 — 빽빽하면 신뢰도 하락</li>
+          <li>포트폴리오 자체가 기술의 증명이다</li>
+          <li>단일 포인트 컬러 — 파란 액센트 하나만</li>
+          <li>엔지니어 정체성: 모노스페이스 폰트를 레이블에 사용</li>
+          <li>반응형 우선 — 모바일에서도 동작</li>
+        </ul>
+      </div>
+      <div class="rule-box rule-dont">
+        <div class="rule-head">✗ 금지</div>
+        <ul>
+          <li>스킬 퍼센트 바 (Python 90% — 무의미)</li>
+          <li>rainbow 태그 색상 — 단색 중립으로</li>
+          <li>15개 이상 프로젝트 나열</li>
+          <li>스톡 이미지, 플레이스홀더</li>
+          <li>과도한 애니메이션 — 정보 전달 목적만</li>
+          <li>border-radius 과다 사용 — 샤프한 엣지 선호</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Colors -->
+  <div class="g-section">
+    <div class="g-label">02</div>
+    <div class="g-title">Color System</div>
+    <div class="g-sub">단일 액센트 컬러(Ink Blue) + 중립 그레이 계열. 색상은 위계를 만들고, 주의를 끌어야 할 때만 쓴다.</div>
+
+    <div style="margin-bottom:32px;">
+      <div class="comp-label">배경 / 서피스</div>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background:#F8F7F4;"></div><div class="swatch-info"><div class="swatch-name">Page BG</div><div class="swatch-hex">#F8F7F4 — paper</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#FFFFFF; border-bottom:1px solid #eee;"></div><div class="swatch-info"><div class="swatch-name">Surface</div><div class="swatch-hex">#FFFFFF — card</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#F7F7F8;"></div><div class="swatch-info"><div class="swatch-name">BG Soft</div><div class="swatch-hex">#F7F7F8 — hover bg</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#EFEFF1;"></div><div class="swatch-info"><div class="swatch-name">BG Mute</div><div class="swatch-hex">#EFEFF1 — divider</div></div></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:32px;">
+      <div class="comp-label">텍스트 / Ink</div>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background:#0E0E10;"></div><div class="swatch-info"><div class="swatch-name">Ink 900</div><div class="swatch-hex">#0E0E10 — primary</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#2F2F33;"></div><div class="swatch-info"><div class="swatch-name">Ink 700</div><div class="swatch-hex">#2F2F33 — secondary</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#6B6B72;"></div><div class="swatch-info"><div class="swatch-name">Ink 500</div><div class="swatch-hex">#6B6B72 — tertiary</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#94949C;"></div><div class="swatch-info"><div class="swatch-name">Ink 400</div><div class="swatch-hex">#94949C — hint</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#BCBCC2;"></div><div class="swatch-info"><div class="swatch-name">Ink 300</div><div class="swatch-hex">#BCBCC2 — disabled</div></div></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:32px;">
+      <div class="comp-label">액센트 — Ink Blue (단 하나의 컬러)</div>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background:#1E3A8A;"></div><div class="swatch-info"><div class="swatch-name">Accent 600</div><div class="swatch-hex">#1E3A8A — primary CTA</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#2647B8;"></div><div class="swatch-info"><div class="swatch-name">Accent 500</div><div class="swatch-hex">#2647B8 — hover</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#4F6FE0;"></div><div class="swatch-info"><div class="swatch-name">Accent 400</div><div class="swatch-hex">#4F6FE0 — dark mode</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#DCE3F6;"></div><div class="swatch-info"><div class="swatch-name">Accent 100</div><div class="swatch-hex">#DCE3F6 — selection</div></div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="comp-label">다크 섹션 (About, Footer)</div>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background:#18181b;"></div><div class="swatch-info"><div class="swatch-name">Dark BG</div><div class="swatch-hex">#18181b</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#F4F4F6;"></div><div class="swatch-info"><div class="swatch-name">Dark FG</div><div class="swatch-hex">#F4F4F6</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:rgba(244,244,246,0.68); border:1px solid #eee;"></div><div class="swatch-info"><div class="swatch-name">Dark FG/68</div><div class="swatch-hex">rgba(F4F4F6, .68)</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Typography -->
+  <div class="g-section">
+    <div class="g-label">03</div>
+    <div class="g-title">Typography</div>
+    <div class="g-sub"><strong>Plus Jakarta Sans</strong> — 본문, 제목, UI 레이블 전반.<br/><strong>Space Mono</strong> — 메타데이터, 태그, 넘버링, 코드, 버튼 텍스트.</div>
+
+    <div class="type-row">
+      <div class="type-meta">Display<br/>Space Mono 700<br/>clamp(56–120px)</div>
+      <div class="type-sample" style="font-family:var(--font-mono);font-weight:700;font-size:clamp(40px,6vw,80px);line-height:1.05;letter-spacing:-0.01em;">문제 정의</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">H1<br/>Jakarta 700<br/>48–64px</div>
+      <div class="type-sample" style="font-weight:700;font-size:clamp(36px,5vw,56px);line-height:1.1;letter-spacing:-0.025em;">제조 AI 예측 모델링</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">H2<br/>Jakarta 600<br/>32px</div>
+      <div class="type-sample" style="font-weight:600;font-size:32px;line-height:1.2;letter-spacing:-0.02em;">열풍로 발열량 5분 예측</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">H3<br/>Jakarta 600<br/>22px</div>
+      <div class="type-sample" style="font-weight:600;font-size:22px;line-height:1.3;">프로젝트 개요 및 배경</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Body Lead<br/>Jakarta 400<br/>18px / 1.75</div>
+      <div class="type-sample" style="font-size:18px;line-height:1.75;color:var(--ink-500);">무엇을 예측하고 무엇을 자동화할지 먼저 정의한 뒤, 그 판단을 데이터와 시스템으로 구현합니다.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Body<br/>Jakarta 400<br/>15px / 1.6</div>
+      <div class="type-sample" style="font-size:15px;line-height:1.6;color:var(--ink-500);">고로 부대 설비 LHV 실시간 예측. COG 과잉 투입 패턴 발견.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Label / Tag<br/>Space Mono 400<br/>10–12px</div>
+      <div class="type-sample" style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-400);">№ 02 · 제조 AI · 2026.03</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Metric<br/>Jakarta 700<br/>40–52px</div>
+      <div class="type-sample" style="font-weight:700;font-size:48px;letter-spacing:-0.04em;color:var(--ink-900);">1.24M <span style="font-size:16px;letter-spacing:0.1em;font-family:var(--font-mono);color:var(--ink-400);">Nm³ / YEAR</span></div>
+    </div>
+  </div>
+
+  <!-- 4. Spacing -->
+  <div class="g-section">
+    <div class="g-label">04</div>
+    <div class="g-title">Spacing System</div>
+    <div class="g-sub">4px 기반 그리드. 모든 간격은 4의 배수. 토큰: <code>--s-1</code>(4px) ~ <code>--s-11</code>(192px)</div>
+    <div style="padding-top:8px;">
+      <div class="space-row"><div class="space-bar" style="width:4px;"></div><div class="space-label">--s-1</div><div class="space-val">4px — 아이콘 내부 간격</div></div>
+      <div class="space-row"><div class="space-bar" style="width:8px;"></div><div class="space-label">--s-2</div><div class="space-val">8px — 태그 패딩, 아이콘↔텍스트</div></div>
+      <div class="space-row"><div class="space-bar" style="width:12px;"></div><div class="space-label">--s-3</div><div class="space-val">12px — 카드 내부 소항목 간격</div></div>
+      <div class="space-row"><div class="space-bar" style="width:16px;"></div><div class="space-label">--s-4</div><div class="space-val">16px — 버튼 패딩, 카드 info 패딩</div></div>
+      <div class="space-row"><div class="space-bar" style="width:24px;"></div><div class="space-label">--s-5</div><div class="space-val">24px — 카드 gap, 태그↔타이틀</div></div>
+      <div class="space-row"><div class="space-bar" style="width:32px;"></div><div class="space-label">--s-6</div><div class="space-val">32px — 섹션 내 항목 간격</div></div>
+      <div class="space-row"><div class="space-bar" style="width:48px;"></div><div class="space-label">--s-7</div><div class="space-val">48px — 섹션 상단 패딩, CTA 위 마진</div></div>
+      <div class="space-row"><div class="space-bar" style="width:64px;"></div><div class="space-label">--s-8</div><div class="space-val">64px — 섹션 헤드↔카드 그리드</div></div>
+      <div class="space-row"><div class="space-bar" style="width:96px;"></div><div class="space-label">--s-9</div><div class="space-val">96px — About/Footer 섹션 패딩</div></div>
+      <div class="space-row"><div class="space-bar" style="width:128px;"></div><div class="space-label">--s-10</div><div class="space-val">128px — Projects 섹션 상하 패딩</div></div>
+    </div>
+  </div>
+
+  <!-- 5. Motion -->
+  <div class="g-section">
+    <div class="g-label">05</div>
+    <div class="g-title">Motion</div>
+    <div class="g-sub">호버로 직접 테스트해봐. 애니메이션은 반드시 정보를 전달하거나 상태를 명확히 할 때만 사용.</div>
+    <div class="motion-demo">
+      <div class="motion-box fast">FAST<br/>140ms</div>
+      <div class="motion-box base">BASE<br/>220ms</div>
+      <div class="motion-box slow">SLOW<br/>420ms</div>
+      <div class="motion-box inout">IN·OUT<br/>420ms</div>
+    </div>
+    <div style="font-family:var(--font-mono);font-size:12px;color:var(--ink-400);line-height:1.9;">
+      <div>--dur-fast: 140ms — 색상, 테두리 전환 (nav hover, tag hover)</div>
+      <div>--dur-base: 220ms — 카드 hover (translateY, shadow)</div>
+      <div>--dur-slow: 420ms — 페이지 진입 fade, 스크롤 애니메이션</div>
+      <div>--ease-out: cubic-bezier(0.2, 0.7, 0.2, 1) — 대부분의 경우</div>
+      <div>--ease-in-out: cubic-bezier(0.65, 0, 0.35, 1) — 모달, 전환 효과</div>
+    </div>
+  </div>
+
+  <!-- 6. Components -->
+  <div class="g-section">
+    <div class="g-label">06</div>
+    <div class="g-title">Components</div>
+
+    <!-- Navigation -->
+    <div class="comp-group">
+      <div class="comp-label">Navigation</div>
+      <div class="nav-demo">
+        <div class="nav-logo">HK</div>
+        <div class="nav-links">
+          <a class="nav-link active" href="#">PROJECTS</a>
+          <a class="nav-link" href="#">ABOUT</a>
+          <a class="nav-link" href="#">CONTACT</a>
+        </div>
+      </div>
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-400);">Logo: Space Mono Bold 14px · Nav: Space Mono 11px 0.16em tracking · Active: ink-900 · Default: ink-400</div>
+    </div>
+
+    <!-- Hero -->
+    <div class="comp-group">
+      <div class="comp-label">Hero Section</div>
+      <div class="hero-demo">
+        <div>
+          <div class="hero-tagline"><span class="hero-dot"></span>김희태 · ML ENGINEERING · 2026</div>
+          <div class="hero-h1">문제 정의가<br/>AI 활용의 방향을<br/>결정한다.</div>
+          <div class="hero-sub">제조 AI, 예측 모델링, ML 파이프라인, LLM 자동화 — 판단을 데이터와 시스템으로 구현합니다.</div>
+          <div class="hero-cta-row">
+            <a class="btn btn-primary" href="#">VIEW PROJECTS →</a>
+            <a class="btn btn-ghost" href="#">ABOUT ME</a>
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><span class="hstat-v">06</span><span class="hstat-k">Projects</span></div>
+          <div class="hero-stat"><span class="hstat-v">3</span><span class="hstat-k">Domains</span></div>
+          <div class="hero-stat"><span class="hstat-v">'26</span><span class="hstat-k">ML Eng</span></div>
+        </div>
+      </div>
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-400);">2컬럼 grid · H1: Jakarta 700 72px · Sub: 18px ink-500 · CTA row: 40px top margin</div>
+    </div>
+
+    <!-- Section Head -->
+    <div class="comp-group">
+      <div class="comp-label">Section Header</div>
+      <div class="sechead-demo">
+        <div class="sechead-label">SELECTED WORK</div>
+        <div class="sechead-count">06 CASE STUDIES</div>
+      </div>
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-400);">Space Mono 13px · 하단 1px border · max-width 1100px · margin-bottom 56px</div>
+    </div>
+
+    <!-- Project Card -->
+    <div class="comp-group">
+      <div class="comp-label">Project Card — 16:9 Thumbnail</div>
+      <div class="comp-row">
+        <div class="card-demo">
+          <div class="card-thumb">THUMB 16:9</div>
+          <div class="card-body">
+            <div class="card-num">№ 02 · 제조 AI · 2026.03</div>
+            <div class="card-title">LHV — 열풍로 발열량 5분 예측</div>
+            <div class="card-desc">고로 부대 설비 LHV 실시간 예측. COG 과잉 투입 패턴 발견.</div>
+            <div class="card-tags">RIDGE · XGBOOST · SHAP · SCIKIT-LEARN</div>
+          </div>
+        </div>
+        <div style="font-size:13px;line-height:1.8;color:var(--ink-500);max-width:280px;">
+          <strong style="color:var(--ink-900);display:block;margin-bottom:8px;">Card Rules</strong>
+          · Thumb: 16:9, dark gradient<br/>
+          · Info padding: 16/18/18px<br/>
+          · Num: Space Mono 11px, 0.18em<br/>
+          · Title: Jakarta 600 15px, 1.35lh<br/>
+          · Desc: 13px, ink-500<br/>
+          · Tags: Mono 10px, border-top<br/>
+          · Hover: translateY(-4px) + shadow<br/>
+          · Border: 1px solid ink-900/8%
+        </div>
+      </div>
+    </div>
+
+    <!-- Stat Chips -->
+    <div class="comp-group">
+      <div class="comp-label">Metric Stat Chip — 카드 썸네일 핵심 지표</div>
+      <div class="comp-row" style="margin-bottom:12px;">
+        <div class="stat-chip"><span class="stat-v">1.24M</span><span class="stat-k">Nm³ / YEAR</span></div>
+        <div class="stat-chip"><span class="stat-v">40.8%</span><span class="stat-k">Recall ↑</span></div>
+        <div class="stat-chip"><span class="stat-v">0.83</span><span class="stat-k">P(SURGE)</span></div>
+        <div class="stat-chip" style="background:var(--ink-900);">
+          <span class="stat-v" style="color:#fff;">v12</span>
+          <span class="stat-k" style="color:rgba(255,255,255,0.4);">Iterations</span>
+        </div>
+      </div>
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-400);">Jakarta 700 32px · 라벨: Space Mono 10px · 결과 숫자는 크게, 단위는 작게</div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="comp-group">
+      <div class="comp-label">Buttons</div>
+      <div class="comp-row" style="margin-bottom:12px;">
+        <a class="btn btn-primary" href="#">VIEW PROJECTS →</a>
+        <a class="btn btn-ghost" href="#">ABOUT ME</a>
+        <a class="btn btn-accent" href="#">GET IN TOUCH →</a>
+      </div>
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-400);">Space Mono 12–13px · 0.1em tracking · border-radius: 0 (sharp edge) · 1px border</div>
+    </div>
+
+    <!-- Tags -->
+    <div class="comp-group">
+      <div class="comp-label">Tech Tags</div>
+      <div class="comp-row" style="margin-bottom:12px;">
+        <span class="tag">PYTHON</span>
+        <span class="tag">XGBOOST</span>
+        <span class="tag">LIGHTGBM</span>
+        <span class="tag">SCIKIT-LEARN</span>
+        <span class="tag">SHAP</span>
+        <span class="tag">SMOTE</span>
+      </div>
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-400);">Space Mono 10px · 단색 중립 (ink-500) · 1px border · NO rainbow colors</div>
+    </div>
+  </div>
+
+  <!-- 7. Layout Grid -->
+  <div class="g-section">
+    <div class="g-label">07</div>
+    <div class="g-title">Layout Grid</div>
+    <div class="g-sub">모든 섹션 콘텐츠는 max-width 1100px 이하. 좌우 padding 80px (모바일 28px).</div>
+    <div style="background:#fff;border:1px solid rgba(14,14,16,0.08);padding:32px;font-family:var(--font-mono);font-size:12px;color:var(--ink-500);line-height:2;">
+      <div>Page max-width: 1280px (viewport 제한 없음)</div>
+      <div>Content container: <strong style="color:var(--ink-900);">max-width 1100px</strong>, margin auto</div>
+      <div>Section padding: <strong style="color:var(--ink-900);">80px</strong> left/right → 768px↓ 28px</div>
+      <div>Card grid: <strong style="color:var(--ink-900);">repeat(3, 1fr)</strong>, gap 20px → 1024px↓ 2col → 768px↓ 1col</div>
+      <div>Card thumb: <strong style="color:var(--ink-900);">aspect-ratio 16/9</strong></div>
+      <div>About grid: 1.05fr + 0.95fr, gap 56px</div>
+      <div>Hero grid: 1fr + auto (stats), gap 80px</div>
+    </div>
+  </div>
+
+  <!-- 8. Dark Sections -->
+  <div class="g-section">
+    <div class="g-label">08</div>
+    <div class="g-title">Dark Sections</div>
+    <div class="g-sub">About, Footer는 <code>#18181b</code> 다크 배경. 라이트 섹션과 명확한 구분.</div>
+    <div style="background:#18181b;padding:40px 48px;color:#F4F4F6;">
+      <div style="font-weight:700;font-size:36px;letter-spacing:-0.025em;margin-bottom:16px;">문제를 먼저 정의하고,<br/>데이터와 모델로 연결하는 ML 엔지니어.</div>
+      <div style="font-size:15px;line-height:1.76;color:rgba(244,244,246,0.68);max-width:44ch;margin-bottom:24px;">제조 설비의 발열량을 5분 단위로 예측하고, 코일이 들어오기 전에 비계획 공정을 걸러내고, 클라우드 없이 로컬에서 돌아가는 AI 워크플로우를 만들었습니다.</div>
+      <div style="border-top:1px solid rgba(244,244,246,0.1);padding-top:20px;display:grid;grid-template-columns:140px 1fr;gap:16px;">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(244,244,246,0.35);">ML / 모델링</div>
+        <div style="font-size:14px;color:rgba(244,244,246,0.75);">XGBoost · LightGBM · Ridge · SHAP · SMOTE</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

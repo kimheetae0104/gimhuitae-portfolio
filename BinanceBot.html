@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Binance ML Bot — Heetae Kim</title>
+  <link rel="stylesheet" href="shared/tokens.css" />
+  <link rel="stylesheet" href="shared/slide.css" />
+  <script src="shared/deck-stage.js" defer></script>
+  <style>
+    /* ── Metric row ── */
+    .metric-row {
+      display: flex;
+      gap: 0;
+      border-top: 1px solid var(--rule);
+      margin-top: 56px;
+    }
+    .metric-col {
+      flex: 1;
+      padding: 32px 24px 0 0;
+    }
+    .metric-col + .metric-col {
+      padding-left: 24px;
+      border-left: 1px solid var(--rule-soft);
+    }
+    .metric-label {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+      margin-bottom: 12px;
+    }
+    .metric-value {
+      font-family: var(--font-mono);
+      font-size: 64px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--accent-600);
+    }
+    .metric-sub {
+      font-family: var(--font-sans);
+      font-size: 22px;
+      color: var(--fg-3);
+      margin-top: 10px;
+    }
+
+    /* ── Flow steps ── */
+    .flow-row {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      flex: 1;
+      margin-top: 48px;
+    }
+    .flow-step {
+      flex: 1;
+      padding: 32px 24px;
+      border: 1px solid var(--rule-soft);
+      position: relative;
+    }
+    .flow-step + .flow-step { border-left: none; }
+    .flow-step:first-child { border-radius: var(--r-3) 0 0 var(--r-3); }
+    .flow-step:last-child  { border-radius: 0 var(--r-3) var(--r-3) 0; }
+    .flow-num { font-family: var(--font-mono); font-size: 18px; letter-spacing: 0.14em; color: var(--fg-4); margin-bottom: 12px; }
+    .flow-name { font-family: var(--font-sans); font-weight: 600; font-size: 26px; color: var(--fg-1); line-height: 1.2; margin-bottom: 8px; }
+    .flow-desc { font-family: var(--font-mono); font-size: 17px; color: var(--fg-3); line-height: 1.6; }
+    .flow-arrow { width: 32px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--fg-4); }
+
+    /* ── Feature grid ── */
+    .feat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      flex: 1;
+      margin-top: 40px;
+      border: 1px solid var(--rule-soft);
+      border-radius: var(--r-3);
+      overflow: hidden;
+    }
+    .feat-cell { padding: 36px 32px; background: var(--bg); border-right: 1px solid var(--rule-soft); border-bottom: 1px solid var(--rule-soft); }
+    .feat-cell:nth-child(even) { border-right: none; }
+    .feat-cell:nth-last-child(-n+2) { border-bottom: none; }
+    .feat-key { font-family: var(--font-mono); font-size: 17px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-600); margin-bottom: 8px; }
+    .feat-val { font-family: var(--font-sans); font-weight: 600; font-size: 26px; color: var(--fg-1); line-height: 1.3; margin-bottom: 6px; }
+    .feat-desc { font-family: var(--font-sans); font-size: 20px; color: var(--fg-3); line-height: 1.5; }
+
+    /* ── Code block ── */
+    .code-block {
+      background: var(--ink-900);
+      color: #c9d1d9;
+      font-family: var(--font-mono);
+      font-size: 21px;
+      line-height: 1.8;
+      border-radius: var(--r-3);
+      padding: 36px 44px;
+      flex: 1;
+    }
+    .code-block .cm  { color: rgba(100,220,120,0.5); }
+    .code-block .ck  { color: #79b8ff; }
+    .code-block .cv  { color: #ffab70; }
+    .code-block .cs  { color: #9ecbff; }
+    .code-block .cn  { color: #f8c555; }
+
+    /* ── Condition list ── */
+    .cond-list { flex: 1; margin-top: 40px; display: flex; flex-direction: column; gap: 14px; justify-content: space-between; }
+    .cond-item {
+      display: flex; align-items: center; gap: 24px;
+      padding: 30px 32px; border: 1px solid var(--rule-soft);
+      border-radius: var(--r-3); background: var(--bg-soft);
+    }
+    .cond-sym { font-family: var(--font-mono); font-size: 22px; color: var(--accent-600); width: 28px; flex-shrink: 0; }
+    .cond-text { font-family: var(--font-mono); font-size: 24px; color: var(--fg-1); }
+    .cond-note { margin-left: auto; font-family: var(--font-sans); font-size: 19px; color: var(--fg-3); white-space: nowrap; }
+
+    /* ── Learning list ── */
+    .learn-list { flex: 1; display: flex; flex-direction: column; gap: 0; margin-top: 40px; justify-content: space-between; }
+    .learn-item { display: flex; gap: 28px; align-items: flex-start; padding: 32px 0; border-bottom: 1px solid var(--rule-soft); }
+    .learn-item:last-child { border-bottom: none; }
+    .learn-idx { font-family: var(--font-mono); font-size: 19px; color: var(--fg-4); width: 32px; flex-shrink: 0; padding-top: 4px; }
+    .learn-title { font-family: var(--font-sans); font-weight: 600; font-size: 26px; color: var(--fg-1); margin-bottom: 8px; }
+    .learn-desc { font-family: var(--font-sans); font-size: 22px; color: var(--fg-2); line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+  <header class="deck-header">
+    <a href="index.html" class="deck-header-mark">[ HK ]</a>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="https://github.com/kimheetae0104/binance_bot2" target="_blank" rel="noopener noreferrer" class="deck-header-back">GitHub ↗</a>
+      <a href="index.html" class="deck-header-back">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
+        포트폴리오
+      </a>
+    </div>
+  </header>
+
+  <deck-stage width="1920" height="1080">
+
+    <!-- 1. COVER -->
+    <section class="slide s-title" data-label="Cover">
+      <div class="top-rule">
+        <span>Heetae Kim</span>
+        <span>Personal Project · 2023</span>
+      </div>
+      <div class="hero" style="flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:32px;">
+        <div class="meta-cap" style="margin-bottom:24px;">ML Trading Bot</div>
+        <h1 style="font-family:var(--font-mono);font-weight:700;font-size:96px;line-height:1.0;letter-spacing:-0.03em;color:var(--fg-1);margin:0 0 28px;">Binance<br>ML Bot</h1>
+        <p style="font-family:var(--font-sans);font-size:30px;line-height:1.7;color:var(--fg-2);max-width:52ch;margin:0;">
+          500+ USDT 페어 실시간 스캔 → 기술 분석 필터 → XGBoost + LightGBM 앙상블로<br>급등 예측 신호를 자동 탐지하는 트레이딩 봇
+        </p>
+      </div>
+      <div style="display:flex;gap:0;border-top:1px solid var(--rule);padding-top:32px;">
+        <div style="flex:1;padding-right:24px;">
+          <div class="metric-label">스캔 페어</div>
+          <div class="metric-value">500+</div>
+          <div class="metric-sub">USDT 마켓</div>
+        </div>
+        <div style="flex:1;padding:0 24px;border-left:1px solid var(--rule-soft);">
+          <div class="metric-label">급등 예측 확률</div>
+          <div class="metric-value">0.83</div>
+          <div class="metric-sub">P(SURGE) 임계값</div>
+        </div>
+        <div style="flex:1;padding:0 24px;border-left:1px solid var(--rule-soft);">
+          <div class="metric-label">모델 구성</div>
+          <div class="metric-value" style="font-size:42px;">XGB+LGB</div>
+          <div class="metric-sub">소프트 보팅 앙상블</div>
+        </div>
+        <div style="flex:1;padding-left:24px;border-left:1px solid var(--rule-soft);">
+          <div class="metric-label">불균형 처리</div>
+          <div class="metric-value" style="font-size:42px;">SMOTE</div>
+          <div class="metric-sub">소수 클래스 오버샘플링</div>
+        </div>
+      </div>
+      <div class="pageno">01 / 07</div>
+      <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+    </section>
+
+    <!-- 2. PROBLEM -->
+    <section class="slide" data-label="Problem">
+      <div class="top-rule">
+        <span>Binance ML Bot</span>
+        <span>Problem</span>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:52px;padding-top:32px;">
+        <div>
+          <div class="meta-cap" style="margin-bottom:18px;">핵심 질문</div>
+          <h2 style="font-family:var(--font-sans);font-weight:700;font-size:68px;line-height:1.1;letter-spacing:-0.025em;color:var(--fg-1);max-width:20ch;margin:0;">
+            급등 직전 코인을<br>어떻게 사전에 찾는가?
+          </h2>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:48px;border-top:1px solid var(--rule-soft);padding-top:44px;">
+          <div>
+            <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:12px;">Pain 01</div>
+            <div style="font-family:var(--font-sans);font-weight:600;font-size:28px;color:var(--fg-1);margin-bottom:10px;line-height:1.3;">정보 과부하</div>
+            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.65;margin:0;">500개 이상의 페어를 사람이 직접 모니터링하는 건 물리적으로 불가능하다</p>
+          </div>
+          <div>
+            <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:12px;">Pain 02</div>
+            <div style="font-family:var(--font-sans);font-weight:600;font-size:28px;color:var(--fg-1);margin-bottom:10px;line-height:1.3;">후행 지표의 한계</div>
+            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.65;margin:0;">RSI·MACD 단독으로는 "이미 오른 뒤"에 신호가 뜬다. 진입 타이밍이 늦다</p>
+          </div>
+          <div>
+            <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:12px;">Pain 03</div>
+            <div style="font-family:var(--font-sans);font-weight:600;font-size:28px;color:var(--fg-1);margin-bottom:10px;line-height:1.3;">극심한 클래스 불균형</div>
+            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.65;margin:0;">실제 급등 이벤트는 전체 데이터의 3% 미만 — 단순 분류기는 항상 "아니오"를 낸다</p>
+          </div>
+        </div>
+      </div>
+      <div class="pageno">02 / 07</div>
+      <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+    </section>
+
+    <!-- 3. PIPELINE -->
+    <section class="slide soft" data-label="Pipeline">
+      <div class="top-rule">
+        <span>Binance ML Bot</span>
+        <span>Pipeline</span>
+      </div>
+      <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;">
+        <div>
+          <div class="meta-cap" style="margin-bottom:14px;">데이터 → 신호 흐름</div>
+          <h2 class="slide-h2" style="font-size:54px;">5단계 자동화 파이프라인</h2>
+        </div>
+        <div class="flow-row">
+          <div class="flow-step" style="background:#fff;">
+            <div class="flow-num">01</div>
+            <div class="flow-name">데이터 수집</div>
+            <div class="flow-desc">CCXT<br>Binance API<br>1분봉 OHLCV</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="background:#fff;">
+            <div class="flow-num">02</div>
+            <div class="flow-name">기술 지표<br>계산</div>
+            <div class="flow-desc">RSI · MACD<br>볼린저밴드<br>거래량 지표</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="background:#fff;">
+            <div class="flow-num">03</div>
+            <div class="flow-name">1차 필터</div>
+            <div class="flow-desc">규칙 기반<br>임계치 스크리닝<br>후보 압축</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="background:#fff;">
+            <div class="flow-num">04</div>
+            <div class="flow-name">ML 앙상블</div>
+            <div class="flow-desc">XGBoost<br>LightGBM<br>소프트 보팅</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="background:var(--accent-600);border-color:var(--accent-600);">
+            <div class="flow-num" style="color:rgba(255,255,255,0.5);">05</div>
+            <div class="flow-name" style="color:#fff;">신호 출력</div>
+            <div class="flow-desc" style="color:rgba(255,255,255,0.68);">P(SURGE)<br>임계값 초과 시<br>알림 발송</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px;">
+          <div style="background:#fff;border:1px solid var(--rule-soft);border-radius:var(--r-3);padding:24px 28px;">
+            <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:6px;">수집 주기</div>
+            <div style="font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--fg-1);">1분 단위 스케줄링</div>
+            <div style="font-family:var(--font-sans);font-size:19px;color:var(--fg-3);margin-top:4px;">apscheduler + asyncio 비동기 처리</div>
+          </div>
+          <div style="background:#fff;border:1px solid var(--rule-soft);border-radius:var(--r-3);padding:24px 28px;">
+            <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:6px;">스캔 대상</div>
+            <div style="font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--fg-1);">500+ USDT 페어</div>
+            <div style="font-family:var(--font-sans);font-size:19px;color:var(--fg-3);margin-top:4px;">Binance Spot 전체 마켓 대상</div>
+          </div>
+        </div>
+      </div>
+      <div class="pageno">03 / 07</div>
+      <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+    </section>
+
+    <!-- 4. FEATURES -->
+    <section class="slide" data-label="Features">
+      <div class="top-rule">
+        <span>Binance ML Bot</span>
+        <span>Feature Engineering</span>
+      </div>
+      <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;">
+        <div>
+          <div class="meta-cap" style="margin-bottom:14px;">입력 피처</div>
+          <h2 class="slide-h2" style="font-size:54px;">기술 지표 + 불균형 처리</h2>
+        </div>
+        <div class="feat-grid">
+          <div class="feat-cell">
+            <div class="feat-key">RSI (14)</div>
+            <div class="feat-val">상대강도지수</div>
+            <div class="feat-desc">30 이하 과매도 · 70 이상 과매수 구간 감지. 급등 직전 과매도 반등 패턴 포착</div>
+          </div>
+          <div class="feat-cell">
+            <div class="feat-key">MACD</div>
+            <div class="feat-val">모멘텀 오실레이터</div>
+            <div class="feat-desc">Signal 라인 크로스오버로 추세 전환 조기 감지. Histogram 기울기 변화 활용</div>
+          </div>
+          <div class="feat-cell">
+            <div class="feat-key">Bollinger Bands</div>
+            <div class="feat-val">변동성 밴드</div>
+            <div class="feat-desc">밴드 폭(Squeeze) 및 하단 터치 후 반등 패턴. 변동성 압축→폭발 사이클 탐지</div>
+          </div>
+          <div class="feat-cell">
+            <div class="feat-key">Volume Spike</div>
+            <div class="feat-val">거래량 이상 탐지</div>
+            <div class="feat-desc">20봉 평균 대비 3배 이상 거래량 급증 시 이상 신호로 분류. 세력 개입 감지</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:28px;margin-top:24px;padding:20px 28px;background:var(--bg-soft);border-radius:var(--r-3);border:1px solid var(--rule-soft);">
+          <div style="flex-shrink:0;">
+            <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:5px;">불균형 처리</div>
+            <div style="font-family:var(--font-mono);font-size:34px;font-weight:700;color:var(--accent-600);">SMOTE</div>
+          </div>
+          <div style="width:1px;height:52px;background:var(--rule-soft);flex-shrink:0;"></div>
+          <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.6;margin:0;">
+            급등 클래스(양성)가 전체의 <strong style="color:var(--fg-1);font-weight:600;">3% 미만</strong> — SMOTE로 소수 클래스 오버샘플링하여 학습 데이터 균형 확보.
+            단순 Oversampling 대비 경계 영역 다양성 보존.
+          </p>
+        </div>
+      </div>
+      <div class="pageno">04 / 07</div>
+      <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+    </section>
+
+    <!-- 5. MODEL -->
+    <section class="slide soft" data-label="Model">
+      <div class="top-rule">
+        <span>Binance ML Bot</span>
+        <span>Model</span>
+      </div>
+      <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;">
+        <div>
+          <div class="meta-cap" style="margin-bottom:14px;">ML 앙상블</div>
+          <h2 class="slide-h2" style="font-size:54px;">XGBoost + LightGBM 소프트 보팅</h2>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:40px;flex:1;">
+          <div style="display:flex;flex-direction:column;gap:20px;">
+            <div style="background:#fff;border:1px solid var(--rule-soft);border-radius:var(--r-3);padding:32px 36px;flex:1;">
+              <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:12px;">XGBoost</div>
+              <div style="font-family:var(--font-sans);font-weight:600;font-size:28px;color:var(--fg-1);margin-bottom:10px;">Gradient Boosting Tree</div>
+              <p style="font-family:var(--font-sans);font-size:21px;color:var(--fg-2);line-height:1.6;margin:0;">정형 데이터에 강한 트리 앙상블. scale_pos_weight로 클래스 불균형 1차 보정. max_depth=6, n_estimators=300</p>
+            </div>
+            <div style="background:#fff;border:1px solid var(--rule-soft);border-radius:var(--r-3);padding:32px 36px;flex:1;">
+              <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:12px;">LightGBM</div>
+              <div style="font-family:var(--font-sans);font-weight:600;font-size:28px;color:var(--fg-1);margin-bottom:10px;">Leaf-wise Growth</div>
+              <p style="font-family:var(--font-sans);font-size:21px;color:var(--fg-2);line-height:1.6;margin:0;">대규모 피처에서 고속 학습. is_unbalance=True 내장 지원. num_leaves=63, learning_rate=0.05</p>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:20px;">
+            <div style="background:var(--accent-600);border-radius:var(--r-3);padding:32px 36px;flex:1;">
+              <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.48);margin-bottom:12px;">앙상블 전략</div>
+              <div style="font-family:var(--font-sans);font-weight:600;font-size:28px;color:#fff;margin-bottom:10px;">소프트 보팅 평균</div>
+              <p style="font-family:var(--font-sans);font-size:21px;color:rgba(255,255,255,0.68);line-height:1.6;margin:0 0 20px;">두 모델 predict_proba 평균 → P(SURGE) 최종 확률. 단일 모델 대비 분산 감소</p>
+              <div style="font-family:var(--font-mono);font-size:52px;font-weight:700;color:#fff;line-height:1;">0.83</div>
+              <div style="font-family:var(--font-mono);font-size:16px;letter-spacing:0.12em;color:rgba(255,255,255,0.48);margin-top:6px;">P(SURGE) THRESHOLD</div>
+            </div>
+            <div style="background:#fff;border:1px solid var(--rule-soft);border-radius:var(--r-3);padding:28px 36px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;text-align:center;">
+                <div>
+                  <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg-4);margin-bottom:6px;">Precision</div>
+                  <div style="font-family:var(--font-mono);font-size:36px;font-weight:700;color:var(--fg-1);">0.71</div>
+                </div>
+                <div style="border-left:1px solid var(--rule-soft);border-right:1px solid var(--rule-soft);">
+                  <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg-4);margin-bottom:6px;">Recall</div>
+                  <div style="font-family:var(--font-mono);font-size:36px;font-weight:700;color:var(--fg-1);">0.68</div>
+                </div>
+                <div>
+                  <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg-4);margin-bottom:6px;">F1</div>
+                  <div style="font-family:var(--font-mono);font-size:36px;font-weight:700;color:var(--fg-1);">0.69</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pageno">05 / 07</div>
+      <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+    </section>
+
+    <!-- 6. SIGNAL -->
+    <section class="slide" data-label="Signal">
+      <div class="top-rule">
+        <span>Binance ML Bot</span>
+        <span>Signal Detection</span>
+      </div>
+      <div style="display:flex;gap:56px;flex:1;padding-top:32px;">
+        <div style="flex:1;display:flex;flex-direction:column;">
+          <div>
+            <div class="meta-cap" style="margin-bottom:14px;">신호 탐지 로직</div>
+            <h2 class="slide-h2" style="font-size:52px;">다단계 조건 필터링</h2>
+          </div>
+          <div class="cond-list">
+            <div class="cond-item">
+              <div class="cond-sym">①</div>
+              <div class="cond-text">RSI &lt; 35</div>
+              <div class="cond-note">과매도 구간 진입 확인</div>
+            </div>
+            <div class="cond-item">
+              <div class="cond-sym">②</div>
+              <div class="cond-text">Volume Ratio ≥ 2.5x</div>
+              <div class="cond-note">거래량 이상 급증 감지</div>
+            </div>
+            <div class="cond-item">
+              <div class="cond-sym">③</div>
+              <div class="cond-text">MACD Histogram &gt; 0</div>
+              <div class="cond-note">모멘텀 반전 시작 확인</div>
+            </div>
+            <div class="cond-item" style="border:1px solid var(--accent-600);background:rgba(30,58,138,0.04);">
+              <div class="cond-sym" style="color:var(--accent-600);">④</div>
+              <div class="cond-text" style="color:var(--accent-600);font-weight:700;">P(SURGE) ≥ 0.83</div>
+              <div class="cond-note" style="color:var(--accent-600);">ML 임계값 통과 → 신호 발송</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;padding-top:68px;">
+          <div class="code-block">
+            <span class="cm"># 신호 생성 로직 (의사코드)</span><br>
+            <span class="ck">def</span> <span class="cv">detect_signal</span>(df):<br>
+            &nbsp;&nbsp;prob = <span class="cv">ensemble_predict</span>(df)<br>
+            &nbsp;&nbsp;<br>
+            &nbsp;&nbsp;cond = (<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;(df[<span class="cs">'rsi'</span>] &lt; <span class="cn">35</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&amp; (df[<span class="cs">'vol_ratio'</span>] &gt;= <span class="cn">2.5</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&amp; (df[<span class="cs">'macd_hist'</span>] &gt; <span class="cn">0</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&amp; (prob &gt;= <span class="cn">0.83</span>)<br>
+            &nbsp;&nbsp;)<br>
+            &nbsp;&nbsp;<br>
+            &nbsp;&nbsp;<span class="ck">if</span> cond.<span class="cv">any</span>():<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="cv">send_alert</span>(<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;symbol=df[cond][<span class="cs">'symbol'</span>],<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prob=prob[cond]<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;)
+          </div>
+        </div>
+      </div>
+      <div class="pageno">06 / 07</div>
+      <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+    </section>
+
+    <!-- 7. LEARNING -->
+    <section class="slide soft" data-label="Learning">
+      <div class="top-rule">
+        <span>Binance ML Bot</span>
+        <span>What I Learned</span>
+      </div>
+      <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;">
+        <div>
+          <div class="meta-cap" style="margin-bottom:14px;">실전 운용 후 발견한 것</div>
+          <h2 class="slide-h2" style="font-size:52px;">시장은 모델보다 빠르게 변한다</h2>
+        </div>
+        <div class="learn-list">
+          <div class="learn-item">
+            <div class="learn-idx">01</div>
+            <div class="learn-body">
+              <div class="learn-title">시장 노이즈 — 백테스트와 라이브의 괴리</div>
+              <div class="learn-desc">백테스트 F1 0.73 → 라이브 실효 정밀도 0.51 수준으로 하락. 학습 기간 외 시장 레짐 변화가 주요 원인. 워크포워드 검증의 중요성을 직접 체감.</div>
+            </div>
+          </div>
+          <div class="learn-item">
+            <div class="learn-idx">02</div>
+            <div class="learn-body">
+              <div class="learn-title">과적합의 유혹 — 피처가 많을수록 위험</div>
+              <div class="learn-desc">20개 이상 피처 추가 시 트레이닝셋 성능은 올라가지만 OOT 성능이 하락. 피처 중요도 기반 pruning으로 핵심 8개로 압축하는 것이 실전에서 더 안정적.</div>
+            </div>
+          </div>
+          <div class="learn-item">
+            <div class="learn-idx">03</div>
+            <div class="learn-body">
+              <div class="learn-title">앙상블이 주는 안정감 — 단일 모델 대비 분산 감소</div>
+              <div class="learn-desc">XGBoost 단독은 급격한 시세 변동 구간에서 오신호율이 높았으나, LightGBM 소프트 보팅 합산 후 오신호 12% 감소. 다양성 확보의 실질적 효과 확인.</div>
+            </div>
+          </div>
+          <div class="learn-item">
+            <div class="learn-idx">04</div>
+            <div class="learn-body">
+              <div class="learn-title">자동화의 한계 — 리스크 관리는 별개의 문제</div>
+              <div class="learn-desc">신호 탐지 정확도와 실제 수익률은 다른 축. 포지션 사이징·손절 로직 없이는 좋은 신호도 손실로 이어질 수 있음을 실전 운용으로 직접 경험.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pageno">07 / 07</div>
+      <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+    </section>
+
+  </deck-stage>
+</body>
+</html>

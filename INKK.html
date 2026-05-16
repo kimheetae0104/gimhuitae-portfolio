@@ -1,0 +1,1042 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>INKK — AI 카드뉴스 자동 생성 서비스</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="shared/tokens.css" />
+<link rel="stylesheet" href="shared/slide.css" />
+<script src="shared/deck-stage.js" defer></script>
+<style>
+
+/* ── 강조 박스 ── */
+.accent-box {
+  padding: 28px 32px;
+  background: rgba(30,58,138,0.05);
+  border-left: 3px solid var(--accent-600);
+}
+.accent-box .ab-label {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-600);
+  margin-bottom: 10px;
+}
+.accent-box .ab-body {
+  font-family: var(--font-sans);
+  font-size: 24px;
+  color: var(--fg-2);
+  line-height: 1.6;
+}
+
+/* ── 큰 숫자 ── */
+.big-num {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 88px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--fg-1);
+}
+.big-num-unit {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  letter-spacing: 0.08em;
+  color: var(--fg-3);
+  margin-top: 10px;
+}
+
+/* ── 태그 ── */
+.tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  background: var(--accent-100);
+  color: var(--accent-600);
+  padding: 4px 12px;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+}
+.tag-warn {
+  background: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FCD34D;
+}
+.tag-ok {
+  background: #ECFDF5;
+  color: #065F46;
+  border: 1px solid #6EE7B7;
+}
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* ── 파이프라인 카드 ── */
+.pipe-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--rule-soft);
+  flex: 1;
+  margin-top: 36px;
+  border: 1px solid var(--rule-soft);
+}
+.pipe-card {
+  padding: 32px 28px;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pipe-card.accent-top { outline: 2px solid var(--accent-600); outline-offset: -2px; }
+.pipe-card .pstep {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-600);
+}
+.pipe-card h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 1.2;
+  color: var(--fg-1);
+  margin: 0;
+}
+.pipe-card .pdesc {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  color: var(--fg-2);
+  line-height: 1.65;
+  flex: 1;
+}
+.pipe-card .pmeta {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--fg-3);
+  line-height: 1.7;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule-soft);
+}
+
+/* ── 학습 카드 ── */
+.learn-card {
+  padding: 32px 28px;
+  background: var(--paper-100);
+  border-top: 2px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.learn-card.accent { border-top-color: var(--accent-600); }
+.learn-card.warn   { border-top-color: var(--warn); }
+.learn-card.good   { border-top-color: var(--positive); }
+.learn-card .ltag {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.learn-card.accent .ltag { color: var(--accent-600); }
+.learn-card.warn .ltag   { color: var(--warn); }
+.learn-card.good .ltag   { color: var(--positive); }
+.learn-card h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 1.2;
+  color: var(--fg-1);
+  margin: 0;
+}
+.learn-card .lbody {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--fg-2);
+  line-height: 1.6;
+}
+
+/* ── Pull quote ── */
+.pull {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 58px;
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+  color: var(--fg-1);
+  max-width: 22ch;
+}
+.pull em { font-style: normal; color: var(--accent-600); }
+
+/* ── 프리셋 카드 ── */
+.preset-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 1px;
+  background: var(--rule-soft);
+  border: 1px solid var(--rule-soft);
+  flex: 1;
+}
+.preset-card {
+  background: var(--bg);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.preset-card .pname {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  color: var(--accent-600);
+}
+.preset-card .pval {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--fg-1);
+  line-height: 1.2;
+}
+.preset-card .pdesc2 {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  color: var(--fg-3);
+  line-height: 1.5;
+}
+
+/* ── 가격 테이블 ── */
+.price-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--rule-soft);
+  flex: 1;
+}
+.price-header {
+  padding: 28px 32px;
+  background: var(--paper-100);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.price-name {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  color: var(--fg-3);
+}
+.price-amount {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 52px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--fg-1);
+  margin-top: 8px;
+}
+.price-unit {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--fg-4);
+  margin-top: 6px;
+}
+.price-body {
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--fg-2);
+  border-bottom: 1px solid var(--rule-soft);
+  padding-bottom: 10px;
+}
+.price-row:last-child { border-bottom: none; padding-bottom: 0; }
+.price-row .label { color: var(--fg-4); font-size: 15px; }
+
+/* ── 아키텍처 라인 아이템 ── */
+.arch-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+.arch-item {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 24px;
+  align-items: start;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.arch-key {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  color: var(--accent-600);
+  padding-top: 2px;
+}
+.arch-val {
+  font-family: var(--font-sans);
+  font-size: 21px;
+  color: var(--fg-2);
+  line-height: 1.55;
+}
+.arch-val strong { color: var(--fg-1); }
+
+/* ── 도전 카드 ── */
+.challenge-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  flex: 1;
+  margin-top: 8px;
+}
+.challenge-card {
+  border-top: 2px solid var(--warn);
+  background: var(--paper-100);
+  padding: 28px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.challenge-card.resolved { border-top-color: var(--positive); }
+.challenge-card .ctag {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--warn);
+}
+.challenge-card.resolved .ctag { color: var(--positive); }
+.challenge-card h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.25;
+  color: var(--fg-1);
+  margin: 0;
+}
+.challenge-card .cbody {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  color: var(--fg-2);
+  line-height: 1.65;
+  flex: 1;
+}
+.challenge-card .csolution {
+  background: rgba(30,58,138,0.05);
+  border-left: 2px solid var(--accent-600);
+  padding: 12px 16px;
+  font-family: var(--font-sans);
+  font-size: 19px;
+  color: var(--fg-2);
+  line-height: 1.55;
+}
+.challenge-card .csolution strong { color: var(--fg-1); }
+
+</style>
+</head>
+<body>
+
+<header class="deck-header">
+  <a href="index.html" class="deck-header-mark">[ HK ]</a>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <a href="https://inkk.online" target="_blank" rel="noopener noreferrer" class="deck-header-back">inkk.online ↗</a>
+    <a href="index.html" class="deck-header-back">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
+      포트폴리오
+    </a>
+  </div>
+</header>
+
+<deck-stage width="1920" height="1080">
+
+<!-- ═══ 01 Cover ═══ -->
+<section class="slide s-title" data-label="01 Cover">
+  <div class="top-rule">
+    <span>김희태 · PORTFOLIO</span>
+    <span>2026</span>
+  </div>
+
+  <div class="hero" style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;">
+
+    <div>
+      <div class="meta-cap" style="margin-bottom:28px;">WEB SERVICE · AI CONTENT · 2026</div>
+      <h1 class="slide-title" style="margin:0; letter-spacing:-0.04em;">INKK</h1>
+      <p style="font-family:var(--font-mono);font-size:20px;letter-spacing:0.08em;color:var(--fg-3);margin:12px 0 28px;">inkk.online</p>
+      <p class="ko-sub" style="margin-top:0;">
+        긴 글을 <strong style="color:var(--fg-1);">1분</strong> 만에 인스타그램 카드뉴스로.<br/>
+        AI가 5~10장 흐름으로 정리하고 어울리는 사진까지 매칭합니다.
+      </p>
+      <p class="ko-sub" style="margin-top:16px; color:var(--fg-3);">
+        디자인 기술이 없어도 — <strong style="color:var(--fg-1);">AI 지문이 없는 완성 카드</strong>를 받습니다.
+      </p>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:0; border:1px solid var(--rule-soft); overflow:hidden;">
+      <div style="overflow:hidden; flex:1;">
+        <img src="inkk/thumb.png" alt="INKK 서비스 화면" style="width:100%;display:block;object-fit:cover;object-position:top;">
+      </div>
+      <div style="background:var(--bg);padding:28px 32px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--rule-soft);">
+        <div style="text-align:center;padding:0 16px;border-right:1px solid var(--rule-soft);">
+          <div style="font-family:var(--font-mono);font-weight:700;font-size:32px;color:var(--fg-1);">1분</div>
+          <div style="font-family:var(--font-mono);font-size:13px;color:var(--fg-4);margin-top:4px;">GENERATION</div>
+        </div>
+        <div style="text-align:center;padding:0 16px;border-right:1px solid var(--rule-soft);">
+          <div style="font-family:var(--font-mono);font-weight:700;font-size:32px;color:var(--fg-1);">6종</div>
+          <div style="font-family:var(--font-mono);font-size:13px;color:var(--fg-4);margin-top:4px;">STYLE PRESET</div>
+        </div>
+        <div style="text-align:center;padding:0 16px;">
+          <div style="font-family:var(--font-mono);font-weight:700;font-size:32px;color:var(--fg-1);">5~10장</div>
+          <div style="font-family:var(--font-mono);font-size:13px;color:var(--fg-4);margin-top:4px;">PER SET</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="meta-grid" style="grid-template-columns:repeat(5,1fr);">
+    <div class="col"><div class="k">TYPE</div><div class="v">개인 서비스 · 2026</div></div>
+    <div class="col"><div class="k">ROLE</div><div class="v">풀스택 · 기획 · PM</div></div>
+    <div class="col"><div class="k">STACK</div><div class="v">Next.js 16 · Supabase · Stripe · Groq / Claude</div></div>
+    <div class="col"><div class="k">STATUS</div><div class="v">얼리 액세스 · 결제 시스템 구축 완료</div></div>
+    <div class="col"><div class="k">URL</div><div class="v">inkk.online</div></div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">01 / 08</div>
+</section>
+
+<!-- ═══ 02 Problem ═══ -->
+<section class="slide" data-label="02 Problem">
+  <div class="top-rule">
+    <span>02 · PROBLEM</span>
+    <span>카드뉴스를 못 만드는 진짜 이유</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:80px; flex:1; padding-top:36px; align-items:start;">
+
+    <div style="display:flex; flex-direction:column; gap:28px;">
+      <h2 class="slide-h2">
+        30분~2시간.<br/>
+        <span style="color:var(--fg-3); font-weight:400;">카드뉴스 한 세트를 만드는 시간.</span>
+      </h2>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);">
+        <div style="padding:18px 0; border-right:1px solid var(--rule-soft);">
+          <div class="big-num" style="font-size:64px;">2시간</div>
+          <div class="big-num-unit">카드뉴스 1세트 제작<br/>소요 시간 (평균)</div>
+        </div>
+        <div style="padding:18px 0 18px 32px;">
+          <div class="big-num" style="font-size:64px;">수만원</div>
+          <div class="big-num-unit">외주 맡길 때<br/>건당 비용</div>
+        </div>
+      </div>
+
+      <p class="slide-body" style="margin:0;">
+        1인 브랜드·소상공인에게 이 과정은
+        <strong style="color:var(--fg-1);">구성력 + 카피 + 이미지 + 디자인 툴 숙련도</strong>가 모두 필요하다.
+        결국 "콘텐츠를 만들 시간이 없어서 SNS를 포기하는" 사람이 대부분이다.
+      </p>
+
+      <div class="accent-box">
+        <div class="ab-label">INKK의 가설</div>
+        <div class="ab-body">진짜 장벽은 디자인이 아니라, <strong style="color:var(--fg-1);">'AI 티를 지울 디자인 기술'</strong>이 없는 것이다. 그 작업을 서비스 안에 내장하면, 보통 사람도 1분 안에 AI 지문 없는 완성 카드를 받을 수 있다.</div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <h3 style="font-family:var(--font-sans);font-weight:600;font-size:28px;color:var(--fg-1);margin:0;">"ChatGPT로 하면 되잖아"에 대한 답</h3>
+
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:var(--paper-100);border-top:2px solid var(--warn);padding:20px 22px;display:flex;flex-direction:column;gap:8px;">
+          <div style="font-family:var(--font-mono);font-size:15px;color:var(--warn);letter-spacing:0.1em;">PROBLEM 01</div>
+          <div style="font-family:var(--font-sans);font-weight:600;font-size:22px;color:var(--fg-1);">AI에는 '시각적 지문'이 있다</div>
+          <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);line-height:1.55;">결과물을 보면 "어떤 AI로 만들었는지"가 보인다. 팔로워는 그 지문을 알아채고 "성의 없이 AI로 돌렸구나"라고 느낀다.</div>
+        </div>
+        <div style="background:var(--paper-100);border-top:2px solid var(--warn);padding:20px 22px;display:flex;flex-direction:column;gap:8px;">
+          <div style="font-family:var(--font-mono);font-size:15px;color:var(--warn);letter-spacing:0.1em;">PROBLEM 02</div>
+          <div style="font-family:var(--font-sans);font-weight:600;font-size:22px;color:var(--fg-1);">AI 티를 지우려면 결국 디자인 기술이 필요</div>
+          <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);line-height:1.55;">보통 사람은 거기까지 못 한다. 편집 능력이 없으니 AI가 뱉은 그대로 올릴 수밖에 없다.</div>
+        </div>
+        <div style="background:var(--paper-100);border-top:2px solid var(--warn);padding:20px 22px;display:flex;flex-direction:column;gap:8px;">
+          <div style="font-family:var(--font-mono);font-size:15px;color:var(--warn);letter-spacing:0.1em;">PROBLEM 03</div>
+          <div style="font-family:var(--font-sans);font-weight:600;font-size:22px;color:var(--fg-1);">텍스트가 나와도 '발행물'은 아니다</div>
+          <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);line-height:1.55;">5~10장 흐름 + 이미지 배치 + 인스타 규격 완성은 여전히 사용자 몫이다.</div>
+        </div>
+      </div><!-- /cards -->
+    </div><!-- /right col -->
+
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">02 / 08</div>
+</section>
+
+<!-- ═══ 03 Solution ═══ -->
+<section class="slide soft" data-label="03 Solution">
+  <div class="top-rule">
+    <span>03 · SOLUTION</span>
+    <span>퀄리티는 여러 층의 강제 장치가 누적된 결과</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1.6fr; gap:56px; flex:1; padding-top:28px; align-items:start;">
+
+    <div style="display:flex; flex-direction:column; gap:20px;">
+      <div style="display:flex; flex-direction:column; gap:20px;">
+        <h2 class="slide-h2" style="font-size:40px;">
+          4개 층에서<br/>품질을 강제한다.
+        </h2>
+        <p class="slide-body" style="font-size:22px; line-height:1.6;">
+          AI가 만든 결과가 "맞지만 밋밋한" 이유는 품질을 운에 맡기기 때문이다.
+          INKK는 <strong style="color:var(--fg-1);">프롬프트·구조·후처리·렌더링</strong> 4개 층에서 동시에 품질을 잡는다.
+        </p>
+      </div>
+
+      <div class="arch-list" style="margin-top:0;">
+        <div class="arch-item" style="padding:12px 0; grid-template-columns:100px 1fr; gap:16px;">
+          <div class="arch-key" style="font-size:14px;">PRESET</div>
+          <div class="arch-val" style="font-size:18px;">6종 스타일 프리셋 — 무드만 고르면 톤·타이포·색이 한 세트로 고정</div>
+        </div>
+        <div class="arch-item" style="padding:12px 0; grid-template-columns:100px 1fr; gap:16px;">
+          <div class="arch-key" style="font-size:14px;">HOOK</div>
+          <div class="arch-val" style="font-size:18px;">훅 패턴 6종 (통계·숫자·권위·호명·충격·질문) — 첫 장만 의도적으로 강하게</div>
+        </div>
+        <div class="arch-item" style="padding:12px 0; grid-template-columns:100px 1fr; gap:16px;">
+          <div class="arch-key" style="font-size:14px;">ROLE SEP</div>
+          <div class="arch-val" style="font-size:18px;">장별 역할 분리 — 커버·본문·마무리가 각각 다른 프롬프트 지시를 받음</div>
+        </div>
+        <div class="arch-item" style="padding:12px 0; grid-template-columns:100px 1fr; gap:16px;">
+          <div class="arch-key" style="font-size:14px;">LAYOUT</div>
+          <div class="arch-val" style="font-size:18px;">레이아웃 엔진 — 텍스트 길이에 따라 폰트·레이아웃·행간이 자동 조정</div>
+        </div>
+        <div class="arch-item" style="padding:12px 0; grid-template-columns:100px 1fr; gap:16px; border-bottom:none;">
+          <div class="arch-key" style="font-size:14px;">POST</div>
+          <div class="arch-val" style="font-size:18px;">후처리 — 느낌표→마침표, 45자 트렁케이트, emoji 제거</div>
+        </div>
+      </div>
+    </div><!-- /left wrapper -->
+
+    <div style="display:flex; flex-direction:column; gap:20px; flex:1;">
+      <div>
+        <div style="font-family:var(--font-mono);font-size:15px;letter-spacing:0.12em;color:var(--fg-4);margin-bottom:10px;">6종 스타일 프리셋</div>
+        <div class="preset-grid" style="flex:0;">
+        <div class="preset-card">
+          <div class="pname">PRESET 01</div>
+          <div class="pval">자동</div>
+          <div class="pdesc2">주제에 맞게 AI가 자동 선택</div>
+        </div>
+        <div class="preset-card">
+          <div class="pname">PRESET 02</div>
+          <div class="pval">감성 큐레이션</div>
+          <div class="pdesc2">부드러운 톤, 감정 중심 카피</div>
+        </div>
+        <div class="preset-card">
+          <div class="pname">PRESET 03</div>
+          <div class="pval">데이터 인사이트</div>
+          <div class="pdesc2">수치·그래프 중심, 신뢰감 구조</div>
+        </div>
+        <div class="preset-card">
+          <div class="pname">PRESET 04</div>
+          <div class="pval">친근 인플루언서</div>
+          <div class="pdesc2">일상 언어, 높은 공감·저장율</div>
+        </div>
+        <div class="preset-card">
+          <div class="pname">PRESET 05</div>
+          <div class="pval">전문가 신뢰</div>
+          <div class="pdesc2">권위적 어조, 정보 밀도 높음</div>
+        </div>
+        <div class="preset-card">
+          <div class="pname">PRESET 06</div>
+          <div class="pval">충격 폭로</div>
+          <div class="pdesc2">훅이 강한 첫 장, 클릭 유도</div>
+        </div>
+      </div>
+      </div><!-- /preset wrapper -->
+
+      <div style="background:var(--bg);border:1px solid var(--rule-soft);padding:20px 24px;">
+        <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.1em;color:var(--fg-4);margin-bottom:10px;">레이아웃 엔진 — 텍스트 길이 → 자동 조정</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--rule-soft);">
+          <div style="padding:12px 12px;border-right:1px solid var(--rule-soft);">
+            <div style="font-family:var(--font-mono);font-weight:700;font-size:22px;color:var(--fg-1);">48px</div>
+            <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">30자 이하</div>
+          </div>
+          <div style="padding:12px 12px;border-right:1px solid var(--rule-soft);">
+            <div style="font-family:var(--font-mono);font-weight:700;font-size:22px;color:var(--fg-1);">36px</div>
+            <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">31~60자</div>
+          </div>
+          <div style="padding:12px 12px;border-right:1px solid var(--rule-soft);">
+            <div style="font-family:var(--font-mono);font-weight:700;font-size:22px;color:var(--fg-1);">28px</div>
+            <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">61~120자</div>
+          </div>
+          <div style="padding:12px 12px;">
+            <div style="font-family:var(--font-mono);font-weight:700;font-size:22px;color:var(--fg-1);">22px</div>
+            <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">120자 초과</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accent-box">
+        <div class="ab-label">핵심 철학</div>
+        <div class="ab-body" style="font-size:20px;">퀄리티는 "좋은 프롬프트 한 방"이 아니라 <strong style="color:var(--fg-1);">여러 층의 강제 장치가 누적된 결과</strong>다. 프롬프트가 80%를 잡고, 구조·레이아웃·후처리가 나머지 20%를 메운다.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">03 / 08</div>
+</section>
+
+<!-- ═══ 04 Architecture ═══ -->
+<section class="slide" data-label="04 Architecture">
+  <div class="top-rule">
+    <span>04 · ARCHITECTURE</span>
+    <span>결제·크레딧이 돈과 직결 — 4라운드 보안 감사</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1.05fr 1fr; gap:72px; flex:1; padding-top:32px; align-items:start;">
+
+    <div style="display:flex; flex-direction:column; gap:24px;">
+      <h2 class="slide-h2" style="font-size:42px;">
+        랜딩은 정적, 생성은 동적.<br/>
+        <span style="color:var(--fg-3); font-weight:400;">원자적 DB 트랜잭션으로 돈을 지킨다.</span>
+      </h2>
+
+      <div style="background:var(--paper-100);border:1px solid var(--rule-soft);padding:20px 24px;font-family:var(--font-mono);font-size:16px;line-height:2;color:var(--fg-3);">
+        <span style="color:var(--fg-1);">[사용자]</span> → <span style="color:var(--accent-600);">Next.js 16</span> (App Router + RSC)<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── /generate &nbsp;← LLM 생성 · 크레딧 차감/롤백<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── /result &nbsp;&nbsp;&nbsp;← 후편집 · PNG 저장<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span style="color:var(--accent-600);">Supabase</span>&nbsp;&nbsp;&nbsp;&nbsp;← Auth · Postgres · RLS<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span style="color:var(--accent-600);">LLM</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Groq / Claude (전환 가능)<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span style="color:var(--accent-600);">Stripe</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← 크레딧 결제 · webhook 멱등<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span style="color:var(--accent-600);">Upstash</span>&nbsp;&nbsp;&nbsp;&nbsp;← IP 기반 rate limit
+      </div>
+
+      <div class="arch-list" style="margin-top:4px;">
+        <div class="arch-item">
+          <div class="arch-key">App Router</div>
+          <div class="arch-val">랜딩은 정적(SEO) · 생성은 동적(인터랙션) — 한 프레임워크로 커버</div>
+        </div>
+        <div class="arch-item">
+          <div class="arch-key">LLM 추상화</div>
+          <div class="arch-val">Groq(빠르고 저렴) 기본 · Claude(고품질)로 런타임 교체 가능 — 비용/품질 레버를 코드에 고정하지 않음</div>
+        </div>
+        <div class="arch-item">
+          <div class="arch-key">Supabase RLS</div>
+          <div class="arch-val">전 테이블 행 단위 격리 — 백엔드 코드 실수가 데이터 유출로 이어지지 않게</div>
+        </div>
+        <div class="arch-item" style="border-bottom:none;">
+          <div class="arch-key">크레딧 RPC</div>
+          <div class="arch-val">차감·롤백·적립을 DB RPC 함수로 원자화 — SELECT FOR UPDATE 트랜잭션으로 동시 요청에도 잔액 음수 방지</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <div style="font-family:var(--font-mono);font-size:15px;letter-spacing:0.12em;color:var(--fg-4);">보안 — 4라운드 감사 항목</div>
+      <div style="display:flex;flex-direction:column;gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft);">
+        <div style="background:var(--bg);padding:16px 20px;display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:start;">
+          <div style="font-family:var(--font-mono);font-size:15px;color:var(--accent-600);">CSRF</div>
+          <div style="font-family:var(--font-sans);font-size:19px;color:var(--fg-2);">변경·비용 API에 Origin/Referer 검증</div>
+        </div>
+        <div style="background:var(--bg);padding:16px 20px;display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:start;">
+          <div style="font-family:var(--font-mono);font-size:15px;color:var(--accent-600);">SSRF</div>
+          <div style="font-family:var(--font-sans);font-size:19px;color:var(--fg-2);">이미지 프록시 — 외부 도메인 화이트리스트 + DNS rebinding 방어</div>
+        </div>
+        <div style="background:var(--bg);padding:16px 20px;display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:start;">
+          <div style="font-family:var(--font-mono);font-size:15px;color:var(--accent-600);">RLS</div>
+          <div style="font-family:var(--font-sans);font-size:19px;color:var(--fg-2);">모든 사용자 테이블 행 단위 격리 — 백엔드 코드 실수가 데이터 유출로 이어지지 않게</div>
+        </div>
+        <div style="background:var(--bg);padding:16px 20px;display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:start;">
+          <div style="font-family:var(--font-mono);font-size:15px;color:var(--accent-600);">WEBHOOK</div>
+          <div style="font-family:var(--font-sans);font-size:19px;color:var(--fg-2);">Stripe 재시도·동시 도착 시 크레딧 중복 적립 차단 — DB 레벨 멱등 클레임</div>
+        </div>
+        <div style="background:var(--bg);padding:16px 20px;display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:start;">
+          <div style="font-family:var(--font-mono);font-size:15px;color:var(--accent-600);">CSP / HSTS</div>
+          <div style="font-family:var(--font-sans);font-size:19px;color:var(--fg-2);">응답 헤더 수준 화이트리스트 · HTTPS 강제 · iframe 삽입 차단</div>
+        </div>
+        <div style="background:var(--bg);padding:16px 20px;display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:start;">
+          <div style="font-family:var(--font-mono);font-size:15px;color:var(--accent-600);">RATE LIMIT</div>
+          <div style="font-family:var(--font-sans);font-size:19px;color:var(--fg-2);">비로그인 IP당 생성 횟수 제한 — LLM 비용 누수 방지</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft);margin-top:4px;">
+        <div style="background:var(--bg);padding:16px 18px;text-align:center;">
+          <div style="font-family:var(--font-mono);font-weight:700;font-size:26px;color:var(--fg-1);">4</div>
+          <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">보안 감사 라운드</div>
+        </div>
+        <div style="background:var(--bg);padding:16px 18px;text-align:center;">
+          <div style="font-family:var(--font-mono);font-weight:700;font-size:26px;color:var(--fg-1);">7</div>
+          <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">DB RPC 함수</div>
+        </div>
+        <div style="background:var(--bg);padding:16px 18px;text-align:center;">
+          <div style="font-family:var(--font-mono);font-weight:700;font-size:26px;color:var(--fg-1);">7</div>
+          <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">API 라우트</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">04 / 08</div>
+</section>
+
+<!-- ═══ 05 Business Model ═══ -->
+<section class="slide soft" data-label="05 Business">
+  <div class="top-rule">
+    <span>05 · BUSINESS MODEL</span>
+    <span>구독이 아니라 크레딧 — 비용 구조가 강제하는 결정</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1.4fr; gap:72px; flex:1; padding-top:32px; align-items:start;">
+
+    <div style="display:flex; flex-direction:column; gap:28px;">
+      <h2 class="slide-h2" style="font-size:42px;">
+        원가와 매출이<br/>항상 같은 방향으로.
+      </h2>
+      <p class="slide-body" style="margin:0;">
+        카드뉴스 1세트 = LLM API 호출 + 이미지 처리 = <strong style="color:var(--fg-1);">실제 변동비.</strong>
+        구독은 헤비유저에서 적자가 나지만, 크레딧은 원가와 매출이 연동된다.
+      </p>
+
+      <div class="arch-list" style="margin-top:0;">
+        <div class="arch-item">
+          <div class="arch-key">변동비 연동</div>
+          <div class="arch-val">쓴 만큼만 내는 공정함 — 소상공인의 불규칙한 사용 패턴에 맞음</div>
+        </div>
+        <div class="arch-item">
+          <div class="arch-key">낮은 진입 장벽</div>
+          <div class="arch-val">"월 9,900원 구독"보다 "2,900원 충전"이 첫 결제 전환율에서 유리</div>
+        </div>
+        <div class="arch-item">
+          <div class="arch-key">LTV 유도</div>
+          <div class="arch-val">단가를 97→79→66원으로 낮춰 헤비유저가 자연스럽게 큰 팩을 구매</div>
+        </div>
+        <div class="arch-item" style="border-bottom:none;">
+          <div class="arch-key">무료 정책</div>
+          <div class="arch-val">가입 시 <strong>7일 무료 체험</strong> → 이후 월 5회 무료. 결제 게이팅을 생성 횟수가 아닌 <strong>발행 가능 상태(워터마크)</strong>로 이동 — LLM 비용 통제</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; justify-content:space-between; gap:16px;">
+      <div style="font-family:var(--font-mono);font-size:15px;letter-spacing:0.12em;color:var(--fg-4);">크레딧 팩 — 1크레딧 = 카드뉴스 1세트</div>
+
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+        <div class="price-col">
+          <div class="price-header">
+            <div class="price-name">STARTER</div>
+            <div class="price-amount">2,900<span style="font-size:26px;font-weight:400;">원</span></div>
+            <div class="price-unit">30 크레딧</div>
+          </div>
+          <div class="price-body">
+            <div class="price-row">
+              <span class="label">단가</span>
+              <span style="font-weight:700;">약 97원/회</span>
+            </div>
+            <div class="price-row">
+              <span class="label">크레딧</span>
+              <span>30회 생성</span>
+            </div>
+          </div>
+        </div>
+        <div class="price-col" style="outline:2px solid var(--accent-600);outline-offset:-2px;">
+          <div class="price-header" style="background:var(--accent-100);">
+            <div class="price-name" style="color:var(--accent-600);">STANDARD</div>
+            <div class="price-amount" style="color:var(--accent-600);">7,900<span style="font-size:26px;font-weight:400;">원</span></div>
+            <div class="price-unit" style="color:var(--accent-600);">100 크레딧</div>
+          </div>
+          <div class="price-body">
+            <div class="price-row">
+              <span class="label">단가</span>
+              <span style="font-weight:700;color:var(--accent-600);">약 79원/회</span>
+            </div>
+            <div class="price-row">
+              <span class="label">크레딧</span>
+              <span>100회 생성</span>
+            </div>
+          </div>
+        </div>
+        <div class="price-col">
+          <div class="price-header">
+            <div class="price-name">PRO</div>
+            <div class="price-amount">19,900<span style="font-size:26px;font-weight:400;">원</span></div>
+            <div class="price-unit">300 크레딧</div>
+          </div>
+          <div class="price-body">
+            <div class="price-row">
+              <span class="label">단가</span>
+              <span style="font-weight:700;">약 66원/회</span>
+            </div>
+            <div class="price-row">
+              <span class="label">크레딧</span>
+              <span>300회 생성</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:8px;background:var(--bg);border:1px solid var(--rule-soft);padding:20px 24px;">
+        <div style="font-family:var(--font-mono);font-size:15px;letter-spacing:0.1em;color:var(--fg-4);margin-bottom:14px;">타겟 — 공통점: 디자인 전문가 아님 · 시간 없음 · 꾸준함이 생명</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+          <div style="background:var(--paper-100);border-top:2px solid var(--accent-600);padding:14px 16px;">
+            <div style="font-family:var(--font-mono);font-size:14px;color:var(--accent-600);margin-bottom:6px;">1차 타겟</div>
+            <div style="font-family:var(--font-sans);font-weight:600;font-size:19px;color:var(--fg-1);">1인 브랜드 · 소상공인</div>
+            <div style="font-family:var(--font-sans);font-size:17px;color:var(--fg-3);margin-top:4px;">SNS로 알려야 하는데 제작 시간이 없음</div>
+          </div>
+          <div style="background:var(--paper-100);border-top:2px solid var(--rule);padding:14px 16px;">
+            <div style="font-family:var(--font-mono);font-size:14px;color:var(--fg-4);margin-bottom:6px;">2차 타겟</div>
+            <div style="font-family:var(--font-sans);font-weight:600;font-size:19px;color:var(--fg-1);">콘텐츠 마케터</div>
+            <div style="font-family:var(--font-sans);font-size:17px;color:var(--fg-3);margin-top:4px;">다량의 카드뉴스를 빠르게 초안화해야 함</div>
+          </div>
+          <div style="background:var(--paper-100);border-top:2px solid var(--rule);padding:14px 16px;">
+            <div style="font-family:var(--font-mono);font-size:14px;color:var(--fg-4);margin-bottom:6px;">3차 타겟</div>
+            <div style="font-family:var(--font-sans);font-weight:600;font-size:19px;color:var(--fg-1);">인플루언서 · 크리에이터</div>
+            <div style="font-family:var(--font-sans);font-size:17px;color:var(--fg-3);margin-top:4px;">정보성 콘텐츠를 꾸준히 발행해야 함</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">05 / 08</div>
+</section>
+
+<!-- ═══ 06 Challenges ═══ -->
+<section class="slide" data-label="06 Challenges">
+  <div class="top-rule">
+    <span>06 · CHALLENGES</span>
+    <span>병목과 해결 — 실제로 막혔던 지점</span>
+  </div>
+
+  <div style="flex:1; padding-top:32px; display:flex; flex-direction:column; gap:16px;">
+    <h2 class="slide-h2" style="font-size:38px; margin:0;">결제 코드는 "되는 것"과 "동시성·재시도에도 되는 것"이 전혀 다른 문제다.</h2>
+
+    <div class="challenge-grid">
+      <div class="challenge-card resolved">
+        <div class="ctag">RESOLVED · 01</div>
+        <h3>Google OAuth — 콜백이 끝까지 안 됨</h3>
+        <div class="cbody">
+          <strong>증상:</strong> Google 동의 화면은 뜨지만 콜백에서 계속 실패. <code>invalid_client</code> → <code>Unable to exchange external code</code>.<br/><br/>
+          자격증명·리다이렉트 URI·승인 도메인까지 전부 점검했지만 이상 없었다. 결국 문제는 PKCE code verifier와 서버 콜백 라우트 간 매칭이 깨지는 흐름 자체였다.
+        </div>
+        <div class="csolution">
+          <strong>해결:</strong> Authorization Code Flow를 우회. <strong>Google One Tap ID Token 방식</strong>(<code>signInWithIdToken</code>)으로 전환 → 서버 코드 교환 단계 자체가 사라져 해당 에러가 발생할 수 없게 됨.
+        </div>
+      </div>
+
+      <div class="challenge-card resolved">
+        <div class="ctag">RESOLVED · 02</div>
+        <h3>결제 멱등성 — 보이지 않는 돈 새는 구멍</h3>
+        <div class="cbody">
+          <strong>증상:</strong> Stripe webhook은 at-least-once 전송. 같은 이벤트가 두 번 오면 크레딧이 두 배 적립.<br/><br/>
+          3라운드에 걸쳐 수정: 1차 PK INSERT → 2차 race condition 발견(즉시 재시도 시 동시 처리) → 3차 PL/pgSQL 타입 버그(<code>boolean</code>에 정수 대입) 발견.
+        </div>
+        <div class="csolution">
+          <strong>해결:</strong> DB 레벨 멱등 클레임 패턴 도입. status 컬럼 + 90초 stale 자동 복구. 직접 짠 SQL도 반드시 검증 대상이다.
+        </div>
+      </div>
+
+      <div class="challenge-card resolved">
+        <div class="ctag">RESOLVED · 03</div>
+        <h3>배포가 조용히 깨져 있었음 — 빌드 실패가 가려진 병목</h3>
+        <div class="cbody">
+          <strong>증상:</strong> 코드를 고쳐 푸시했는데 프로덕션에 반영이 안 됐다. 로컬에선 멀쩡.<br/><br/>
+          Vercel은 빌드 실패 시 직전 성공 버전을 서빙하므로 "배포했는데 안 바뀜"이라는 착시가 생겼다. 원인은 <code>useSearchParams()</code>를 Suspense 경계 없이 사용한 것.
+        </div>
+        <div class="csolution">
+          <strong>해결:</strong> <code>&lt;Suspense&gt;</code>로 감싸고, GitHub Actions에 <code>lint + typecheck + test + build</code> 게이트 추가. "배포했는데 안 바뀐다"는 거의 항상 빌드 실패다.
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="challenge-card resolved" style="padding:18px 20px;gap:10px;">
+        <div class="ctag" style="font-size:14px;">RESOLVED · 04</div>
+        <h3 style="font-size:20px;">Vitest 워크트리 테스트 중복 수집</h3>
+        <div class="cbody" style="font-size:18px;"><strong>증상:</strong> git worktree 작업 중 Vitest가 <code>.claude/</code> 안 복제 테스트까지 수집해 같은 테스트가 두 번 실행. ESLint도 4만 개 가짜 경고.</div>
+        <div class="csolution" style="font-size:17px;"><strong>해결:</strong> <code>vitest.config.ts</code> + <code>eslint.config.mjs</code>에 <code>.claude/**</code> exclude 추가. 도구 설정의 ignore 범위는 작업 환경이 바뀌면 같이 점검해야 한다.</div>
+      </div>
+      <div class="challenge-card resolved" style="padding:18px 20px;gap:10px;">
+        <div class="ctag" style="font-size:14px;">RESOLVED · 05</div>
+        <h3 style="font-size:20px;">랜딩 카드 rotate → overflow 잘림</h3>
+        <div class="cbody" style="font-size:18px;"><strong>증상:</strong> Before/After 카드를 ±10° 회전 배치했더니 모서리가 <code>overflow-hidden</code>에 잘림. 카드 높이만 계산하고 회전 후 실제 점유 영역을 고려하지 않음.</div>
+        <div class="csolution" style="font-size:17px;"><strong>해결:</strong> <code>H + (W·sinθ)</code> 계산해 컨테이너 높이 360→420. 회전 카드의 실제 세로 점유 공간을 수식으로 반영해 재배치.</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft);">
+      <div style="background:var(--bg);padding:16px 20px;text-align:center;">
+        <div style="font-family:var(--font-mono);font-weight:700;font-size:28px;color:var(--fg-1);">3</div>
+        <div style="font-family:var(--font-mono);font-size:13px;color:var(--fg-4);margin-top:4px;">결제 멱등성 수정 라운드</div>
+      </div>
+      <div style="background:var(--bg);padding:16px 20px;text-align:center;">
+        <div style="font-family:var(--font-mono);font-weight:700;font-size:28px;color:var(--fg-1);">4</div>
+        <div style="font-family:var(--font-mono);font-size:13px;color:var(--fg-4);margin-top:4px;">전체 보안 감사 라운드</div>
+      </div>
+      <div style="background:var(--bg);padding:16px 20px;text-align:center;">
+        <div style="font-family:var(--font-mono);font-weight:700;font-size:28px;color:var(--accent-600);">OAuth</div>
+        <div style="font-family:var(--font-mono);font-size:13px;color:var(--fg-4);margin-top:4px;">흐름 자체를 바꿔 해결</div>
+      </div>
+      <div style="background:var(--bg);padding:16px 20px;text-align:center;">
+        <div style="font-family:var(--font-mono);font-weight:700;font-size:28px;color:var(--positive);">CI</div>
+        <div style="font-family:var(--font-mono);font-size:13px;color:var(--fg-4);margin-top:4px;">빌드 실패 자동 감지로 재발 방지</div>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">06 / 08</div>
+</section>
+
+<!-- ═══ 07 Learning ═══ -->
+<section class="slide s-close" data-label="07 Learning">
+  <div class="top-rule">
+    <span>07 · LEARNING</span>
+    <span>배운 것 · 한계 · 다음 단계</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:80px; flex:1; padding-top:48px; align-items:start;">
+
+    <div style="display:flex; flex-direction:column; gap:40px;">
+      <div class="pull">
+        디버깅의 목표는<br/>
+        <em>'원인 규명'</em>이 아니라<br/>
+        '동작하게 만들기'다.
+      </div>
+      <p class="slide-body">
+        Google OAuth에서 자격증명이 맞는데 왜 안 되는지 며칠 붙들기보다,
+        실패하는 경로 자체를 제거하는 대안 흐름이 있는지 먼저 봤어야 했다.
+        결제 멱등성은 기능이 아니라 전제다.
+      </p>
+      <p class="slide-body" style="color:var(--fg-3);">
+        퀄리티는 "좋은 프롬프트 한 방"이 아니라
+        <strong style="color:var(--fg-2);">여러 층의 강제 장치가 누적된 결과</strong>다.
+        프롬프트가 80%를 잡고, 구조·레이아웃·후처리가 나머지 20%를 메운다.
+      </p>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:20px;">
+      <div class="learn-card accent">
+        <div class="ltag">LEARNED · 풀스택 + AI</div>
+        <h3>변동비 기반 서비스 설계</h3>
+        <div class="lbody">원가와 매출이 연동되는 크레딧 모델, Stripe webhook 멱등 처리, Supabase RLS까지 — 돈이 오가는 서비스의 안전망을 직접 구축했다.</div>
+      </div>
+      <div class="learn-card warn">
+        <div class="ltag">CHALLENGE · 현재 한계</div>
+        <h3>이미지 퀄리티 · 카드 수 인식</h3>
+        <div class="lbody">Unsplash/Pexels 무료 이미지의 주제 적합도가 불균일하다. 입력 길이 → 카드 수 자동 추천도 짧은 주제에서 들쭉날쭉하다.</div>
+      </div>
+      <div class="learn-card good">
+        <div class="ltag">NEXT · 다음 단계</div>
+        <h3>유료 전환 오픈 + 이미지 파인튜닝</h3>
+        <div class="lbody">얼리 액세스 무료를 종료하고 결제 시스템을 오픈한다. 이미지 선택 모델 개선과 카드 수 추천 로직 고도화가 우선 과제다.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">07 / 08</div>
+</section>
+
+<!-- ═══ 08 Post-Launch ═══ -->
+<section class="slide soft" data-label="08 Post-Launch">
+  <div class="top-rule">
+    <span>08 · POST-LAUNCH</span>
+    <span>출시 이후 — 로깅·정책·최적화</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:72px; flex:1; padding-top:28px; align-items:start;">
+
+    <div style="display:flex; flex-direction:column; gap:20px;">
+      <h2 class="slide-h2" style="font-size:40px;">
+        고치기 전에 측정한다.<br/>
+        <span style="color:var(--fg-3); font-weight:400;">측정 없는 최적화는 다음 달에 또 감으로 결정하게 만든다.</span>
+      </h2>
+
+      <div class="arch-list" style="margin-top:0;">
+        <div class="arch-item" style="padding:11px 0; grid-template-columns:110px 1fr; gap:16px;">
+          <div class="arch-key" style="font-size:14px;">이벤트 로깅</div>
+          <div class="arch-val" style="font-size:18px;">events 테이블 + /api/events + /admin 대시보드 — 가입·생성·다운로드·재방문을 기록, 추이를 한 화면에. 수정 전에 측정부터</div>
+        </div>
+        <div class="arch-item" style="padding:11px 0; grid-template-columns:110px 1fr; gap:16px;">
+          <div class="arch-key" style="font-size:14px;">무료 정책</div>
+          <div class="arch-val" style="font-size:18px;">"평생 2회" → 가입 시 7일 무료 체험 + 이후 월 5회 무료. 결제 게이팅을 생성 횟수가 아닌 <strong>발행 가능 상태(워터마크)</strong>로 이동</div>
+        </div>
+        <div class="arch-item" style="padding:11px 0; grid-template-columns:110px 1fr; gap:16px;">
+          <div class="arch-key" style="font-size:14px;">보관함</div>
+          <div class="arch-val" style="font-size:18px;">/dashboard 신설 — 만든 카드뉴스를 다시 열고·저장·삭제. SNS 운영자의 재방문 동기</div>
+        </div>
+        <div class="arch-item" style="padding:11px 0; grid-template-columns:110px 1fr; gap:16px;">
+          <div class="arch-key" style="font-size:14px;">상태 동기화</div>
+          <div class="arch-val" style="font-size:18px;">CreditsProvider React Context — 헤더·본문이 각자 /api/credits를 호출해 값이 어긋나던 문제. 출처를 하나로</div>
+        </div>
+        <div class="arch-item" style="padding:11px 0; grid-template-columns:110px 1fr; gap:16px; border-bottom:none;">
+          <div class="arch-key" style="font-size:14px;">우선순위</div>
+          <div class="arch-val" style="font-size:18px;">카드 1장 재생성 — 원가가 새 덱 생성과 비슷, 수동 편집이 이미 커버 → <strong>만들지 않기로 결정.</strong> 남은 병목은 코드가 아닌 유입</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:20px;">
+
+      <div style="background:var(--bg);border:1px solid var(--rule-soft);padding:22px 26px;">
+        <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.1em;color:var(--fg-4);margin-bottom:16px;">성능 디버깅 — Vercel 리전 최적화</div>
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;">
+          <div style="text-align:center;">
+            <div style="font-family:var(--font-mono);font-weight:700;font-size:38px;color:var(--fg-3);">~0.4s</div>
+            <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">API 응답 (iad1 · 미국)</div>
+          </div>
+          <div style="font-family:var(--font-mono);font-size:22px;color:var(--accent-600);">→</div>
+          <div style="text-align:center;">
+            <div style="font-family:var(--font-mono);font-weight:700;font-size:38px;color:var(--positive);">~0.06s</div>
+            <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">API 응답 (icn1 · 서울)</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--rule-soft);font-family:var(--font-mono);font-size:13px;color:var(--fg-4);">
+          <code>vercel.json</code>에 <code>"regions": ["icn1"]</code> 한 줄 → <strong style="color:var(--positive);">약 6배 개선.</strong> 비싼 작업(DB 마이그레이션) 전에 가설을 데이터로 교정
+        </div>
+      </div>
+
+      <div style="background:var(--paper-100);border:1px solid var(--rule-soft);padding:22px 26px;">
+        <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.1em;color:var(--fg-4);margin-bottom:14px;">무료 크레딧 정책 변경 — Before / After</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="background:var(--bg);padding:14px 16px;border-top:2px solid var(--warn);">
+            <div style="font-family:var(--font-mono);font-size:13px;color:var(--warn);margin-bottom:8px;">BEFORE</div>
+            <div style="font-family:var(--font-sans);font-size:17px;color:var(--fg-2);line-height:1.6;">비로그인 1회<br/>+ 가입 1크레딧<br/><span style="color:var(--fg-4);font-size:14px;">= 평생 2회, 결제 벽</span></div>
+          </div>
+          <div style="background:var(--bg);padding:14px 16px;border-top:2px solid var(--positive);">
+            <div style="font-family:var(--font-mono);font-size:13px;color:var(--positive);margin-bottom:8px;">AFTER</div>
+            <div style="font-family:var(--font-sans);font-size:17px;color:var(--fg-2);line-height:1.6;">7일 무료 체험<br/>+ 월 5회 무료<br/><span style="color:var(--fg-4);font-size:14px;">결제 = 발행물 완성</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accent-box">
+        <div class="ab-label">핵심 통찰</div>
+        <div class="ab-body" style="font-size:19px;">무엇을 <strong style="color:var(--fg-1);">안 만들지 결정한 것</strong>이 무엇을 만들었는지만큼 중요하다. 제품은 충분히 동작한다 — 남은 진짜 병목은 유입(트래픽)이다.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">08 / 08</div>
+</section>
+
+</deck-stage>
+
+</body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heetae Kim — 작업물 모음 / Hub</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<style>
+  .container { max-width: 1440px; margin: 0 auto; padding: 0 32px; }
+
+  header.hub {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding: 56px 0 24px 0; border-bottom: 1px solid var(--ink-900);
+  }
+  .mark { display: flex; align-items: baseline; gap: 8px; }
+  .mark .b { color: var(--accent-500); font-family: var(--font-mono); font-weight: 700; font-size: 22px; }
+  .mark .hk { font-family: var(--font-mono); font-weight: 700; font-size: 22px; letter-spacing: -0.01em; }
+
+  .lede { padding: 56px 0 32px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: end; border-bottom: 1px solid var(--ink-900); }
+  .lede h1 { font-family: var(--font-mono); font-weight: 700; font-size: clamp(40px, 6vw, 88px); line-height: 1.02; letter-spacing: -0.025em; margin: 0; }
+  .lede h1 em { font-style: normal; color: var(--accent-500); }
+  .lede p { font-size: 17px; line-height: 1.7; color: var(--fg-2); max-width: 48ch; margin: 0; }
+
+  .toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 0; border-bottom: 1px solid var(--rule-soft);
+  }
+  .filters { display: flex; gap: 6px; }
+  .filters button {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em;
+    text-transform: uppercase; padding: 6px 14px; border-radius: 999px;
+    background: transparent; color: var(--ink-700);
+    border: 1px solid var(--ink-900); cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .filters button:hover { background: var(--bg-mute); }
+  .filters button.on { background: var(--ink-900); color: var(--paper-50); }
+
+  .view-switch { display: flex; gap: 0; border: 1px solid var(--ink-900); }
+  .view-switch button {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    padding: 6px 14px; background: transparent; color: var(--ink-700); border: 0; cursor: pointer; border-right: 1px solid var(--ink-900);
+  }
+  .view-switch button:last-child { border-right: 0; }
+  .view-switch button.on { background: var(--ink-900); color: var(--paper-50); }
+
+  /* Grid view */
+  .grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+    padding: 32px 0;
+  }
+  @media (max-width: 1100px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 720px)  { .grid { grid-template-columns: 1fr; } }
+
+  .card { display: flex; flex-direction: column; gap: 14px; }
+  .card a.preview {
+    position: relative; display: block; aspect-ratio: 4/3; overflow: hidden;
+    border: 1px solid var(--ink-900); background: var(--bg-mute);
+    transition: box-shadow var(--dur-base) var(--ease-out);
+  }
+  .card a.preview:hover { box-shadow: 0 1px 0 var(--accent-500); }
+  .card a.preview .iframe-wrap {
+    position: absolute; inset: 0; transform: scale(.45); transform-origin: top left;
+    width: 222.22%; height: 222.22%; pointer-events: none;
+  }
+  .card a.preview iframe { width: 100%; height: 100%; border: 0; background: var(--bg); }
+  .card a.preview .veil {
+    position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14,14,16,0) 60%, rgba(14,14,16,.04) 100%);
+    pointer-events: none;
+  }
+  .card a.preview .idx {
+    position: absolute; top: 10px; left: 10px;
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: .18em;
+    color: var(--ink-900); background: var(--paper-50); padding: 3px 8px; border: 1px solid var(--ink-900);
+    z-index: 2;
+  }
+  .card a.preview .open {
+    position: absolute; bottom: 10px; right: 10px;
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: .18em;
+    color: var(--paper-50); background: var(--ink-900); padding: 5px 10px;
+    z-index: 2; opacity: 0; transition: opacity var(--dur-fast) var(--ease-out);
+  }
+  .card a.preview:hover .open { opacity: 1; }
+
+  .card .actions { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .card .actions a {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+    padding: 5px 10px; border: 1px solid var(--ink-900); color: var(--ink-900);
+    text-decoration: none; background: transparent;
+    transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .card .actions a:hover { background: var(--ink-900); color: var(--paper-50); }
+  .card .actions a.pdf { color: var(--accent-600); border-color: var(--accent-500); }
+  .card .actions a.pdf:hover { background: var(--accent-500); color: var(--paper-50); }
+  .card.empty .actions a { opacity: .35; pointer-events: none; }
+
+  .card.empty a.preview { background: repeating-linear-gradient(45deg, var(--bg-soft) 0, var(--bg-soft) 12px, var(--bg-mute) 12px, var(--bg-mute) 24px); pointer-events: none; }
+  .card.empty .row { color: var(--fg-3); }
+
+  .card .row {
+    display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: baseline;
+  }
+  .card h3 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+  .card h3 .en { color: var(--fg-3); font-weight: 400; margin-left: 6px; font-size: 14px; }
+  .card .meta-row { display: flex; gap: 12px; align-items: center; }
+  .card .desc { font-size: 14px; color: var(--fg-2); line-height: 1.55; max-width: 42ch; }
+
+  /* Index list view */
+  .list { padding: 16px 0 32px 0; }
+  .list .head, .list .row {
+    display: grid; grid-template-columns: 60px 1.4fr 1fr 100px 120px 120px;
+    padding: 14px 0; align-items: baseline;
+  }
+  .list .row .pdf-link {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent-600); text-decoration: none; padding: 3px 8px; border: 1px solid var(--accent-500);
+    justify-self: end;
+  }
+  .list .row .pdf-link:hover { background: var(--accent-500); color: var(--paper-50); }
+  .list .head {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--fg-3); border-top: 1px solid var(--ink-900); border-bottom: 1px solid var(--ink-900);
+  }
+  .list .row {
+    border-bottom: 1px solid var(--rule-soft); text-decoration: none; color: inherit;
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+  .list .row:hover { background: var(--bg-soft); }
+  .list .row .title { font-size: 17px; font-weight: 500; }
+  .list .row .title .en { color: var(--fg-3); font-weight: 400; margin-left: 6px; font-size: 13px; }
+
+  .pill {
+    display: inline-block; font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em;
+    text-transform: uppercase; padding: 3px 10px; border-radius: 999px;
+  }
+  .pill.shipped  { background: var(--accent-100); color: var(--accent-600); }
+  .pill.draft    { background: transparent; color: var(--fg-3); border: 1px dashed rgba(14,14,16,.32); }
+  .pill.archived { background: var(--bg-mute); color: var(--ink-700); }
+  .pill.empty    { background: transparent; color: var(--fg-4); border: 1px dashed rgba(14,14,16,.18); }
+
+  /* Modal preview */
+  .modal {
+    position: fixed; inset: 0; background: var(--overlay);
+    display: none; align-items: center; justify-content: center; z-index: 100;
+    padding: 24px;
+  }
+  .modal.on { display: flex; }
+  .modal .frame {
+    width: min(1280px, 96vw); height: min(820px, 92vh); background: var(--bg);
+    border: 1px solid var(--ink-900); display: flex; flex-direction: column;
+  }
+  .modal .frame header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; border-bottom: 1px solid var(--ink-900);
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: -0.01em;
+  }
+  .modal .frame iframe { flex: 1; border: 0; background: var(--bg); }
+  .modal .frame .x {
+    background: transparent; border: 0; cursor: pointer; font-family: var(--font-mono);
+    font-size: 18px; color: var(--ink-900); padding: 4px 8px;
+  }
+
+  /* Footer */
+  footer.hub { margin-top: 64px; padding: 24px 0 32px 0; border-top: 1px solid var(--ink-900);
+    display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--fg-3);
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header class="hub">
+      <a href="#" class="mark" style="text-decoration:none; color:inherit;">
+        <span class="b">[</span><span class="hk">HK</span><span class="b">]</span>
+        <span class="meta" style="margin-left: 8px;">heetae kim · seoul</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="https://github.com/" target="_blank" rel="noreferrer" class="meta" style="color: var(--fg-2); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--rule-soft); padding-bottom: 2px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.01-.02-1.99-3.2.7-3.87-1.54-3.87-1.54-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.24 3.34.95.1-.74.4-1.24.72-1.53-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.93 10.93 0 0 1 5.74 0c2.18-1.49 3.14-1.18 3.14-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.26 5.69.41.36.78 1.06.78 2.13 0 1.54-.01 2.78-.01 3.16 0 .31.21.68.8.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+          github.com/heetae
+        </a>
+        <div class="meta numeric"><span id="counter">— / —</span> · 2026.04</div>
+      </div>
+    </header>
+
+    <section class="lede">
+      <h1>데이터로,<br/><em>더 가볍게.</em></h1>
+      <p>
+        데이터 분석을 통한 AI 모델링과, 사용자 친화적이며 경량화된 비용 감소 등의 최적화에 도전하는 엔지니어의 작업물 모음입니다. 각 칸은 작은 사이트 하나, 미리보기는 실제로 살아있는 화면이에요. <span class="meta" style="display:block; margin-top: 10px;">DATA-DRIVEN AI MODELING · LEAN, USER-FRIENDLY OPTIMIZATION.</span>
+      </p>
+    </section>
+
+    <div class="toolbar">
+      <div class="filters" id="filters">
+        <button data-filter="all" class="on">All</button>
+        <button data-filter="shipped">Shipped</button>
+        <button data-filter="draft">Draft</button>
+        <button data-filter="empty">Empty</button>
+      </div>
+      <div class="view-switch" id="view-switch">
+        <button data-view="grid" class="on">Grid</button>
+        <button data-view="list">Index</button>
+      </div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+    <div class="list" id="list" style="display:none;">
+      <div class="head">
+        <span>№</span><span>Title</span><span>Tags</span><span>Year</span><span>Status</span><span style="text-align:right;">Open</span>
+      </div>
+      <div id="list-rows"></div>
+    </div>
+
+    <footer class="hub">
+      <span>© 2026 Heetae Kim</span>
+      <span>Index updated 2026.04.27 · be kind</span>
+    </footer>
+  </div>
+
+  <div class="modal" id="modal" role="dialog" aria-modal="true">
+    <div class="frame">
+      <header>
+        <span id="modal-title" class="meta">PREVIEW</span>
+        <div style="display:flex; gap: 14px; align-items: center;">
+          <a id="modal-pdf" href="#" class="meta" style="color: var(--accent-600); text-decoration: underline; text-underline-offset: 3px;">↓ Save as PDF</a>
+          <a id="modal-open" href="#" target="_blank" class="meta" style="color: var(--ink-700); text-decoration: underline; text-underline-offset: 3px;">Open in new tab ↗</a>
+          <button class="x" id="modal-close" aria-label="Close">✕</button>
+        </div>
+      </header>
+      <iframe id="modal-iframe" src=""></iframe>
+    </div>
+  </div>
+
+  <script>
+    /*EDITMODE-BEGIN*/
+    const PROJECTS = [
+      {
+        idx: 1,
+        slug: "01-portfolio-heetae",
+        title: "공책 · Heetae's Portfolio",
+        titleEn: "personal portfolio v1",
+        desc: "이 모든 걸 처음 시작한, 하나의 잔잔한 포트폴리오 사이트.",
+        year: "2026",
+        tags: ["portfolio", "editorial"],
+        status: "shipped",
+        href: "sites/01-portfolio-heetae/index.html",
+        pdf: "sites/01-portfolio-heetae/index.html"
+      },
+      { idx: 2, slug: "_empty", title: "Slot 02", titleEn: "coming soon", desc: "다음 작업이 들어갈 자리입니다.", year: "—", tags: ["—"], status: "empty", href: "sites/_empty/index.html", pdf: null },
+      { idx: 3, slug: "_empty", title: "Slot 03", titleEn: "coming soon", desc: "다음 작업이 들어갈 자리입니다.", year: "—", tags: ["—"], status: "empty", href: "sites/_empty/index.html", pdf: null },
+      { idx: 4, slug: "_empty", title: "Slot 04", titleEn: "coming soon", desc: "다음 작업이 들어갈 자리입니다.", year: "—", tags: ["—"], status: "empty", href: "sites/_empty/index.html", pdf: null },
+      { idx: 5, slug: "_empty", title: "Slot 05", titleEn: "coming soon", desc: "다음 작업이 들어갈 자리입니다.", year: "—", tags: ["—"], status: "empty", href: "sites/_empty/index.html", pdf: null },
+      { idx: 6, slug: "_empty", title: "Slot 06", titleEn: "coming soon", desc: "다음 작업이 들어갈 자리입니다.", year: "—", tags: ["—"], status: "empty", href: "sites/_empty/index.html", pdf: null }
+    ];
+    /*EDITMODE-END*/
+
+    const grid = document.getElementById("grid");
+    const listRows = document.getElementById("list-rows");
+    const counter = document.getElementById("counter");
+    const filledCount = PROJECTS.filter(p => p.status !== "empty").length;
+    counter.textContent = String(filledCount).padStart(2,"0") + " / " + String(PROJECTS.length).padStart(2,"0");
+
+    function pad(n){ return String(n).padStart(2,"0"); }
+
+    function render(filter, view) {
+      const rows = (filter === "all") ? PROJECTS : PROJECTS.filter(p => p.status === filter);
+      // Grid
+      grid.innerHTML = "";
+      rows.forEach(p => {
+        const isEmpty = p.status === "empty";
+        const card = document.createElement("div");
+        card.className = "card" + (isEmpty ? " empty" : "");
+        card.innerHTML = `
+          <a class="preview" href="${isEmpty ? '#' : p.href}" data-idx="${p.idx}" ${isEmpty ? '' : 'data-open="modal"'}>
+            <span class="idx">№ ${pad(p.idx)}</span>
+            <div class="iframe-wrap">
+              <iframe loading="lazy" src="${p.href}" tabindex="-1" aria-hidden="true"></iframe>
+            </div>
+            <div class="veil"></div>
+            ${isEmpty ? '' : '<span class="open">OPEN ↗</span>'}
+          </a>
+          <div>
+            <div class="row">
+              <h3>${p.title}<span class="en">${p.titleEn ? '· ' + p.titleEn : ''}</span></h3>
+              <span class="meta numeric">${p.year}</span>
+            </div>
+            <div class="desc" style="margin-top: 6px;">${p.desc}</div>
+            <div class="meta-row" style="margin-top: 10px;">
+              <span class="pill ${p.status}">${p.status === "empty" ? "● empty" : p.status}</span>
+              <span class="meta">${p.tags.join(" · ")}</span>
+            </div>
+            <div class="actions">
+              <a href="${p.href}" ${isEmpty ? '' : 'data-open="modal" data-idx="' + p.idx + '"'}>Open ↗</a>
+              <a class="pdf" href="#" data-pdf="${p.idx}" ${isEmpty ? 'aria-disabled="true"' : ''}>↓ PDF</a>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // List
+      listRows.innerHTML = "";
+      rows.forEach(p => {
+        const isEmpty = p.status === "empty";
+        const a = document.createElement("a");
+        a.className = "row";
+        a.href = isEmpty ? "#" : p.href;
+        if (!isEmpty) a.setAttribute("data-open", "modal");
+        a.dataset.idx = p.idx;
+        a.innerHTML = `
+          <span class="meta numeric">${pad(p.idx)}</span>
+          <span class="title">${p.title}<span class="en">${p.titleEn ? '· ' + p.titleEn : ''}</span></span>
+          <span class="meta">${p.tags.join(" · ")}</span>
+          <span class="meta numeric">${p.year}</span>
+          <span><span class="pill ${p.status}">${p.status === "empty" ? "● empty" : p.status}</span></span>
+          ${isEmpty ? '<span style="text-align:right; color: var(--fg-4); font-family: var(--font-mono); font-size: 11px;">—</span>' : `<a class="pdf-link" href="#" data-pdf="${p.idx}">↓ PDF</a>`}
+        `;
+        listRows.appendChild(a);
+      });
+    }
+
+    // Filters
+    let currentFilter = "all", currentView = "grid";
+    document.getElementById("filters").addEventListener("click", (e) => {
+      const b = e.target.closest("button"); if (!b) return;
+      currentFilter = b.dataset.filter;
+      [...document.querySelectorAll("#filters button")].forEach(x => x.classList.toggle("on", x === b));
+      render(currentFilter, currentView);
+    });
+    document.getElementById("view-switch").addEventListener("click", (e) => {
+      const b = e.target.closest("button"); if (!b) return;
+      currentView = b.dataset.view;
+      [...document.querySelectorAll("#view-switch button")].forEach(x => x.classList.toggle("on", x === b));
+      document.getElementById("grid").style.display = currentView === "grid" ? "grid" : "none";
+      document.getElementById("list").style.display = currentView === "list" ? "block" : "none";
+    });
+
+    // Modal preview
+    const modal = document.getElementById("modal");
+    const modalIframe = document.getElementById("modal-iframe");
+    const modalTitle = document.getElementById("modal-title");
+    const modalOpen = document.getElementById("modal-open");
+    const modalPdf = document.getElementById("modal-pdf");
+    document.body.addEventListener("click", (e) => {
+      // PDF download trigger
+      const pdfBtn = e.target.closest('[data-pdf]');
+      if (pdfBtn) {
+        e.preventDefault();
+        const idx = parseInt(pdfBtn.dataset.pdf, 10);
+        const p = PROJECTS.find(x => x.idx === idx);
+        if (!p || !p.pdf) return;
+        triggerPdf(p);
+        return;
+      }
+      // Modal open
+      const t = e.target.closest('[data-open="modal"]');
+      if (!t) return;
+      e.preventDefault();
+      const idx = parseInt(t.dataset.idx, 10);
+      const p = PROJECTS.find(x => x.idx === idx);
+      if (!p) return;
+      modalIframe.src = p.href;
+      modalTitle.textContent = "№ " + pad(p.idx) + " — " + p.title.toUpperCase();
+      modalOpen.href = p.href;
+      modalPdf.href = "#";
+      modalPdf.onclick = (ev) => { ev.preventDefault(); triggerPdf(p); };
+      modal.classList.add("on");
+    });
+
+    // Open the project in a new window and call print(). Browser's "Save as PDF"
+    // destination produces the file. This is the most reliable client-only path
+    // and works without any external dependency.
+    function triggerPdf(p) {
+      const w = window.open(p.pdf, "_blank");
+      if (!w) {
+        alert("팝업이 차단되었어요. 새 창 허용 후 다시 시도해주세요.");
+        return;
+      }
+      const onLoad = () => {
+        try { w.focus(); w.print(); } catch (err) { /* user can use Cmd+P */ }
+      };
+      // wait for the new window to finish loading
+      w.addEventListener("load", onLoad, { once: true });
+      // safety: also try after 1.2s in case the load event already fired
+      setTimeout(() => { try { if (!w.closed) w.print(); } catch(e){} }, 1500);
+    }
+    document.getElementById("modal-close").addEventListener("click", () => {
+      modal.classList.remove("on"); modalIframe.src = "";
+    });
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) { modal.classList.remove("on"); modalIframe.src = ""; }
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("on")) { modal.classList.remove("on"); modalIframe.src = ""; }
+    });
+
+    render(currentFilter, currentView);
+  </script>
+</body>
+</html>

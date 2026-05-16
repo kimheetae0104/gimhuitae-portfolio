@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>JANN — 분자 미식학 기반 iOS 레시피 추천 앱</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="shared/tokens.css" />
+<link rel="stylesheet" href="shared/slide.css" />
+<script src="shared/deck-stage.js" defer></script>
+<style>
+/* ── iPhone 목업 ── */
+.iphone {
+  width: 240px;
+  border-radius: 36px;
+  background: #111;
+  padding: 6px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.26), 0 0 0 1px rgba(0,0,0,0.12);
+  flex-shrink: 0;
+}
+.iphone .screen {
+  width: 100%;
+  border-radius: 30px;
+  overflow: hidden;
+  display: block;
+}
+.iphone .screen img { width: 100%; display: block; }
+
+/* ── 큰 숫자 ── */
+.big-num {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 96px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--fg-1);
+}
+.big-num-unit {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  letter-spacing: 0.1em;
+  color: var(--fg-3);
+  margin-top: 10px;
+}
+
+/* ── 강조 박스 ── */
+.accent-box {
+  padding: 28px 32px;
+  background: rgba(30,58,138,0.05);
+  border-left: 3px solid var(--accent-600);
+}
+.accent-box .ab-label {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-600);
+  margin-bottom: 12px;
+}
+.accent-box .ab-body {
+  font-family: var(--font-sans);
+  font-size: 26px;
+  color: var(--fg-2);
+  line-height: 1.6;
+}
+.accent-box .ab-cite {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--fg-4);
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* ── 파이프라인 카드 ── */
+.pipe-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--rule-soft);
+  flex: 1;
+  margin-top: 40px;
+  border: 1px solid var(--rule-soft);
+}
+.pipe-card {
+  padding: 36px 32px;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.pipe-card:last-child { background: var(--bg); outline: 2px solid var(--accent-600); outline-offset: -2px; }
+.pipe-card .pstep {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-600);
+}
+.pipe-card h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.2;
+  color: var(--fg-1);
+  margin: 0;
+}
+.pipe-card .pdesc {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--fg-2);
+  line-height: 1.65;
+  flex: 1;
+}
+.pipe-card .pmeta {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  color: var(--fg-3);
+  line-height: 1.7;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule-soft);
+}
+.tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  background: var(--accent-100);
+  color: var(--accent-600);
+  padding: 4px 12px;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+}
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* ── 학습 카드 ── */
+.learn-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  flex: 1;
+}
+.learn-card {
+  padding: 36px 32px;
+  background: var(--paper-100);
+  border-top: 2px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.learn-card.accent { border-top-color: var(--accent-600); }
+.learn-card.warn   { border-top-color: var(--warn); }
+.learn-card.good   { border-top-color: var(--positive); }
+.learn-card .ltag {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.learn-card.accent .ltag { color: var(--accent-600); }
+.learn-card.warn .ltag   { color: var(--warn); }
+.learn-card.good .ltag   { color: var(--positive); }
+.learn-card h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.2;
+  color: var(--fg-1);
+  margin: 0;
+}
+.learn-card .lbody {
+  font-family: var(--font-sans);
+  font-size: 24px;
+  color: var(--fg-2);
+  line-height: 1.6;
+}
+
+/* ── 닫기 슬라이드 pull quote ── */
+.pull {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 64px;
+  line-height: 1.16;
+  letter-spacing: -0.025em;
+  color: var(--fg-1);
+  max-width: 22ch;
+}
+.pull em { font-style: normal; color: var(--accent-600); }
+</style>
+</head>
+<body>
+
+<header class="deck-header">
+  <a href="index.html" class="deck-header-mark">[ HK ]</a>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <a href="https://github.com/kimheetae0104/JANN" target="_blank" rel="noopener noreferrer" class="deck-header-back">GitHub ↗</a>
+    <a href="index.html" class="deck-header-back">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
+      포트폴리오
+    </a>
+  </div>
+</header>
+
+<deck-stage width="1920" height="1080">
+
+<!-- ═══ 01 Cover ═══ -->
+<section class="slide s-title" data-label="01 Cover">
+  <div class="top-rule">
+    <span>김희태 · PORTFOLIO</span>
+    <span>2026</span>
+  </div>
+
+  <div class="hero" style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;">
+    <div>
+      <div class="meta-cap" style="margin-bottom:32px;">iOS APP · MOLECULAR GASTRONOMY · 2026</div>
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <h1 class="slide-title" style="margin:0;">JANN</h1>
+        <span style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:14px;letter-spacing:0.1em;color:var(--accent-600);background:var(--accent-100);border:1px solid var(--accent-600);padding:5px 12px;border-radius:4px;white-space:nowrap;">© 저작권 등록 C-2026-023193</span>
+      </div>
+      <p class="ko-sub" style="margin-top:28px;">
+        향미 화합물 데이터로 식재료 조합을 분석하고,<br/>
+        과학적 근거와 함께 레시피를 추천하는 iOS 앱.
+      </p>
+      <p class="ko-sub" style="margin-top:20px; color:var(--fg-3);">
+        직관이 아닌 <strong style="color:var(--fg-1);">화합물 유사도</strong>로 —<br/>두 재료가 공유하는 향미 분자가 많을수록 더 잘 어울린다.
+      </p>
+    </div>
+
+    <div style="display:flex; justify-content:center; align-items:flex-end; gap:28px;">
+      <div style="transform:translateY(20px);">
+        <div class="iphone"><div class="screen"><img src="jann/img/splash.jpg" alt="스플래시"></div></div>
+      </div>
+      <div>
+        <div class="iphone" style="width:260px; box-shadow:0 32px 80px rgba(0,0,0,0.32), 0 0 0 1px rgba(0,0,0,0.14);">
+          <div class="screen"><img src="jann/img/home.jpg" alt="홈"></div>
+        </div>
+      </div>
+      <div style="transform:translateY(20px);">
+        <div class="iphone"><div class="screen"><img src="jann/img/recipe.jpg" alt="레시피"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="meta-grid" style="grid-template-columns:repeat(5,1fr);">
+    <div class="col"><div class="k">TYPE</div><div class="v">개인 프로젝트 · 2026</div></div>
+    <div class="col"><div class="k">ROLE</div><div class="v">디자인 · iOS · ML</div></div>
+    <div class="col"><div class="k">STACK</div><div class="v">SwiftUI · Python · YOLOv8n · CoreML</div></div>
+    <div class="col"><div class="k">DATA</div><div class="v">1,530 식재료 · 1,107 향미 화합물</div></div>
+    <div class="col"><div class="k">저작권</div><div class="v">컴퓨터프로그램 등록<br/>C-2026-023193 · 2026.05.13</div></div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">01 / 07</div>
+</section>
+
+<!-- ═══ 02 Problem ═══ -->
+<section class="slide" data-label="02 Problem">
+  <div class="top-rule">
+    <span>02 · PROBLEM</span>
+    <span>왜 분자 미식학인가</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:80px; flex:1; padding-top:36px; align-items:stretch;">
+
+    <div style="display:flex; flex-direction:column; justify-content:space-between;">
+      <h2 class="slide-h2">
+        레시피 앱은 재료를 찾는다.<br/>
+        <span style="color:var(--fg-3); font-weight:400;">JANN은 맛의 조합을 찾는다.</span>
+      </h2>
+      <p class="slide-body">
+        대부분의 레시피 앱은 재료 이름·인기 메뉴·태그로 추천한다.
+        <strong style="color:var(--fg-1);">왜 이 재료가 잘 어울리는지</strong>는 설명하지 못한다.
+      </p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);">
+        <div style="padding:20px 0; border-right:1px solid var(--rule-soft);">
+          <div class="big-num" style="font-size:72px;">20조</div>
+          <div class="big-num-unit">음식물 쓰레기 손실 / 년<br/>(환경부 2024)</div>
+        </div>
+        <div style="padding:20px 0 20px 40px;">
+          <div class="big-num" style="font-size:72px;">70%</div>
+          <div class="big-num-unit">냉장고 식재료<br/>미사용 폐기율</div>
+        </div>
+      </div>
+
+      <div class="accent-box">
+        <div class="ab-label">JANN의 접근</div>
+        <div class="ab-body">음식의 향미는 결국 화학 화합물이다. 두 재료가 공유하는 향미 분자가 많을수록, 사람은 그 조합을 더 자연스럽게 느낀다.</div>
+        <div class="ab-cite">출처: Ahn et al. "Flavor network and the principles of food pairing", Scientific Reports, 2011</div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <div style="background:var(--paper-50); border:1px solid var(--rule-soft); padding:20px;">
+        <img src="jann/img/flavor-network.png" alt="Flavor Network Graph" style="width:100%; display:block;">
+      </div>
+      <div class="meta-cap">FIG 01 — 향미 네트워크 그래프. 노드 = 식재료, 엣지 = 공유 화합물 수.</div>
+    </div>
+
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">02 / 07</div>
+</section>
+
+<!-- ═══ 03 Data ═══ -->
+<section class="slide soft" data-label="03 Data">
+  <div class="top-rule">
+    <span>03 · DATA</span>
+    <span>향미 화합물 분석 · t-SNE 클러스터링</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:80px; flex:1; padding-top:48px; align-items:center;">
+
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <div style="background:var(--paper-50); border:1px solid var(--rule-soft); padding:20px;">
+        <img src="jann/img/tsne-clustering.png" alt="t-SNE Clustering" style="width:100%; display:block;">
+      </div>
+      <div class="meta-cap">FIG 02 — t-SNE 클러스터링. 재료 이름이 아닌 향미 프로필로 차원 축소한 결과.</div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:32px;">
+      <h2 class="slide-h2">
+        재료 이름보다<br/>향미 프로필이 더 잘 나눈다.
+      </h2>
+      <p class="slide-body">
+        t-SNE로 향미 화합물 벡터를 2D로 압축하면,
+        재료 이름만으로는 뒤섞여 보이는 식재료들이
+        <strong style="color:var(--fg-1);">뚜렷한 클러스터</strong>로 분리된다.
+      </p>
+      <p class="slide-body" style="color:var(--accent-600);">
+        식재료 이름이 아니라 향미 화합물로 봐야<br/>조합의 본질이 보인다.
+      </p>
+
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--rule); margin-top:8px;">
+        <div style="padding:28px 0; border-right:1px solid var(--rule-soft); padding-right:24px;">
+          <div style="font-family:var(--font-mono); font-weight:700; font-size:56px; line-height:1; color:var(--fg-1);">1,530</div>
+          <div class="meta-cap" style="margin-top:10px;">식재료</div>
+        </div>
+        <div style="padding:28px 24px; border-right:1px solid var(--rule-soft);">
+          <div style="font-family:var(--font-mono); font-weight:700; font-size:56px; line-height:1; color:var(--fg-1);">1,107</div>
+          <div class="meta-cap" style="margin-top:10px;">향미 화합물</div>
+        </div>
+        <div style="padding:28px 0 28px 24px;">
+          <div style="font-family:var(--font-mono); font-weight:700; font-size:36px; line-height:1.2; color:var(--fg-1);">자카드<br/>유사도</div>
+          <div class="meta-cap" style="margin-top:10px;">메트릭</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">03 / 07</div>
+</section>
+
+<!-- ═══ 04 App ═══ -->
+<section class="slide soft" data-label="04 App">
+  <div class="top-rule">
+    <span>04 · APP</span>
+    <span>iOS SwiftUI · 스캔 → 분석 → 레시피</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:auto 1fr; gap:80px; flex:1; padding-top:48px; align-items:center;">
+
+    <div style="display:flex; flex-direction:column; gap:28px; max-width:380px;">
+      <h2 style="font-family:var(--font-sans);font-weight:600;font-size:48px;line-height:1.1;letter-spacing:-0.02em;color:var(--fg-1);margin:0;white-space:nowrap;">스캔 → 분석 → 레시피</h2>
+      <p style="font-family:var(--font-sans);font-size:26px;line-height:1.65;color:var(--fg-2);margin:0;">
+        카메라로 식재료를 스캔하면 YOLOv8n이 인식하고,
+        Flavor Network DB가 향미 유사도를 계산해 레시피를 추천한다.
+      </p>
+      <div style="display:flex; flex-direction:column; gap:0; border-top:1px solid var(--rule);">
+        <div style="display:grid; grid-template-columns:32px 1fr; gap:16px; align-items:baseline; padding:16px 0; border-bottom:1px solid var(--rule-soft);">
+          <div style="font-family:var(--font-mono); font-size:17px; color:var(--accent-600);">01</div>
+          <div style="font-family:var(--font-sans); font-size:22px; color:var(--fg-1); line-height:1.5;"><strong>스캔</strong> — YOLOv8n + GPT-4o Vision 병렬 인식</div>
+        </div>
+        <div style="display:grid; grid-template-columns:32px 1fr; gap:16px; align-items:baseline; padding:16px 0; border-bottom:1px solid var(--rule-soft);">
+          <div style="font-family:var(--font-mono); font-size:17px; color:var(--accent-600);">02</div>
+          <div style="font-family:var(--font-sans); font-size:22px; color:var(--fg-1); line-height:1.5;"><strong>분석</strong> — SQLite Flavor DB 오프라인 향미 매칭</div>
+        </div>
+        <div style="display:grid; grid-template-columns:32px 1fr; gap:16px; align-items:baseline; padding:16px 0;">
+          <div style="font-family:var(--font-mono); font-size:17px; color:var(--accent-600);">03</div>
+          <div style="font-family:var(--font-sans); font-size:22px; color:var(--fg-1); line-height:1.5;"><strong>생성</strong> — GPT-4o-mini, 화합물 시너지 근거 포함 레시피 출력</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:36px; align-items:flex-end; justify-content:center;">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:16px; transform:translateY(20px);">
+        <div class="iphone"><div class="screen"><img src="jann/img/splash.jpg" alt="스플래시"></div></div>
+        <div class="meta-cap">SPLASH</div>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:16px;">
+        <div class="iphone"><div class="screen"><img src="jann/img/home.jpg" alt="홈"></div></div>
+        <div class="meta-cap">HOME</div>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:16px; transform:translateY(20px);">
+        <div class="iphone"><div class="screen"><img src="jann/img/scan.jpg" alt="스캔"></div></div>
+        <div class="meta-cap">SCAN</div>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:16px;">
+        <div class="iphone"><div class="screen"><img src="jann/img/recipe.jpg" alt="레시피"></div></div>
+        <div class="meta-cap">RECIPE</div>
+      </div>
+    </div>
+
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">04 / 07</div>
+</section>
+
+<!-- ═══ 05 Pipeline Overview ═══ -->
+<section class="slide" data-label="05 Pipeline">
+  <div class="top-rule">
+    <span>05 · PIPELINE</span>
+    <span>인식은 온디바이스, 추천은 오프라인 DB</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:80px; flex:1; padding-top:48px; align-items:center;">
+
+    <div style="display:flex; flex-direction:column; gap:32px;">
+      <h2 class="slide-h2">
+        인식은 온디바이스,<br/>추천은 오프라인 DB.
+      </h2>
+      <p class="slide-body">
+        YOLOv8n(CoreML)과 GPT-4o Vision을 병렬 실행해 인식 정확도를 높이고,
+        SQLite 내장 Flavor DB로 오프라인에서 향미 분석을 완성한다.
+      </p>
+      <p class="slide-body" style="color:var(--fg-3);">
+        YOLO 미인식 시 GPT-4o Vision → Apple Vision Framework 순으로 폴백.
+        네트워크 없이도 향미 분석은 항상 동작한다.
+      </p>
+    </div>
+
+    <div style="display:flex; flex-direction:column; border:1px solid var(--rule); flex:1; justify-content:space-between;">
+      <div style="padding:44px 52px; border-bottom:1px solid var(--rule-soft);">
+        <div class="big-num">18<span style="font-size:48px; font-weight:400;">MB</span></div>
+        <div class="big-num-unit">YOLO CoreML 모델 크기</div>
+      </div>
+      <div style="padding:44px 52px; border-bottom:1px solid var(--rule-soft);">
+        <div class="big-num" style="color:var(--accent-600);">↓90<span style="font-size:48px; font-weight:400;">%</span></div>
+        <div class="big-num-unit">학습 시간 단축 · 161분 → 17분</div>
+      </div>
+      <div style="padding:44px 52px;">
+        <div class="big-num">3</div>
+        <div class="big-num-unit">폴백 단계 · YOLO → GPT → Vision</div>
+      </div>
+    </div>
+
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">05 / 07</div>
+</section>
+
+<!-- ═══ 06 Pipeline Steps ═══ -->
+<section class="slide" data-label="06 Steps">
+  <div class="top-rule">
+    <span>06 · PIPELINE STEPS</span>
+    <span>스캔 → 분석 → 생성 → 결과</span>
+  </div>
+  <div class="pipe-row">
+    <div class="pipe-card">
+      <div class="pstep">01 · 인식</div>
+      <h3>YOLOv8n +<br/>GPT-4o Vision</h3>
+      <div class="pdesc">커스텀 데이터셋으로 파인튜닝한 YOLOv8n(CoreML)과 GPT-4o Vision을 병렬 실행해 인식 정확도를 높인다.<br/><br/>YOLO 미인식 → GPT-4o Vision → Apple Vision Framework 순으로 3단계 자동 폴백. 네트워크 없이도 YOLO 단독으로 동작 가능.</div>
+      <div class="pmeta">
+        학습 시간 161분 → 17분 (↓90%)<br/>
+        box_loss 1.376 → 0.963 (↓30%)<br/>
+        <div class="tags" style="margin-top:10px;"><span class="tag">CoreML</span><span class="tag">YOLOv8n</span><span class="tag">3-Fallback</span></div>
+      </div>
+    </div>
+    <div class="pipe-card">
+      <div class="pstep">02 · 분석</div>
+      <h3>Flavor<br/>Network DB</h3>
+      <div class="pdesc">SQLite 내장 DB로 오프라인 작동. 자카드 유사도(공유 화합물 수 / 합집합)로 두 식재료의 향미 호환성을 계산한다.<br/><br/>DB 구축 시 서양 식재료 중심 원본에 한국 식재료 한-영 매핑을 추가해 로컬라이징.</div>
+      <div class="pmeta">
+        1,530종 식재료 × 1,107 향미 화합물<br/>
+        한-영 매핑 완료 · 완전 오프라인<br/>
+        <div class="tags" style="margin-top:10px;"><span class="tag">SQLite</span><span class="tag">Jaccard</span><span class="tag">오프라인</span></div>
+      </div>
+    </div>
+    <div class="pipe-card">
+      <div class="pstep">03 · 생성</div>
+      <h3>GPT-4o-mini<br/>레시피 생성</h3>
+      <div class="pdesc">인식된 식재료 목록과 화합물 유사도 분석 결과를 구조화 프롬프트에 주입. GPT-4o-mini가 향미 시너지 근거를 포함한 레시피를 생성한다.<br/><br/>출력: 요리명 / 재료 목록 / 조리법 / 팁 / 화합물 시너지 해설 포함.</div>
+      <div class="pmeta">
+        GPT-4o-mini — 비용 효율 + 충분한 품질<br/>
+        화합물명 기반 근거 자동 포함<br/>
+        <div class="tags" style="margin-top:10px;"><span class="tag">Structured Prompt</span><span class="tag">Cloud API</span></div>
+      </div>
+    </div>
+    <div class="pipe-card">
+      <div class="pstep">결과</div>
+      <h3>레시피 +<br/>분자 해설</h3>
+      <div class="pdesc">Furaneol, Butyric acid 등 실제 화합물명과 향미 시너지 근거를 레시피와 함께 표시.<br/><br/>"왜 이 재료가 잘 어울리는가"에 과학적 근거를 제시하는 XAI 접근. 인기순·태그 기반 추천과 차별화되는 설명 가능한 추천.</div>
+      <div class="pmeta">
+        설명 가능한 AI · 단순 인기순 아님<br/>
+        화합물 근거 항상 함께 표시<br/>
+        <div class="tags" style="margin-top:10px;"><span class="tag">XAI</span><span class="tag">근거 포함</span></div>
+      </div>
+    </div>
+  </div>
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">06 / 07</div>
+</section>
+
+<!-- ═══ 07 Learning ═══ -->
+<section class="slide s-close" data-label="07 Learning">
+  <div class="top-rule">
+    <span>07 · LEARNING</span>
+    <span>배운 것 · 한계 · 다음 단계</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:80px; flex:1; padding-top:48px; align-items:start;">
+
+    <div style="display:flex; flex-direction:column; gap:40px;">
+      <div class="pull">
+        재료 이름보다<br/>
+        <em>화합물 유사도</em>가<br/>더 정확한 추천 기준이었다.
+      </div>
+      <p class="slide-body">
+        분자 미식학이라는 연구 개념을 실제 레시피 추천 문제에 옮기는 과정에서,
+        데이터 기반 접근이 직관보다 더 설득력 있다는 걸 확인했다.
+      </p>
+      <p class="slide-body" style="color:var(--fg-3);">
+        SwiftUI + Python/CoreML 연결, 오프라인 DB 구조,
+        3단계 폴백 파이프라인까지 실제 앱 구현 전 과정을 완성한 프로젝트.
+      </p>
+    </div>
+
+    <div class="learn-grid" style="display:flex; flex-direction:column; gap:20px;">
+      <div class="learn-card accent">
+        <div class="ltag">LEARNED · CoreML 통합</div>
+        <h3>Python → CoreML → SwiftUI 연결</h3>
+        <div class="lbody">YOLOv8n을 Python으로 학습한 뒤 CoreML로 변환해 온디바이스 추론을 구현했다. 학습 시간을 161분 → 17분으로 단축하면서 box_loss도 30% 개선됐다.</div>
+      </div>
+      <div class="learn-card warn">
+        <div class="ltag">CHALLENGE · 데이터 품질</div>
+        <h3>외국 식재료 편향 + 용기 내 인식 불가</h3>
+        <div class="lbody">향미 네트워크 DB가 서양 식재료 중심이라 한국 재료(김치·된장·고추장)의 매핑이 부족했다. 용기에 담긴 식재료 인식의 한계도 확인됐다.</div>
+      </div>
+      <div class="learn-card good">
+        <div class="ltag">NEXT · 다음 단계</div>
+        <h3>한국 식재료 데이터셋 + 라벨 OCR</h3>
+        <div class="lbody">한국 음식 데이터와 향미 화합물 매핑을 추가 학습하고, 용기 라벨 OCR과 맥락 분석을 결합해 인식 범위를 확장할 계획이다.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">07 / 07</div>
+</section>
+
+</deck-stage>
+
+</body>
+</html>

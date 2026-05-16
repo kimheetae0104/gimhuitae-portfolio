@@ -1,0 +1,252 @@
+/* ─────────────────────────────────────────────
+   shared/slide.css  —  deck-stage slide system
+   Common styles for all project slide decks.
+   Project-specific overrides live in each HTML.
+───────────────────────────────────────────── */
+
+/* ── Page base ── */
+body { background: #0a0a0c; }
+deck-stage { background: var(--bg); }
+
+/* ── 공통 deck 헤더 (모든 디테일 페이지 공용) ── */
+.deck-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9999;
+  height: 52px;
+  background: rgba(247,247,248,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule-soft);
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  justify-content: space-between;
+  pointer-events: auto;
+}
+.deck-header-mark {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--fg-1);
+  text-decoration: none;
+}
+.deck-header-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  text-decoration: none;
+  padding: 5px 14px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-pill);
+  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.deck-header-back:hover { color: var(--fg-1); border-color: var(--rule); }
+.deck-header-back svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* ── Slide shell ──
+   padding 분할: top 84 / sides 104 / bottom 120
+   ┌─────── 0px
+   │ TOP 여백 (84px)
+   ├─────── 84px
+   │ HEADER (top-rule, ~60px)
+   ├─────── 144px
+   │ CONTENT 영역 (~ 816px)
+   ├─────── 960px (콘텐츠는 여기까지만 내려와야 함)
+   │ SAFE ZONE (60px breathing room)
+   ├─────── 1020px
+   │ FOOTER (pageno · [HK], 60px)
+   └─────── 1080px */
+section.slide {
+  background: var(--bg);
+  color: var(--fg-1);
+  font-family: var(--font-sans);
+  padding: 84px 104px 120px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+section.slide.dark    { background: var(--ink-900); color: #F4F4F6; }
+section.slide.soft    { background: var(--paper-100); }
+section.slide.terminal { background: #0c0c10; color: #e0e0e8; }
+
+/* ── Top rule ── */
+.top-rule {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 30px;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 26px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.dark .top-rule    { border-color: rgba(244,244,246,0.2); color: rgba(244,244,246,0.5); }
+.terminal .top-rule { border-color: rgba(80,220,120,0.25); color: rgba(80,220,120,0.55); }
+
+/* ── Meta cap ── */
+.meta-cap {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.dark .meta-cap { color: rgba(244,244,246,0.55); }
+
+/* ── Typography ── */
+h1.slide-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 84px;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--fg-1);
+  margin: 0;
+}
+.dark h1.slide-title { color: #F4F4F6; }
+
+h2.slide-h2 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 64px;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--fg-1);
+  margin: 0;
+}
+.dark h2.slide-h2 { color: #F4F4F6; }
+
+p.slide-body {
+  font-family: var(--font-sans);
+  font-size: 32px;
+  line-height: 1.68;
+  color: var(--fg-2);
+  margin: 0;
+}
+.dark p.slide-body { color: rgba(244,244,246,0.78); }
+
+/* ── Page numbers ── */
+.pageno {
+  position: absolute;
+  bottom: 36px;
+  right: 104px;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--fg-3);
+  letter-spacing: 0.16em;
+}
+.dark .pageno    { color: rgba(244,244,246,0.45); }
+.terminal .pageno { color: rgba(80,220,120,0.35); }
+
+.pageno-mark {
+  position: absolute;
+  bottom: 36px;
+  left: 104px;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--fg-3);
+  letter-spacing: 0.16em;
+}
+.dark .pageno-mark    { color: rgba(244,244,246,0.45); }
+.terminal .pageno-mark { color: rgba(80,220,120,0.35); }
+
+/* ── Title slide layout ── */
+.s-title {
+  justify-content: flex-start;
+}
+
+.s-title .hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 28px;
+}
+.s-title .hero h1 {
+  font-size: 80px;
+  line-height: 1.15;
+  max-width: 24ch;
+}
+.s-title .hero .ko-sub {
+  font-size: 28px;
+  color: var(--fg-2);
+  margin-top: 24px;
+  max-width: 48ch;
+  line-height: 1.6;
+}
+
+.s-title .meta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  padding-top: 36px;
+  border-top: 1px solid var(--rule);
+}
+.s-title .meta-grid .col { padding-right: 24px; }
+.s-title .meta-grid .k {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 10px;
+}
+.s-title .meta-grid .v {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--fg-1);
+  line-height: 1.5;
+}
+
+.dark .s-title .meta-grid .k { color: rgba(244,244,246,0.45); }
+.dark .s-title .meta-grid .v { color: #F4F4F6; }
+.dark .s-title .ko-sub       { color: rgba(244,244,246,0.7); }
+.dark .s-title h1             { color: #F4F4F6; }
+.dark .s-title .meta-cap      { color: rgba(244,244,246,0.45); }
+
+/* ── Shared table ── */
+table.slide-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 28px;
+  line-height: 1.58;
+  color: var(--fg-2);
+}
+table.slide-table th,
+table.slide-table td {
+  padding: 26px 20px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--rule-soft);
+}
+table.slide-table thead th {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 16px;
+}
+table.slide-table tr.highlight td {
+  background: rgba(30,58,138,0.05);
+  color: var(--fg-1);
+  font-weight: 500;
+}
+table.slide-table .num   { font-family: var(--font-mono); font-feature-settings: "tnum"; }
+table.slide-table .check { color: var(--positive); font-weight: 600; }
+table.slide-table .reject { color: var(--danger); }
