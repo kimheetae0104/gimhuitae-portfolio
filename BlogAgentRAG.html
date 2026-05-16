@@ -241,12 +241,12 @@
           <div class="val-cell">
             <div class="val-num">04</div>
             <div class="val-name">자동 교정</div>
-            <div class="val-desc">MAX_RETRIES=2 후 잔재 → <code style="font-size:0.85em;">_auto_fix_contradictions()</code> 코드 강제 교정. LLM이 못 고치는 변형 표현까지 결정론적으로 처리</div>
+            <div class="val-desc">재시도 한도 초과 잔재 → 결정론적 후처리로 강제 교정. LLM이 못 고치는 변형 표현까지 코드 레벨에서 처리</div>
           </div>
           <div class="val-cell" style="background:var(--accent-100);border-color:var(--accent-100);">
             <div class="val-num" style="color:var(--accent-600);">05</div>
             <div class="val-name" style="color:var(--accent-600);">Gemini 검증</div>
-            <div class="val-desc" style="color:var(--ink-700);">gemini-2.5-flash-lite(무료 티어)로 종목혼동·수치환각·밸류에이션모순 score 0~100. critical=True → 배포 차단 + Telegram 긴급 알림</div>
+            <div class="val-desc" style="color:var(--ink-700);">Gemini로 종목혼동·수치환각·밸류에이션모순 score 0~100. 심각도 임계치 초과 → 배포 차단 + 긴급 알림</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:24px;margin-top:20px;padding:16px 24px;background:var(--bg-soft);border-radius:var(--r-3);border:1px solid var(--rule-soft);">

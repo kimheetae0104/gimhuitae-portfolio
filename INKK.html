@@ -844,7 +844,7 @@
           3라운드에 걸쳐 수정: 1차 PK INSERT → 2차 race condition 발견(즉시 재시도 시 동시 처리) → 3차 PL/pgSQL 타입 버그(<code>boolean</code>에 정수 대입) 발견.
         </div>
         <div class="csolution">
-          <strong>해결:</strong> DB 레벨 멱등 클레임 패턴 도입. status 컬럼 + 90초 stale 자동 복구. 직접 짠 SQL도 반드시 검증 대상이다.
+          <strong>해결:</strong> DB 레벨 멱등 클레임 패턴 도입. status 컬럼 + stale 자동 복구 타임아웃. 직접 짠 SQL도 반드시 검증 대상이다.
         </div>
       </div>
 
@@ -969,7 +969,7 @@
       <div class="arch-list" style="margin-top:0;">
         <div class="arch-item" style="padding:11px 0; grid-template-columns:110px 1fr; gap:16px;">
           <div class="arch-key" style="font-size:14px;">이벤트 로깅</div>
-          <div class="arch-val" style="font-size:18px;">events 테이블 + /api/events + /admin 대시보드 — 가입·생성·다운로드·재방문을 기록, 추이를 한 화면에. 수정 전에 측정부터</div>
+          <div class="arch-val" style="font-size:18px;">이벤트 로깅 + 운영자 대시보드 — 가입·생성·다운로드·재방문을 기록, 추이를 한 화면에. 수정 전에 측정부터</div>
         </div>
         <div class="arch-item" style="padding:11px 0; grid-template-columns:110px 1fr; gap:16px;">
           <div class="arch-key" style="font-size:14px;">무료 정책</div>
