@@ -634,7 +634,7 @@
         </div>
         <div class="arch-item" style="border-bottom:none;">
           <div class="arch-key">크레딧 RPC</div>
-          <div class="arch-val">차감·롤백·적립을 DB RPC 함수로 원자화 — SELECT FOR UPDATE 트랜잭션으로 동시 요청에도 잔액 음수 방지</div>
+          <div class="arch-val">차감·롤백·적립을 DB RPC 함수로 원자화 — 동시 요청에도 잔액 음수 방지</div>
         </div>
       </div>
     </div>
@@ -832,7 +832,7 @@
           자격증명·리다이렉트 URI·승인 도메인까지 전부 점검했지만 이상 없었다. 결국 문제는 PKCE code verifier와 서버 콜백 라우트 간 매칭이 깨지는 흐름 자체였다.
         </div>
         <div class="csolution">
-          <strong>해결:</strong> Authorization Code Flow를 우회. <strong>Google One Tap ID Token 방식</strong>(<code>signInWithIdToken</code>)으로 전환 → 서버 코드 교환 단계 자체가 사라져 해당 에러가 발생할 수 없게 됨.
+          <strong>해결:</strong> 서버 코드 교환 방식 대신 <strong>Google One Tap ID Token 방식</strong>으로 전환 → 실패하던 교환 단계 자체가 사라져 에러가 발생할 수 없게 됨.
         </div>
       </div>
 
@@ -841,7 +841,7 @@
         <h3>결제 멱등성 — 보이지 않는 돈 새는 구멍</h3>
         <div class="cbody">
           <strong>증상:</strong> Stripe webhook은 at-least-once 전송. 같은 이벤트가 두 번 오면 크레딧이 두 배 적립.<br/><br/>
-          3라운드에 걸쳐 수정: 1차 PK INSERT → 2차 race condition 발견(즉시 재시도 시 동시 처리) → 3차 PL/pgSQL 타입 버그(<code>boolean</code>에 정수 대입) 발견.
+          3라운드에 걸쳐 수정: 1차 중복 차단 → 2차 race condition 발견 → 3차 DB 함수 타입 버그 발견.
         </div>
         <div class="csolution">
           <strong>해결:</strong> DB 레벨 멱등 클레임 패턴 도입. status 컬럼 + stale 자동 복구 타임아웃. 직접 짠 SQL도 반드시 검증 대상이다.
