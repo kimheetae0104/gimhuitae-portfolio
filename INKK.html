@@ -518,7 +518,7 @@
         </div>
         <div class="arch-item" style="padding:12px 0; grid-template-columns:100px 1fr; gap:16px; border-bottom:none;">
           <div class="arch-key" style="font-size:14px;">POST</div>
-          <div class="arch-val" style="font-size:18px;">후처리 — 느낌표→마침표, 45자 트렁케이트, emoji 제거</div>
+          <div class="arch-val" style="font-size:18px;">후처리 — 느낌표→마침표, 자수 제한 트렁케이트, emoji 제거</div>
         </div>
       </div>
     </div><!-- /left wrapper -->
@@ -560,24 +560,16 @@
       </div>
       </div><!-- /preset wrapper -->
 
-      <div style="background:var(--bg);border:1px solid var(--rule-soft);padding:20px 24px;">
-        <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.1em;color:var(--fg-4);margin-bottom:10px;">레이아웃 엔진 — 텍스트 길이 → 자동 조정</div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--rule-soft);">
-          <div style="padding:12px 12px;border-right:1px solid var(--rule-soft);">
-            <div style="font-family:var(--font-mono);font-weight:700;font-size:22px;color:var(--fg-1);">48px</div>
-            <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">30자 이하</div>
+      <div style="background:var(--bg);border:1px solid var(--rule-soft);padding:18px 22px;">
+        <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.1em;color:var(--fg-4);margin-bottom:12px;">프롬프트 품질 전략 — 추상적 지시 대신 구체 반례</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule-soft);">
+          <div style="background:var(--bg);padding:12px 14px;border-top:2px solid var(--warn);">
+            <div style="font-family:var(--font-mono);font-size:12px;color:var(--warn);margin-bottom:6px;">BAD — 추상적 지시</div>
+            <div style="font-family:var(--font-sans);font-size:16px;color:var(--fg-3);line-height:1.5;">"좋은 카피를 써라" → LLM이 일반론으로 채움</div>
           </div>
-          <div style="padding:12px 12px;border-right:1px solid var(--rule-soft);">
-            <div style="font-family:var(--font-mono);font-weight:700;font-size:22px;color:var(--fg-1);">36px</div>
-            <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">31~60자</div>
-          </div>
-          <div style="padding:12px 12px;border-right:1px solid var(--rule-soft);">
-            <div style="font-family:var(--font-mono);font-weight:700;font-size:22px;color:var(--fg-1);">28px</div>
-            <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">61~120자</div>
-          </div>
-          <div style="padding:12px 12px;">
-            <div style="font-family:var(--font-mono);font-weight:700;font-size:22px;color:var(--fg-1);">22px</div>
-            <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">120자 초과</div>
+          <div style="background:var(--bg);padding:12px 14px;border-top:2px solid var(--positive);">
+            <div style="font-family:var(--font-mono);font-size:12px;color:var(--positive);margin-bottom:6px;">GOOD — 반례 명시</div>
+            <div style="font-family:var(--font-sans);font-size:16px;color:var(--fg-2);line-height:1.5;">밋밋한 출력 패턴을 BAD로 박아 선제 차단</div>
           </div>
         </div>
       </div>
@@ -719,11 +711,11 @@
         </div>
         <div class="arch-item">
           <div class="arch-key">LTV 유도</div>
-          <div class="arch-val">단가를 97→79→66원으로 낮춰 헤비유저가 자연스럽게 큰 팩을 구매</div>
+          <div class="arch-val">팩이 커질수록 단가가 낮아져 헤비유저가 자연스럽게 큰 팩을 구매</div>
         </div>
         <div class="arch-item" style="border-bottom:none;">
           <div class="arch-key">무료 정책</div>
-          <div class="arch-val">가입 시 <strong>7일 무료 체험</strong> → 이후 월 5회 무료. 결제 게이팅을 생성 횟수가 아닌 <strong>발행 가능 상태(워터마크)</strong>로 이동 — LLM 비용 통제</div>
+          <div class="arch-val">가입 시 <strong>7일 무료 체험</strong> → 이후 월 5회 무료. 결제 게이팅을 생성 횟수가 아닌 <strong>발행 가능 상태</strong>로 이동 — LLM 비용 통제</div>
         </div>
       </div>
     </div>
@@ -740,10 +732,6 @@
           </div>
           <div class="price-body">
             <div class="price-row">
-              <span class="label">단가</span>
-              <span style="font-weight:700;">약 97원/회</span>
-            </div>
-            <div class="price-row">
               <span class="label">크레딧</span>
               <span>30회 생성</span>
             </div>
@@ -757,10 +745,6 @@
           </div>
           <div class="price-body">
             <div class="price-row">
-              <span class="label">단가</span>
-              <span style="font-weight:700;color:var(--accent-600);">약 79원/회</span>
-            </div>
-            <div class="price-row">
               <span class="label">크레딧</span>
               <span>100회 생성</span>
             </div>
@@ -773,10 +757,6 @@
             <div class="price-unit">300 크레딧</div>
           </div>
           <div class="price-body">
-            <div class="price-row">
-              <span class="label">단가</span>
-              <span style="font-weight:700;">약 66원/회</span>
-            </div>
             <div class="price-row">
               <span class="label">크레딧</span>
               <span>300회 생성</span>
@@ -829,7 +809,7 @@
         <h3>Google OAuth — 콜백이 끝까지 안 됨</h3>
         <div class="cbody">
           <strong>증상:</strong> Google 동의 화면은 뜨지만 콜백에서 계속 실패. <code>invalid_client</code> → <code>Unable to exchange external code</code>.<br/><br/>
-          자격증명·리다이렉트 URI·승인 도메인까지 전부 점검했지만 이상 없었다. 결국 문제는 PKCE code verifier와 서버 콜백 라우트 간 매칭이 깨지는 흐름 자체였다.
+          자격증명·리다이렉트 URI·승인 도메인까지 전부 점검했지만 이상 없었다. 결국 문제는 인증 코드 교환 흐름에 구조적 불일치가 있었다.
         </div>
         <div class="csolution">
           <strong>해결:</strong> 서버 코드 교환 방식 대신 <strong>Google One Tap ID Token 방식</strong>으로 전환 → 실패하던 교환 단계 자체가 사라져 에러가 발생할 수 없게 됨.
@@ -841,10 +821,10 @@
         <h3>결제 멱등성 — 보이지 않는 돈 새는 구멍</h3>
         <div class="cbody">
           <strong>증상:</strong> Stripe webhook은 at-least-once 전송. 같은 이벤트가 두 번 오면 크레딧이 두 배 적립.<br/><br/>
-          3라운드에 걸쳐 수정: 1차 중복 차단 → 2차 race condition 발견 → 3차 DB 함수 타입 버그 발견.
+          3라운드에 걸쳐 수정 — 중복 차단 → race condition → 함수 타입 검증 순으로 취약점을 단계별로 제거했다.
         </div>
         <div class="csolution">
-          <strong>해결:</strong> DB 레벨 멱등 클레임 패턴 도입. 멱등 상태 관리 + stale 자동 복구. 직접 짠 SQL도 반드시 검증 대상이다.
+          <strong>해결:</strong> DB 레벨 멱등 클레임 패턴 도입 — 멱등 상태 관리 + stale 자동 복구. 내가 작성한 코드도 반드시 검증 대상이다.
         </div>
       </div>
 
@@ -853,10 +833,10 @@
         <h3>배포가 조용히 깨져 있었음 — 빌드 실패가 가려진 병목</h3>
         <div class="cbody">
           <strong>증상:</strong> 코드를 고쳐 푸시했는데 프로덕션에 반영이 안 됐다. 로컬에선 멀쩡.<br/><br/>
-          Vercel은 빌드 실패 시 직전 성공 버전을 서빙하므로 "배포했는데 안 바뀜"이라는 착시가 생겼다. 원인은 <code>useSearchParams()</code>를 Suspense 경계 없이 사용한 것.
+          Vercel은 빌드 실패 시 직전 성공 버전을 서빙하므로 "배포했는데 안 바뀜"이라는 착시가 생겼다. 원인은 클라이언트 훅을 Suspense 경계 없이 사용한 것.
         </div>
         <div class="csolution">
-          <strong>해결:</strong> <code>&lt;Suspense&gt;</code>로 감싸고, GitHub Actions에 <code>lint + typecheck + test + build</code> 게이트 추가. "배포했는데 안 바뀐다"는 거의 항상 빌드 실패다.
+          <strong>해결:</strong> <code>&lt;Suspense&gt;</code>로 감싸고, GitHub Actions에 빌드 게이트 추가. "배포했는데 안 바뀐다"는 거의 항상 빌드 실패다.
         </div>
       </div>
     </div>
@@ -865,14 +845,14 @@
       <div class="challenge-card resolved" style="padding:18px 20px;gap:10px;">
         <div class="ctag" style="font-size:14px;">RESOLVED · 04</div>
         <h3 style="font-size:20px;">Vitest 워크트리 테스트 중복 수집</h3>
-        <div class="cbody" style="font-size:18px;"><strong>증상:</strong> git worktree 작업 중 Vitest가 <code>.claude/</code> 안 복제 테스트까지 수집해 같은 테스트가 두 번 실행. ESLint도 4만 개 가짜 경고.</div>
-        <div class="csolution" style="font-size:17px;"><strong>해결:</strong> <code>vitest.config.ts</code> + <code>eslint.config.mjs</code>에 <code>.claude/**</code> exclude 추가. 도구 설정의 ignore 범위는 작업 환경이 바뀌면 같이 점검해야 한다.</div>
+        <div class="cbody" style="font-size:18px;"><strong>증상:</strong> git worktree 작업 중 Vitest가 AI 도구 작업 경로 안 복제 테스트까지 수집해 같은 테스트가 두 번 실행. ESLint도 수만 개 가짜 경고.</div>
+        <div class="csolution" style="font-size:17px;"><strong>해결:</strong> Vitest · ESLint 설정에 worktree 경로 exclude 추가. 도구 설정의 ignore 범위는 작업 환경이 바뀌면 같이 점검해야 한다.</div>
       </div>
       <div class="challenge-card resolved" style="padding:18px 20px;gap:10px;">
         <div class="ctag" style="font-size:14px;">RESOLVED · 05</div>
         <h3 style="font-size:20px;">랜딩 카드 rotate → overflow 잘림</h3>
         <div class="cbody" style="font-size:18px;"><strong>증상:</strong> Before/After 카드를 ±10° 회전 배치했더니 모서리가 <code>overflow-hidden</code>에 잘림. 카드 높이만 계산하고 회전 후 실제 점유 영역을 고려하지 않음.</div>
-        <div class="csolution" style="font-size:17px;"><strong>해결:</strong> <code>H + (W·sinθ)</code> 계산해 컨테이너 높이 360→420. 회전 카드의 실제 세로 점유 공간을 수식으로 반영해 재배치.</div>
+        <div class="csolution" style="font-size:17px;"><strong>해결:</strong> 회전 후 실제 세로 점유 공간을 계산해 컨테이너 높이를 재조정, 카드를 세로 중앙 기준으로 재배치.</div>
       </div>
     </div>
 
@@ -969,23 +949,23 @@
       <div class="arch-list" style="margin-top:0;">
         <div class="arch-item" style="padding:11px 0; grid-template-columns:110px 1fr; gap:16px;">
           <div class="arch-key" style="font-size:14px;">이벤트 로깅</div>
-          <div class="arch-val" style="font-size:18px;">이벤트 로깅 + 운영자 대시보드 — 가입·생성·다운로드·재방문을 기록, 추이를 한 화면에. 수정 전에 측정부터</div>
+          <div class="arch-val" style="font-size:18px;">이벤트 로깅 + 모니터링 대시보드 — 핵심 퍼널 지표를 기록, 추이를 한 화면에. 수정 전에 측정부터</div>
         </div>
         <div class="arch-item" style="padding:11px 0; grid-template-columns:110px 1fr; gap:16px;">
           <div class="arch-key" style="font-size:14px;">무료 정책</div>
-          <div class="arch-val" style="font-size:18px;">"평생 2회" → 가입 시 7일 무료 체험 + 이후 월 5회 무료. 결제 게이팅을 생성 횟수가 아닌 <strong>발행 가능 상태(워터마크)</strong>로 이동</div>
+          <div class="arch-val" style="font-size:18px;">"평생 2회" → 가입 시 7일 무료 체험 + 이후 월 5회 무료. 결제 게이팅을 생성 횟수가 아닌 <strong>발행 가능 상태</strong>로 이동</div>
         </div>
         <div class="arch-item" style="padding:11px 0; grid-template-columns:110px 1fr; gap:16px;">
           <div class="arch-key" style="font-size:14px;">보관함</div>
-          <div class="arch-val" style="font-size:18px;">/dashboard 신설 — 만든 카드뉴스를 다시 열고·저장·삭제. SNS 운영자의 재방문 동기</div>
+          <div class="arch-val" style="font-size:18px;">보관함 페이지 신설 — 만든 카드뉴스를 다시 열고·저장·삭제. SNS 운영자의 재방문 동기</div>
         </div>
         <div class="arch-item" style="padding:11px 0; grid-template-columns:110px 1fr; gap:16px;">
           <div class="arch-key" style="font-size:14px;">상태 동기화</div>
-          <div class="arch-val" style="font-size:18px;">CreditsProvider React Context — 헤더·본문이 각자 /api/credits를 호출해 값이 어긋나던 문제. 출처를 하나로</div>
+          <div class="arch-val" style="font-size:18px;">크레딧 상태 컨텍스트 — 헤더·본문이 각자 크레딧 API를 호출해 값이 어긋나던 문제. 출처를 하나로</div>
         </div>
         <div class="arch-item" style="padding:11px 0; grid-template-columns:110px 1fr; gap:16px; border-bottom:none;">
           <div class="arch-key" style="font-size:14px;">우선순위</div>
-          <div class="arch-val" style="font-size:18px;">카드 1장 재생성 — 원가가 새 덱 생성과 비슷, 수동 편집이 이미 커버 → <strong>만들지 않기로 결정.</strong> 남은 병목은 코드가 아닌 유입</div>
+          <div class="arch-val" style="font-size:18px;">카드 1장 재생성 — 비용·효용 분석 결과 수동 편집이 이미 커버 → <strong>만들지 않기로 결정.</strong> 남은 병목은 코드가 아닌 유입</div>
         </div>
       </div>
     </div>
@@ -997,16 +977,16 @@
         <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;">
           <div style="text-align:center;">
             <div style="font-family:var(--font-mono);font-weight:700;font-size:38px;color:var(--fg-3);">~0.4s</div>
-            <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">API 응답 (iad1 · 미국)</div>
+            <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">API 응답 (미국 리전)</div>
           </div>
           <div style="font-family:var(--font-mono);font-size:22px;color:var(--accent-600);">→</div>
           <div style="text-align:center;">
             <div style="font-family:var(--font-mono);font-weight:700;font-size:38px;color:var(--positive);">~0.06s</div>
-            <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">API 응답 (icn1 · 서울)</div>
+            <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">API 응답 (한국 리전)</div>
           </div>
         </div>
         <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--rule-soft);font-family:var(--font-mono);font-size:13px;color:var(--fg-4);">
-          <code>vercel.json</code>에 <code>"regions": ["icn1"]</code> 한 줄 → <strong style="color:var(--positive);">약 6배 개선.</strong> 비싼 작업(DB 마이그레이션) 전에 가설을 데이터로 교정
+          리전 설정 한 줄 → <strong style="color:var(--positive);">약 6배 개선.</strong> 비싼 작업(DB 마이그레이션) 전에 가설을 데이터로 교정
         </div>
       </div>
 
