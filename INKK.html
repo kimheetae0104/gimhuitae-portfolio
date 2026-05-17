@@ -634,7 +634,7 @@
         </div>
         <div class="arch-item" style="border-bottom:none;">
           <div class="arch-key">크레딧 RPC</div>
-          <div class="arch-val">차감·롤백·적립을 DB RPC 함수로 원자화 — 동시 요청에도 잔액 음수 방지</div>
+          <div class="arch-val">차감·롤백·적립을 원자적 트랜잭션으로 처리 — 동시 요청에도 잔액 음수 방지</div>
         </div>
       </div>
     </div>
@@ -664,7 +664,7 @@
         </div>
         <div style="background:var(--bg);padding:16px 20px;display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:start;">
           <div style="font-family:var(--font-mono);font-size:15px;color:var(--accent-600);">RATE LIMIT</div>
-          <div style="font-family:var(--font-sans);font-size:19px;color:var(--fg-2);">비로그인 IP당 생성 횟수 제한 — LLM 비용 누수 방지</div>
+          <div style="font-family:var(--font-sans);font-size:19px;color:var(--fg-2);">비로그인 요청 횟수 제한 — LLM 비용 누수 방지</div>
         </div>
       </div>
 
@@ -674,8 +674,8 @@
           <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">보안 감사 라운드</div>
         </div>
         <div style="background:var(--bg);padding:16px 18px;text-align:center;">
-          <div style="font-family:var(--font-mono);font-weight:700;font-size:26px;color:var(--fg-1);">7</div>
-          <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">DB RPC 함수</div>
+          <div style="font-family:var(--font-mono);font-weight:700;font-size:26px;color:var(--fg-1);">Atomic</div>
+          <div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-4);margin-top:4px;">크레딧 트랜잭션</div>
         </div>
         <div style="background:var(--bg);padding:16px 18px;text-align:center;">
           <div style="font-family:var(--font-mono);font-weight:700;font-size:26px;color:var(--fg-1);">7</div>
