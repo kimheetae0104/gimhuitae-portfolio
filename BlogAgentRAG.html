@@ -241,12 +241,12 @@
           <div class="val-cell">
             <div class="val-num">04</div>
             <div class="val-name">자동 교정</div>
-            <div class="val-desc">재시도 한도 초과 잔재 → 결정론적 후처리로 강제 교정. LLM이 못 고치는 변형 표현까지 코드 레벨에서 처리</div>
+            <div class="val-desc">LLM 재시도로도 해결되지 않는 케이스를 결정론적 후처리로 강제 교정. 확률적 모델의 한계를 규칙 기반으로 보완</div>
           </div>
           <div class="val-cell" style="background:var(--accent-100);border-color:var(--accent-100);">
             <div class="val-num" style="color:var(--accent-600);">05</div>
             <div class="val-name" style="color:var(--accent-600);">Gemini 검증</div>
-            <div class="val-desc" style="color:var(--ink-700);">Gemini로 종목혼동·수치환각·밸류에이션모순 score 0~100. 심각도 임계치 초과 → 배포 차단 + 긴급 알림</div>
+            <div class="val-desc" style="color:var(--ink-700);">Gemini로 종목혼동·수치환각·밸류에이션모순을 다각도 검토. 심각도 판단에 따라 배포 차단 + 알림</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:24px;margin-top:20px;padding:16px 24px;background:var(--bg-soft);border-radius:var(--r-3);border:1px solid var(--rule-soft);">

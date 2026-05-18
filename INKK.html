@@ -532,8 +532,8 @@
         <div class="ctag">RESOLVED · 02</div>
         <h3>결제 중복 — 보이지 않는 돈 새는 구멍</h3>
         <div class="cbody">
-          <strong>증상:</strong> Stripe webhook은 같은 이벤트를 여러 번 보낼 수 있다. 중복 처리되면 크레딧이 두 배 적립된다.<br/><br/>
-          3라운드에 걸쳐 수정 — 고칠 때마다 새로운 엣지 케이스가 드러났다. 한 번에 완성되는 결제 로직은 없다.
+          <strong>증상:</strong> Stripe webhook은 동일한 이벤트를 여러 번 전달할 수 있다. 동시성·재시도 시나리오에서 결제 로직이 예상과 다르게 동작했다.<br/><br/>
+          고칠 때마다 새로운 엣지 케이스가 드러났다. 한 번에 완성되는 결제 로직은 없다.
         </div>
         <div class="csolution">
           <strong>해결:</strong> DB 레벨에서 중복 처리를 원천 차단하는 구조로 재설계. 내가 작성한 코드도 반드시 검증 대상이다.
