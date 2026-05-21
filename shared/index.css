@@ -305,14 +305,30 @@ body{
 
 /* 프로젝트 3열 레이아웃 */
 .projects-cols{
-  display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 24px;align-items:start;
+  display:grid;grid-template-columns:1fr;gap:56px;align-items:start;
 }
 .proj-col{display:flex;flex-direction:column}
+.proj-col:nth-child(1){order:3}
+.proj-col:nth-child(2){order:1}
+.proj-col:nth-child(3){order:2}
+.project-sections{display:grid;grid-template-columns:1fr;gap:56px}
+.project-sections .project-group{padding-top:0;border-top:none}
+.project-lead{
+  margin:-20px 0 24px;
+  max-width:760px;
+  font-size:15px;line-height:1.7;color:#6B7280;
+}
 
 /* 컬럼 내 카드는 세로 스택 */
 .pcards{ display:grid;gap:12px }
 .pcards-col{ grid-template-columns:1fr }
 .pcards-col .pthumb{ aspect-ratio:4/3 }
+.pcards-grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.pcards-grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.pcards-grid-1{grid-template-columns:1fr}
+.pcards-grid-3 .pthumb,
+.pcards-grid-2 .pthumb,
+.pcards-grid-1 .pthumb{aspect-ratio:4/3}
 
 /* Project card */
 .pcard{
@@ -659,8 +675,8 @@ body{
   .bento{grid-template-columns:1fr}
   .b7,.b5,.b4,.b12{grid-column:span 1}
   .b7 .pthumb,.b5 .pthumb,.b4 .pthumb,.b12 .pthumb{aspect-ratio:16/9}
-  /* projects 3열 → 1열 */
   .projects-cols{grid-template-columns:1fr}
+  .pcards-grid-3,.pcards-grid-2{grid-template-columns:1fr}
   .site-nav-links{display:none}
   .footer-inner{padding:40px 20px 28px}
   .footer-body{grid-template-columns:1fr;gap:32px}
