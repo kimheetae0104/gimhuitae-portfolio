@@ -9,6 +9,63 @@
 <script src="shared/deck-stage.js" defer></script>
 <style>
 
+/* ── 상단 헤더 오버레이 ── */
+.deck-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9999;
+  height: 52px;
+  background: rgba(247,247,248,0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule-soft);
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  justify-content: space-between;
+  pointer-events: auto;
+}
+.deck-header-mark {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--fg-1);
+  text-decoration: none;
+}
+.deck-header-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  text-decoration: none;
+  padding: 5px 14px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-pill);
+  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.deck-header-back:hover { color: var(--fg-1); border-color: var(--rule); }
+.deck-header-back svg { width: 14px; height: 14px; }
+
+/* ── 슬라이드 메타 공통 ── */
+.slide-label {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.slide-num {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.16em;
+  color: var(--fg-3);
+}
+
 /* ── NOxO accent — teal (emissions / industrial) ── */
 :root {
   --nox:      #0D7377;
@@ -389,55 +446,63 @@
 <body>
 
 <header class="deck-header">
-  <a href="index.html" class="deck-header-mark">HK · PORTFOLIO</a>
-  <a href="index.html" class="deck-header-back">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 4L6 8l4 4"/></svg>
-    Back to Index
-  </a>
+  <a href="index.html" class="deck-header-mark">[ HK ]</a>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <a href="index.html" class="deck-header-back">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
+      포트폴리오
+    </a>
+  </div>
 </header>
 
-<deck-stage>
+<deck-stage width="1920" height="1080">
 
 <!-- ═══ 01 Cover ═══ -->
-<section class="slide s-cover" style="justify-content:flex-start;">
-  <div class="cover-eyebrow">SeSAC 제조 AI · IGCC 발전소 · 팀 프로젝트 · 2026</div>
-  <div class="cover-title">NOxO</div>
-  <div class="cover-sub">가스터빈 배기 NOx 디지털 트윈</div>
-
-  <p class="slide-body" style="font-size:28px;max-width:72ch;">
-    IGCC 발전소 NOx 배출 규제 대응을 위한 ML 기반 디지털 트윈.
-    운전 시뮬레이션용 예측기와 5분 후 조기경보 예보기, 두 개의 모델을 설계·구현했다.
-    O₂ 센서 데이터 누수를 규명하고, 하루치 별도 holdout으로 정직하게 검증했다.
-  </p>
-
-  <div class="kpi-row">
-    <div class="kpi-item">
-      <div class="kpi-val">≈ 0.71</div>
-      <div class="kpi-lbl">시뮬레이션 NOx R²</div>
-    </div>
-    <div class="kpi-item">
-      <div class="kpi-val">≈ 0.68</div>
-      <div class="kpi-lbl">5분 예보 R²</div>
-    </div>
-    <div class="kpi-item">
-      <div class="kpi-val ink">+0.21</div>
-      <div class="kpi-lbl">persistence 대비 R² 개선</div>
-    </div>
-    <div class="kpi-item">
-      <div class="kpi-val ink">27.7 ms</div>
-      <div class="kpi-lbl">예보 추론 latency</div>
-    </div>
+<section class="slide s-title" data-label="Cover">
+  <div class="top-rule">
+    <span class="slide-label">NOxO — IGCC NOx 디지털 트윈</span>
+    <span class="slide-num">01 / 06</span>
   </div>
 
+  <div class="hero" style="flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:0;">
+    <div class="cover-eyebrow">SeSAC 제조 AI · IGCC 발전소 · 팀 프로젝트 · 2026</div>
+    <div class="cover-title">NOxO</div>
+    <div class="cover-sub">가스터빈 배기 NOx 디지털 트윈</div>
+
+    <p class="slide-body" style="font-size:28px;max-width:72ch;">
+      IGCC 발전소 NOx 배출 규제 대응을 위한 ML 기반 디지털 트윈.
+      운전 시뮬레이션용 예측기와 5분 후 조기경보 예보기, 두 개의 모델을 설계·구현했다.
+      O₂ 센서 데이터 누수를 규명하고, 하루치 별도 holdout으로 정직하게 검증했다.
+    </p>
+
+    <div class="kpi-row">
+      <div class="kpi-item">
+        <div class="kpi-val">≈ 0.71</div>
+        <div class="kpi-lbl">시뮬레이션 NOx R²</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-val">≈ 0.68</div>
+        <div class="kpi-lbl">5분 예보 R²</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-val ink">+0.21</div>
+        <div class="kpi-lbl">persistence 대비 R² 개선</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-val ink">27.7 ms</div>
+        <div class="kpi-lbl">예보 추론 latency</div>
+      </div>
+    </div>
+  </div>
   <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">01 / 06</div>
+  <div class="pageno">01</div>
 </section>
 
 <!-- ═══ 02 문제 정의 ═══ -->
-<section class="slide">
+<section class="slide" data-label="Problem">
   <div class="top-rule">
-    <span>02 · 문제 정의</span>
-    <span>"NOx 예측"은 사실 두 개의 다른 일이었다</span>
+    <span class="slide-label">문제 정의</span>
+    <span class="slide-num">02 / 06</span>
   </div>
 
   <h2 class="slide-h2" style="font-size:44px;margin-bottom:32px;">
@@ -499,14 +564,14 @@
   </div>
 
   <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">02 / 06</div>
+  <div class="pageno">02</div>
 </section>
 
 <!-- ═══ 03 모델 1 — 시뮬레이션 예측기 ═══ -->
-<section class="slide soft">
+<section class="slide soft" data-label="Simulation">
   <div class="top-rule">
-    <span>03 · 모델 1</span>
-    <span>운전 시뮬레이션 예측기</span>
+    <span class="slide-label">모델 1 · 시뮬레이션</span>
+    <span class="slide-num">03 / 06</span>
   </div>
 
   <div class="two-col">
@@ -552,14 +617,14 @@
   </div>
 
   <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">03 / 06</div>
+  <div class="pageno">03</div>
 </section>
 
 <!-- ═══ 04 모델 2 — 5분 후 NOx 예보기 ═══ -->
-<section class="slide">
+<section class="slide" data-label="Forecast">
   <div class="top-rule">
-    <span>04 · 모델 2</span>
-    <span>5분 후 NOx 예보기</span>
+    <span class="slide-label">모델 2 · 5분 예보</span>
+    <span class="slide-num">04 / 06</span>
   </div>
 
   <div class="two-col">
@@ -619,14 +684,14 @@
   </div>
 
   <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">04 / 06</div>
+  <div class="pageno">04</div>
 </section>
 
 <!-- ═══ 05 O₂ 데이터 누수 ═══ -->
-<section class="slide soft">
+<section class="slide soft" data-label="Leakage">
   <div class="top-rule">
-    <span>05 · 핵심 챌린지</span>
-    <span>O₂ 데이터 누수 규명</span>
+    <span class="slide-label">핵심 챌린지 · O₂ 누수</span>
+    <span class="slide-num">05 / 06</span>
   </div>
 
   <h2 class="slide-h2" style="font-size:38px;margin-bottom:28px;">
@@ -685,14 +750,14 @@
   </div>
 
   <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">05 / 06</div>
+  <div class="pageno">05</div>
 </section>
 
 <!-- ═══ 06 검증 설계 + 성과 ═══ -->
-<section class="slide">
+<section class="slide" data-label="Validation">
   <div class="top-rule">
-    <span>06 · 검증 설계 · 성과</span>
-    <span>정직한 평가와 배운 것</span>
+    <span class="slide-label">검증 설계 · 성과</span>
+    <span class="slide-num">06 / 06</span>
   </div>
 
   <div class="two-col">
@@ -751,7 +816,7 @@
   </div>
 
   <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">06 / 06</div>
+  <div class="pageno">06</div>
 </section>
 
 </deck-stage>

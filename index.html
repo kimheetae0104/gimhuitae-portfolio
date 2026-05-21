@@ -6,6 +6,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <link rel="stylesheet" href="shared/tokens.css"/>
 <link rel="stylesheet" href="shared/index.css"/>
+<script>
+if (location.protocol === 'file:') {
+  document.documentElement.classList.add('is-file-protocol');
+}
+</script>
 </head>
 <body>
 
@@ -14,7 +19,7 @@
 <!-- ═══ SITE HEADER ═══ -->
 <header class="site-header">
   <div class="header-inner">
-    <a href="/" class="mark" style="text-decoration:none;color:inherit">
+    <a href="./index.html" class="mark" style="text-decoration:none;color:inherit">
       <svg width="28" height="21" viewBox="0 0 88 66" fill="currentColor">
         <rect x="0"  y="4"  width="9" height="58"/>
         <rect x="34" y="4"  width="9" height="58"/>
@@ -146,7 +151,7 @@
             </div>
           </div>
         </a>
-        <div class="pcard d-dacon is-static">
+        <a class="pcard d-dacon" href="DACON.html">
           <div class="pthumb t-dacon">
             <div class="thumb-inner" style="flex-direction:column;gap:14px;padding:24px 28px;align-items:flex-start;justify-content:center">
               <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#7C3AED;">Competition Result</div>
@@ -157,7 +162,7 @@
           <div class="pinfo">
             <div class="pmeta-row"><div class="pnum">공모전 · 2026</div></div>
             <div class="ptitle">Dacon — 스마트 창고 출고 지연 예측</div>
-            <div class="pdesc">물류 창고 운영 데이터로 출고 지연 시간을 예측한 공모전 프로젝트. 피처 엔지니어링과 회귀 검증으로 Private 11위, 상위 4%를 기록했다.</div>
+            <div class="pdesc">물류 창고 출고 지연을 예측한 4인 팀 공모전. OOF가 LB를 배신하는 외삽 문제를 진단하고, 최종 앙상블 결합 단계를 맡아 Private 11위·상위 4%를 기록했다.</div>
             <div class="tech-row">
               <span class="tech-icon blue">Python</span>
               <span class="tech-icon green">Regression</span>
@@ -165,7 +170,7 @@
               <span class="tech-icon orange">Top 4%</span>
             </div>
           </div>
-        </div>
+        </a>
       </div>
     </div>
 

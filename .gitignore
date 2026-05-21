@@ -12,3 +12,5 @@ secrets.json
 credentials.json
 uploads/
 .claude/
+.superpowers/
+DACON_자료/
