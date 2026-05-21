@@ -528,28 +528,24 @@
       </p>
     </div>
 
-    <div>
-      <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:14px;">모델 결과</div>
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <div style="padding:22px 24px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--bg);">
-          <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:8px;">NOx — 어려운 타겟</div>
-          <div style="font-family:var(--font-mono);font-size:46px;font-weight:700;color:var(--fg-1);line-height:1;">≈ 0.71</div>
-          <div style="font-family:var(--font-sans);font-size:18px;color:var(--fg-3);margin-top:6px;">R² · 변동 폭 작아 절대값 낮음</div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:2px;">실제 대시보드 — 시뮬레이션 모드</div>
+      <div style="border-radius:var(--r-3);overflow:hidden;border:1px solid var(--rule-soft);flex:1;">
+        <img src="noxo/sim.png" alt="NOxO 시뮬레이션 대시보드"
+          style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+        <div style="padding:14px 16px;border:1px solid var(--nox);border-radius:var(--r-3);background:var(--nox-lt);text-align:center;">
+          <div style="font-family:var(--font-mono);font-size:24px;font-weight:700;color:var(--nox-dark);">0.71</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--nox);margin-top:3px;">NOx R²</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-          <div style="padding:20px 22px;border:1px solid var(--nox);border-radius:var(--r-3);background:var(--nox-lt);">
-            <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--nox);margin-bottom:6px;">발전 출력 DWATT</div>
-            <div style="font-family:var(--font-mono);font-size:38px;font-weight:700;color:var(--nox-dark);line-height:1;">0.999</div>
-            <div style="font-family:var(--font-sans);font-size:16px;color:var(--nox-mid);margin-top:4px;">R²</div>
-          </div>
-          <div style="padding:20px 22px;border:1px solid var(--nox);border-radius:var(--r-3);background:var(--nox-lt);">
-            <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--nox);margin-bottom:6px;">배기 온도 TTXM</div>
-            <div style="font-family:var(--font-mono);font-size:38px;font-weight:700;color:var(--nox-dark);line-height:1;">0.997</div>
-            <div style="font-family:var(--font-sans);font-size:16px;color:var(--nox-mid);margin-top:4px;">R²</div>
-          </div>
+        <div style="padding:14px 16px;border:1px solid var(--nox);border-radius:var(--r-3);background:var(--nox-lt);text-align:center;">
+          <div style="font-family:var(--font-mono);font-size:24px;font-weight:700;color:var(--nox-dark);">0.999</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--nox);margin-top:3px;">DWATT R²</div>
         </div>
-        <div style="padding:16px 20px;background:var(--paper-200);border-radius:var(--r-3);">
-          <div style="font-family:var(--font-mono);font-size:14px;color:var(--fg-4);">49 피처 · Ridge + LightGBM 앙상블 · 1분 집계</div>
+        <div style="padding:14px 16px;border:1px solid var(--nox);border-radius:var(--r-3);background:var(--nox-lt);text-align:center;">
+          <div style="font-family:var(--font-mono);font-size:24px;font-weight:700;color:var(--nox-dark);">0.997</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--nox);margin-top:3px;">TTXM R²</div>
         </div>
       </div>
     </div>
@@ -599,23 +595,24 @@
       </div>
     </div>
 
-    <div>
-      <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:14px;">최종 성능</div>
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <div style="padding:28px 28px;border:1px solid var(--nox);border-radius:var(--r-3);background:var(--nox-lt);">
-          <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--nox);margin-bottom:8px;">5분 예보 R²</div>
-          <div style="font-family:var(--font-mono);font-size:64px;font-weight:700;color:var(--nox-dark);line-height:1;">≈ 0.68</div>
-          <div style="font-family:var(--font-sans);font-size:18px;color:var(--nox-mid);margin-top:8px;">MAE 0.062 · RMSE 0.081</div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:2px;">실제 대시보드 — 실시간 예측 모드</div>
+      <div style="border-radius:var(--r-3);overflow:hidden;border:1px solid var(--rule-soft);flex:1;">
+        <img src="noxo/predict.png" alt="NOxO 실시간 예측 대시보드"
+          style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+        <div style="padding:14px 16px;border:1px solid var(--nox);border-radius:var(--r-3);background:var(--nox-lt);text-align:center;">
+          <div style="font-family:var(--font-mono);font-size:24px;font-weight:700;color:var(--nox-dark);">≈ 0.68</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--nox);margin-top:3px;">5분 예보 R²</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-          <div style="padding:18px 20px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--bg);">
-            <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.1em;color:var(--fg-4);margin-bottom:6px;">latency</div>
-            <div style="font-family:var(--font-mono);font-size:30px;font-weight:700;color:var(--fg-1);line-height:1;">27.7 ms</div>
-          </div>
-          <div style="padding:18px 20px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--bg);">
-            <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.1em;color:var(--fg-4);margin-bottom:6px;">피처 수</div>
-            <div style="font-family:var(--font-mono);font-size:30px;font-weight:700;color:var(--fg-1);line-height:1;">213</div>
-          </div>
+        <div style="padding:14px 16px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--bg);text-align:center;">
+          <div style="font-family:var(--font-mono);font-size:24px;font-weight:700;color:var(--fg-1);">27.7ms</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--fg-4);margin-top:3px;">latency</div>
+        </div>
+        <div style="padding:14px 16px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--bg);text-align:center;">
+          <div style="font-family:var(--font-mono);font-size:24px;font-weight:700;color:var(--fg-1);">213</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--fg-4);margin-top:3px;">features</div>
         </div>
       </div>
     </div>
