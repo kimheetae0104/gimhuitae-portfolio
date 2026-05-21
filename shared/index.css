@@ -250,8 +250,54 @@ body{
 .impact-sub{font-size:11px;color:#6B7280;line-height:1.4}
 
 /* ═══════════════════════════════════════
-   05. PROJECTS — BENTO GRID
+   05. PROJECTS — SECTION LAYOUT
    ═══════════════════════════════════════ */
+
+/* ── 섹션형 프로젝트 wrapper ── */
+.ps-section{
+  position:relative;z-index:1;
+  padding:80px 40px 100px;
+}
+.ps-section .projects-inner{
+  display:flex;flex-direction:column;gap:64px;
+}
+
+/* Featured 블록: 강조 카드 */
+.ps-featured{
+  padding-bottom:0;
+}
+.ps-featured .pcard{
+  border-width:2px;
+}
+
+/* 섹션 블록 공통 */
+.ps-section-block{
+  padding-top:48px;
+  border-top:1px solid rgba(17,24,39,.08);
+}
+
+/* Narrow 변형: Competition / Earlier Work 등 좁은 폭 제한 */
+.ps-narrow .pcards-grid-1{
+  max-width:640px;
+}
+
+/* 섹션 라벨 */
+.ps-label{
+  font-family:var(--font-mono);font-size:10px;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:#9CA3AF;margin-bottom:20px;
+}
+
+/* Fade-in animation */
+.js-section-fade{
+  opacity:0;transform:translateY(18px);
+  transition:opacity 560ms ease,transform 560ms ease;
+}
+.js-section-fade.is-visible{
+  opacity:1;transform:none;
+}
+
+/* legacy alias */
 .projects-section{
   position:relative;z-index:1;
   padding:80px 40px 100px;
@@ -355,6 +401,7 @@ body{
 .d-ai   {border-top:3px solid #0EA5E9}
 .d-rag  {border-top:3px solid #059669}
 .d-inkk {border-top:3px solid #1D4ED8}
+.d-dacon{border-top:3px solid #9333EA}
 
 /* Thumbnail wrapper */
 .pthumb{
@@ -376,6 +423,11 @@ body{
 /* Card info */
 .pinfo{padding:16px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
 .pnum{font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#9CA3AF}
+.pmeta-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.panchor{
+  font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.04em;
+  color:#111827;white-space:nowrap
+}
 .ptitle{font-size:clamp(14px,1.2vw,16px);font-weight:600;color:#111827;line-height:1.3;letter-spacing:-.01em}
 .pdesc{font-size:13px;line-height:1.65;color:#6B7280}
 
@@ -401,6 +453,7 @@ body{
 .t-bot  { background:#F0FDF6 }
 .t-rag  { background:#F0F9FF }
 .t-ai   { background:#F8F9FA }
+.t-dacon{ background:#FAF5FF }
 
 /* ── THUMBNAIL STYLES (dark — legacy for dark thumbs) ── */
 
@@ -672,7 +725,8 @@ body{
   .impact-item{border-right:none;border-bottom:1px solid rgba(17,24,39,.07);padding-bottom:16px}
   .impact-item:nth-child(odd){border-right:1px solid rgba(17,24,39,.07)}
   .impact-item:nth-child(n+3){border-bottom:none}
-  .projects-section,.about-section,.timeline-section{padding:64px 20px 80px}
+  .projects-section,.ps-section,.about-section,.timeline-section{padding:64px 20px 80px}
+  .ps-section .projects-inner{gap:40px}
   .about-wrap{padding:36px 24px}
   .about-name{font-size:32px}
   .bento{grid-template-columns:1fr}
