@@ -276,20 +276,6 @@ body{
   border-top:1px solid rgba(17,24,39,.08);
 }
 
-/* Narrow 변형: Competition / Earlier Work 등 좁은 폭 제한 */
-.ps-narrow .pcards-grid-1{
-  max-width:640px;
-}
-.ps-medium .pcards-grid-1{
-  max-width:640px;
-}
-.ps-section-block .pcards-grid-2{
-  max-width:900px;
-}
-.ps-section-block .pcards-grid-3{
-  max-width:900px;
-}
-
 /* 섹션 라벨 */
 .ps-label{
   font-family:var(--font-mono);font-size:11px;font-weight:700;
@@ -375,22 +361,18 @@ body{
 }
 
 /* 컬럼 내 카드는 세로 스택 */
-.pcards{ display:grid;gap:12px }
+.pcards{ display:grid;gap:12px;justify-content:start }
 .pcards-col{ grid-template-columns:repeat(3,minmax(0,1fr)) }
 .pcards-col .pthumb{ aspect-ratio:4/3 }
-.pcards-grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-.pcards-grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-.pcards-grid-1{grid-template-columns:1fr}
+.pcards-grid-3{grid-template-columns:repeat(3,minmax(0,300px))}
+.pcards-grid-2{grid-template-columns:repeat(2,minmax(0,300px))}
+.pcards-grid-1{grid-template-columns:minmax(0,300px)}
 .pcards-grid-3 .pthumb,
 .pcards-grid-2 .pthumb,
 .pcards-grid-1 .pthumb{aspect-ratio:4/3}
 .ps-featured .pcards-grid-3 .pthumb,
 .ps-featured .pcards-grid-2 .pthumb,
 .ps-featured .pcards-grid-1 .pthumb{aspect-ratio:4/3}
-.ps-section-block .pcards-grid-2 .pthumb{aspect-ratio:16/8.5}
-.ps-section-block .pcards-grid-1 .pthumb{aspect-ratio:16/7}
-.ps-medium .pcards-grid-1 .pthumb{aspect-ratio:16/8}
-.ps-section-block .pcards-grid-3 .pthumb{aspect-ratio:16/9}
 .proj-col:nth-child(1) .pcards-col{grid-template-columns:minmax(280px,420px)}
 .proj-col:nth-child(2) .pcards-col,
 .proj-col:nth-child(3) .pcards-col{grid-template-columns:repeat(3,minmax(0,1fr))}
