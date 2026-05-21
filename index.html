@@ -80,7 +80,7 @@
             <div class="h-stat-lbl">데이콘 공모전</div>
           </div>
           <div class="h-stat">
-            <div class="h-stat-val k">6</div>
+            <div class="h-stat-val k">7</div>
             <div class="h-stat-lbl">Projects</div>
           </div>
         </div>
@@ -132,7 +132,7 @@
     </div>
     <div class="impact-item">
       <div class="impact-pre">&nbsp;</div>
-      <div class="impact-num"><span class="counter" data-target="6" data-suffix="개">6개</span></div>
+      <div class="impact-num"><span class="counter" data-target="7" data-suffix="개">7개</span></div>
       <div class="impact-label">프로젝트 구현</div>
       <div class="impact-sub">&nbsp;</div>
     </div>
@@ -157,7 +157,7 @@
 
     <div class="section-head">
       <div class="label">SELECTED WORK</div>
-      <div class="count">06 CASE STUDIES</div>
+      <div class="count">07 CASE STUDIES</div>
     </div>
 
     <div class="projects-cols js-fade">
@@ -313,6 +313,69 @@
           </div>
         </a>
 
+        <!-- NOxO -->
+        <a class="pcard d-noxo" href="NOxO.html">
+          <div class="pthumb t-noxo">
+            <div class="thumb-inner" style="flex-direction:column;gap:0;padding:18px 22px;justify-content:center;align-items:stretch">
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#0D7377;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">
+                <span>NOx 예측 R²</span>
+                <span style="background:#E0F4F4;color:#0D7377;padding:2px 8px;border-radius:999px;font-size:8px">IGCC · Digital Twin</span>
+              </div>
+              <svg width="100%" viewBox="0 0 320 150" fill="none">
+                <defs>
+                  <linearGradient id="noxHL" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#0D7377"/>
+                    <stop offset="100%" stop-color="#5BA8AB"/>
+                  </linearGradient>
+                  <linearGradient id="noxBar" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#A0D4D6" stop-opacity=".5"/>
+                    <stop offset="100%" stop-color="#C8E9EA" stop-opacity=".35"/>
+                  </linearGradient>
+                </defs>
+                <!-- grid lines -->
+                <line x1="88" y1="0" x2="88" y2="130" stroke="rgba(13,115,119,.08)" stroke-width="1"/>
+                <line x1="152" y1="0" x2="152" y2="130" stroke="rgba(13,115,119,.06)" stroke-width="1" stroke-dasharray="3 3"/>
+                <line x1="216" y1="0" x2="216" y2="130" stroke="rgba(13,115,119,.06)" stroke-width="1" stroke-dasharray="3 3"/>
+                <line x1="280" y1="0" x2="280" y2="130" stroke="rgba(13,115,119,.08)" stroke-width="1"/>
+                <!-- x-axis labels -->
+                <text x="88"  y="138" font-family="monospace" font-size="7.5" fill="rgba(13,115,119,.35)" text-anchor="middle">0.0</text>
+                <text x="184" y="138" font-family="monospace" font-size="7.5" fill="rgba(13,115,119,.35)" text-anchor="middle">0.5</text>
+                <text x="280" y="138" font-family="monospace" font-size="7.5" fill="rgba(13,115,119,.35)" text-anchor="middle">1.0</text>
+                <!-- Baseline persistence -->
+                <text x="84" y="16" font-family="monospace" font-size="9" fill="rgba(13,115,119,.45)" text-anchor="end">Baseline</text>
+                <rect x="88" y="7" width="73" height="13" rx="3" fill="url(#noxBar)"/>
+                <text x="165" y="17" font-family="monospace" font-size="9" fill="rgba(13,115,119,.55)">0.46</text>
+                <!-- 5min forecast -->
+                <text x="84" y="46" font-family="monospace" font-size="9" fill="rgba(13,115,119,.45)" text-anchor="end">5분 예보</text>
+                <rect x="88" y="37" width="108" height="14" rx="3" fill="url(#noxBar)"/>
+                <text x="200" y="48" font-family="monospace" font-size="9" fill="rgba(13,115,119,.6)">0.68</text>
+                <!-- Simulation TTXM -->
+                <text x="84" y="76" font-family="monospace" font-size="9" fill="rgba(13,115,119,.45)" text-anchor="end">TTXM</text>
+                <rect x="88" y="67" width="159" height="14" rx="3" fill="url(#noxBar)"/>
+                <text x="251" y="77" font-family="monospace" font-size="9" fill="rgba(13,115,119,.6)">0.997</text>
+                <!-- Simulation DWATT (top) -->
+                <rect x="84" y="97" width="168" height="20" rx="4" fill="url(#noxHL)"/>
+                <text x="86" y="111" font-family="monospace" font-size="9" fill="white" font-weight="bold">DWATT</text>
+                <text x="248" y="111" font-family="monospace" font-size="10" fill="white" font-weight="bold" text-anchor="end">0.999</text>
+                <rect x="253" y="99" width="22" height="16" rx="4" fill="#094F52"/>
+                <text x="264" y="111" font-family="monospace" font-size="8" fill="#A0D4D6" font-weight="bold" text-anchor="middle">#1</text>
+              </svg>
+            </div>
+          </div>
+          <div class="pinfo">
+            <div class="pnum">№ 03 · 디지털 트윈 · 2026.05 · SeSAC 최종</div>
+            <div class="ptitle">NOxO — IGCC 발전소 NOx 디지털 트윈</div>
+            <div class="pdesc">운전 시뮬레이션 예측기와 5분 후 조기경보 예보기, 두 개의 ML 모델 설계·구현. O₂ 센서 데이터 누수를 규명하고 정직한 R²를 택했다.</div>
+            <div class="tech-row">
+              <span class="tech-icon blue">Python</span>
+              <span class="tech-icon gray">Ridge</span>
+              <span class="tech-icon green">LightGBM</span>
+              <span class="tech-icon dark">시계열</span>
+              <span class="tech-icon orange">Feature Eng.</span>
+            </div>
+          </div>
+        </a>
+
         <!-- Skinpass -->
         <a class="pcard d-skin" href="Skinpass.html">
           <div class="pthumb t-skin">
@@ -358,7 +421,7 @@
             </div>
           </div>
           <div class="pinfo">
-            <div class="pnum">№ 03 · SCM · 품질 예측 · 2026.04</div>
+            <div class="pnum">№ 04 · SCM · 품질 예측 · 2026.04</div>
             <div class="ptitle">Skinpass — 코일 투입 전 비계획 공정 가능성 예측</div>
             <div class="pdesc">냉연 코일 4,000건의 물성·공정 실적으로 비계획 공정 발생 가능성 사전 판별.</div>
             <div class="tech-row">
@@ -392,7 +455,7 @@
             <img src="jann/img/tsne-clustering.png" alt="JANN t-SNE 클러스터링" loading="lazy">
           </div>
           <div class="pinfo">
-            <div class="pnum">№ 04 · iOS APP · 2026</div>
+            <div class="pnum">№ 05 · iOS APP · 2026</div>
             <div class="ptitle">JANN — 향미 데이터 레시피 추천</div>
             <div class="pdesc">분자 미식학 기반 iOS 레시피 앱. 향미 화합물 분석으로 최적 조합 제안.</div>
             <div class="tech-row">
@@ -443,7 +506,7 @@
             </svg>
           </div>
           <div class="pinfo">
-            <div class="pnum">№ 05 · LOCAL AI · 2026.04</div>
+            <div class="pnum">№ 06 · LOCAL AI · 2026.04</div>
             <div class="ptitle">Local AI Agent — 로컬 AI 워크플로우</div>
             <div class="pdesc">Obsidian + Ollama + AntiGravity로 붙인 로컬 AI 워크플로우 실험. 클라우드 의존 없이 100% 로컬 실행.</div>
             <div class="tech-row">
@@ -507,7 +570,7 @@
             </svg>
           </div>
           <div class="pinfo">
-            <div class="pnum">№ 06 · LLM PIPELINE · 2026.05</div>
+            <div class="pnum">№ 07 · LLM PIPELINE · 2026.05</div>
             <div class="ptitle">Blog Agent — 상한가 분석 글 자동화</div>
             <div class="pdesc">7단 데이터 파이프라인 + Obsidian RAG(chromadb + 섹터 필터)로 상한가 종목 분석 자동화. 로컬 LLM(exaone3.5) + 클라우드(Gemini) 이중 지원.</div>
             <div class="tech-row">
@@ -549,7 +612,7 @@
                 <img src="inkk/thumb.png" alt="INKK 서비스 화면" style="width:100%;height:100%;object-fit:cover;object-position:top;" loading="lazy">
               </div>
               <div class="pinfo">
-                <div class="pnum">№ 07 · AI SERVICE · 2026</div>
+                <div class="pnum">№ 08 · AI SERVICE · 2026</div>
                 <div class="ptitle">INKK — 카드뉴스 자동 생성</div>
                 <div class="pdesc">AI 기반 카드뉴스 자동 생성 서비스. 콘텐츠 입력 → 디자인 자동화 → 배포까지 원스톱.</div>
                 <div class="tech-row">

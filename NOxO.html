@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<title>NOxO — IGCC 발전소 NOx 디지털 트윈</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="shared/tokens.css"/>
+<link rel="stylesheet" href="shared/slide.css"/>
+<script src="shared/deck-stage.js" defer></script>
+<style>
+
+/* ── NOxO accent — teal (emissions / industrial) ── */
+:root {
+  --nox:      #0D7377;
+  --nox-lt:   #E0F4F4;
+  --nox-mid:  #5BA8AB;
+  --nox-dark: #094F52;
+}
+
+/* ── Cover ── */
+.cover-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--nox);
+  margin-bottom: 20px;
+}
+.cover-title {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 108px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--fg-1);
+  margin: 0 0 12px;
+}
+.cover-sub {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  color: var(--fg-3);
+  letter-spacing: 0.04em;
+  margin-bottom: 52px;
+}
+
+.kpi-row {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+  padding-top: 36px;
+  margin-top: auto;
+}
+.kpi-item {
+  flex: 1;
+  padding-right: 40px;
+  border-right: 1px solid var(--rule-soft);
+}
+.kpi-item:first-child { padding-left: 0; }
+.kpi-item:last-child  { border-right: none; }
+.kpi-item + .kpi-item { padding-left: 40px; }
+.kpi-val {
+  font-family: var(--font-mono);
+  font-size: 52px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--nox);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.kpi-val.ink { color: var(--fg-1); }
+.kpi-lbl {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+
+/* ── Top rule ── */
+.top-rule {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 22px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 36px;
+}
+
+/* ── 두 열 레이아웃 ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  flex: 1;
+  align-items: start;
+}
+.two-col-60-40 {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 56px;
+  flex: 1;
+  align-items: start;
+}
+
+/* ── 카드 블록 ── */
+.block-card {
+  padding: 28px 32px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  background: var(--bg);
+}
+.block-card.accent {
+  background: var(--nox-lt);
+  border-color: var(--nox);
+}
+.block-card .bc-label {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+  margin-bottom: 10px;
+}
+.block-card.accent .bc-label { color: var(--nox); }
+.block-card .bc-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 30px;
+  color: var(--fg-1);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+.block-card .bc-body {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--fg-2);
+  line-height: 1.65;
+}
+
+/* ── 비교 테이블 (문제 정의) ── */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  flex: 1;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  overflow: hidden;
+}
+.cg-cell {
+  padding: 28px 32px;
+  background: var(--bg);
+}
+.cg-cell.head {
+  background: var(--paper-100);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.cg-cell.head-accent {
+  background: var(--nox);
+  border-bottom: none;
+}
+.cg-cell + .cg-cell { border-left: 1px solid var(--rule-soft); }
+.cg-cell.right     { border-left: 1px solid var(--rule-soft); }
+.cg-label {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+  margin-bottom: 6px;
+}
+.cg-val {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--fg-2);
+  line-height: 1.5;
+}
+.cg-val strong { color: var(--fg-1); font-weight: 600; }
+
+/* ── 피처 / 스펙 그리드 ── */
+.spec-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--rule-soft);
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  overflow: hidden;
+  margin-top: 28px;
+}
+.sg-cell {
+  padding: 22px 24px;
+  background: var(--bg);
+}
+.sg-num {
+  font-family: var(--font-mono);
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--nox);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.sg-num.ink { color: var(--fg-1); }
+.sg-lbl {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  color: var(--fg-2);
+  line-height: 1.4;
+}
+.sg-sub {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--fg-4);
+  margin-top: 4px;
+  letter-spacing: 0.06em;
+}
+
+/* ── 여정 바 ── */
+.journey-bar {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-top: 28px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  overflow: hidden;
+}
+.jb-step {
+  flex: 1;
+  padding: 20px 24px;
+  background: var(--bg);
+  border-right: 1px solid var(--rule-soft);
+}
+.jb-step:last-child { border-right: none; }
+.jb-step.highlight { background: var(--nox-lt); }
+.jb-num {
+  font-family: var(--font-mono);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--fg-3);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.jb-step.highlight .jb-num { color: var(--nox); }
+.jb-lbl {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  color: var(--fg-3);
+  line-height: 1.4;
+}
+.jb-step.highlight .jb-lbl { color: var(--fg-2); }
+
+/* ── 누수 분석 카드 ── */
+.leak-row {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+  align-items: stretch;
+}
+.leak-card {
+  flex: 1;
+  padding: 28px 30px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+.leak-card.warn-card {
+  border-color: #D97706;
+  background: #FFFBEB;
+}
+.leak-card.safe-card {
+  border-color: var(--nox);
+  background: var(--nox-lt);
+}
+.lc-tag {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+  margin-bottom: 10px;
+}
+.lc-tag.warn { color: #B45309; }
+.lc-tag.safe { color: var(--nox-dark); }
+.lc-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 26px;
+  color: var(--fg-1);
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+.lc-body {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  color: var(--fg-2);
+  line-height: 1.65;
+  flex: 1;
+}
+.lc-stat {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 14px;
+}
+.lc-stat.down { color: var(--fg-3); text-decoration: line-through; }
+.lc-stat.honest { color: var(--nox); }
+
+/* ── 검증 타임라인 ── */
+.val-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex: 1;
+}
+.vt-row {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.vt-row:last-child { border-bottom: none; }
+.vt-label {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.1em;
+  color: var(--nox);
+  min-width: 120px;
+  flex-shrink: 0;
+  padding-top: 3px;
+}
+.vt-body {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--fg-2);
+  line-height: 1.6;
+}
+.vt-body strong { color: var(--fg-1); font-weight: 600; }
+
+/* ── 성과 카드 ── */
+.outcome-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  flex: 1;
+  align-items: stretch;
+}
+.og-card {
+  padding: 28px 32px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  background: var(--bg);
+}
+.og-card.accent {
+  background: var(--nox-lt);
+  border-color: var(--nox);
+}
+.og-num {
+  font-family: var(--font-mono);
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--nox);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.og-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 24px;
+  color: var(--fg-1);
+  margin-bottom: 8px;
+}
+.og-body {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  color: var(--fg-2);
+  line-height: 1.6;
+}
+
+</style>
+</head>
+<body>
+
+<header class="deck-header">
+  <a href="index.html" class="deck-header-mark">HK · PORTFOLIO</a>
+  <a href="index.html" class="deck-header-back">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 4L6 8l4 4"/></svg>
+    Back to Index
+  </a>
+</header>
+
+<deck-stage>
+
+<!-- ═══ 01 Cover ═══ -->
+<section class="slide s-cover" style="justify-content:flex-start;">
+  <div class="cover-eyebrow">SeSAC 제조 AI · IGCC 발전소 · 팀 프로젝트 · 2026</div>
+  <div class="cover-title">NOxO</div>
+  <div class="cover-sub">가스터빈 배기 NOx 디지털 트윈</div>
+
+  <p class="slide-body" style="font-size:28px;max-width:72ch;">
+    IGCC 발전소 NOx 배출 규제 대응을 위한 ML 기반 디지털 트윈.
+    운전 시뮬레이션용 예측기와 5분 후 조기경보 예보기, 두 개의 모델을 설계·구현했다.
+    O₂ 센서 데이터 누수를 규명하고, 하루치 별도 holdout으로 정직하게 검증했다.
+  </p>
+
+  <div class="kpi-row">
+    <div class="kpi-item">
+      <div class="kpi-val">≈ 0.71</div>
+      <div class="kpi-lbl">시뮬레이션 NOx R²</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">≈ 0.68</div>
+      <div class="kpi-lbl">5분 예보 R²</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val ink">+0.21</div>
+      <div class="kpi-lbl">persistence 대비 R² 개선</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val ink">27.7 ms</div>
+      <div class="kpi-lbl">예보 추론 latency</div>
+    </div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">01 / 06</div>
+</section>
+
+<!-- ═══ 02 문제 정의 ═══ -->
+<section class="slide">
+  <div class="top-rule">
+    <span>02 · 문제 정의</span>
+    <span>"NOx 예측"은 사실 두 개의 다른 일이었다</span>
+  </div>
+
+  <h2 class="slide-h2" style="font-size:44px;margin-bottom:32px;">
+    입력·목적·갱신 주기가 달라서<br>모델을 따로 만들었다.
+  </h2>
+
+  <div class="compare-grid" style="flex:1;">
+    <div class="cg-cell head">
+      <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.16em;text-transform:uppercase;color:var(--fg-3);">구분</div>
+    </div>
+    <div class="cg-cell head right" style="border-left:2px solid var(--nox);">
+      <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.16em;text-transform:uppercase;color:var(--fg-3);">비교</div>
+    </div>
+
+    <div class="cg-cell" style="border-top:1px solid var(--rule-soft);padding:20px 32px;">
+      <div class="cg-label">모델</div>
+      <div class="cg-val"><strong>운전 시뮬레이션 예측기</strong></div>
+    </div>
+    <div class="cg-cell right" style="border-top:1px solid var(--rule-soft);background:var(--nox-lt);padding:20px 32px;">
+      <div class="cg-label" style="color:var(--nox);">모델</div>
+      <div class="cg-val" style="color:var(--nox-dark);"><strong>5분 후 NOx 예보기</strong></div>
+    </div>
+
+    <div class="cg-cell" style="border-top:1px solid var(--rule-soft);padding:20px 32px;">
+      <div class="cg-label">질문</div>
+      <div class="cg-val">제어밸브를 이렇게 바꾸면<br>NOx는 어떻게 되나?</div>
+    </div>
+    <div class="cg-cell right" style="border-top:1px solid var(--rule-soft);background:var(--nox-lt);padding:20px 32px;">
+      <div class="cg-label" style="color:var(--nox);">질문</div>
+      <div class="cg-val" style="color:var(--ink-700);">지금 이대로면<br>5분 뒤 NOx는?</div>
+    </div>
+
+    <div class="cg-cell" style="border-top:1px solid var(--rule-soft);padding:20px 32px;">
+      <div class="cg-label">입력</div>
+      <div class="cg-val">제어변수 override<br><span style="font-size:18px;color:var(--fg-4);">→ 1분 집계 데이터</span></div>
+    </div>
+    <div class="cg-cell right" style="border-top:1px solid var(--rule-soft);background:var(--nox-lt);padding:20px 32px;">
+      <div class="cg-label" style="color:var(--nox);">입력</div>
+      <div class="cg-val" style="color:var(--ink-700);">과거 이력 (lag/rolling)<br><span style="font-size:18px;color:var(--nox-mid);">→ 1초 raw 데이터</span></div>
+    </div>
+
+    <div class="cg-cell" style="border-top:1px solid var(--rule-soft);padding:20px 32px;">
+      <div class="cg-label">타겟</div>
+      <div class="cg-val">현재 상태 응답<br><span style="font-size:18px;color:var(--fg-4);">NOx · DWATT · TTXM 다중 출력</span></div>
+    </div>
+    <div class="cg-cell right" style="border-top:1px solid var(--rule-soft);background:var(--nox-lt);padding:20px 32px;">
+      <div class="cg-label" style="color:var(--nox);">타겟</div>
+      <div class="cg-val" style="color:var(--ink-700);">5분 후 NOx<br><span style="font-size:18px;color:var(--nox-mid);">shift(-300) 점예측</span></div>
+    </div>
+
+    <div class="cg-cell" style="border-top:1px solid var(--rule-soft);padding:20px 32px;">
+      <div class="cg-label">갱신</div>
+      <div class="cg-val">온디맨드 시뮬레이션</div>
+    </div>
+    <div class="cg-cell right" style="border-top:1px solid var(--rule-soft);background:var(--nox-lt);padding:20px 32px;">
+      <div class="cg-label" style="color:var(--nox);">갱신</div>
+      <div class="cg-val" style="color:var(--ink-700);">매 1초 실시간 경보</div>
+    </div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">02 / 06</div>
+</section>
+
+<!-- ═══ 03 모델 1 — 시뮬레이션 예측기 ═══ -->
+<section class="slide soft">
+  <div class="top-rule">
+    <span>03 · 모델 1</span>
+    <span>운전 시뮬레이션 예측기</span>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <h2 class="slide-h2" style="font-size:40px;margin-bottom:24px;">
+        제어변수를 바꾸면<br>NOx·출력·배기온이 어떻게 달라지나
+      </h2>
+      <p class="slide-body" style="font-size:22px;margin-bottom:20px;">
+        1초 데이터는 인접 값이 거의 같아(자기상관 r=0.989) 모델이 과거값을 그대로 복사하는 경향이 강하다.
+        1분 평균으로 집계해 학습에 의미 있는 변동만 남겼다.
+      </p>
+      <p class="slide-body" style="font-size:22px;margin-bottom:20px;">
+        원시 피처 39개에 NPR·NQJ lag·TTXM lag/rolling 등 파생 피처 10개를 더해 총 49개.
+        Ridge와 LightGBM 앙상블.
+      </p>
+      <p class="slide-body" style="font-size:22px;">
+        NOx R²가 0.71에 그친 건 NOx 자체의 변동 폭이 워낙 작기 때문이다 (std ≈ 0.19 ppm).
+        DWATT·TTXM과 달리 NOx만 유독 예측하기 어려운 타겟이었다.
+      </p>
+    </div>
+
+    <div>
+      <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:14px;">모델 결과</div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="padding:22px 24px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--bg);">
+          <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:8px;">NOx — 어려운 타겟</div>
+          <div style="font-family:var(--font-mono);font-size:46px;font-weight:700;color:var(--fg-1);line-height:1;">≈ 0.71</div>
+          <div style="font-family:var(--font-sans);font-size:18px;color:var(--fg-3);margin-top:6px;">R² · 변동 폭 작아 절대값 낮음</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="padding:20px 22px;border:1px solid var(--nox);border-radius:var(--r-3);background:var(--nox-lt);">
+            <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--nox);margin-bottom:6px;">발전 출력 DWATT</div>
+            <div style="font-family:var(--font-mono);font-size:38px;font-weight:700;color:var(--nox-dark);line-height:1;">0.999</div>
+            <div style="font-family:var(--font-sans);font-size:16px;color:var(--nox-mid);margin-top:4px;">R²</div>
+          </div>
+          <div style="padding:20px 22px;border:1px solid var(--nox);border-radius:var(--r-3);background:var(--nox-lt);">
+            <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--nox);margin-bottom:6px;">배기 온도 TTXM</div>
+            <div style="font-family:var(--font-mono);font-size:38px;font-weight:700;color:var(--nox-dark);line-height:1;">0.997</div>
+            <div style="font-family:var(--font-sans);font-size:16px;color:var(--nox-mid);margin-top:4px;">R²</div>
+          </div>
+        </div>
+        <div style="padding:16px 20px;background:var(--paper-200);border-radius:var(--r-3);">
+          <div style="font-family:var(--font-mono);font-size:14px;color:var(--fg-4);">49 피처 · Ridge + LightGBM 앙상블 · 1분 집계</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">03 / 06</div>
+</section>
+
+<!-- ═══ 04 모델 2 — 5분 후 NOx 예보기 ═══ -->
+<section class="slide">
+  <div class="top-rule">
+    <span>04 · 모델 2</span>
+    <span>5분 후 NOx 예보기</span>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <h2 class="slide-h2" style="font-size:40px;margin-bottom:24px;">
+        매 1초 데이터로 5분 뒤를 보고<br>50 ppm 초과를 미리 경보
+      </h2>
+      <p class="slide-body" style="font-size:22px;margin-bottom:20px;">
+        1분 평균은 미세 변동이 사라져 점예측이 실패했다.
+        1초 raw 데이터를 그대로 유지하고, 5분 뒤 값(shift −300)을 타겟으로 삼았다.
+      </p>
+      <p class="slide-body" style="font-size:22px;margin-bottom:20px;">
+        NOx·운전변수의 lag·diff·rolling, 상호작용, 시간 피처까지 213개.
+        Ridge와 LightGBM 앙상블, 추론 latency 27.7 ms (예산 50 ms 이내).
+      </p>
+
+      <div style="margin-top:8px;">
+        <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:10px;">R² 개선 여정</div>
+        <div class="journey-bar">
+          <div class="jb-step">
+            <div class="jb-num">0.49</div>
+            <div class="jb-lbl">O₂ 완전 제외<br><span style="font-size:14px;color:var(--fg-4);">strict baseline</span></div>
+          </div>
+          <div class="jb-step">
+            <div class="jb-num">0.625</div>
+            <div class="jb-lbl">피처 엔지니어링<br><span style="font-size:14px;color:var(--fg-4);">O₂ 없이</span></div>
+          </div>
+          <div class="jb-step highlight">
+            <div class="jb-num">0.68</div>
+            <div class="jb-lbl">O₂ 정당 재포함<br><span style="font-size:14px;color:var(--nox-mid);">최종 배포</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:14px;">최종 성능</div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="padding:28px 28px;border:1px solid var(--nox);border-radius:var(--r-3);background:var(--nox-lt);">
+          <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--nox);margin-bottom:8px;">5분 예보 R²</div>
+          <div style="font-family:var(--font-mono);font-size:64px;font-weight:700;color:var(--nox-dark);line-height:1;">≈ 0.68</div>
+          <div style="font-family:var(--font-sans);font-size:18px;color:var(--nox-mid);margin-top:8px;">MAE 0.062 · RMSE 0.081</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="padding:18px 20px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--bg);">
+            <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.1em;color:var(--fg-4);margin-bottom:6px;">latency</div>
+            <div style="font-family:var(--font-mono);font-size:30px;font-weight:700;color:var(--fg-1);line-height:1;">27.7 ms</div>
+          </div>
+          <div style="padding:18px 20px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--bg);">
+            <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.1em;color:var(--fg-4);margin-bottom:6px;">피처 수</div>
+            <div style="font-family:var(--font-mono);font-size:30px;font-weight:700;color:var(--fg-1);line-height:1;">213</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">04 / 06</div>
+</section>
+
+<!-- ═══ 05 O₂ 데이터 누수 ═══ -->
+<section class="slide soft">
+  <div class="top-rule">
+    <span>05 · 핵심 챌린지</span>
+    <span>O₂ 데이터 누수 규명</span>
+  </div>
+
+  <h2 class="slide-h2" style="font-size:38px;margin-bottom:28px;">
+    상관 0.997 — "너무 좋다"는 의심에서 시작했다.
+  </h2>
+
+  <div class="leak-row">
+    <div class="leak-card" style="background:var(--paper-100);border-color:var(--rule-soft);">
+      <div class="lc-tag">발견 · 원인 규명</div>
+      <div class="lc-title">O₂는 왜 NOx와 거의 똑같이 움직이나</div>
+      <div class="lc-body">
+        O₂ 센서(AIT_H1_902)가 NOx와 상관 0.997. 모델 성능이 R²≈0.99까지 올랐지만 이상하다고 봤다.
+        <br><br>
+        CEMS는 O₂ 희석보정식 <code style="font-size:16px;">NOx = NOx_raw × (21−ref) / (21−O₂)</code> 을 적용한다.
+        O₂가 NOx 라벨에 수학적으로 들어가 있다는 뜻 — O₂를 입력에 넣으면 정답 일부를 보고 맞히는 셈이었다.
+      </div>
+    </div>
+
+    <div class="leak-card warn-card">
+      <div class="lc-tag warn">시뮬레이션 예측기 처리</div>
+      <div class="lc-title">O₂ 현재값 제외 → 과거 O₂만 활용</div>
+      <div class="lc-body">
+        현재 O₂를 제외하자 성능이 정직하게 내려왔다.
+        과거 O₂ lag와 물리 변환(O₂-safe)으로 0.85까지 회복.
+        <br><br>
+        운전자가 제어값을 바꾸는 시나리오에서는 O₂도 바뀌므로, 현재 O₂를 그대로 쓰면 미래 정보를 보는 것과 같다.
+      </div>
+      <div style="margin-top:14px;display:flex;gap:16px;align-items:center;">
+        <div style="font-family:var(--font-mono);font-size:26px;font-weight:700;text-decoration:line-through;color:#9CA3AF;">≈ 0.99</div>
+        <div style="font-family:var(--font-mono);font-size:18px;color:#B45309;">→ 누수 제거 후</div>
+        <div style="font-family:var(--font-mono);font-size:26px;font-weight:700;color:#92400E;">≈ 0.71</div>
+      </div>
+    </div>
+
+    <div class="leak-card safe-card">
+      <div class="lc-tag safe">5분 예보기 처리</div>
+      <div class="lc-title">O₂ 현재값은 미래 정보가 아님을 논증</div>
+      <div class="lc-body">
+        처음엔 O₂를 완전히 제외해 R²≈0.49에서 시작했다.
+        <br><br>
+        5분 후를 예측할 때 O₂(t)는 이미 관측된 현재값이다 — 미래 정보가 아니다.
+        이를 확인하고 정당하게 재포함, R²≈0.68까지 개선.
+      </div>
+      <div style="margin-top:14px;display:flex;gap:16px;align-items:center;">
+        <div style="font-family:var(--font-mono);font-size:26px;font-weight:700;color:#9CA3AF;">0.49</div>
+        <div style="font-family:var(--font-mono);font-size:18px;color:var(--nox-mid);">→ 정당 재포함 후</div>
+        <div style="font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--nox-dark);">≈ 0.68</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:18px;padding:16px 24px;background:var(--nox-lt);border-left:3px solid var(--nox);border-radius:0 var(--r-3) var(--r-3) 0;">
+    <p style="font-family:var(--font-sans);font-size:22px;color:var(--nox-dark);margin:0;line-height:1.6;">
+      R² 0.99라는 숫자를 좇지 않고, 누수를 규명한 뒤 정직한 0.71 / 0.68을 택했다.
+    </p>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">05 / 06</div>
+</section>
+
+<!-- ═══ 06 검증 설계 + 성과 ═══ -->
+<section class="slide">
+  <div class="top-rule">
+    <span>06 · 검증 설계 · 성과</span>
+    <span>정직한 평가와 배운 것</span>
+  </div>
+
+  <div class="two-col">
+    <!-- 왼쪽: 검증 설계 -->
+    <div>
+      <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:16px;">검증 설계</div>
+      <div class="val-timeline">
+        <div class="vt-row">
+          <div class="vt-label">HOLDOUT</div>
+          <div class="vt-body">마지막 하루(2025-08-25)를 통째로 test 셋으로 분리. 학습 기간은 그 전 <strong>14일치</strong>(8/11~8/24). holdout은 모델 선택에 쓰지 않았다.</div>
+        </div>
+        <div class="vt-row">
+          <div class="vt-label">CV 방식</div>
+          <div class="vt-body">시계열이라 무작위 split 금지. <strong>Expanding-window CV</strong>로 미래 정보가 과거로 새지 않게 했다.</div>
+        </div>
+        <div class="vt-row">
+          <div class="vt-label">GAP</div>
+          <div class="vt-body">학습/검증 사이 <strong>300초 간격</strong>을 두어 단기 자기상관에 의한 과대평가를 방지했다.</div>
+        </div>
+        <div class="vt-row" style="border-bottom:none;">
+          <div class="vt-label">타겟 생성</div>
+          <div class="vt-body">5분 후 타겟(shift −300)은 각 split 내부에서만 생성 — holdout 데이터가 학습 타겟에 섞이지 않도록.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 오른쪽: 성과 + 배운 점 -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:2px;">성과 · 배운 점</div>
+
+      <div style="padding:24px 26px;border:1px solid var(--nox);border-radius:var(--r-3);background:var(--nox-lt);">
+        <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--nox);margin-bottom:8px;">Persistence Baseline 비교</div>
+        <div style="font-family:var(--font-sans);font-size:20px;color:var(--nox-dark);line-height:1.6;">
+          1초 정상상태 데이터에서 "5분 뒤 = 지금 값"으로만 찍어도 R²≈0.46이 나온다.
+          그래서 절대 R²가 아니라 <strong>baseline 대비 개선폭(+0.21)</strong>으로 모델 가치를 판단했다.
+        </div>
+        <div style="margin-top:12px;font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--nox-dark);">0.46 → 0.68 &nbsp;(+0.21)</div>
+      </div>
+
+      <div style="padding:22px 26px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--bg);">
+        <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:8px;">R² 0.9는 왜 안 나오나</div>
+        <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);line-height:1.6;">
+          이 15일치 데이터는 NOx 변동이 거의 없는 정상운전 구간이라 절대 R²를 끌어올릴 여지가 작다.
+          부하 변동·시동/정지처럼 NOx가 크게 흔들리는 데이터가 있어야 0.9급이 가능하다.
+        </div>
+      </div>
+
+      <div style="padding:22px 26px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-100);">
+        <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:8px;">배운 것</div>
+        <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);line-height:1.6;">
+          R²를 올리는 것보다 <strong style="color:var(--fg-1);">무엇을 입력으로 허용할지, 어떤 baseline과 비교할지</strong>를 정하는 게 더 중요했다.
+          정직한 baseline 비교와 누수 규명이 이 프로젝트의 핵심이었다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
+  <div class="pageno">06 / 06</div>
+</section>
+
+</deck-stage>
+</body>
+</html>
