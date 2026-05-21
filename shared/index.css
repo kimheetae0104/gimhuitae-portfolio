@@ -281,7 +281,7 @@ body{
   max-width:640px;
 }
 .ps-medium .pcards-grid-1{
-  max-width:720px;
+  max-width:640px;
 }
 .ps-section-block .pcards-grid-2{
   max-width:900px;
@@ -389,6 +389,7 @@ body{
 .ps-featured .pcards-grid-1 .pthumb{aspect-ratio:4/3}
 .ps-section-block .pcards-grid-2 .pthumb{aspect-ratio:16/8.5}
 .ps-section-block .pcards-grid-1 .pthumb{aspect-ratio:16/7}
+.ps-medium .pcards-grid-1 .pthumb{aspect-ratio:16/8}
 .ps-section-block .pcards-grid-3 .pthumb{aspect-ratio:16/9}
 .proj-col:nth-child(1) .pcards-col{grid-template-columns:minmax(280px,420px)}
 .proj-col:nth-child(2) .pcards-col,
