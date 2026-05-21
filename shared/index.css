@@ -283,6 +283,12 @@ body{
 .ps-medium .pcards-grid-1{
   max-width:840px;
 }
+.ps-section-block .pcards-grid-2{
+  max-width:900px;
+}
+.ps-section-block .pcards-grid-3{
+  max-width:900px;
+}
 
 /* 섹션 라벨 */
 .ps-label{
@@ -375,6 +381,7 @@ body{
 .pcards-grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .pcards-grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
 .pcards-grid-1{grid-template-columns:1fr}
+.ps-section-block .pcards{margin-left:auto;margin-right:auto}
 .pcards-grid-3 .pthumb,
 .pcards-grid-2 .pthumb,
 .pcards-grid-1 .pthumb{aspect-ratio:4/3}
