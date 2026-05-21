@@ -381,9 +381,9 @@ body{
 .ps-featured .pcards-grid-3 .pthumb,
 .ps-featured .pcards-grid-2 .pthumb,
 .ps-featured .pcards-grid-1 .pthumb{aspect-ratio:4/3}
-.ps-section-block .pcards-grid-2 .pthumb{aspect-ratio:16/10}
-.ps-section-block .pcards-grid-1 .pthumb{aspect-ratio:16/8}
-.ps-section-block .pcards-grid-3 .pthumb{aspect-ratio:16/10}
+.ps-section-block .pcards-grid-2 .pthumb{aspect-ratio:16/8.5}
+.ps-section-block .pcards-grid-1 .pthumb{aspect-ratio:16/7}
+.ps-section-block .pcards-grid-3 .pthumb{aspect-ratio:16/9}
 .proj-col:nth-child(1) .pcards-col{grid-template-columns:minmax(280px,420px)}
 .proj-col:nth-child(2) .pcards-col,
 .proj-col:nth-child(3) .pcards-col{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -441,17 +441,17 @@ body{
 .pcard:hover .thumb-inner{transform:scale(1.04)}
 
 /* Card info */
-.pinfo{padding:14px 18px 18px;display:flex;flex-direction:column;gap:7px;flex:1}
+.pinfo{padding:13px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
 .pnum{font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#9CA3AF}
 .pmeta-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.ptitle{font-size:clamp(14px,1.2vw,16px);font-weight:600;color:#111827;line-height:1.3;letter-spacing:-.01em}
-.pdesc{font-size:13px;line-height:1.65;color:#6B7280}
+.ptitle{font-size:clamp(14px,1.15vw,15px);font-weight:600;color:#111827;line-height:1.28;letter-spacing:-.01em}
+.pdesc{font-size:12.5px;line-height:1.58;color:#6B7280}
 
 /* Tech row */
-.tech-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.tech-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:2px}
 .tech-icon{
-  font-family:var(--font-mono);font-size:9px;letter-spacing:.04em;font-weight:700;
-  padding:3px 8px;border-radius:4px;background:#F3F4F6;color:#6B7280;
+  font-family:var(--font-mono);font-size:8.5px;letter-spacing:.04em;font-weight:700;
+  padding:3px 7px;border-radius:4px;background:#F3F4F6;color:#6B7280;
 }
 .tech-icon.blue{background:#EFF6FF;color:#1E3A8A}
 .tech-icon.green{background:#F0FDF4;color:#15803D}
