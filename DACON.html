@@ -573,9 +573,10 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
     <div class="cover-sub">스마트 창고 출고 지연 예측 — OOF와 LB가 어긋나는 외삽 문제 대응</div>
 
     <p class="slide-body" style="font-size:27px;max-width:74ch;">
-      test의 40%가 train에 없는 layout인 외삽 문제. 일반적인 OOF와 LB가 일치하지 않는 현상을
-      진단하고, 최종 앙상블 결합 단계에서 greedy 선택 알고리즘으로 과적합을 억제했다.
-      4인 팀 창동아레나 — 본인은 베이스 모델 위 최종 결합 단계를 담당했다.
+      테스트의 40%가 학습 데이터에 없는 layout이라, 문제의 본질이 외삽에 가까웠다.
+      일반적인 OOF와 LB가 일치하지 않는 현상을 진단하고, 최종 앙상블 결합 단계에서
+      greedy 선택 알고리즘으로 과적합 위험을 줄였다.
+      4인 팀 창동아레나에서 저는 베이스 모델 이후 최종 결합 단계를 맡았다.
     </p>
 
     <div class="kpi-row">
@@ -738,7 +739,7 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
   </table>
 
   <div class="concl">
-    random K-Fold OOF는 LB를 예측하지 못한다 —
+    random K-Fold OOF는 LB 성능을 제대로 예측하지 못한다 —
     <strong>검증 점수보다 배포 기준에 가까운 검증 설계</strong>가 먼저다.
   </div>
   </div>
@@ -787,7 +788,7 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
   </div>
 
   <div class="quote">
-    OOF full MAE가 좋아져도 LB가 회귀하는 일이 반복됐다. mega-stack은 자유도가 폭주해
+    OOF full MAE가 좋아져도 LB 점수가 오히려 나빠지는 일이 반복됐다. 대형 스태킹 조합은 자유도가 과도하게 커져
     검증 점수만 좋아진다 — <strong>검증 점수만으로 모델을 고르면 LB 일반화에 실패할 수 있다.</strong>
   </div>
   </div>
@@ -812,8 +813,8 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
     <div>
       <div class="lead-k">왜 "결합"이 문제가 되는가</div>
       <p class="para">
-        단일 모델은 OOF MAE 8.4 부근에서 포화하고, 유사 모델끼리는 corr 0.99+라 단순 평균이 무의미하다.
-        bias 패턴이 다른 소스(corr 0.92~0.97)만 보완 효과가 있어 —
+        단일 모델은 OOF MAE 8.4 부근에서 포화하고, 유사 모델끼리는 상관계수 0.99 이상이라 단순 평균이 무의미하다.
+        bias 패턴이 다른 소스(상관계수 0.92~0.97)만 보완 효과가 있어 —
         <strong>20개 소스 풀에서 "어떤 조합을 고를 것인가"</strong>가 핵심 문제가 된다.
       </p>
       <div class="lead-k">greedy forward selection</div>
@@ -825,7 +826,7 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
         <div class="mine-tag">● 본인 담당 · Step 5~8</div>
         <div class="mine-body">
           팀원 베이스(시퀀스 6모델 · v381 블렌드 · 잔차/메타 · anchor 보정) 위에서
-          LGB 변형 풀 생성과 greedy combo search를 맡아 최종 제출
+          LGB 변형 풀 생성과 greedy 조합 탐색을 맡아 최종 제출
           <code style="font-size:0.92em;">v1320_FINAL_clipped.csv</code>를 산출했다.
         </div>
       </div>
@@ -888,8 +889,8 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
   </table>
 
   <div class="takeaway">
-    단일 모델의 한계를 <strong>다양성</strong>으로 절반, OOF≠LB 위험을 <strong>일반화 기준 결합</strong>으로
-    나머지 절반 — 모델 튜닝이 아니라 검증·결합 설계가 점수를 만들었다.
+    한 축은 <strong>다양성 확보</strong>였고, 다른 축은 <strong>일반화 기준 결합</strong>이었다.
+    모델 튜닝보다 검증과 결합 설계가 최종 점수에 더 큰 영향을 줬다.
   </div>
   </div>
 
@@ -906,7 +907,7 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
 
   <div class="vfill">
   <h2 class="slide-h2" style="font-size:42px;margin-bottom:32px;">
-    팀의 베이스 위에, 과적합을 억제한 결합 단계를 얹었다.
+    팀의 베이스 위에, 과적합 위험을 낮춘 결합 단계를 더했다.
   </h2>
 
   <div class="two-col">
@@ -936,7 +937,7 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
       <div class="learn-card">
         <div class="learn-k">OOF ≠ LB</div>
         <div class="learn-b">
-          OOF 게이트를 다 통과해도 LB가 회귀하는 현상을 관찰하고,
+          OOF 게이트를 다 통과해도 LB 점수가 오히려 나빠지는 현상을 관찰하고,
           greedy forward selection으로 <strong>자유도 폭주를 알고리즘 차원에서 차단</strong>했다.
         </div>
       </div>
@@ -950,8 +951,8 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
       <div class="learn-card">
         <div class="learn-k">기여 범위의 명확함</div>
         <div class="learn-b">
-          팀원 베이스는 입력으로 받고, 본인이 만든 결합 단계는
-          <strong>재현코드 단위로 방어 가능</strong>하게 정리했다.
+          팀원 베이스는 입력으로 받고, 제가 맡은 결합 단계는
+          <strong>최종 제출 성적을 재현할 수 있는 코드 기준으로</strong> 정리했다.
         </div>
       </div>
     </div>

@@ -490,7 +490,7 @@
       </div>
       <div class="kpi-item">
         <div class="kpi-val ink">27.7 ms</div>
-        <div class="kpi-lbl">예보 추론 latency</div>
+        <div class="kpi-lbl">예보 추론 시간</div>
       </div>
     </div>
   </div>
@@ -541,7 +541,7 @@
     </div>
     <div class="cg-cell right" style="border-top:1px solid var(--rule-soft);background:var(--nox-lt);padding:20px 32px;">
       <div class="cg-label" style="color:var(--nox);">입력</div>
-      <div class="cg-val" style="color:var(--ink-700);">과거 이력 (lag/rolling)<br><span style="font-size:18px;color:var(--nox-mid);">→ 1초 raw 데이터</span></div>
+      <div class="cg-val" style="color:var(--ink-700);">과거 이력 (lag/rolling)<br><span style="font-size:18px;color:var(--nox-mid);">→ 1초 원시 데이터</span></div>
     </div>
 
     <div class="cg-cell" style="border-top:1px solid var(--rule-soft);padding:20px 32px;">
@@ -550,7 +550,7 @@
     </div>
     <div class="cg-cell right" style="border-top:1px solid var(--rule-soft);background:var(--nox-lt);padding:20px 32px;">
       <div class="cg-label" style="color:var(--nox);">타겟</div>
-      <div class="cg-val" style="color:var(--ink-700);">5분 후 NOx<br><span style="font-size:18px;color:var(--nox-mid);">shift(-300) 점예측</span></div>
+      <div class="cg-val" style="color:var(--ink-700);">5분 후 NOx<br><span style="font-size:18px;color:var(--nox-mid);">5분 후 타겟 점예측</span></div>
     </div>
 
     <div class="cg-cell" style="border-top:1px solid var(--rule-soft);padding:20px 32px;">
@@ -634,11 +634,11 @@
       </h2>
       <p class="slide-body" style="font-size:22px;margin-bottom:20px;">
         1분 평균은 미세 변동이 사라져 점예측이 실패했다.
-        1초 raw 데이터를 그대로 유지하고, 5분 뒤 값(shift −300)을 타겟으로 삼았다.
+        1초 원시 데이터를 그대로 유지하고, 5분 뒤 값을 타겟으로 삼았다.
       </p>
       <p class="slide-body" style="font-size:22px;margin-bottom:20px;">
         NOx·운전변수의 lag·diff·rolling, 상호작용, 시간 피처까지 213개.
-        Ridge와 LightGBM 앙상블, 추론 latency 27.7 ms (예산 50 ms 이내).
+        Ridge와 LightGBM 앙상블, 추론 시간 27.7 ms (예산 50 ms 이내).
       </p>
 
       <div style="margin-top:8px;">
@@ -673,7 +673,7 @@
         </div>
         <div style="padding:14px 16px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--bg);text-align:center;">
           <div style="font-family:var(--font-mono);font-size:24px;font-weight:700;color:var(--fg-1);">27.7ms</div>
-          <div style="font-family:var(--font-mono);font-size:11px;color:var(--fg-4);margin-top:3px;">latency</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--fg-4);margin-top:3px;">추론 시간</div>
         </div>
         <div style="padding:14px 16px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--bg);text-align:center;">
           <div style="font-family:var(--font-mono);font-size:24px;font-weight:700;color:var(--fg-1);">213</div>
@@ -714,7 +714,7 @@
       <div class="lc-tag warn">시뮬레이션 예측기 처리</div>
       <div class="lc-title">O₂ 현재값 제외 → 과거 O₂만 활용</div>
       <div class="lc-body">
-        현재 O₂를 제외하자 성능이 정직하게 내려왔다.
+        현재 O₂를 제외하자 성능이 현실적인 수준으로 내려왔다.
         과거 O₂ lag와 물리 변환(O₂-safe)으로 0.85까지 회복.
         <br><br>
         운전자가 제어값을 바꾸는 시나리오에서는 O₂도 바뀌므로, 현재 O₂를 그대로 쓰면 미래 정보를 보는 것과 같다.
@@ -745,7 +745,7 @@
 
   <div style="margin-top:18px;padding:16px 24px;background:var(--nox-lt);border-left:3px solid var(--nox);border-radius:0 var(--r-3) var(--r-3) 0;">
     <p style="font-family:var(--font-sans);font-size:22px;color:var(--nox-dark);margin:0;line-height:1.6;">
-      R² 0.99라는 숫자를 좇지 않고, 누수를 제거한 뒤 0.71 / 0.68 기준으로 모델을 다시 평가했다.
+      높은 R² 자체보다, 누수를 제거한 뒤 0.71 / 0.68 기준에서 모델 성능을 다시 해석했다.
     </p>
   </div>
 
