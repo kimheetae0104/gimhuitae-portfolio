@@ -152,16 +152,22 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 56px;
-  align-items: center;
+  flex: 1;
+  align-items: stretch;
 }
 .two-col.tight { gap: 44px; }
+/* 채워진 컬럼 안에서 내용을 세로 중앙 정렬 */
+.two-col > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-/* 본문(top-rule 아래)을 세로 중앙 정렬 */
+/* 본문(top-rule 아래)이 슬라이드를 채우도록 */
 .vfill {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
 /* ── 정의 리스트 ── */
@@ -266,6 +272,7 @@ table.diag {
   width: 100%;
   border-collapse: collapse;
   font-family: var(--font-sans);
+  margin-top: auto;
 }
 table.diag th {
   font-family: var(--font-mono);
@@ -292,7 +299,7 @@ table.diag .c3 { color: var(--dac-dark); font-weight: 500; width: 30%; }
 
 /* ── 결론 스트립 ── */
 .concl {
-  margin-top: 26px;
+  margin-top: auto;
   background: var(--ink-900);
   color: #F4F4F6;
   border-radius: var(--r-3);
@@ -304,7 +311,7 @@ table.diag .c3 { color: var(--dac-dark); font-weight: 500; width: 30%; }
 .concl strong { color: #fff; font-weight: 700; }
 
 /* ── 안전망 카드 ── */
-.net-row { display: flex; gap: 16px; flex: 0 0 auto; }
+.net-row { display: flex; gap: 16px; flex: 1; }
 .net-card {
   flex: 1;
   padding: 26px 28px;
@@ -313,6 +320,7 @@ table.diag .c3 { color: var(--dac-dark); font-weight: 500; width: 30%; }
   background: var(--bg);
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 .net-card.accent { background: var(--dac-lt); border-color: var(--dac); }
 .net-tag {
@@ -432,6 +440,7 @@ table.ablation {
   width: 100%;
   border-collapse: collapse;
   font-family: var(--font-sans);
+  margin-top: auto;
 }
 table.ablation th {
   font-family: var(--font-mono);
@@ -465,7 +474,7 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
 
 /* ── takeaway ── */
 .takeaway {
-  margin-top: 24px;
+  margin-top: auto;
   background: var(--dac-lt);
   border-left: 4px solid var(--dac);
   border-radius: 0 var(--r-3) var(--r-3) 0;
