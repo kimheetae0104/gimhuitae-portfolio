@@ -9,6 +9,63 @@
 <script src="shared/deck-stage.js" defer></script>
 <style>
 
+/* ── 상단 헤더 오버레이 ── */
+.deck-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9999;
+  height: 52px;
+  background: rgba(247,247,248,0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule-soft);
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  justify-content: space-between;
+  pointer-events: auto;
+}
+.deck-header-mark {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--fg-1);
+  text-decoration: none;
+}
+.deck-header-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  text-decoration: none;
+  padding: 5px 14px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-pill);
+  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.deck-header-back:hover { color: var(--fg-1); border-color: var(--rule); }
+.deck-header-back svg { width: 14px; height: 14px; }
+
+/* ── 슬라이드 메타 공통 ── */
+.slide-label {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.slide-num {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.16em;
+  color: var(--fg-3);
+}
+
 /* ── DACON accent — violet (index 카드와 동일 계열) ── */
 :root {
   --dac:      #6D28D9;
@@ -492,55 +549,63 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
 <body>
 
 <header class="deck-header">
-  <a href="index.html" class="deck-header-mark">HK · PORTFOLIO</a>
-  <a href="index.html" class="deck-header-back">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 4L6 8l4 4"/></svg>
-    Back to Index
-  </a>
+  <a href="index.html" class="deck-header-mark">[ HK ]</a>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <a href="index.html" class="deck-header-back">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
+      포트폴리오
+    </a>
+  </div>
 </header>
 
-<deck-stage>
+<deck-stage width="1920" height="1080">
 
 <!-- ═══ 01 Cover ═══ -->
-<section class="slide s-cover" style="justify-content:flex-start;">
-  <div class="cover-eyebrow">Dacon · 스마트 창고 출고 지연 예측 · 팀 창동아레나 · 2026</div>
-  <div class="cover-title">정직한 검증</div>
-  <div class="cover-sub">스마트 창고 출고 지연 예측 — OOF를 통과해도 LB는 회귀한다</div>
-
-  <p class="slide-body" style="font-size:27px;max-width:74ch;">
-    test의 40%가 train에 없는 layout인 외삽 문제. 일반적인 OOF 점수가 LB를 배신하는 현상을
-    진단하고, 최종 앙상블 결합을 greedy 선택 알고리즘으로 방어했다.
-    4인 팀 창동아레나 — 본인은 베이스 모델 위 최종 결합 단계를 담당했다.
-  </p>
-
-  <div class="kpi-row">
-    <div class="kpi-item">
-      <div class="kpi-val">9.75493</div>
-      <div class="kpi-lbl">Public LB · MAE</div>
-    </div>
-    <div class="kpi-item">
-      <div class="kpi-val">9.96629</div>
-      <div class="kpi-lbl">Private LB · MAE</div>
-    </div>
-    <div class="kpi-item">
-      <div class="kpi-val ink">11위</div>
-      <div class="kpi-lbl">최종 순위 · 상위 4%</div>
-    </div>
-    <div class="kpi-item">
-      <div class="kpi-val ink">70+</div>
-      <div class="kpi-lbl">시도 · LB 17회 갱신</div>
-    </div>
+<section class="slide s-title" data-label="Cover">
+  <div class="top-rule">
+    <span class="slide-label">Dacon — 스마트 창고 출고 지연 예측</span>
+    <span class="slide-num">01 / 08</span>
   </div>
 
+  <div class="hero" style="flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:0;">
+    <div class="cover-eyebrow">Dacon · 스마트 창고 출고 지연 예측 · 팀 창동아레나 · 2026</div>
+    <div class="cover-title">검증 설계</div>
+    <div class="cover-sub">스마트 창고 출고 지연 예측 — OOF와 LB가 어긋나는 외삽 문제 대응</div>
+
+    <p class="slide-body" style="font-size:27px;max-width:74ch;">
+      test의 40%가 train에 없는 layout인 외삽 문제. 일반적인 OOF와 LB가 일치하지 않는 현상을
+      진단하고, 최종 앙상블 결합 단계에서 greedy 선택 알고리즘으로 과적합을 억제했다.
+      4인 팀 창동아레나 — 본인은 베이스 모델 위 최종 결합 단계를 담당했다.
+    </p>
+
+    <div class="kpi-row">
+      <div class="kpi-item">
+        <div class="kpi-val">9.75493</div>
+        <div class="kpi-lbl">Public LB · MAE</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-val">9.96629</div>
+        <div class="kpi-lbl">Private LB · MAE</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-val ink">11위</div>
+        <div class="kpi-lbl">최종 순위 · 상위 4%</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-val ink">70+</div>
+        <div class="kpi-lbl">시도 · LB 17회 갱신</div>
+      </div>
+    </div>
+  </div>
   <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">01 / 08</div>
+  <div class="pageno">01</div>
 </section>
 
 <!-- ═══ 02 문제 정의 ═══ -->
-<section class="slide soft">
+<section class="slide soft" data-label="Problem">
   <div class="top-rule">
-    <span>02 · 문제 정의</span>
-    <span>외삽이 본질인 문제</span>
+    <span class="slide-label">문제 정의</span>
+    <span class="slide-num">02 / 08</span>
   </div>
 
   <div class="vfill">
@@ -586,14 +651,14 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
   </div>
 
   <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">02 / 08</div>
+  <div class="pageno">02</div>
 </section>
 
 <!-- ═══ 03 데이터 분석 ═══ -->
-<section class="slide">
+<section class="slide" data-label="EDA">
   <div class="top-rule">
-    <span>03 · 데이터 분석</span>
-    <span>무엇이 출고 지연을 만드나</span>
+    <span class="slide-label">데이터 분석</span>
+    <span class="slide-num">03 / 08</span>
   </div>
 
   <div class="vfill">
@@ -629,14 +694,14 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
   </div>
 
   <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">03 / 08</div>
+  <div class="pageno">03</div>
 </section>
 
 <!-- ═══ 04 척추 ① 진단 ═══ -->
-<section class="slide soft">
+<section class="slide soft" data-label="Diagnosis">
   <div class="top-rule">
-    <span>04 · 척추 ① 진단</span>
-    <span>왜 점수를 믿으면 안 되나</span>
+    <span class="slide-label">진단</span>
+    <span class="slide-num">04 / 08</span>
   </div>
 
   <div class="vfill">
@@ -674,24 +739,24 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
 
   <div class="concl">
     random K-Fold OOF는 LB를 예측하지 못한다 —
-    <strong>점수 대신 검증 설계를 신뢰</strong>해야 한다.
+    <strong>검증 점수보다 배포 기준에 가까운 검증 설계</strong>가 먼저다.
   </div>
   </div>
 
   <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">04 / 08</div>
+  <div class="pageno">04</div>
 </section>
 
 <!-- ═══ 05 척추 ② 검증축 ═══ -->
-<section class="slide">
+<section class="slide" data-label="Validation">
   <div class="top-rule">
-    <span>05 · 척추 ② 검증축</span>
-    <span>무엇을 대신 믿는가</span>
+    <span class="slide-label">검증 설계</span>
+    <span class="slide-num">05 / 08</span>
   </div>
 
   <div class="vfill">
   <h2 class="slide-h2" style="font-size:42px;margin-bottom:32px;">
-    정직한 검증을 위한 3중 안전망
+    LB 과적합을 줄이기 위한 3중 검증 장치
   </h2>
 
   <div class="net-row">
@@ -723,19 +788,19 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
 
   <div class="quote">
     OOF full MAE가 좋아져도 LB가 회귀하는 일이 반복됐다. mega-stack은 자유도가 폭주해
-    검증 점수만 좋아진다 — <strong>점수를 좇으면 진다.</strong>
+    검증 점수만 좋아진다 — <strong>검증 점수만으로 모델을 고르면 LB 일반화에 실패할 수 있다.</strong>
   </div>
   </div>
 
   <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">05 / 08</div>
+  <div class="pageno">05</div>
 </section>
 
 <!-- ═══ 06 척추 ③ 최종 결합 v1320 (본인 기여) ═══ -->
-<section class="slide soft">
+<section class="slide soft" data-label="Ensemble">
   <div class="top-rule">
-    <span>06 · 척추 ③ 최종 결합</span>
-    <span>본인 기여 — v1320</span>
+    <span class="slide-label">최종 결합</span>
+    <span class="slide-num">06 / 08</span>
   </div>
 
   <div class="vfill">
@@ -793,19 +858,19 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
   </div>
 
   <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">06 / 08</div>
+  <div class="pageno">06</div>
 </section>
 
 <!-- ═══ 07 결과 & Ablation ═══ -->
-<section class="slide">
+<section class="slide" data-label="Result">
   <div class="top-rule">
-    <span>07 · 결과</span>
-    <span>단계별 LB 기여</span>
+    <span class="slide-label">결과</span>
+    <span class="slide-num">07 / 08</span>
   </div>
 
   <div class="vfill">
   <h2 class="slide-h2" style="font-size:42px;margin-bottom:30px;">
-    다양성 확보가 절반, 정직한 결합이 나머지.
+    다양성 확보가 절반, 일반화 기준 결합이 나머지.
   </h2>
 
   <table class="ablation">
@@ -823,25 +888,25 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
   </table>
 
   <div class="takeaway">
-    단일 모델의 한계를 <strong>다양성</strong>으로 절반, OOF≠LB 위험을 <strong>정직한 결합</strong>으로
+    단일 모델의 한계를 <strong>다양성</strong>으로 절반, OOF≠LB 위험을 <strong>일반화 기준 결합</strong>으로
     나머지 절반 — 모델 튜닝이 아니라 검증·결합 설계가 점수를 만들었다.
   </div>
   </div>
 
   <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">07 / 08</div>
+  <div class="pageno">07</div>
 </section>
 
 <!-- ═══ 08 본인 기여 & 회고 ═══ -->
-<section class="slide soft">
+<section class="slide soft" data-label="Summary">
   <div class="top-rule">
-    <span>08 · 정리</span>
-    <span>역할과 배운 것</span>
+    <span class="slide-label">정리</span>
+    <span class="slide-num">08 / 08</span>
   </div>
 
   <div class="vfill">
   <h2 class="slide-h2" style="font-size:42px;margin-bottom:32px;">
-    팀의 베이스 위에, 정직한 결합을 얹었다.
+    팀의 베이스 위에, 과적합을 억제한 결합 단계를 얹었다.
   </h2>
 
   <div class="two-col">
@@ -894,7 +959,7 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
   </div>
 
   <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">08 / 08</div>
+  <div class="pageno">08</div>
 </section>
 
 </deck-stage>
