@@ -565,6 +565,11 @@ table.model-table tr.best td:first-child { color: var(--skin); }
       <p class="cover-eyebrow">Cold Rolling · Classification · SeSAC 2026</p>
       <h1 class="cover-title">냉연 Skinpass<br>비계획 공정 예측</h1>
       <p class="cover-sub">코일 투입 전 비계획 공정 발생 가능성 사전 예측 / SCM·품질 관리</p>
+      <p class="slide-body" style="font-size:26px;max-width:54ch;margin:24px 0 0;">
+        핵심은 "정확히 다 맞히는 것"이 아니라,
+        놓치면 큰 손실이 나는 코일을 투입 전에 먼저 잡아내는 일이었다.
+        그래서 이 프로젝트는 정확도보다 <strong>Recall 중심의 판단</strong>으로 설계했다.
+      </p>
 
       <div class="kpi-row">
         <div class="kpi-item">
@@ -599,7 +604,7 @@ table.model-table tr.best td:first-child { color: var(--skin); }
 
     <div class="problem-layout">
       <div class="problem-text">
-        <h2>비계획 공정이<br>왜 문제인가</h2>
+        <h2>모든 경보가 같은 비용이 아니었다</h2>
         <p>Skinpass는 냉연 코일의 최종 표면 처리 공정입니다. <strong style="color:var(--fg-1)">비계획 공정</strong>이란 예정되지 않은 추가 작업(재작업·수정 압연 등)으로, 라인 체류 시간 증가와 비용 상승을 유발합니다.</p>
         <div class="callout-box">
           <p><strong>핵심 비대칭</strong>: 비계획 공정을 <strong>놓치는 비용(False Negative)</strong> &gt; 잘못 경보하는 비용(False Positive)<br>→ <strong>Recall 최우선</strong> 지표 선택</p>
@@ -700,7 +705,9 @@ table.model-table tr.best td:first-child { color: var(--skin); }
 
     <div style="margin-top:24px;padding:20px 28px;background:var(--skin-100);border-radius:var(--r-3);border-left:3px solid var(--skin);">
       <p style="font-family:var(--font-mono);font-size:22px;color:var(--fg-2);margin:0;line-height:1.6;">
-        <strong style="color:var(--skin);">핵심 발견</strong>: 강종·두께·압하율 조합이 비계획 발생 확률에 영향. 단순 임계값으로는 분류 불가 → 앙상블 필요. 클래스 불균형(40.8%)이 단순 정확도 지표를 무의미하게 만듦
+        <strong style="color:var(--skin);">핵심 발견</strong>: 강종·두께·압하율 조합이 비계획 발생 확률에 영향을 줬지만,
+        단순 임계값 하나로는 구분되지 않았다.
+        게다가 클래스 불균형(40.8%) 때문에 정확도는 거의 의미가 없었다.
       </p>
     </div>
 
@@ -834,12 +841,12 @@ table.model-table tr.best td:first-child { color: var(--skin); }
         <div class="learning-card key">
           <div class="learning-card-label">핵심 판단: Recall 우선</div>
           <div class="learning-card-title">왜 정확도(Accuracy)를 버렸나</div>
-          <div class="learning-card-body">클래스 불균형 40.8%에서 "모두 정상"으로 예측하면 Accuracy ≈ 60%가 나옵니다. 그러나 비계획 공정을 놓치면 손실이 훨씬 크기 때문에, 오탐을 감수하더라도 Recall을 최우선 기준으로 모델을 선택했습니다.</div>
+          <div class="learning-card-body">클래스 불균형 40.8%에서는 "모두 정상"으로 예측해도 Accuracy ≈ 60%가 나온다. 하지만 이 프로젝트에서 중요한 건 점수가 아니라, 비계획 공정을 놓치지 않는 것이다. 그래서 오탐을 감수하더라도 Recall을 최우선 기준으로 삼았다.</div>
         </div>
         <div class="learning-card key">
           <div class="learning-card-label">SMOTE 적용 근거</div>
           <div class="learning-card-title">불균형 데이터의 처리 전략</div>
-          <div class="learning-card-body">단순 가중치(class_weight)보다 SMOTE 오버샘플링이 소수 클래스 특성을 더 잘 학습시켰습니다. Validation set에 SMOTE를 적용하지 않아 실제 분포에서의 성능을 정확히 평가했습니다.</div>
+          <div class="learning-card-body">class_weight만으로는 놓치는 케이스가 많았다. SMOTE 오버샘플링이 소수 클래스 특성을 더 잘 살렸고, Validation set에는 적용하지 않아 실제 분포에서 성능을 과장하지 않게 했다.</div>
         </div>
       </div>
 
