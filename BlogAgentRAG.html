@@ -68,20 +68,23 @@
         <span>Personal Project · 2026.05</span>
       </div>
       <div class="hero" style="flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:32px;">
-        <div class="meta-cap" style="margin-bottom:24px;">LLM + 환각 방지 파이프라인</div>
+        <div class="meta-cap" style="margin-bottom:24px;">상한가 분석 글 자동화</div>
         <h1 style="font-family:var(--font-mono);font-weight:700;font-size:72px;line-height:1.0;letter-spacing:-0.03em;color:var(--fg-1);margin:0 0 28px;white-space:nowrap;">Blog Agent</h1>
         <p style="font-family:var(--font-sans);font-size:29px;line-height:1.7;color:var(--fg-2);max-width:54ch;margin:0;">
-          상한가 종목 분석 블로그 글을 도메인 데이터 파이프라인으로 자동 생성.<br>7단 RAG + 5중 검증 + Gemini 자동 검증으로 수치 환각 0건 달성 (v13)
+          매일 반복되던 상한가 종목 분석 글 작성을 자동화한 개인 프로젝트다.<br>
+          공시·뉴스·시세 데이터를 모아 초안을 만들고,
+          잘못된 수치나 종목 혼동 없이 바로 배포 가능한 글로 다듬는 흐름을 설계했다.
+          핵심은 글을 "생성"하는 것보다 <strong>근거 데이터를 모으고 검증하는 구조</strong>를 만드는 일이었다.
         </p>
       </div>
       <div style="display:flex;gap:0;border-top:1px solid var(--rule);padding-top:32px;">
         <div style="flex:1;padding-right:24px;">
-          <div style="font-family:var(--font-mono);font-size:19px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:12px;">파이프라인</div>
+          <div style="font-family:var(--font-mono);font-size:19px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:12px;">작성 흐름</div>
           <div style="font-family:var(--font-mono);font-size:60px;font-weight:700;letter-spacing:-0.03em;line-height:1;color:var(--accent-600);">7단</div>
           <div style="font-family:var(--font-sans);font-size:21px;color:var(--fg-3);margin-top:9px;">RAG 포함 · DART → 크롤링 → RAG → Ollama</div>
         </div>
         <div style="flex:1;padding:0 24px;border-left:1px solid var(--rule-soft);">
-          <div style="font-family:var(--font-mono);font-size:19px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:12px;">검증 레이어</div>
+          <div style="font-family:var(--font-mono);font-size:19px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:12px;">검증 단계</div>
           <div style="font-family:var(--font-mono);font-size:60px;font-weight:700;letter-spacing:-0.03em;line-height:1;color:var(--accent-600);">5중</div>
           <div style="font-family:var(--font-sans);font-size:21px;color:var(--fg-3);margin-top:9px;">형식 · 팩트 · 모순 · 자동교정 · Gemini</div>
         </div>
@@ -91,7 +94,7 @@
           <div style="font-family:var(--font-sans);font-size:21px;color:var(--fg-3);margin-top:9px;">v1에서 v13까지 지속 이터레이션</div>
         </div>
         <div style="flex:1;padding-left:24px;border-left:1px solid var(--rule-soft);">
-          <div style="font-family:var(--font-mono);font-size:19px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:12px;">데이터 소스</div>
+          <div style="font-family:var(--font-mono);font-size:19px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:12px;">입력 데이터</div>
           <div style="font-family:var(--font-mono);font-size:42px;font-weight:700;letter-spacing:-0.03em;line-height:1;color:var(--accent-600);">DART+크롤</div>
           <div style="font-family:var(--font-sans);font-size:21px;color:var(--fg-3);margin-top:9px;">공시 + Naver 뉴스 · Naver Finance</div>
         </div>

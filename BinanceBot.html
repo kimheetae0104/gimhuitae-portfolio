@@ -145,30 +145,33 @@
         <span>Personal Project · 2023</span>
       </div>
       <div class="hero" style="flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:32px;">
-        <div class="meta-cap" style="margin-bottom:24px;">ML Trading Bot</div>
+        <div class="meta-cap" style="margin-bottom:24px;">급등 탐지 자동화</div>
         <h1 style="font-family:var(--font-mono);font-weight:700;font-size:96px;line-height:1.0;letter-spacing:-0.03em;color:var(--fg-1);margin:0 0 28px;">Binance<br>ML Bot</h1>
         <p style="font-family:var(--font-sans);font-size:30px;line-height:1.7;color:var(--fg-2);max-width:52ch;margin:0;">
-          500+ USDT 페어 실시간 스캔 → 기술 분석 필터 → XGBoost + LightGBM 앙상블로<br>급등 예측 신호를 자동 탐지하는 트레이딩 봇
+          수백 개 코인을 사람이 직접 훑지 않고도
+          급등 직전 신호를 먼저 걸러내기 위해 만든 트레이딩 봇이다.<br>
+          실시간 스캔으로 후보를 좁히고,
+          기술 지표와 ML 분류기로 "지금 볼 가치가 있는 코인"만 추려주는 흐름을 설계했다.
         </p>
       </div>
       <div style="display:flex;gap:0;border-top:1px solid var(--rule);padding-top:32px;">
         <div style="flex:1;padding-right:24px;">
-          <div class="metric-label">스캔 페어</div>
+          <div class="metric-label">탐색 범위</div>
           <div class="metric-value">500+</div>
           <div class="metric-sub">USDT 마켓</div>
         </div>
         <div style="flex:1;padding:0 24px;border-left:1px solid var(--rule-soft);">
-          <div class="metric-label">급등 예측 확률</div>
+          <div class="metric-label">알림 기준</div>
           <div class="metric-value">0.83</div>
           <div class="metric-sub">P(SURGE) 임계값</div>
         </div>
         <div style="flex:1;padding:0 24px;border-left:1px solid var(--rule-soft);">
-          <div class="metric-label">모델 구성</div>
+          <div class="metric-label">판단 모델</div>
           <div class="metric-value" style="font-size:42px;">XGB+LGB</div>
           <div class="metric-sub">소프트 보팅 앙상블</div>
         </div>
         <div style="flex:1;padding-left:24px;border-left:1px solid var(--rule-soft);">
-          <div class="metric-label">불균형 처리</div>
+          <div class="metric-label">학습 보정</div>
           <div class="metric-value" style="font-size:42px;">SMOTE</div>
           <div class="metric-sub">소수 클래스 오버샘플링</div>
         </div>

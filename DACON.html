@@ -583,14 +583,15 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
   <div class="hero" style="flex:1;display:flex;flex-direction:column;justify-content:space-between;padding-top:48px;padding-bottom:0;gap:32px;">
     <div class="cover-eyebrow">Logistics · Regression · Dacon 2026</div>
     <div class="cover-title">스마트 창고 출고 지연 예측</div>
-    <div class="cover-sub">검증 설계 — OOF와 LB가 어긋나는 외삽 문제 대응</div>
+    <div class="cover-sub">학습에 없는 창고 layout까지 버티는 출고 지연 예측</div>
 
     <p class="slide-body" style="font-size:27px;max-width:68ch;">
-      DACON 주최 출고 지연 예측 경진대회 — 스마트 창고 운영 데이터 25만 행으로
-      향후 30분 평균 출고 지연 시간(분)을 예측하고 <strong>MAE</strong>로 순위를 다툰다.
-      테스트의 40%가 학습 데이터에 없는 layout이라 문제의 본질이 <strong>외삽</strong>에 가까웠고,
-      OOF와 LB가 어긋나는 원인을 진단해 검증 설계부터 다시 짰다.
-      4인 팀 창동아레나에서 베이스 모델 이후 <strong>최종 결합 단계</strong>를 맡았다.
+      스마트 창고 운영 데이터 25만 행으로
+      향후 30분 평균 출고 지연 시간(분)을 예측하는 DACON 경진대회 프로젝트다.
+      핵심 난점은 테스트의 40%가 학습 데이터에 없는 창고 layout이라
+      익숙한 패턴 암기보다 <strong>낯선 창고에도 버티는 예측</strong>이 중요했다는 점이다.
+      4인 팀 창동아레나에서 베이스 모델 이후
+      <strong>검증 기준 정리와 최종 결합 단계</strong>를 맡았다.
     </p>
 
     <div class="kpi-row">
