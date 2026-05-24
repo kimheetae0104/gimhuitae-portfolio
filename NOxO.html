@@ -159,8 +159,8 @@
   align-items: start;
 }
 .sim-layout {
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 64px;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
   align-items: center;
 }
 .sim-copy {
@@ -184,8 +184,8 @@
   justify-content: center;
 }
 .forecast-layout {
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 64px;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
   align-items: center;
 }
 .forecast-copy {
@@ -373,10 +373,11 @@
   align-items: stretch;
 }
 .leak-stack {
-  display: grid;
-  grid-template-rows: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 18px;
 }
+.leak-stack > .leak-card { flex: 1; min-height: 0; }
 .leak-card {
   padding: 28px 30px;
   border: 1px solid var(--rule-soft);
@@ -505,10 +506,12 @@
   background: var(--paper-100);
 }
 .validation-outcomes {
-  display: grid;
-  grid-template-rows: auto 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 16px;
 }
+.validation-outcomes > .outcome-panel.accent { flex: 0 0 auto; }
+.validation-outcomes > .outcome-subgrid { flex: 1; min-height: 0; }
 .outcome-subgrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -704,7 +707,7 @@
 
   <div class="two-col sim-layout">
     <div class="sim-copy">
-      <h2 class="slide-h2" style="font-size:40px;margin-bottom:24px;">
+      <h2 class="slide-h2" style="font-size:36px;margin-bottom:24px;line-height:1.3;">
         제어변수를 바꾸면<br>NOx·출력·배기온이 어떻게 달라지나
       </h2>
       <p class="slide-body" style="font-size:22px;margin-bottom:20px;">
@@ -758,7 +761,7 @@
 
   <div class="two-col forecast-layout">
     <div class="forecast-copy">
-      <h2 class="slide-h2" style="font-size:40px;margin-bottom:24px;">
+      <h2 class="slide-h2" style="font-size:36px;margin-bottom:24px;line-height:1.3;">
         매 1초 데이터로 5분 뒤를 보고<br>50 ppm 초과를 미리 경보
       </h2>
       <p class="slide-body" style="font-size:22px;margin-bottom:20px;">
@@ -887,7 +890,7 @@
     </div>
   </div>
 
-  <div style="margin-top:18px;padding:16px 24px;background:var(--nox-lt);border-left:3px solid var(--nox);border-radius:0 var(--r-3) var(--r-3) 0;">
+  <div style="margin-top:18px;margin-bottom:48px;padding:16px 24px;background:var(--nox-lt);border-left:3px solid var(--nox);border-radius:0 var(--r-3) var(--r-3) 0;">
     <p style="font-family:var(--font-sans);font-size:22px;color:var(--nox-dark);margin:0;line-height:1.6;">
       높은 R² 자체보다, 누수를 제거한 뒤 0.71 / 0.68 기준에서 모델 성능을 다시 해석했다.
     </p>
