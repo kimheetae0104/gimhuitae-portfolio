@@ -6,6 +6,122 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <link rel="stylesheet" href="shared/tokens.css"/>
 <link rel="stylesheet" href="shared/index.css"/>
+<style>
+  /* Hero — bar와 role 사이 여백 축소 */
+  .hero-body{
+    padding-top: 32px !important;
+  }
+
+  /* Projects 섹션 — section-head와 첫 카테고리 사이 여백 축소
+     원인: .projects-inner의 flex gap:64px이 모든 자식 사이에 들어감 */
+  #projects .section-head{
+    padding-bottom: 8px !important;
+    margin-bottom: 0 !important;
+  }
+  #projects .projects-inner > .section-head + .ps-section-block{
+    margin-top: -40px;
+  }
+
+  /* 카테고리 라벨 키움 — 11px → 22px, 부제도 16px로 */
+  #projects .ps-section-block > .ps-label{
+    font-size: 22px !important;
+    letter-spacing: -0.01em !important;
+    text-transform: none !important;
+    color: #1f2937 !important;
+    font-weight: 700 !important;
+    margin-bottom: 4px !important;
+    font-family: var(--font-sans) !important;
+  }
+
+  /* Hero H1 — 두 줄을 동일 크기 / 톤 차이만 */
+  .hero-h1 .hero-pre,
+  .hero-h1 .hero-key{
+    font-size: 44px;
+    line-height: 1.25;
+    letter-spacing: -0.025em;
+    display: block;
+  }
+  .hero-h1 .hero-pre{
+    color: #475569;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .hero-h1 .hero-key{
+    color: var(--accent-600);
+    font-weight: 800;
+  }
+  @media (max-width: 768px){
+    .hero-h1 .hero-pre,
+    .hero-h1 .hero-key{ font-size: 30px; }
+  }
+
+  /* Golden Circle (WHY/HOW/WHAT) 카드 — impact-strip 슬롯 재용도 */
+  .impact-strip .impact-inner{
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    justify-content: center;
+    gap: 32px;
+    max-width: 1080px;
+  }
+  .impact-strip .impact-item{
+    padding: 36px 32px;
+    text-align: center;
+  }
+  .impact-strip .impact-pre{
+    font-size: 12px;
+    color: #94a3b8;
+    letter-spacing: .22em;
+    font-weight: 600;
+  }
+  .impact-strip .impact-num{
+    font-family: var(--font-mono);
+    font-weight: 700;
+    letter-spacing: .04em;
+    margin-top: 8px;
+    margin-bottom: 18px;
+  }
+  .impact-strip .impact-label{
+    font-family: var(--font-sans);
+    font-size: 16px;
+    letter-spacing: 0;
+    text-transform: none;
+    color: #1f2937;
+    font-weight: 600;
+    line-height: 1.55;
+    margin-top: 0;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .impact-strip .impact-sub{
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin-top: 10px;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media (max-width: 768px){
+    .impact-strip .impact-inner{
+      grid-template-columns: 1fr !important;
+    }
+  }
+
+  /* Manufacturing 카테고리 — 1x4 한 줄 배치 */
+  .pcards-grid-4{
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .pcards-grid-4 .pthumb{ aspect-ratio: 4/3; }
+  @media (max-width: 1024px){
+    .pcards-grid-4{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 640px){
+    .pcards-grid-4{ grid-template-columns: 1fr; }
+  }
+</style>
 <script>
 if (location.protocol === 'file:') {
   document.documentElement.classList.add('is-file-protocol');
@@ -34,7 +150,6 @@ if (location.protocol === 'file:') {
         <polygon points="60,30 60,33 88,4 85,4"/>
         <polygon points="60,33 60,36 88,66 84,66"/>
       </svg>
-      <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.08em">PORTFOLIO · 2026</span>
     </a>
     <nav class="site-nav-links">
       <a href="#projects">PROJECTS</a>
@@ -49,7 +164,7 @@ if (location.protocol === 'file:') {
   <div class="hero-inner">
     <div class="hero-wrap">
       <div class="hero-bar">
-        <div class="hero-bar-mark">김희태 · AI ENGINEER</div>
+        <div class="hero-bar-mark">김희태 · PORTFOLIO 2026</div>
       </div>
       <div class="hero-body">
         <div class="hero-bg-dot"></div>
@@ -59,13 +174,12 @@ if (location.protocol === 'file:') {
             <span class="avail-badge">구직 중</span>
           </div>
           <h1 class="hero-h1">
-            <span class="hero-pre">문제를 먼저 정의하고</span>
-            <span class="hero-key">데이터 설계<span class="hero-dot"> · </span>모델 검증<span class="hero-dot"> · </span>시스템 구현</span>
-            <span class="hero-suf">으로 AI를 만듭니다.</span>
+            <span class="hero-pre">사람과 문제를 이해하고,</span>
+            <span class="hero-key">기술이 현실에서 작동하게 만듭니다.</span>
           </h1>
           <p class="hero-desc">
-            <strong>제조 AI</strong>, <strong>예측 모델링</strong>, <strong>ML 파이프라인</strong>, <strong>LLM 자동화</strong> —
-            무엇을 예측하고 무엇을 자동화할지 먼저 정의한 뒤, 그 판단을 데이터와 시스템으로 구현합니다.
+            <strong>사람과 행정 사이에서 문제를 조율</strong>해온 경험은, 기술을 바라보는 방식에도 영향을 주었습니다.
+            지금은 데이터와 AI를 활용해 <strong>현실의 문제를 해결하는 서비스</strong>를 만들고 있습니다.
           </p>
           <div class="hero-cta-row">
             <a href="#projects" class="btn-primary">
@@ -84,22 +198,22 @@ if (location.protocol === 'file:') {
 <div class="impact-strip">
   <div class="impact-inner">
     <div class="impact-item">
-      <div class="impact-pre">상위</div>
-      <div class="impact-num"><span class="counter" data-target="4" data-suffix="%">4%</span></div>
-      <div class="impact-label">공모전 성적</div>
-      <div class="impact-sub">데이콘 Private 11위</div>
+      <div class="impact-pre">01</div>
+      <div class="impact-num">WHY</div>
+      <div class="impact-label">기술보다 먼저, 해결해야 할 문제를 정의합니다.</div>
+      <div class="impact-sub">사람과 현장을 이해하지 못한 기술은 오래 작동하기 어렵다고 믿습니다.</div>
     </div>
     <div class="impact-item">
-      <div class="impact-pre">&nbsp;</div>
-      <div class="impact-num"><span class="counter" data-target="8" data-suffix="개">8개</span></div>
-      <div class="impact-label">프로젝트 구현</div>
-      <div class="impact-sub">&nbsp;</div>
+      <div class="impact-pre">02</div>
+      <div class="impact-num">HOW</div>
+      <div class="impact-label">사람과 현장의 맥락을 이해하고, 작은 시도와 검증을 반복합니다.</div>
+      <div class="impact-sub">문제를 구조화하고, 실제로 작동하는 방식에 집중합니다.</div>
     </div>
     <div class="impact-item">
-      <div class="impact-pre">&nbsp;</div>
-      <div class="impact-num"><span class="counter" data-target="1" data-suffix="개">1개</span></div>
-      <div class="impact-label">서비스 운영</div>
-      <div class="impact-sub">&nbsp;</div>
+      <div class="impact-pre">03</div>
+      <div class="impact-num">WHAT</div>
+      <div class="impact-label">데이터와 AI를 활용해 현실의 문제를 해결하는 서비스를 만듭니다.</div>
+      <div class="impact-sub">단순한 구현보다, 실제로 쓰이고 작동하는 결과를 지향합니다.</div>
     </div>
   </div>
 </div>
@@ -110,13 +224,14 @@ if (location.protocol === 'file:') {
 
     <div class="section-head">
       <div class="label">SELECTED WORK</div>
-      <div class="count">08 PROJECTS</div>
+      <div class="count">09 PROJECTS</div>
     </div>
 
-    <!-- ── 1. 대표 프로젝트 — NOxO + JANN + Dacon ── -->
-    <div class="ps-featured js-section-fade">
-      <div class="ps-label">대표 프로젝트</div>
-      <div class="pcards pcards-grid-3">
+    <!-- ── 1. Manufacturing & Industry AI ── -->
+    <div class="ps-section-block js-section-fade" style="border-top:none;padding-top:0">
+      <div class="ps-label" style="margin-bottom:6px">Manufacturing &amp; Industry AI</div>
+      <div style="font-family:var(--font-sans);font-size:16px;color:#64748b;font-weight:400;letter-spacing:0;text-transform:none;margin-bottom:24px;">제조 공정과 산업 현장의 예측 시스템</div>
+      <div class="pcards pcards-grid-4">
         <a class="pcard d-noxo" href="NOxO.html">
           <div class="pthumb t-noxo" style="padding:0;overflow:hidden;">
             <img src="noxo/sim.png" alt="NOxO 대시보드 — 시뮬레이션 모드" loading="lazy"
@@ -135,51 +250,6 @@ if (location.protocol === 'file:') {
             </div>
           </div>
         </a>
-        <a class="pcard d-jann" href="JANN.html">
-          <div class="pthumb t-jann">
-            <img src="jann/img/tsne-clustering.png" alt="JANN t-SNE 클러스터링" loading="lazy">
-          </div>
-          <div class="pinfo">
-            <div class="pmeta-row"><div class="pnum">№ 05 · 향미 데이터 · 2026</div></div>
-            <div class="ptitle">JANN — 향미 데이터 레시피 추천</div>
-            <div class="pdesc">향미 화합물 데이터를 바탕으로 재료 조합을 추천하는 iOS 앱. Python 모델을 CoreML로 변환해 온디바이스 추론으로 연결했다.</div>
-            <div class="tech-row">
-              <span class="tech-icon orange">SwiftUI</span>
-              <span class="tech-icon blue">Python</span>
-              <span class="tech-icon green">CoreML</span>
-              <span class="tech-icon" style="background:var(--accent-100,#eff6ff);color:var(--accent-600,#2563eb);border:1px solid var(--accent-600,#2563eb);">저작권등록</span>
-            </div>
-          </div>
-        </a>
-        <a class="pcard d-dacon" href="DACON.html">
-          <div class="pthumb t-dacon">
-            <div class="thumb-inner" style="flex-direction:column;gap:14px;padding:24px 28px;align-items:flex-start;justify-content:center">
-              <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#7C3AED;">Competition Result</div>
-              <div style="font-family:var(--font-sans);font-size:54px;font-weight:700;line-height:1;color:#6D28D9;letter-spacing:-.04em;">Top 4%</div>
-              <div style="font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;color:#7C3AED;">Private 11위 · 데이콘</div>
-            </div>
-          </div>
-          <div class="pinfo">
-            <div class="pmeta-row"><div class="pnum">공모전 · 2026</div></div>
-            <div class="ptitle">Dacon — 스마트 창고 출고 지연 예측</div>
-            <div class="pdesc">물류 창고 출고 지연을 예측한 4인 팀 공모전. OOF가 LB를 배신하는 외삽 문제를 진단하고, 최종 앙상블 결합 단계를 맡아 Private 11위·상위 4%를 기록했다.</div>
-            <div class="tech-row">
-              <span class="tech-icon blue">Python</span>
-              <span class="tech-icon green">Regression</span>
-              <span class="tech-icon gray">Feature Eng.</span>
-              <span class="tech-icon orange">Top 4%</span>
-            </div>
-          </div>
-        </a>
-      </div>
-    </div>
-
-    <!-- ── 2. SeSAC · 분석리포트 — LHV + Skinpass ── -->
-    <div class="ps-section-block js-section-fade">
-      <div class="ps-label">SeSAC 분석 리포트</div>
-      <div class="pcards pcards-grid-2">
-
-        <!-- LHV -->
         <a class="pcard d-lhv" href="LHV.html">
           <div class="pthumb t-lhv">
             <div class="thumb-inner" style="position:relative">
@@ -249,8 +319,6 @@ if (location.protocol === 'file:') {
             </div>
           </div>
         </a>
-
-        <!-- Skinpass -->
         <a class="pcard d-skin" href="Skinpass.html">
           <div class="pthumb t-skin">
             <div class="thumb-inner" style="flex-direction:column;gap:0;padding:20px 28px;justify-content:center;align-items:stretch">
@@ -307,15 +375,135 @@ if (location.protocol === 'file:') {
             </div>
           </div>
         </a>
-
+        <a class="pcard d-dacon" href="DACON.html">
+          <div class="pthumb t-dacon">
+            <div class="thumb-inner" style="flex-direction:column;gap:14px;padding:24px 28px;align-items:flex-start;justify-content:center">
+              <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#7C3AED;">Competition Result</div>
+              <div style="font-family:var(--font-sans);font-size:54px;font-weight:700;line-height:1;color:#6D28D9;letter-spacing:-.04em;">Top 4%</div>
+              <div style="font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;color:#7C3AED;">Private 11위 · 데이콘</div>
+            </div>
+          </div>
+          <div class="pinfo">
+            <div class="pmeta-row"><div class="pnum">공모전 · 2026</div></div>
+            <div class="ptitle">Dacon — 스마트 창고 출고 지연 예측</div>
+            <div class="pdesc">물류 창고 출고 지연을 예측한 4인 팀 공모전. OOF가 LB를 배신하는 외삽 문제를 진단하고, 최종 앙상블 결합 단계를 맡아 Private 11위·상위 4%를 기록했다.</div>
+            <div class="tech-row">
+              <span class="tech-icon blue">Python</span>
+              <span class="tech-icon green">Regression</span>
+              <span class="tech-icon gray">Feature Eng.</span>
+              <span class="tech-icon orange">Top 4%</span>
+            </div>
+          </div>
+        </a>
       </div>
     </div>
 
-    <!-- ── 3. Independent Projects — BlogAgent + LocalAI ── -->
+    <!-- ── 2. Finance & Data Intelligence ── -->
     <div class="ps-section-block js-section-fade">
-      <div class="ps-label">개인 프로젝트</div>
+      <div class="ps-label" style="margin-bottom:6px">Finance &amp; Data Intelligence</div>
+      <div style="font-family:var(--font-sans);font-size:16px;color:#64748b;font-weight:400;letter-spacing:0;text-transform:none;margin-bottom:24px;">데이터 기반 예측과 자동화된 의사결정 시스템</div>
+      <div class="pcards pcards-grid-1">
+        <a class="pcard d-bot" href="BinanceBot.html">
+          <div class="pthumb t-bot">
+            <div class="thumb-inner">
+              <svg width="340" height="130" viewBox="0 0 200 110" fill="none">
+                <path d="M10 85 Q30 75 50 60 Q70 45 90 40 Q110 35 130 28 Q150 22 170 18 Q185 14 195 12" stroke="rgba(30,58,138,.25)" stroke-width="1.5" stroke-dasharray="4 3"/>
+                <line x1="18" y1="72" x2="18" y2="92" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="14" y="78" width="8" height="9" rx="1.5" fill="#34D399"/>
+                <line x1="36" y1="58" x2="36" y2="80" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="32" y="62" width="8" height="13" rx="1.5" fill="#34D399"/>
+                <line x1="54" y1="65" x2="54" y2="85" stroke="#FCA5A5" stroke-width="1.5"/>
+                <rect x="50" y="68" width="8" height="12" rx="1.5" fill="#FCA5A5"/>
+                <line x1="72" y1="52" x2="72" y2="70" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="68" y="55" width="8" height="10" rx="1.5" fill="#34D399"/>
+                <line x1="90" y1="44" x2="90" y2="65" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="86" y="48" width="8" height="11" rx="1.5" fill="#34D399"/>
+                <line x1="108" y1="22" x2="108" y2="48" stroke="#1E3A8A" stroke-width="2"/>
+                <rect x="103" y="26" width="10" height="16" rx="2" fill="#1E3A8A"/>
+                <line x1="126" y1="30" x2="126" y2="52" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="122" y="34" width="8" height="12" rx="1.5" fill="#34D399"/>
+                <line x1="144" y1="38" x2="144" y2="58" stroke="#FCA5A5" stroke-width="1.5"/>
+                <rect x="140" y="41" width="8" height="11" rx="1.5" fill="#FCA5A5"/>
+                <line x1="162" y1="25" x2="162" y2="46" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="158" y="28" width="8" height="12" rx="1.5" fill="#34D399"/>
+                <line x1="180" y1="18" x2="180" y2="38" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="176" y="21" width="8" height="11" rx="1.5" fill="#34D399"/>
+                <rect x="14"  y="96" width="8"  height="8"  rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="32"  y="94" width="8"  height="10" rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="50"  y="97" width="8"  height="7"  rx="1" fill="rgba(252,165,165,.3)"/>
+                <rect x="68"  y="95" width="8"  height="9"  rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="86"  y="93" width="8"  height="11" rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="103" y="90" width="10" height="14" rx="1" fill="rgba(30,58,138,.2)"/>
+                <rect x="122" y="94" width="8"  height="10" rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="140" y="96" width="8"  height="8"  rx="1" fill="rgba(252,165,165,.3)"/>
+                <rect x="158" y="93" width="8"  height="11" rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="176" y="91" width="8"  height="13" rx="1" fill="rgba(52,211,153,.3)"/>
+              </svg>
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#059669;margin-top:10px">ML 예측 가능성 검증</div>
+            </div>
+          </div>
+          <div class="pinfo">
+            <div class="pmeta-row"><div class="pnum">№ 01 · ML TRADING · 2023</div></div>
+            <div class="ptitle">Binance ML Bot — 급등 가능성이 높은 코인을 선별하는 트레이딩 봇</div>
+            <div class="pdesc">기술 분석 필터와 ML 앙상블을 결합해 500개 이상 USDT 페어의 급등 신호를 탐지한 초기 개인 프로젝트. 데이터 수집부터 특징 엔지니어링, ML 앙상블, 자동화 실행까지 직접 구현했다.</div>
+            <div class="tech-row">
+              <span class="tech-icon blue">Python</span>
+              <span class="tech-icon orange">XGBoost</span>
+              <span class="tech-icon green">LightGBM</span>
+              <span class="tech-icon dark">CCXT</span>
+              <span class="tech-icon gray">SMOTE</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ── 3. Service & User Experience ── -->
+    <div class="ps-section-block js-section-fade">
+      <div class="ps-label" style="margin-bottom:6px">Service &amp; User Experience</div>
+      <div style="font-family:var(--font-sans);font-size:16px;color:#64748b;font-weight:400;letter-spacing:0;text-transform:none;margin-bottom:24px;">실제 사용자를 위한 AI 서비스 설계와 구현</div>
       <div class="pcards pcards-grid-2">
-        <!-- BlogAgent -->
+        <a class="pcard d-jann" href="JANN.html">
+          <div class="pthumb t-jann">
+            <img src="jann/img/tsne-clustering.png" alt="JANN t-SNE 클러스터링" loading="lazy">
+          </div>
+          <div class="pinfo">
+            <div class="pmeta-row"><div class="pnum">№ 05 · 향미 데이터 · 2026</div></div>
+            <div class="ptitle">JANN — 향미 데이터 레시피 추천</div>
+            <div class="pdesc">향미 화합물 데이터를 바탕으로 재료 조합을 추천하는 iOS 앱. Python 모델을 CoreML로 변환해 온디바이스 추론으로 연결했다.</div>
+            <div class="tech-row">
+              <span class="tech-icon orange">SwiftUI</span>
+              <span class="tech-icon blue">Python</span>
+              <span class="tech-icon green">CoreML</span>
+              <span class="tech-icon" style="background:var(--accent-100,#eff6ff);color:var(--accent-600,#2563eb);border:1px solid var(--accent-600,#2563eb);">저작권등록</span>
+            </div>
+          </div>
+        </a>
+        <a class="pcard d-inkk" href="INKK.html">
+          <div class="pthumb" style="padding:0;overflow:hidden;">
+            <img src="inkk/thumb.png" alt="INKK 서비스 화면" style="width:100%;height:100%;object-fit:cover;object-position:top;" loading="lazy">
+          </div>
+          <div class="pinfo">
+            <div class="pmeta-row"><div class="pnum">№ 08 · AI SERVICE · 2026</div></div>
+            <div class="ptitle">INKK — 카드뉴스 자동 생성</div>
+            <div class="pdesc">콘텐츠 입력부터 카드뉴스 생성과 배포까지 연결한 AI 서비스. 현재 얼리 액세스 형태로 운영 중이다.</div>
+            <div class="tech-row">
+              <span class="tech-icon" style="background:#FEF3C7;color:#92400E;border:1px solid #FCD34D;">얼리 액세스</span>
+              <span class="tech-icon">Next.js 16</span>
+              <span class="tech-icon">Supabase</span>
+              <span class="tech-icon">Stripe</span>
+              <span class="tech-icon">Groq / Claude</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ── 4. Productivity & Automation ── -->
+    <div class="ps-section-block js-section-fade">
+      <div class="ps-label" style="margin-bottom:6px">Productivity &amp; Automation</div>
+      <div style="font-family:var(--font-sans);font-size:16px;color:#64748b;font-weight:400;letter-spacing:0;text-transform:none;margin-bottom:24px;">반복 업무를 줄이고 효율을 높이는 자동화</div>
+      <div class="pcards pcards-grid-1">
         <a class="pcard d-rag" href="BlogAgentRAG.html">
           <div class="pthumb t-rag" style="padding:14px 16px;align-items:stretch;justify-content:center">
             <svg width="100%" viewBox="0 0 300 210" fill="none">
@@ -379,8 +567,14 @@ if (location.protocol === 'file:') {
             </div>
           </div>
         </a>
+      </div>
+    </div>
 
-        <!-- LocalAI -->
+    <!-- ── 5. AI Engineering Foundations ── -->
+    <div class="ps-section-block js-section-fade">
+      <div class="ps-label" style="margin-bottom:6px">AI Engineering Foundations</div>
+      <div style="font-family:var(--font-sans);font-size:16px;color:#64748b;font-weight:400;letter-spacing:0;text-transform:none;margin-bottom:24px;">AI 활용 방식과 실행 가능성을 탐구한 실험들</div>
+      <div class="pcards pcards-grid-1">
         <a class="pcard d-ai" href="LocalAI.html">
           <div class="pthumb t-ai" style="padding:24px 28px;align-items:stretch;justify-content:center">
             <svg width="100%" viewBox="0 0 460 160" fill="none">
@@ -430,90 +624,6 @@ if (location.protocol === 'file:') {
             </div>
           </div>
         </a>
-
-      </div>
-    </div>
-
-    <!-- ── 4. Service — INKK ── -->
-    <div class="ps-section-block ps-medium js-section-fade">
-      <div class="ps-label">서비스 운영</div>
-      <div class="pcards pcards-grid-1">
-        <a class="pcard d-inkk" href="INKK.html">
-          <div class="pthumb" style="padding:0;overflow:hidden;">
-            <img src="inkk/thumb.png" alt="INKK 서비스 화면" style="width:100%;height:100%;object-fit:cover;object-position:top;" loading="lazy">
-          </div>
-          <div class="pinfo">
-            <div class="pmeta-row"><div class="pnum">№ 08 · AI SERVICE · 2026</div></div>
-            <div class="ptitle">INKK — 카드뉴스 자동 생성</div>
-            <div class="pdesc">콘텐츠 입력부터 카드뉴스 생성과 배포까지 연결한 AI 서비스. 현재 얼리 액세스 형태로 운영 중이다.</div>
-            <div class="tech-row">
-              <span class="tech-icon" style="background:#FEF3C7;color:#92400E;border:1px solid #FCD34D;">얼리 액세스</span>
-              <span class="tech-icon">Next.js 16</span>
-              <span class="tech-icon">Supabase</span>
-              <span class="tech-icon">Stripe</span>
-              <span class="tech-icon">Groq / Claude</span>
-            </div>
-          </div>
-        </a>
-      </div>
-    </div>
-
-    <!-- ── 5. 2023 Project — BinanceBot ── -->
-    <div class="ps-section-block ps-narrow js-section-fade">
-      <div class="ps-label">2023 프로젝트</div>
-      <div class="pcards pcards-grid-1">
-        <a class="pcard d-bot" href="BinanceBot.html">
-          <div class="pthumb t-bot">
-            <div class="thumb-inner">
-              <svg width="340" height="130" viewBox="0 0 200 110" fill="none">
-                <path d="M10 85 Q30 75 50 60 Q70 45 90 40 Q110 35 130 28 Q150 22 170 18 Q185 14 195 12" stroke="rgba(30,58,138,.25)" stroke-width="1.5" stroke-dasharray="4 3"/>
-                <line x1="18" y1="72" x2="18" y2="92" stroke="#34D399" stroke-width="1.5"/>
-                <rect x="14" y="78" width="8" height="9" rx="1.5" fill="#34D399"/>
-                <line x1="36" y1="58" x2="36" y2="80" stroke="#34D399" stroke-width="1.5"/>
-                <rect x="32" y="62" width="8" height="13" rx="1.5" fill="#34D399"/>
-                <line x1="54" y1="65" x2="54" y2="85" stroke="#FCA5A5" stroke-width="1.5"/>
-                <rect x="50" y="68" width="8" height="12" rx="1.5" fill="#FCA5A5"/>
-                <line x1="72" y1="52" x2="72" y2="70" stroke="#34D399" stroke-width="1.5"/>
-                <rect x="68" y="55" width="8" height="10" rx="1.5" fill="#34D399"/>
-                <line x1="90" y1="44" x2="90" y2="65" stroke="#34D399" stroke-width="1.5"/>
-                <rect x="86" y="48" width="8" height="11" rx="1.5" fill="#34D399"/>
-                <line x1="108" y1="22" x2="108" y2="48" stroke="#1E3A8A" stroke-width="2"/>
-                <rect x="103" y="26" width="10" height="16" rx="2" fill="#1E3A8A"/>
-                <line x1="126" y1="30" x2="126" y2="52" stroke="#34D399" stroke-width="1.5"/>
-                <rect x="122" y="34" width="8" height="12" rx="1.5" fill="#34D399"/>
-                <line x1="144" y1="38" x2="144" y2="58" stroke="#FCA5A5" stroke-width="1.5"/>
-                <rect x="140" y="41" width="8" height="11" rx="1.5" fill="#FCA5A5"/>
-                <line x1="162" y1="25" x2="162" y2="46" stroke="#34D399" stroke-width="1.5"/>
-                <rect x="158" y="28" width="8" height="12" rx="1.5" fill="#34D399"/>
-                <line x1="180" y1="18" x2="180" y2="38" stroke="#34D399" stroke-width="1.5"/>
-                <rect x="176" y="21" width="8" height="11" rx="1.5" fill="#34D399"/>
-                <rect x="14"  y="96" width="8"  height="8"  rx="1" fill="rgba(52,211,153,.3)"/>
-                <rect x="32"  y="94" width="8"  height="10" rx="1" fill="rgba(52,211,153,.3)"/>
-                <rect x="50"  y="97" width="8"  height="7"  rx="1" fill="rgba(252,165,165,.3)"/>
-                <rect x="68"  y="95" width="8"  height="9"  rx="1" fill="rgba(52,211,153,.3)"/>
-                <rect x="86"  y="93" width="8"  height="11" rx="1" fill="rgba(52,211,153,.3)"/>
-                <rect x="103" y="90" width="10" height="14" rx="1" fill="rgba(30,58,138,.2)"/>
-                <rect x="122" y="94" width="8"  height="10" rx="1" fill="rgba(52,211,153,.3)"/>
-                <rect x="140" y="96" width="8"  height="8"  rx="1" fill="rgba(252,165,165,.3)"/>
-                <rect x="158" y="93" width="8"  height="11" rx="1" fill="rgba(52,211,153,.3)"/>
-                <rect x="176" y="91" width="8"  height="13" rx="1" fill="rgba(52,211,153,.3)"/>
-              </svg>
-              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#059669;margin-top:10px">ML 예측 가능성 검증</div>
-            </div>
-          </div>
-          <div class="pinfo">
-            <div class="pmeta-row"><div class="pnum">№ 01 · ML TRADING · 2023</div></div>
-            <div class="ptitle">Binance ML Bot — 급등 가능성이 높은 코인을 선별하는 트레이딩 봇</div>
-            <div class="pdesc">기술 분석 필터와 ML 앙상블을 결합해 500개 이상 USDT 페어의 급등 신호를 탐지한 초기 개인 프로젝트.</div>
-            <div class="tech-row">
-              <span class="tech-icon blue">Python</span>
-              <span class="tech-icon orange">XGBoost</span>
-              <span class="tech-icon green">LightGBM</span>
-              <span class="tech-icon dark">CCXT</span>
-              <span class="tech-icon gray">SMOTE</span>
-            </div>
-          </div>
-        </a>
       </div>
     </div>
 
@@ -530,10 +640,11 @@ if (location.protocol === 'file:') {
     <div class="about-wrap js-fade">
       <div class="about-grid">
         <div>
-          <div class="about-role">ML / AI Engineer</div>
-          <h2 class="about-name">문제를 먼저 정의하고,<br>데이터와 모델로 연결하는<br>AI 엔지니어.</h2>
-          <p class="about-copy">제조 설비의 발열량을 5분 단위로 예측하고, 코일이 들어오기 전에 비계획 공정을 걸러내고, 클라우드 없이 로컬에서 돌아가는 AI 워크플로우를 만들었습니다.</p>
-          <p class="about-copy" style="margin-top:14px">모델 성능만 보기보다, 현장에서 어떤 판단이 필요한지부터 봅니다. 정확도보다 틀렸을 때 손실이 더 큰 문제에서는 Recall을 우선하고, SHAP으로 왜 그런 판단이 나왔는지도 함께 확인합니다.</p>
+          <div class="about-role">AI/ML Engineer</div>
+          <h2 class="about-name">사람과 현장을 이해하는 방식으로<br>문제를 해결해왔습니다.</h2>
+          <p class="about-copy">사회복지 현장에서 이용자·실무자·행정 사이를 연결하며 서로 다른 입장과 제약 속에서 <strong>실제로 작동하는 해결책</strong>을 만드는 과정을 경험했습니다.</p>
+          <p class="about-copy" style="margin-top:14px">이 경험은 기술을 보는 관점에도 영향을 주었습니다. "무엇을 만들 수 있는가"보다 <strong>"왜 필요한가, 실제로 작동하는가"</strong>를 먼저 묻습니다.</p>
+          <p class="about-copy" style="margin-top:14px">지금은 Python·AI·데이터로 문제를 구조화하고 검증 가능한 해결책을 만드는 <strong>AI 엔지니어로 성장하고 있습니다.</strong></p>
           <div class="about-links">
             <a href="mailto:heetae104@gmail.com" class="alink">이메일 보내기 →</a>
             <a href="https://github.com/kimheetae0104" target="_blank" rel="noopener noreferrer" class="alink">GitHub ↗</a>
