@@ -650,6 +650,11 @@ table.model-table tr.best td:first-child { color: var(--accent-600); }
       <p class="cover-eyebrow">Steel Industry · Regression · SeSAC 2026</p>
       <h1 class="cover-title">열풍로 LHV<br>발열량 예측</h1>
       <p class="cover-sub">고로 부대 설비 / 5분 주기 COG·BFG 혼합가스 발열량 예측</p>
+      <p class="slide-body" style="font-size:26px;max-width:54ch;margin:24px 0 0;">
+        운전자는 발열량을 바로 보지 못한 채 COG를 보수적으로 더 넣는 경우가 많다.
+        이 프로젝트는 현재 유량·온도·압력만으로 5분 뒤 LHV를 미리 읽어,
+        감에 의존하던 조정을 데이터 기반 판단으로 바꾸려는 시도였다.
+      </p>
 
       <div class="kpi-row">
         <div class="kpi-item">
@@ -684,7 +689,7 @@ table.model-table tr.best td:first-child { color: var(--accent-600); }
 
     <div class="problem-body">
       <div class="problem-text">
-        <h2>COG 과잉<br>투입 문제</h2>
+        <h2>운전자는 값을 못 보니<br>안전하게 더 넣을 수밖에 없었다</h2>
         <p>열풍로는 고로에 열풍을 공급하는 핵심 설비입니다. 코크스 오프가스(COG)와 고로가스(BFG)를 혼합 연소하여 열풍을 만드는데, <strong style="color:var(--fg-1)">발열량(LHV)을 실시간으로 측정하기 어렵습니다.</strong></p>
         <p>발열량 예측 실패 → COG 과잉 투입 → 에너지 낭비 및 원가 상승이 반복되는 구조입니다.</p>
         <div class="callout-box">
@@ -801,7 +806,9 @@ table.model-table tr.best td:first-child { color: var(--accent-600); }
 
     <div style="margin-top:24px;padding:20px 28px;background:var(--paper-100);border-radius:var(--r-3);border-left:3px solid var(--accent-600);">
       <p style="font-family:var(--font-mono);font-size:22px;color:var(--fg-2);margin:0;line-height:1.6;">
-        <strong style="color:var(--accent-600);">핵심 발견</strong>: COG 유량과 LHV 사이 <strong style="color:var(--fg-1)">r ≈ 0.82</strong>의 강한 선형 상관 → Ridge 같은 선형 모델도 충분히 경쟁력 있음을 사전에 시사
+        <strong style="color:var(--accent-600);">핵심 발견</strong>: 처음엔 트리 모델이 유리할 거라 예상했지만,
+        COG 유량과 LHV 사이 <strong style="color:var(--fg-1)">r ≈ 0.82</strong>의 강한 선형 상관이 보였다.
+        그래서 복잡한 모델보다 선형 모델부터 확인하는 쪽으로 방향을 잡았다.
       </p>
     </div>
 
@@ -895,10 +902,10 @@ table.model-table tr.best td:first-child { color: var(--accent-600); }
         </table>
 
         <div style="margin-top:32px;padding:28px 32px;background:var(--accent-100);border-radius:var(--r-3);border-left:3px solid var(--accent-600);">
-          <p style="font-family:var(--font-mono);font-size:20px;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent-600);margin:0 0 12px;">Ridge &gt; XGBoost</p>
+          <p style="font-family:var(--font-mono);font-size:20px;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent-600);margin:0 0 12px;">복잡한 모델보다 선형성이 먼저였다</p>
           <p style="font-family:var(--font-sans);font-size:24px;color:var(--fg-2);margin:0;line-height:1.65;">
-            COG·BFG 유량과 LHV 사이 <strong style="color:var(--fg-1)">선형 관계가 지배적</strong><br>
-            → 트리 기반 앙상블보다 정규화 선형 모델이 유리
+            COG·BFG 유량과 LHV 사이 <strong style="color:var(--fg-1)">선형 관계가 지배적</strong>이었다.<br>
+            그래서 트리 기반 앙상블보다 정규화 선형 모델이 더 안정적으로 맞았다.
           </p>
         </div>
       </div>
@@ -952,7 +959,7 @@ table.model-table tr.best td:first-child { color: var(--accent-600); }
         <div style="display:flex;flex-direction:column;gap:20px;flex:1;">
           <div style="flex:1;padding:28px 32px;border:1px solid var(--accent-600);border-left:3px solid var(--accent-600);border-radius:var(--r-3);background:var(--accent-100);display:flex;flex-direction:column;justify-content:center;">
             <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent-600);margin-bottom:10px;">모델 선택</div>
-            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.6;margin:0;">Ridge가 XGBoost를 이겼다는 사실이 핵심.<br>복잡한 모델보다 <strong style="color:var(--fg-1)">선형성을 먼저 확인</strong>하는 습관의 중요성 — EDA 단계에서 상관계수 확인만으로도 모델 방향 결정 가능</p>
+            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.6;margin:0;">Ridge가 XGBoost를 이겼다는 사실보다 중요한 건, 복잡한 모델로 가기 전에 <strong style="color:var(--fg-1)">데이터의 선형성부터 확인</strong>해야 한다는 점이었다. EDA 한 장이 모델 방향을 바꿨다.</p>
           </div>
           <div style="flex:1;padding:28px 32px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-50);display:flex;flex-direction:column;justify-content:center;">
             <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:10px;">SHAP 해석</div>
