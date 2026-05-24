@@ -640,31 +640,36 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
       </div>
       <div class="def-row">
         <div class="def-k">타겟 분포</div>
-        <div class="def-v">
-          오른쪽 꼬리가 긴 분포<br>zero 2.7%, 중앙값 9.0, <strong>max 715.9</strong>
-          <img src="dacon/target-distribution.png" alt="타겟(avg_delay_minutes_next_30m) 분포 + 박스플롯" loading="lazy"
-            style="display:block;width:100%;max-width:520px;margin-top:14px;border:1px solid var(--rule-soft);border-radius:6px;"/>
-        </div>
+        <div class="def-v">오른쪽 꼬리가 긴 분포<br>zero 2.7%, 중앙값 9.0, <strong>max 715.9</strong></div>
       </div>
     </div>
 
-    <div>
-      <div class="col-label">test 행의 layout 구성</div>
-      <div class="overlap">
-        <div class="ov-seg ov-seen" style="flex:60;">
-          <div class="ov-pct">60%</div>
-          <div class="ov-lbl">train에 있는 layout</div>
-        </div>
-        <div class="ov-seg ov-unseen" style="flex:40;">
-          <div class="ov-pct">40%</div>
-          <div class="ov-lbl">train에 없는 layout</div>
-        </div>
+    <div style="display:flex;flex-direction:column;gap:24px;">
+      <!-- 타겟 분포 차트 -->
+      <div>
+        <div class="col-label">타겟 분포 — avg_delay_minutes_next_30m</div>
+        <img src="dacon/target-distribution.png" alt="타겟 변수 히스토그램 + 박스플롯"
+          style="display:block;width:100%;border:1px solid var(--rule-soft);border-radius:8px;background:#fff;"/>
       </div>
-      <p class="para" style="margin-top:24px;">
-        무작위 K-Fold CV는 이 구조에서 무의미하다.
-        핵심은 보간이 아니라 <strong>외삽</strong>이다.
-        그래서 모델보다 먼저 검증 설계를 바꿔야 했다.
-      </p>
+      <!-- layout 60/40 overlap -->
+      <div>
+        <div class="col-label">test 행의 layout 구성</div>
+        <div class="overlap">
+          <div class="ov-seg ov-seen" style="flex:60;">
+            <div class="ov-pct">60%</div>
+            <div class="ov-lbl">train에 있는 layout</div>
+          </div>
+          <div class="ov-seg ov-unseen" style="flex:40;">
+            <div class="ov-pct">40%</div>
+            <div class="ov-lbl">train에 없는 layout</div>
+          </div>
+        </div>
+        <p class="para" style="margin-top:18px;font-size:18px;">
+          무작위 K-Fold CV는 이 구조에서 무의미하다.
+          핵심은 보간이 아니라 <strong>외삽</strong>이다.
+          그래서 모델보다 먼저 검증 설계를 바꿔야 했다.
+        </p>
+      </div>
     </div>
   </div>
   </div>
@@ -703,19 +708,11 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
       </p>
     </div>
 
-    <div style="display:flex;flex-direction:column;gap:18px;">
-      <div>
-        <div class="img-frame">
-          <img src="dacon/corr-top20.png" alt="타겟 상관 상위 20개 피처"/>
-        </div>
-        <div class="img-cap">EDA — 타겟과의 상관관계 상위 20개 피처</div>
+    <div>
+      <div class="img-frame">
+        <img src="dacon/corr-top20.png" alt="타겟 상관 상위 20개 피처"/>
       </div>
-      <div>
-        <div class="img-frame">
-          <img src="dacon/feature-scatter.png" alt="핵심 피처 vs 출고 지연 시간 산점도"/>
-        </div>
-        <div class="img-cap">EDA — 상위 6개 피처 vs 타겟 산점도 (sample 1,000)</div>
-      </div>
+      <div class="img-cap">EDA — 타겟과의 상관관계 상위 20개 피처</div>
     </div>
   </div>
   </div>
