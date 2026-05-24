@@ -224,7 +224,7 @@
       <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;">
         <div>
           <div class="meta-cap" style="margin-bottom:14px;">데이터 → 신호 흐름</div>
-          <h2 class="slide-h2" style="font-size:54px;">5단계 자동화 파이프라인</h2>
+          <h2 class="slide-h2" style="font-size:54px;">모든 코인을 다 맞히려 하지 않고<br>후보를 먼저 줄이는 흐름을 택했다</h2>
         </div>
         <div class="flow-row">
           <div class="flow-step" style="background:#fff;">
@@ -283,7 +283,7 @@
       <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;">
         <div>
           <div class="meta-cap" style="margin-bottom:14px;">입력 피처</div>
-          <h2 class="slide-h2" style="font-size:54px;">기술 지표 + 불균형 처리</h2>
+          <h2 class="slide-h2" style="font-size:54px;">지표를 많이 넣는 것보다<br>희귀한 급등 신호를 살리는 쪽이 중요했다</h2>
         </div>
         <div class="feat-grid">
           <div class="feat-cell">
@@ -314,8 +314,9 @@
           </div>
           <div style="width:1px;height:52px;background:var(--rule-soft);flex-shrink:0;"></div>
           <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.6;margin:0;">
-            급등 클래스(양성)가 전체의 <strong style="color:var(--fg-1);font-weight:600;">3% 미만</strong> — SMOTE로 소수 클래스 오버샘플링하여 학습 데이터 균형 확보.
-            단순 Oversampling 대비 경계 영역 다양성 보존.
+            급등 클래스(양성)는 전체의 <strong style="color:var(--fg-1);font-weight:600;">3% 미만</strong>이었다.
+            그래서 정확도보다, 희귀한 급등 패턴을 학습 데이터에서 살아남게 만드는 쪽이 더 중요했다.
+            SMOTE를 써서 단순 복제보다 경계 영역 다양성을 남기려 했다.
           </p>
         </div>
       </div>
@@ -332,7 +333,7 @@
       <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;">
         <div>
           <div class="meta-cap" style="margin-bottom:14px;">ML 앙상블</div>
-          <h2 class="slide-h2" style="font-size:54px;">XGBoost + LightGBM 소프트 보팅</h2>
+          <h2 class="slide-h2" style="font-size:54px;">단일 모델 하나보다<br>오신호를 덜 내는 조합이 더 중요했다</h2>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:40px;flex:1;">
           <div style="display:flex;flex-direction:column;gap:20px;">
@@ -351,7 +352,7 @@
             <div style="background:var(--accent-600);border-radius:var(--r-3);padding:32px 36px;flex:1;">
               <div style="font-family:var(--font-mono);font-size:18px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.48);margin-bottom:12px;">앙상블 전략</div>
               <div style="font-family:var(--font-sans);font-weight:600;font-size:28px;color:#fff;margin-bottom:10px;">소프트 보팅 평균</div>
-              <p style="font-family:var(--font-sans);font-size:21px;color:rgba(255,255,255,0.68);line-height:1.6;margin:0 0 20px;">두 모델 predict_proba 평균 → P(SURGE) 최종 확률. 단일 모델 대비 분산 감소</p>
+              <p style="font-family:var(--font-sans);font-size:21px;color:rgba(255,255,255,0.68);line-height:1.6;margin:0 0 20px;">두 모델의 확률을 평균 내서 P(SURGE)를 만들었다. 핵심은 최고 점수보다, 급격한 변동 구간에서 오신호를 덜 내는 쪽이었다.</p>
               <div style="font-family:var(--font-mono);font-size:52px;font-weight:700;color:#fff;line-height:1;">0.83</div>
               <div style="font-family:var(--font-mono);font-size:16px;letter-spacing:0.12em;color:rgba(255,255,255,0.48);margin-top:6px;">P(SURGE) THRESHOLD</div>
             </div>
@@ -388,7 +389,7 @@
         <div style="flex:1;display:flex;flex-direction:column;">
           <div>
             <div class="meta-cap" style="margin-bottom:14px;">신호 탐지 로직</div>
-            <h2 class="slide-h2" style="font-size:52px;">다단계 조건 필터링</h2>
+            <h2 class="slide-h2" style="font-size:52px;">한 번의 높은 확률보다<br>여러 조건이 동시에 맞는 순간만 봤다</h2>
           </div>
           <div class="cond-list">
             <div class="cond-item">
@@ -447,35 +448,35 @@
       <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;">
         <div>
           <div class="meta-cap" style="margin-bottom:14px;">실전 운용 후 발견한 것</div>
-          <h2 class="slide-h2" style="font-size:52px;">시장은 모델보다 빠르게 변한다</h2>
+          <h2 class="slide-h2" style="font-size:52px;">백테스트보다<br>실전에서 먼저 무너지는 지점을 봤다</h2>
         </div>
         <div class="learn-list">
           <div class="learn-item">
             <div class="learn-idx">01</div>
             <div class="learn-body">
               <div class="learn-title">시장 노이즈 — 백테스트와 라이브의 괴리</div>
-              <div class="learn-desc">백테스트 F1 0.69 → 라이브 F1 0.51 수준으로 하락. 학습 기간 외 시장 레짐 변화가 주요 원인. 워크포워드 검증의 중요성을 직접 체감.</div>
+              <div class="learn-desc">백테스트 F1 0.69가 라이브에선 0.51 수준까지 내려갔다. 시장 레짐이 바뀌면 과거에 맞춘 모델이 금방 흔들린다는 걸 여기서 가장 크게 체감했다.</div>
             </div>
           </div>
           <div class="learn-item">
             <div class="learn-idx">02</div>
             <div class="learn-body">
               <div class="learn-title">과적합의 유혹 — 피처가 많을수록 위험</div>
-              <div class="learn-desc">20개 이상 피처 추가 시 트레이닝셋 성능은 올라가지만 OOT 성능이 하락. 피처 중요도 기반 pruning으로 핵심 8개로 압축하는 것이 실전에서 더 안정적.</div>
+              <div class="learn-desc">피처를 20개 넘게 넣으면 학습 점수는 좋아졌지만 OOT 성능은 오히려 떨어졌다. 많이 넣는 것보다 버릴 걸 고르는 태도가 실전에서는 더 중요했다.</div>
             </div>
           </div>
           <div class="learn-item">
             <div class="learn-idx">03</div>
             <div class="learn-body">
               <div class="learn-title">앙상블이 주는 안정감 — 단일 모델 대비 분산 감소</div>
-              <div class="learn-desc">XGBoost 단독은 급격한 시세 변동 구간에서 오신호율이 높았으나, LightGBM 소프트 보팅 합산 후 오신호 12% 감소. 다양성 확보의 실질적 효과 확인.</div>
+              <div class="learn-desc">XGBoost 단독은 급격한 시세 변동 구간에서 오신호가 많았다. LightGBM을 섞자 오신호가 12% 줄었고, "조금 덜 화려해도 덜 흔들리는 조합"이 더 낫다는 걸 확인했다.</div>
             </div>
           </div>
           <div class="learn-item">
             <div class="learn-idx">04</div>
             <div class="learn-body">
               <div class="learn-title">자동화의 한계 — 리스크 관리는 별개의 문제</div>
-              <div class="learn-desc">신호 탐지 정확도와 실제 수익률은 다른 축. 포지션 사이징·손절 로직 없이는 좋은 신호도 손실로 이어질 수 있음을 실전 운용으로 직접 경험.</div>
+              <div class="learn-desc">좋은 신호를 찾는 것과 돈을 버는 것은 다른 문제였다. 포지션 사이징과 손절 규칙 없이는 괜찮은 신호도 손실로 이어질 수 있다는 걸 실전 운용에서 직접 봤다.</div>
             </div>
           </div>
         </div>

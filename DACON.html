@@ -688,7 +688,7 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
 
   <div class="vfill">
   <h2 class="slide-h2" style="font-size:42px;margin-bottom:30px;">
-    압도적 단일 피처는 없다 — 조합과 파생이 답.
+    EDA가 보여준 건 "강한 한 방"보다<br>조합과 파생의 여지였다.
   </h2>
 
   <div class="two-col">
@@ -700,12 +700,15 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
         <div class="axis-chip"><div class="axis-n">03</div><div class="axis-t">혼잡</div></div>
       </div>
       <p class="para">
-        원시 피처 최고 상관은 <strong>low_battery_ratio 0.366</strong> · battery_mean 0.359 —
-        r=0.9 같은 결정적 단일 신호는 없다.
+        원시 피처 최고 상관은 <strong>low_battery_ratio 0.366</strong>,
+        battery_mean 0.359 수준이었다.
+        즉, r=0.9 같은 결정적 단일 신호는 없었다.
       </p>
       <p class="para" style="margin-bottom:0;">
-        그래서 도메인 파생이 핵심이었다. <strong>charger_util</strong>(robot_charging ÷ charger_count)은
-        원시 상관 0.32에서 파생 후 <strong>0.607</strong>까지 올라 — 단일 피처 중 최고 신호가 됐다.
+        그래서 도메인 파생이 핵심이었다.
+        <strong>charger_util</strong>(robot_charging ÷ charger_count)은
+        원시 상관 0.32에서 파생 후 <strong>0.607</strong>까지 올라
+        가장 설명력 있는 단일 신호가 됐다.
       </p>
     </div>
 
@@ -731,7 +734,7 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
 
   <div class="vfill">
   <h2 class="slide-h2" style="font-size:42px;margin-bottom:32px;">
-    데이터 구조가 평가 방식을 정의한다.
+    모델보다 먼저, 어떤 방식으로 평가할지를 다시 정의해야 했다.
   </h2>
 
   <table class="diag">
@@ -746,7 +749,7 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
       </tr>
       <tr>
         <td class="c1">분포 차이</td>
-        <td>adversarial validation accuracy ≈ 0.987</td>
+        <td>train/test를 구분하는 분류기가 정확도 0.987로 맞힐 만큼 분포 차이가 컸다</td>
         <td class="c3">top-30% 난이도 평가</td>
       </tr>
       <tr>
@@ -763,8 +766,8 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
   </table>
 
   <div class="concl">
-    random K-Fold OOF는 LB 성능을 제대로 설명하지 못한다.
-    <strong>검증 점수보다 배포 조건에 가까운 검증 설계</strong>가 먼저다.
+    random K-Fold OOF는 실제 제출 성능을 제대로 설명하지 못한다.
+    <strong>점수를 더 잘 만드는 모델보다, 실제 test에 가까운 검증 방식</strong>이 먼저였다.
   </div>
   </div>
 
@@ -781,7 +784,7 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
 
   <div class="vfill">
   <h2 class="slide-h2" style="font-size:42px;margin-bottom:32px;">
-    LB 과적합 위험을 줄이기 위한 3중 검증 장치
+    LB 과적합을 막기 위해 검증 장치를 세 겹으로 쌓았다.
   </h2>
 
   <div class="net-row">
@@ -797,13 +800,13 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
       <div class="net-tag">안전망 2 · LB 정렬</div>
       <div class="net-title">top-30%<br>난이도 지표</div>
       <div class="net-body">
-        adversarial p_test 상위 30%, 즉 test와 가장 닮은 구간만 평가.
-        OOF를 LB와 정렬시키는 핵심 장치.
+        test와 가장 닮은 상위 30% 구간만 따로 평가했다.
+        OOF를 실제 LB 조건에 맞추기 위한 핵심 장치였다.
       </div>
     </div>
     <div class="net-card">
       <div class="net-tag">안전망 3 · 과적합 제어</div>
-      <div class="net-title">2단계<br>CV stack</div>
+      <div class="net-title">2단계<br>결합 검증</div>
       <div class="net-body">
         fold마다 base weight를 따로 최적화.
         메타 모델이 검증 폴드에 과적합되는 것을 차단했다.
@@ -813,8 +816,8 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
 
   <div class="quote">
     OOF full MAE가 좋아져도 LB 점수가 오히려 나빠지는 일이 반복됐다.
-    대형 스태킹 조합은 자유도가 과도하게 커져 검증 점수만 좋아진다.
-    <strong>검증 점수만으로 모델을 고르면 LB 일반화에 실패할 수 있다.</strong>
+    대형 스태킹 조합은 자유도가 과도하게 커져 검증 점수만 좋아지기 쉬웠다.
+    <strong>그래서 점수가 아니라 일반화되는 결합 방식을 고르는 쪽으로 접근을 바꿨다.</strong>
   </div>
   </div>
 
@@ -831,7 +834,7 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
 
   <div class="vfill">
   <h2 class="slide-h2" style="font-size:42px;margin-bottom:30px;">
-    결합 단계의 자유도 폭주를 선택 알고리즘으로 제어했다.
+    마지막 단계의 핵심은 모델을 더 만드는 일이 아니라<br>조합의 자유도를 통제하는 일이었다.
   </h2>
 
   <div class="two-col tight">
@@ -839,20 +842,21 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
       <div class="lead-k">왜 결합 단계가 핵심이었나</div>
       <p class="para">
         단일 모델은 OOF MAE 8.4 부근에서 포화했고,
-        유사 모델끼리는 상관계수 0.99 이상이라 단순 평균이 무의미했다.
-        결국 <strong>20개 소스 풀에서 어떤 조합을 고를지</strong>가 핵심 문제가 됐다.
+        유사 모델끼리는 상관계수 0.99 이상이라 단순 평균이 큰 의미가 없었다.
+        결국 <strong>20개 후보 중 어떤 조합을 남길지</strong>가 핵심 문제가 됐다.
       </p>
       <div class="lead-k">greedy forward selection</div>
       <p class="para">
         시작 10개 소스에서 출발해, 후보를 하나씩 추가하되
         <strong>top-30% MAE가 단조 개선될 때만 채택</strong>했다.
-        5라운드 안에 개선 후보가 없으면 종료해, 자유도 폭주를 선택 규칙 자체로 막았다.
+        5라운드 안에 개선 후보가 없으면 종료해,
+        조합이 끝없이 불어나는 걸 선택 규칙 자체로 막았다.
       </p>
       <div class="mine">
         <div class="mine-tag">● 본인 담당 · Step 5~8</div>
         <div class="mine-body">
           팀원 베이스(시퀀스 6모델 · v381 블렌드 · 잔차/메타 · anchor 보정) 위에서
-          LGB 변형 풀 생성과 greedy 조합 탐색을 맡았다.
+          LGB 변형 후보 풀 생성과 greedy 조합 탐색을 맡았다.
           그 결과 최종 제출 파일
           <code style="font-size:0.92em;">v1320_FINAL_clipped.csv</code>를 만들었다.
         </div>
