@@ -171,10 +171,11 @@
   min-height: 100%;
 }
 .sim-copy .slide-h2 {
-  max-width: 9ch;
+  /* 한국어에서 ch 단위는 '0' 너비 기준이라 너무 좁아짐 — <br>로 의도된 2줄 그대로 사용 */
+  max-width: none;
 }
 .sim-copy .slide-body {
-  max-width: 25ch;
+  max-width: 32ch;
 }
 .sim-visual {
   display: flex;
@@ -195,10 +196,11 @@
   min-height: 100%;
 }
 .forecast-copy .slide-h2 {
-  max-width: 10ch;
+  /* 한국어에서 ch 단위는 너무 좁음 — <br>로 의도된 2줄 그대로 사용 */
+  max-width: none;
 }
 .forecast-copy .slide-body {
-  max-width: 26ch;
+  max-width: 32ch;
 }
 .forecast-visual {
   display: flex;
