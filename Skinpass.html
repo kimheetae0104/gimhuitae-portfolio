@@ -651,7 +651,7 @@ table.model-table tr.best td:first-child { color: var(--skin); }
       <div class="data-block">
         <div class="data-block-title">클래스 불균형</div>
         <div class="imbalance-badge">40.8%</div>
-        <div class="data-desc">비계획 공정 발생 비율<br>→ SMOTE 적용 근거</div>
+        <div class="data-desc">비계획 공정 발생 비율<br>SMOTE 적용 근거</div>
       </div>
       <div class="data-block" style="grid-column:1/-1;">
         <div class="data-block-title">주요 피처 그룹</div>
@@ -763,7 +763,7 @@ table.model-table tr.best td:first-child { color: var(--skin); }
 
         <div class="smote-box">
           <div class="smote-label">SMOTE 적용 근거</div>
-          <p class="smote-desc">비계획 클래스 40.8% → 훈련 데이터 오버샘플링으로 클래스 균형화. <strong>단순 정확도(Accuracy) 대신 Recall 기준</strong> 모델 선택: 비계획 공정을 하나라도 더 잡아내는 것이 오탐보다 중요</p>
+          <p class="smote-desc">비계획 클래스 비율 40.8%를 보정하기 위해 훈련 데이터에 오버샘플링을 적용했다. 이 프로젝트에서는 <strong>정확도보다 Recall</strong>이 중요했고, 비계획 공정을 하나라도 더 잡아내는 쪽이 오탐보다 더 큰 가치가 있었다.</p>
         </div>
 
         <div style="padding:20px 28px;border-left:3px solid var(--skin);background:var(--skin-100);border-radius:0 var(--r-3) var(--r-3) 0;">
@@ -811,7 +811,7 @@ table.model-table tr.best td:first-child { color: var(--skin); }
         <div class="metric-card">
           <div class="metric-label">Precision</div>
           <div class="metric-val ink">0.71</div>
-          <div class="metric-desc">경보 중 71%가 실제 비계획 → 과탐 허용 범위 내</div>
+          <div class="metric-desc">경보 중 71%가 실제 비계획으로, 과탐은 관리 가능한 수준이었다</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">F1-Score</div>
@@ -820,7 +820,7 @@ table.model-table tr.best td:first-child { color: var(--skin); }
         </div>
         <div style="padding:20px 28px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-100);">
           <p style="font-family:var(--font-mono);font-size:20px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-3);margin-bottom:8px;">SMOTE 효과</p>
-          <p style="font-family:var(--font-sans);font-size:24px;color:var(--fg-2);line-height:1.5;margin:0;">SMOTE 적용 전 Recall <strong style="color:var(--fg-1)">0.61</strong> → 적용 후 <strong style="color:var(--skin)">0.83</strong> (+22%p 향상)</p>
+          <p style="font-family:var(--font-sans);font-size:24px;color:var(--fg-2);line-height:1.5;margin:0;">SMOTE 적용 전 Recall은 <strong style="color:var(--fg-1)">0.61</strong>이었고, 적용 후에는 <strong style="color:var(--skin)">0.83</strong>까지 올라갔다 (+22%p).</p>
         </div>
       </div>
     </div>
@@ -854,7 +854,7 @@ table.model-table tr.best td:first-child { color: var(--skin); }
         <div class="learning-card">
           <div class="learning-card-label">SHAP 해석</div>
           <div class="learning-card-title">도메인 지식 검증</div>
-          <div class="learning-card-body">두께·강종·직전 공정 압력이 상위 피처로 확인. 현장 엔지니어 지식과 일치 → 모델 신뢰도 확보 및 실무 적용 가능성 근거 마련</div>
+          <div class="learning-card-body">두께, 강종, 직전 공정 압력이 상위 피처로 확인됐다. 현장 엔지니어의 판단과도 맞아떨어져 모델을 실무에 설명할 근거가 생겼다.</div>
         </div>
         <div class="learning-card">
           <div class="learning-card-label">비용 비대칭 사고</div>

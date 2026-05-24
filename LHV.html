@@ -691,7 +691,7 @@ table.model-table tr.best td:first-child { color: var(--accent-600); }
       <div class="problem-text">
         <h2>운전자는 값을 못 보니<br>안전하게 더 넣을 수밖에 없었다</h2>
         <p>열풍로는 고로에 열풍을 공급하는 핵심 설비입니다. 코크스 오프가스(COG)와 고로가스(BFG)를 혼합 연소하여 열풍을 만드는데, <strong style="color:var(--fg-1)">발열량(LHV)을 실시간으로 측정하기 어렵습니다.</strong></p>
-        <p>발열량 예측 실패 → COG 과잉 투입 → 에너지 낭비 및 원가 상승이 반복되는 구조입니다.</p>
+        <p>발열량을 제때 읽지 못하면 COG를 보수적으로 더 넣게 되고, 그 결과 에너지 낭비와 원가 상승이 반복됩니다.</p>
         <div class="callout-box">
           <p><strong>목표</strong>: 현재 운전 조건(유량·온도·압력)으로 <strong>5분 후 LHV를 예측</strong>하여 COG 투입량을 최적화</p>
         </div>
@@ -963,7 +963,7 @@ table.model-table tr.best td:first-child { color: var(--accent-600); }
           </div>
           <div style="flex:1;padding:28px 32px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-50);display:flex;flex-direction:column;justify-content:center;">
             <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:10px;">SHAP 해석</div>
-            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.6;margin:0;">COG_FLOW → BFG_FLOW → COG_RATIO 순으로 기여도 높음.<br>도메인 전문가의 직관과 SHAP 결과가 일치 → <strong style="color:var(--fg-1)">블랙박스 탈피, 현장 설득력 확보</strong></p>
+            <p style="font-family:var(--font-sans);font-size:22px;color:var(--fg-2);line-height:1.6;margin:0;">COG_FLOW, BFG_FLOW, COG_RATIO 순으로 기여도가 높았다.<br>도메인 전문가의 직관과 SHAP 결과가 맞아떨어져, 모델을 현장에 설명할 근거가 생겼다.</p>
           </div>
           <div style="flex:1;padding:28px 32px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--paper-50);display:flex;flex-direction:column;justify-content:center;">
             <div style="font-family:var(--font-mono);font-size:17px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-3);margin-bottom:10px;">한계 & 다음 단계</div>
