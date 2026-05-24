@@ -169,7 +169,7 @@
         <div style="flex:1;display:flex;flex-direction:column;">
           <div>
             <div class="meta-cap" style="margin-bottom:14px;">기술 스택 구성</div>
-            <h2 class="slide-h2" style="font-size:52px;">Obsidian + Ollama<br>+ AntiGravity</h2>
+            <h2 class="slide-h2" style="font-size:52px;">중요했던 건 모델보다<br>노트와 AI를 잇는 연결 방식이었다</h2>
           </div>
           <div class="stack-row">
             <div class="stack-item">
@@ -246,28 +246,28 @@
         <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
           <div>
             <div class="meta-cap" style="margin-bottom:14px;">실제 워크플로우</div>
-            <h2 class="slide-h2" style="font-size:50px;margin-bottom:32px;">노트 컨텍스트 →<br>AI 답변 → 노트 저장</h2>
+            <h2 class="slide-h2" style="font-size:50px;margin-bottom:32px;">핵심은 "질문"보다<br>"현재 작업 맥락"을 넘기는 것이었다</h2>
           </div>
           <div style="display:flex;flex-direction:column;gap:0;">
             <div style="display:flex;gap:24px;align-items:flex-start;padding:22px 0;border-bottom:1px solid var(--rule-soft);">
               <div style="font-family:var(--font-mono);font-size:18px;color:var(--accent-600);width:28px;flex-shrink:0;font-weight:700;padding-top:3px;">1</div>
               <div>
                 <div style="font-family:var(--font-sans);font-weight:600;font-size:25px;color:var(--fg-1);margin-bottom:5px;">컨텍스트 주입</div>
-                <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);line-height:1.6;">현재 열린 노트 내용이 자동으로 프롬프트에 삽입됨. 노트 주제와 관련된 AI 응답 생성</div>
+                <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);line-height:1.6;">현재 열린 노트 내용이 자동으로 프롬프트에 들어간다. 따로 복붙하지 않아도 지금 작업 중인 맥락 위에서 바로 답을 받게 했다.</div>
               </div>
             </div>
             <div style="display:flex;gap:24px;align-items:flex-start;padding:22px 0;border-bottom:1px solid var(--rule-soft);">
               <div style="font-family:var(--font-mono);font-size:18px;color:var(--accent-600);width:28px;flex-shrink:0;font-weight:700;padding-top:3px;">2</div>
               <div>
                 <div style="font-family:var(--font-sans);font-weight:600;font-size:25px;color:var(--fg-1);margin-bottom:5px;">로컬 추론</div>
-                <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);line-height:1.6;">Ollama가 Gemma 4 모델로 완전 로컬 추론. 네트워크 요청 없음. 평균 2.1초 응답</div>
+                <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);line-height:1.6;">Ollama가 Gemma 4를 로컬에서 돌린다. 네트워크 요청 없이 평균 2.1초 안에 응답이 돌아오는지 실제 작업 흐름에서 확인했다.</div>
               </div>
             </div>
             <div style="display:flex;gap:24px;align-items:flex-start;padding:22px 0;">
               <div style="font-family:var(--font-mono);font-size:18px;color:var(--accent-600);width:28px;flex-shrink:0;font-weight:700;padding-top:3px;">3</div>
               <div>
                 <div style="font-family:var(--font-sans);font-weight:600;font-size:25px;color:var(--fg-1);margin-bottom:5px;">노트 저장</div>
-                <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);line-height:1.6;">AI 응답을 Obsidian 노트에 직접 삽입하여 지식 관리 시스템에 통합. 모든 데이터 로컬 보존</div>
+                <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);line-height:1.6;">AI 응답을 다시 노트 안으로 넣어 지식 관리 흐름을 끊지 않게 했다. 대화가 따로 흩어지지 않고 모든 흔적이 로컬 노트에 남는다.</div>
               </div>
             </div>
           </div>
@@ -286,23 +286,23 @@
       <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;gap:24px;">
         <div>
           <div class="meta-cap" style="margin-bottom:14px;">실험 결과</div>
-          <h2 class="slide-h2" style="font-size:54px;">클라우드 없이 돌아가는 AI 워크플로우</h2>
+          <h2 class="slide-h2" style="font-size:54px;">완벽하진 않아도<br>클라우드 없이 쓸 수 있다는 건 확인했다</h2>
         </div>
         <div class="result-grid">
           <div class="result-card">
             <div class="result-val">2.1<span class="result-unit">s</span></div>
             <div class="result-label">평균 응답 시간</div>
-            <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);margin-top:12px;line-height:1.6;">M2 MacBook Air 기준. 짧은 컨텍스트 쿼리 측정치. GPT-4o API 대비 응답 구조는 단순하지만 완전 무료·무제한</div>
+            <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);margin-top:12px;line-height:1.6;">M2 MacBook Air 기준 짧은 컨텍스트에서 측정했다. GPT-4o처럼 매끄럽진 않지만, 비용과 외부 전송 없이 이 정도 응답이 가능하다는 걸 확인했다.</div>
           </div>
           <div class="result-card">
             <div class="result-val" style="font-size:42px;">Gemma 4</div>
             <div class="result-label">사용 모델</div>
-            <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);margin-top:12px;line-height:1.6;">Google Gemma 4 — Ollama로 로컬 구동. 맥북·노트북 환경에서 별도 GPU 없이 실용적 추론 가능</div>
+            <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);margin-top:12px;line-height:1.6;">별도 GPU 없이도 맥북 환경에서 실용적으로 돌릴 수 있는지 보고 싶었다. Gemma 4는 그 기준에서 가장 무난한 출발점이었다.</div>
           </div>
           <div class="result-card" style="border-color:var(--accent-200);background:var(--accent-50,var(--paper-100));">
             <div class="result-val" style="font-size:38px;color:var(--accent-600);">완전<br>오프라인</div>
             <div class="result-label">네트워크 의존성</div>
-            <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);margin-top:12px;line-height:1.6;">모델 최초 다운로드 후 인터넷 연결 없이 전체 파이프라인 동작. 프라이버시 완전 보장</div>
+            <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);margin-top:12px;line-height:1.6;">모델을 한 번 내려받은 뒤에는 인터넷 없이 전체 흐름이 돌아간다. 개인 메모를 외부 서버에 보내지 않아도 되는 작업 환경을 실제로 만들었다.</div>
           </div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;">
@@ -336,28 +336,28 @@
       <div style="display:flex;flex-direction:column;flex:1;padding-top:32px;">
         <div>
           <div class="meta-cap" style="margin-bottom:14px;">로컬 모델의 현실</div>
-          <h2 class="slide-h2" style="font-size:52px;">한계를 알면서도 얻은 것들</h2>
+          <h2 class="slide-h2" style="font-size:52px;">좋은 점보다 먼저<br>어디서 한계가 드러나는지 확인했다</h2>
         </div>
         <div class="learn-list">
           <div class="learn-item">
             <div class="learn-idx">01</div>
             <div class="learn-body">
               <div class="learn-title">긴 컨텍스트의 약점</div>
-              <div class="learn-desc">2000 토큰 이상의 노트를 컨텍스트로 주면 응답 품질이 급격히 하락. Gemma 4 모델의 컨텍스트 윈도우 활용 능력 한계. 긴 노트는 청킹 전처리가 필수.</div>
+              <div class="learn-desc">2000 토큰이 넘는 노트를 그대로 넣으면 응답 품질이 급격히 떨어졌다. "로컬이라서 다 된다"가 아니라, 긴 노트는 결국 청킹과 전처리가 필요하다는 현실을 확인했다.</div>
             </div>
           </div>
           <div class="learn-item">
             <div class="learn-idx">02</div>
             <div class="learn-body">
               <div class="learn-title">한국어 품질 격차</div>
-              <div class="learn-desc">영어 프롬프트 대비 한국어 응답 품질이 눈에 띄게 낮다. 학습 데이터 불균형이 원인. 한국어 특화 로컬 모델(EXAONE, EEVE 등) 대안 탐색이 필요.</div>
+              <div class="learn-desc">영어보다 한국어 응답 품질이 눈에 띄게 약했다. 그래서 모델 선택에서도 "가볍게 잘 도는가"만이 아니라 "내 언어에서 실제로 쓸 만한가"를 같이 봐야 한다고 느꼈다.</div>
             </div>
           </div>
           <div class="learn-item">
             <div class="learn-idx">03</div>
             <div class="learn-body">
               <div class="learn-title">그래도 얻은 것 — 실용적 실험 정신</div>
-              <div class="learn-desc">완벽하지 않아도 동작하는 시스템을 직접 구축했다. "가능성의 경계"를 손으로 만져본 경험. 클라우드 의존 없이 AI 툴을 조립하는 능력이 생겼다.</div>
+              <div class="learn-desc">완벽한 대체재를 만든 건 아니지만, 어디까지는 로컬만으로 충분하고 어디부터는 타협이 필요한지 몸으로 익혔다. 클라우드 의존 없이 AI 도구를 조립하는 감각을 얻었다.</div>
             </div>
           </div>
           <div class="learn-item">
