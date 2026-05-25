@@ -177,10 +177,10 @@
 .challenge-card {
   border-top: 2px solid var(--warn);
   background: var(--paper-100);
-  padding: 28px 26px;
+  padding: 32px 30px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 .challenge-card.resolved { border-top-color: var(--positive); }
 .challenge-card .ctag {
@@ -201,9 +201,17 @@
 }
 .challenge-card .cbody {
   font-family: var(--font-sans);
-  font-size: 19px;
+  font-size: 21px;
   color: var(--fg-2);
+  line-height: 1.7;
+}
+.challenge-card .csolution {
+  font-size: 20px;
   line-height: 1.65;
+  padding: 14px 18px;
+}
+.challenge-card h3 {
+  font-size: 25px;
 }
 .challenge-card { justify-content: space-between; }
 .challenge-card .csolution {
@@ -363,13 +371,22 @@
     <span>무엇을 만들지보다 왜 그렇게 만들지가 더 어려웠다</span>
   </div>
 
-  <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:72px; flex:1; padding-top:28px; align-items:stretch;">
+  <div style="display:flex; flex-direction:column; gap:36px; flex:1; padding-top:28px;">
 
-    <div style="display:flex; flex-direction:column; gap:28px; justify-content:space-between;">
-      <h2 class="slide-h2" style="font-size:40px;">
+    <!-- 상단 row: 좌측 헤딩 ↔ 우측 기획 원칙 박스 -->
+    <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:72px; align-items:center;">
+      <h2 class="slide-h2" style="font-size:40px; margin:0;">
         네 가지 결정,<br/>
         <span style="color:var(--fg-3); font-weight:400;">각각에 이유가 있어야 했다.</span>
       </h2>
+      <div class="accent-box">
+        <div class="ab-label">기획 원칙</div>
+        <div class="ab-body" style="font-size:21px;">무엇을 만들지보다, 무엇을 <strong style="color:var(--fg-1);">안 만들지 정한 판단</strong>이 더 중요했다.</div>
+      </div>
+    </div>
+
+    <!-- 하단 row: 좌측 arch-list ↔ 우측 만들지 않기로 + 경쟁 상대 -->
+    <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:72px; flex:1; align-items:start;">
 
       <div class="arch-list" style="margin-top:0;">
         <div class="arch-item">
@@ -389,45 +406,41 @@
           <div class="arch-val"><strong>기능 최대화가 아닌 빠른 검증</strong> — 완성이 아니라 '쓸 수 있는' 상태가 먼저다. 가설이 맞는지 먼저 보고, 나머지는 이터레이션으로.</div>
         </div>
       </div>
-    </div>
 
-    <div style="display:flex; flex-direction:column; gap:24px; justify-content:space-between;">
-      <div class="accent-box">
-        <div class="ab-label">기획 원칙</div>
-        <div class="ab-body" style="font-size:21px;">무엇을 만들지보다, 무엇을 <strong style="color:var(--fg-1);">안 만들지 정한 판단</strong>이 더 중요했다.</div>
+      <div style="display:flex; flex-direction:column; gap:20px;">
+        <div style="display:flex;flex-direction:column;gap:0;border:1px solid var(--rule-soft);">
+          <div style="padding:14px 20px;background:var(--paper-100);border-bottom:1px solid var(--rule-soft);">
+            <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.1em;color:var(--fg-4);">만들지 않기로 한 것들</div>
+          </div>
+          <div style="padding:18px 20px;border-bottom:1px solid var(--rule-soft);display:grid;grid-template-columns:20px 1fr;gap:14px;align-items:start;">
+            <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg-4);padding-top:1px;">✕</div>
+            <div>
+              <div style="font-family:var(--font-sans);font-weight:600;font-size:19px;color:var(--fg-2);">이미지 직접 생성 AI</div>
+              <div style="font-family:var(--font-sans);font-size:17px;color:var(--fg-4);margin-top:4px;">저작권 리스크 → 무료 이미지 라이브러리로 대체</div>
+            </div>
+          </div>
+          <div style="padding:18px 20px;border-bottom:1px solid var(--rule-soft);display:grid;grid-template-columns:20px 1fr;gap:14px;align-items:start;">
+            <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg-4);padding-top:1px;">✕</div>
+            <div>
+              <div style="font-family:var(--font-sans);font-weight:600;font-size:19px;color:var(--fg-2);">완전 자유 편집 기능</div>
+              <div style="font-family:var(--font-sans);font-size:17px;color:var(--fg-4);margin-top:4px;">복잡성 증가 → 프리셋으로 단순화, 사용자 노동 제거</div>
+            </div>
+          </div>
+          <div style="padding:18px 20px;display:grid;grid-template-columns:20px 1fr;gap:14px;align-items:start;">
+            <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg-4);padding-top:1px;">✕</div>
+            <div>
+              <div style="font-family:var(--font-sans);font-weight:600;font-size:19px;color:var(--fg-2);">카드 1장 재생성</div>
+              <div style="font-family:var(--font-sans);font-size:17px;color:var(--fg-4);margin-top:4px;">비용·효용 분석 → 수동 편집이 이미 커버, 남은 병목은 유입</div>
+            </div>
+          </div>
+        </div>
+
+        <p class="slide-body" style="color:var(--fg-3); font-size:20px; margin:0;">
+          경쟁 상대는 캔바가 아니라 <strong style="color:var(--fg-2);">'오늘 콘텐츠를 그냥 안 올리는 선택'</strong>이다.
+          좁고 뾰족하게, 그 한 가지 병목만 제거한다.
+        </p>
       </div>
 
-      <div style="display:flex;flex-direction:column;gap:0;border:1px solid var(--rule-soft);">
-        <div style="padding:14px 20px;background:var(--paper-100);border-bottom:1px solid var(--rule-soft);">
-          <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.1em;color:var(--fg-4);">만들지 않기로 한 것들</div>
-        </div>
-        <div style="padding:18px 20px;border-bottom:1px solid var(--rule-soft);display:grid;grid-template-columns:20px 1fr;gap:14px;align-items:start;">
-          <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg-4);padding-top:1px;">✕</div>
-          <div>
-            <div style="font-family:var(--font-sans);font-weight:600;font-size:19px;color:var(--fg-2);">이미지 직접 생성 AI</div>
-            <div style="font-family:var(--font-sans);font-size:17px;color:var(--fg-4);margin-top:4px;">저작권 리스크 → 무료 이미지 라이브러리로 대체</div>
-          </div>
-        </div>
-        <div style="padding:18px 20px;border-bottom:1px solid var(--rule-soft);display:grid;grid-template-columns:20px 1fr;gap:14px;align-items:start;">
-          <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg-4);padding-top:1px;">✕</div>
-          <div>
-            <div style="font-family:var(--font-sans);font-weight:600;font-size:19px;color:var(--fg-2);">완전 자유 편집 기능</div>
-            <div style="font-family:var(--font-sans);font-size:17px;color:var(--fg-4);margin-top:4px;">복잡성 증가 → 프리셋으로 단순화, 사용자 노동 제거</div>
-          </div>
-        </div>
-        <div style="padding:18px 20px;display:grid;grid-template-columns:20px 1fr;gap:14px;align-items:start;">
-          <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg-4);padding-top:1px;">✕</div>
-          <div>
-            <div style="font-family:var(--font-sans);font-weight:600;font-size:19px;color:var(--fg-2);">카드 1장 재생성</div>
-            <div style="font-family:var(--font-sans);font-size:17px;color:var(--fg-4);margin-top:4px;">비용·효용 분석 → 수동 편집이 이미 커버, 남은 병목은 유입</div>
-          </div>
-        </div>
-      </div>
-
-      <p class="slide-body" style="color:var(--fg-3); font-size:20px; margin:0;">
-        경쟁 상대는 캔바가 아니라 <strong style="color:var(--fg-2);">'오늘 콘텐츠를 그냥 안 올리는 선택'</strong>이다.
-        좁고 뾰족하게, 그 한 가지 병목만 제거한다.
-      </p>
     </div>
 
   </div>
@@ -521,11 +534,11 @@
         <div class="ctag">RESOLVED · 01</div>
         <h3>Google 로그인 — 자격증명이 맞는데 안 됨</h3>
         <div class="cbody">
-          <strong>증상:</strong> 동의 화면은 뜨지만 인증 완료 단계에서 계속 실패. 자격증명·설정을 전부 점검했지만 이상이 없었다.<br/><br/>
-          결국 인증 코드 교환 흐름에 구조적 불일치가 있었다. 원인을 찾는 데 시간을 쏟기보다 실패하는 경로 자체를 제거하는 방법이 있는지 봤다.
+          <strong>증상:</strong> Authorization Code Flow 표준 구현이었는데, 동의 화면은 뜨지만 인증 완료 단계에서 계속 실패. Client ID·Secret·redirect URL·Supabase Auth 설정을 전부 점검해도 이상 없음.<br/><br/>
+          원인은 Next.js의 redirect URL 처리와 Supabase Auth 콜백 사이의 미묘한 불일치. 디버깅에 시간 쏟기보다 <strong>실패 경로 자체를 없애는 방법</strong>이 있는지 봤다.
         </div>
         <div class="csolution">
-          <strong>해결:</strong> <strong>Google One Tap 방식</strong>으로 전환 → 실패하던 교환 단계 자체가 사라져 에러가 발생할 수 없게 됨.
+          <strong>해결:</strong> <strong>Google One Tap 방식</strong>으로 전환 → ID 토큰을 직접 받아 교환 단계 자체가 사라짐. 같은 사용자 경험(원클릭 로그인)에 다른 흐름.
         </div>
       </div>
 
@@ -545,11 +558,11 @@
         <div class="ctag">RESOLVED · 03</div>
         <h3>배포가 조용히 깨져 있었음</h3>
         <div class="cbody">
-          <strong>증상:</strong> 코드를 고쳐 푸시했는데 프로덕션에 반영이 안 됐다. 로컬에선 멀쩡.<br/><br/>
-          Vercel은 빌드 실패 시 직전 성공 버전을 서빙하므로 "배포했는데 안 바뀜"이라는 착시가 생겼다. 빌드 실패를 사람이 확인하는 구조 자체가 병목이었다.
+          <strong>증상:</strong> 코드 수정 후 push 했는데 프로덕션에 반영이 안 됐다. 로컬·dev 환경에선 멀쩡. Vercel 대시보드를 안 들여다보면 모르고 지나갈 수준.<br/><br/>
+          Vercel은 빌드 실패 시 <strong>직전 성공 버전을 그대로 서빙</strong>한다. "배포했는데 안 바뀜"이라는 착시가 생기는 이유. 빌드 실패를 사람이 매번 확인해야 알 수 있는 구조 자체가 병목이었다.
         </div>
         <div class="csolution">
-          <strong>해결:</strong> 원인을 수정하고, GitHub Actions에 <strong>빌드 게이트를 추가</strong>해 재발 방지. "배포했는데 안 바뀐다"는 거의 항상 빌드 실패다.
+          <strong>해결:</strong> 원인 수정 + GitHub Actions에 <strong>빌드 게이트 추가</strong> → push 직전 빌드 실패가 자동 차단. "배포했는데 안 바뀐다"는 거의 항상 빌드 실패다.
         </div>
       </div>
     </div>
