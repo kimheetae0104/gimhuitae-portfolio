@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="stylesheet" href="shared/tokens.css" />
 <link rel="stylesheet" href="shared/slide.css" />
-<script src="shared/deck-stage.js" defer></script>
+<script src="shared/deck-stage.js?v=2" defer></script>
 <style>
 
 .accent-box {
@@ -150,7 +150,7 @@
   grid-template-columns: 160px 1fr;
   gap: 24px;
   align-items: start;
-  padding: 16px 0;
+  padding: 26px 0;
   border-bottom: 1px solid var(--rule-soft);
 }
 .arch-key {
@@ -204,8 +204,8 @@
   font-size: 19px;
   color: var(--fg-2);
   line-height: 1.65;
-  flex: 1;
 }
+.challenge-card { justify-content: space-between; }
 .challenge-card .csolution {
   background: rgba(30,58,138,0.05);
   border-left: 2px solid var(--accent-600);
@@ -363,9 +363,9 @@
     <span>무엇을 만들지보다 왜 그렇게 만들지가 더 어려웠다</span>
   </div>
 
-  <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:72px; flex:1; padding-top:28px; align-items:start;">
+  <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:72px; flex:1; padding-top:28px; align-items:stretch;">
 
-    <div style="display:flex; flex-direction:column; gap:20px;">
+    <div style="display:flex; flex-direction:column; gap:28px; justify-content:space-between;">
       <h2 class="slide-h2" style="font-size:40px;">
         네 가지 결정,<br/>
         <span style="color:var(--fg-3); font-weight:400;">각각에 이유가 있어야 했다.</span>
@@ -391,7 +391,7 @@
       </div>
     </div>
 
-    <div style="display:flex; flex-direction:column; gap:20px;">
+    <div style="display:flex; flex-direction:column; gap:24px; justify-content:space-between;">
       <div class="accent-box">
         <div class="ab-label">기획 원칙</div>
         <div class="ab-body" style="font-size:21px;">무엇을 만들지보다, 무엇을 <strong style="color:var(--fg-1);">안 만들지 정한 판단</strong>이 더 중요했다.</div>
@@ -531,13 +531,13 @@
 
       <div class="challenge-card resolved">
         <div class="ctag">RESOLVED · 02</div>
-        <h3>결제 중복 — 보이지 않는 돈 새는 구멍</h3>
+        <h3>결제 중복 — 같은 webhook이 두 번 들어옴</h3>
         <div class="cbody">
-          <strong>증상:</strong> Stripe webhook은 동일한 이벤트를 여러 번 전달할 수 있다. 동시성·재시도 시나리오에서 결제 로직이 예상과 다르게 동작했다.<br/><br/>
-          고칠 때마다 새로운 엣지 케이스가 드러났다. 한 번에 완성되는 결제 로직은 없다.
+          <strong>증상:</strong> Stripe webhook은 네트워크 재시도 때 같은 이벤트를 두 번 보낼 수 있다. 처음엔 애플리케이션 레벨에서 "이미 처리했는지" 체크했지만, 동시 요청 두 개가 동시에 통과하는 race condition이 남았다.<br/><br/>
+          애플리케이션 락은 단일 프로세스 안에서만 안전하고, 서버리스(Vercel) 환경에선 보장이 깨졌다.
         </div>
         <div class="csolution">
-          <strong>해결:</strong> DB 레벨에서 중복 처리를 원천 차단하는 구조로 재설계. 내가 작성한 코드도 반드시 검증 대상이다.
+          <strong>해결:</strong> webhook event ID를 <strong>DB unique constraint</strong>로 잡고, 트랜잭션 안에서 <code style="font-size:0.9em;">INSERT ... ON CONFLICT DO NOTHING</code> → 같은 이벤트는 두 번 처리 자체가 불가능. 멱등성을 DB 레벨로 끌어내림.
         </div>
       </div>
 

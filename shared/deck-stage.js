@@ -335,6 +335,21 @@
       canvas.style.setProperty('--deck-design-w', this.designWidth + 'px');
       canvas.style.setProperty('--deck-design-h', this.designHeight + 'px');
 
+      // Desktop click navigation — left half = prev, right half = next.
+      // Mobile/touch는 .tapzones가 처리하므로 hover-capable pointer에서만 활성화.
+      canvas.addEventListener('click', (e) => {
+        // 1) 인터랙티브 요소 클릭은 통과 (자체 핸들러가 처리)
+        if (e.target.closest('a, button, input, textarea, select, video, iframe, [role="button"], [contenteditable]')) return;
+        // 2) 텍스트 드래그 선택 중이면 슬라이드 전환 무시 (사용자가 카피하려는 의도)
+        const sel = window.getSelection();
+        if (sel && sel.toString().length > 0) return;
+        // 3) 좌측 절반 클릭 = 이전, 우측 절반 = 다음
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        if (x < rect.width / 2) this._go(this._index - 1, 'click');
+        else this._go(this._index + 1, 'click');
+      });
+
       const slot = document.createElement('slot');
       slot.addEventListener('slotchange', this._onSlotChange);
       canvas.appendChild(slot);

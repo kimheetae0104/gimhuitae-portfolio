@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <link rel="stylesheet" href="shared/tokens.css"/>
 <link rel="stylesheet" href="shared/slide.css"/>
-<script src="shared/deck-stage.js" defer></script>
+<script src="shared/deck-stage.js?v=2" defer></script>
 <style>
 
 /* ── 상단 헤더 오버레이 ── */
@@ -853,12 +853,14 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
         조합이 끝없이 불어나는 걸 선택 규칙 자체로 막았다.
       </p>
       <div class="mine">
-        <div class="mine-tag">● 본인 담당 · Step 5~8</div>
+        <div class="mine-tag">● 본인 작업 흐름 · EDA 재정리 → 결합</div>
         <div class="mine-body">
-          팀원 베이스(시퀀스 6모델 · v381 블렌드 · 잔차/메타 · anchor 보정) 위에서
-          LGB 변형 후보 풀 생성과 greedy 조합 탐색을 맡았다.
-          그 결과 최종 제출 파일
-          <code style="font-size:0.92em;">v1320_FINAL_clipped.csv</code>를 만들었다.
+          팀은 각자 EDA부터 모델·LB 제출까지 <strong>독립 트랙</strong>으로 돌리고,
+          점수가 잘 나온 코드를 공유·확장하는 방식이었다.
+          본인도 같은 방식으로 진행했고, 공모전 마감 며칠 전 <strong>EDA를 다시 깊이 파서</strong>
+          피처 간 상관관계와 미활용 피처를 재분석했다.
+          그 진단 위에서 <strong>마지막 결합 단계(LGB 변형 풀 + greedy forward)를 가져가</strong>
+          최종 제출 <code style="font-size:0.92em;">v1320_FINAL_clipped.csv</code>를 만들었다.
         </div>
       </div>
     </div>
@@ -938,27 +940,36 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
 
   <div class="vfill">
   <h2 class="slide-h2" style="font-size:42px;margin-bottom:32px;">
-    팀의 베이스 위에, 과적합 위험을 낮춘 결합 단계를 더했다.
+    각자 트랙으로 돌리다, 마감 전 EDA를 다시 파서 결합으로 닫았다.
   </h2>
 
   <div class="two-col">
     <div>
-      <div class="col-label">역할 경계</div>
+      <div class="col-label">본인 작업 흐름</div>
       <div class="role-card">
-        <div class="role-tag">팀원 베이스 · 입력으로 주어짐</div>
-        <div class="role-title">시퀀스 6모델 + 보강 모델</div>
+        <div class="role-tag">Phase 1 · 팀 공통 · 독립 트랙</div>
+        <div class="role-title">각자 EDA → 모델 → LB 제출 반복</div>
         <div class="role-body">
-          Conformer · Transformer 등 이질적 시퀀스 6모델, v381 가중 블렌드,
-          잔차/메타 모델, layout anchor 보정.
+          4인 팀 모두 본인 트랙으로 EDA·모델링·검증·제출을 돌리고,
+          점수가 잘 나온 코드를 공유·확장하는 방식.
         </div>
       </div>
       <div class="role-card mine-card">
-        <div class="role-tag">● 본인 담당 · 최종 결합 (Step 5~8)</div>
-        <div class="role-title">v1320 — 최종 앙상블 결합</div>
+        <div class="role-tag">● Phase 2 · 본인 주도 · 마감 며칠 전</div>
+        <div class="role-title">EDA 재정리 — 피처 상관·미활용 피처 분석</div>
         <div class="role-body">
-          LGB 변형 풀(forward-lag · diverse · quantile) 생성,
-          greedy forward 조합 탐색, 최종 제출 산출.
-          재현코드 <code style="font-size:0.9em;">재현코드_v1320_파이프라인.ipynb</code>.
+          공모전 마감 며칠 전, EDA를 처음부터 다시 파서
+          <strong>피처 간 상관관계</strong>와 그동안 <strong>활용하지 않은 피처</strong>를 새로 찾아
+          모델 검증에 반영했다.
+        </div>
+      </div>
+      <div class="role-card mine-card">
+        <div class="role-tag">● Phase 3 · 본인 주도 · 마지막 결합</div>
+        <div class="role-title">v1320 — greedy forward 결합</div>
+        <div class="role-body">
+          재정리한 진단 위에서 LGB 변형 풀(forward-lag · diverse · quantile) 생성,
+          greedy forward로 조합 탐색,
+          최종 제출 <code style="font-size:0.9em;">v1320_FINAL_clipped.csv</code> 산출.
         </div>
       </div>
     </div>
@@ -980,10 +991,11 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
         </div>
       </div>
       <div class="learn-card">
-        <div class="learn-k">기여 범위의 명확함</div>
+        <div class="learn-k">마감 전 EDA가 결정적이었다</div>
         <div class="learn-b">
-          팀원 베이스는 입력으로 받고, 제가 맡은 결합 단계는
-          <strong>최종 제출 성적을 재현할 수 있는 코드 기준으로</strong> 정리했다.
+          초반엔 각자 LB 점수 끌어올리는 데 집중했지만, 마감 며칠 전 <strong>EDA를 한 번 더 깊이 파면서</strong>
+          못 본 피처 신호와 상관 구조를 찾은 게 결합 단계의 의미를 만들었다.
+          <strong>EDA는 한 번으로 끝나지 않는다.</strong>
         </div>
       </div>
     </div>
