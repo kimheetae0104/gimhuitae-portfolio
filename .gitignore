@@ -14,3 +14,6 @@ uploads/
 .claude/
 .superpowers/
 DACON_자료/
+
+# 면접 준비 자료 (개인용, public repo에 노출 금지)
+docs/면접준비/
