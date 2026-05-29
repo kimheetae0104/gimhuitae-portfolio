@@ -133,7 +133,7 @@
 
 <section class="panel" style="margin-top:22px;">
   <nav class="nav">
-    <div class="left"><span class="dot"></span> NOxO — IGCC NOx</div>
+    <div class="left"><span class="dot"></span> NOxO · IGCC 배기 NOx</div>
     <div class="links">
       <a href="#problem">문제</a>
       <a href="#models">모델</a>
@@ -145,38 +145,38 @@
 
   <p class="kicker">IGCC 복합발전 · 제조 AI</p>
   <h1 class="htitle">가스터빈 배기 NOx 시뮬레이션 &amp; 5분 후 예측</h1>
-  <div class="tagline">놓치면 큰 손실 — 점수보다 누수 없는 예측 구조</div>
+  <div class="tagline">점수를 올리기는 쉬웠고, 그 점수를 믿게 만드는 일이 어려웠다.</div>
 
   <div class="badges">
     <div class="badge">
       <span class="circ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c5-2 8-6 8-11V5l-8-2-8 2v5c0 5 3 9 8 11z"/><path d="M9.5 12.5l1.8 1.8 3.7-3.8"/></svg></span>
-      <span class="bt">저탄소</span><span class="bs">Low-Carbon</span>
+      <span class="bt">저탄소 발전</span><span class="bs">석탄 대비 CO₂ 절감</span>
     </div>
     <div class="badge">
       <span class="circ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4 4 0 1 1 .8-7.9A5.5 5.5 0 0 1 18 11a3.5 3.5 0 0 1-.5 7H7z"/></svg></span>
-      <span class="bt">저배출</span><span class="bs">Low-NOx</span>
+      <span class="bt">배출 규제</span><span class="bs">NOx 실시간 감시 대상</span>
     </div>
     <div class="badge">
       <span class="circ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8"/><path d="M20 4v4h-4"/><path d="M20 12a8 8 0 0 1-13.7 5.6L4 16"/><path d="M4 20v-4h4"/></svg></span>
-      <span class="bt">복합발전</span><span class="bs">Combined Cycle</span>
+      <span class="bt">복합발전</span><span class="bs">가스터빈 + 배열회수</span>
     </div>
   </div>
 
   <div class="hero-photo">
     <img class="bg" src="noxo/plant-hero.webp" alt="IGCC 천연가스 복합화력 발전소"/>
-    <div class="namepill"><span class="dot"></span><span>NOxO · 가스터빈 배기 NOx 시뮬레이션 &amp; 5분 후 예측 — SeSAC 제조 AI 2026</span></div>
+    <div class="namepill"><span class="dot"></span><span>NOxO · 가스터빈 배기 NOx 시뮬레이션 &amp; 5분 후 예측 · SeSAC 제조 AI 2026</span></div>
   </div>
 
   <div class="kpis">
     <div class="kpi"><div class="n">0.71</div><div class="l">시뮬레이션 NOx R²</div></div>
-    <div class="kpi"><div class="n">0.68</div><div class="l">5분 예보 R²</div></div>
+    <div class="kpi"><div class="n">0.68</div><div class="l">5분 예측 R²</div></div>
     <div class="kpi"><div class="n">+0.21</div><div class="l">직전값 유지 기준 대비</div></div>
-    <div class="kpi"><div class="n">27.7ms</div><div class="l">예보 추론 시간</div></div>
+    <div class="kpi"><div class="n">27.7ms</div><div class="l">예측 추론 시간</div></div>
   </div>
 </section>
 
 <section class="panel" id="problem">
-  <p class="sec-kicker">01 — Problem</p>
+  <p class="sec-kicker">01 — 문제 정의</p>
   <h2 class="h2">같은 발전소 데이터여도<br>현장에서 필요한 질문은 둘이었다.</h2>
   <p class="lead">"제어밸브를 바꾸면 NOx가 어떻게 되나"라는 <strong>시뮬레이션</strong> 질문과 "지금 이대로면 5분 뒤 NOx는?"이라는 <strong>5분 후 예측</strong> 질문. 입력·갱신 주기·평가가 전혀 달라 하나로 묶지 않고 둘로 분리해 설계했다.</p>
   <div class="two">
@@ -190,7 +190,7 @@
     </div>
     <div class="mcard tint">
       <span class="tag">모델 2</span>
-      <h3>5분 후 NOx 예보기</h3>
+      <h3>5분 후 NOx 예측기</h3>
       <div class="mrow"><span class="k">질문</span><span class="v">5분 뒤 NOx는?</span></div>
       <div class="mrow"><span class="k">입력</span><span class="v">과거 이력 · 1초 원시</span></div>
       <div class="mrow"><span class="k">타겟</span><span class="v">5분 후 NOx 점예측</span></div>
@@ -200,7 +200,7 @@
 </section>
 
 <section class="panel" id="models">
-  <p class="sec-kicker">02 — Model 1 · Simulation</p>
+  <p class="sec-kicker">02 — 모델 1 · 운전 시뮬레이션</p>
   <h2 class="h2">1초 데이터를 그대로 쓰면<br>모델이 과거값을 베끼기 쉬웠다.</h2>
   <p class="lead">1초 데이터는 인접 값이 거의 같아(자기상관 r=0.989) 과거값 복사 경향이 강하다. <strong>1분 평균 집계</strong>로 의미 있는 변동만 남기고, 원시 39 + 파생 10 = 49개 피처에 <strong>Ridge + LightGBM 앙상블</strong>. NOx R² 0.71은 변동 폭이 워낙 작기 때문(std ≈ 0.19 ppm).</p>
   <div class="chips">
@@ -212,7 +212,7 @@
 </section>
 
 <section class="panel">
-  <p class="sec-kicker">03 — Model 2 · 5-min Forecast</p>
+  <p class="sec-kicker">03 — 모델 2 · 5분 후 예측</p>
   <h2 class="h2">5분 후 예측은 평균값보다<br>순간적인 흔들림을 살리는 쪽이었다.</h2>
   <p class="lead">1분 평균은 미세 변동이 사라져 5분 점예측이 안 됐다. <strong>1초 원시 데이터를 유지</strong>한 채 5분 뒤 값을 직접 맞히는 구조로 바꾸고, 시차·차분·이동통계·상호작용·시간 피처까지 <strong>213개</strong> 구성.</p>
   <div class="journey">
@@ -221,16 +221,16 @@
     <div class="jstep on"><div class="n">0.68</div><div class="l">O₂ 재포함 · 누수 아님 확인</div></div>
   </div>
   <div class="chips">
-    <div class="chip on"><div class="v">0.68</div><div class="l">5분 예보 R²</div></div>
+    <div class="chip on"><div class="v">0.68</div><div class="l">5분 예측 R²</div></div>
     <div class="chip"><div class="v">27.7ms</div><div class="l">추론 (예산 50ms)</div></div>
-    <div class="chip"><div class="v">213</div><div class="l">features</div></div>
+    <div class="chip"><div class="v">213</div><div class="l">피처 수</div></div>
   </div>
   <figure class="fig"><span class="fcap">실제 대시보드 · 실시간 예측 모드</span><video poster="noxo/predict-poster.webp" autoplay muted loop playsinline preload="metadata" aria-label="5분 후 예측 모드 대시보드 데모 영상"><source src="noxo/predict.webm" type="video/webm"/><source src="noxo/predict.mp4" type="video/mp4"/></video></figure>
 </section>
 
 <div class="wrap" id="challenge">
   <div class="feature">
-    <p class="fk">04 — Key Challenge · Data Leakage</p>
+    <p class="fk">04 — 핵심 난관 · 데이터 누수</p>
     <div class="big">0.997</div>
     <h2>"너무 좋다"는 의심에서 시작했다.</h2>
     <p class="flead">O₂ 센서가 NOx와 상관 0.997, 성능이 R²≈0.99까지 치솟았다. 그대로 믿는 대신 원인을 팠다 — CEMS 희석보정식에서 O₂가 <strong>NOx 라벨 계산에 직접 들어간다.</strong> 정답 일부를 보고 맞히는 셈이었다.</p>
@@ -253,13 +253,13 @@
 </div>
 
 <section class="panel" id="validation" style="margin-top:22px;">
-  <p class="sec-kicker">05 — Validation &amp; Outcome</p>
+  <p class="sec-kicker">05 — 검증과 결과</p>
   <h2 class="h2">점수가 새지 않도록<br>검증을 먼저 설계했다.</h2>
   <div class="vlist">
-    <div class="vitem"><div class="vk">Holdout</div><div class="vb">마지막 하루를 통째로 떼어 최종 테스트로만 사용. 학습은 그 전 <strong>14일치</strong>만, holdout은 모델 선택에 일절 쓰지 않았다.</div></div>
-    <div class="vitem"><div class="vk">CV 방식</div><div class="vb">시계열이라 무작위 split 금지. <strong>Expanding-window CV</strong>로 미래 정보가 과거로 새지 않게 했다.</div></div>
-    <div class="vitem"><div class="vk">Gap</div><div class="vb">학습/검증 사이 <strong>300초 간격</strong>을 둬 직전 값 복사만으로 점수가 부풀지 않게 했다.</div></div>
-    <div class="vitem"><div class="vk">타겟 생성</div><div class="vb">5분 후 타겟은 각 split 내부에서만 생성해 경계를 분리했다.</div></div>
+    <div class="vitem"><div class="vk">최종 홀드아웃</div><div class="vb">마지막 하루를 통째로 떼어 최종 평가에만 썼다. 학습은 그 전 <strong>14일치</strong>만, 이 하루는 모델 선택 과정에서 한 번도 보지 않았다.</div></div>
+    <div class="vitem"><div class="vk">시계열 교차검증</div><div class="vb">시간 순서가 있는 데이터라 무작위로 나누면 미래가 과거로 샌다. 과거부터 점점 구간을 넓혀가는 <strong>확장 윈도우</strong> 방식으로 검증했다.</div></div>
+    <div class="vitem"><div class="vk">학습·검증 간격</div><div class="vb">두 구간 사이에 <strong>300초 간격</strong>을 둬, 직전 값을 그대로 베끼는 것만으로 점수가 부풀려지는 것을 막았다.</div></div>
+    <div class="vitem"><div class="vk">타겟 생성 분리</div><div class="vb">5분 후 정답값은 각 구간 안에서만 만들어, 검증 경계 너머의 정보가 새어 들어오지 않게 했다.</div></div>
   </div>
   <div class="two" style="margin-top:30px;">
     <div class="mcard tint">
