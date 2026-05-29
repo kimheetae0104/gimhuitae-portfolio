@@ -55,6 +55,13 @@
   .kpi .l{ font-size:13px; color:var(--muted); margin-top:10px; font-weight:600; line-height:1.5; }
   @media(max-width:760px){ .kpis{ grid-template-columns:1fr 1fr; } }
 
+  .pmeta{ display:grid; grid-template-columns:repeat(4,1fr); margin-top:20px; border-top:1px solid var(--line); }
+  .pmeta .col{ padding:18px 22px 4px; border-right:1px solid var(--line); }
+  .pmeta .col:last-child{ border-right:none; }
+  .pmeta .k{ font-size:12px; font-weight:800; letter-spacing:.04em; color:var(--sky); }
+  .pmeta .v{ font-size:15px; font-weight:600; color:var(--ink); margin-top:8px; line-height:1.55; }
+  @media(max-width:760px){ .pmeta{ grid-template-columns:1fr 1fr; } .pmeta .col:nth-child(2){ border-right:none; } }
+
   .sec-kicker{ font-size:14px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--sky); margin:0 0 8px; }
   h2.h2{ font-size:clamp(24px,3.6vw,40px); font-weight:800; letter-spacing:-.02em; line-height:1.14; color:var(--ink); margin:0; }
   .lead{ font-size:17px; line-height:1.8; color:#46506A; max-width:66ch; margin:20px 0 0; }
@@ -172,6 +179,13 @@
     <div class="kpi"><div class="n">0.68</div><div class="l">5분 예측 R²</div></div>
     <div class="kpi"><div class="n">+0.21</div><div class="l">직전값 유지 기준 대비</div></div>
     <div class="kpi"><div class="n">27.7ms</div><div class="l">예측 추론 시간</div></div>
+  </div>
+
+  <div class="pmeta">
+    <div class="col"><div class="k">역할</div><div class="v">팀 프로젝트 · 모델링과 데이터 누수 검증 담당</div></div>
+    <div class="col"><div class="k">기간</div><div class="v">2026 · SeSAC 제조 AI 부트캠프 (약 2주)</div></div>
+    <div class="col"><div class="k">데이터</div><div class="v">가스터빈 배출 감시 데이터 · 15일 · 1초 샘플링</div></div>
+    <div class="col"><div class="k">사용 기술</div><div class="v">Python · LightGBM · Ridge · 시계열 교차검증</div></div>
   </div>
 </section>
 
