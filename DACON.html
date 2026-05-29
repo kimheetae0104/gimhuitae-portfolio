@@ -8,92 +8,48 @@
 <link rel="stylesheet" href="shared/slide.css"/>
 <script src="shared/deck-stage.js?v=2" defer></script>
 <style>
-:root { --cn: #6D28D9; --cn-soft: #F2ECFB; }
+:root { --cn: #6D28D9; }
 
-/* ── 카드뉴스 커버 ── */
 .cn-eyebrow {
   font-family: var(--font-mono);
-  font-size: 26px;
+  font-size: 24px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--cn);
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 .cn-title {
   font-family: var(--font-sans);
   font-weight: 700;
-  font-size: 80px;
-  line-height: 1.05;
+  font-size: 64px;
+  line-height: 1.08;
   letter-spacing: -0.03em;
   color: var(--fg-1);
-  margin: 0 0 24px;
+  margin: 0 0 18px;
 }
 .cn-sub {
   font-family: var(--font-sans);
-  font-size: 30px;
-  line-height: 1.65;
+  font-size: 28px;
+  line-height: 1.6;
   color: var(--fg-2);
-  max-width: 64ch;
+  max-width: 80ch;
   margin: 0;
 }
-.cn-sub strong { color: var(--fg-1); font-weight: 600; }
+.cn-sub strong { color: var(--cn); font-weight: 700; }
 
-.cn-kpi-row {
-  display: flex;
-  gap: 0;
-  border-top: 1px solid var(--rule);
-  padding-top: 40px;
-  margin-top: 48px;
-}
-.cn-kpi {
-  flex: 1;
-  padding: 0 40px;
-  border-right: 1px solid var(--rule-soft);
-}
-.cn-kpi:first-child { padding-left: 0; }
-.cn-kpi:last-child { border-right: none; padding-right: 0; }
-.cn-kpi-val {
-  font-family: var(--font-mono);
-  font-size: 48px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--cn);
-  line-height: 1;
-  margin-bottom: 10px;
-}
-.cn-kpi-val.ink { color: var(--fg-1); }
-.cn-kpi-lbl {
-  font-family: var(--font-mono);
-  font-size: 18px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--fg-3);
-}
-
-/* ── 카드뉴스 EDA ── */
-.cn-h2 {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 46px;
-  line-height: 1.12;
-  letter-spacing: -0.025em;
-  color: var(--fg-1);
-  margin: 36px 0 0;
-}
-.cn-eda {
+.cn-imgs {
   flex: 1;
   display: grid;
-  gap: 24px;
-  margin-top: 32px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin-top: 44px;
   min-height: 0;
 }
-.cn-eda.two   { grid-template-columns: 1fr 1fr; }
-.cn-eda.three { grid-template-columns: 1fr 1fr 1fr; }
 .cn-fig {
   border: 1px solid var(--rule-soft);
   border-radius: var(--r-3);
   overflow: hidden;
-  background: var(--paper-100);
+  background: #fff;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -108,95 +64,14 @@
 }
 .cn-cap {
   font-family: var(--font-mono);
-  font-size: 17px;
+  font-size: 16px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--fg-3);
-  padding: 14px 18px;
+  padding: 13px 16px;
   border-top: 1px solid var(--rule-soft);
   background: var(--paper-50);
 }
-.cn-insight {
-  margin-top: 24px;
-  padding: 22px 28px;
-  background: var(--cn-soft);
-  border-left: 3px solid var(--cn);
-  border-radius: 0 var(--r-3) var(--r-3) 0;
-}
-.cn-insight p {
-  font-family: var(--font-mono);
-  font-size: 21px;
-  line-height: 1.6;
-  color: var(--fg-2);
-  margin: 0;
-}
-.cn-insight strong { color: var(--cn); font-weight: 700; }
-
-/* ── 성과 · 인증 ── */
-.cn-result {
-  flex: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 740px) 1fr;
-  gap: 48px;
-  margin-top: 28px;
-  align-items: center;
-  min-height: 0;
-}
-.cn-cert {
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-3);
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0 10px 32px rgba(17,24,39,0.10);
-}
-.cn-cert img { width: 100%; display: block; }
-.cn-cert-cap {
-  font-family: var(--font-mono);
-  font-size: 16px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--fg-3);
-  padding: 13px 18px;
-  border-top: 1px solid var(--rule-soft);
-  background: var(--paper-50);
-}
-.cn-rcol { display: flex; flex-direction: column; gap: 20px; }
-.cn-rcard {
-  padding: 24px 28px;
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-3);
-  background: var(--paper-100);
-}
-.cn-rcard.key {
-  border-color: var(--cn);
-  border-left: 3px solid var(--cn);
-  background: var(--cn-soft);
-}
-.cn-rcard-k {
-  font-family: var(--font-mono);
-  font-size: 17px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--fg-3);
-  margin-bottom: 10px;
-}
-.cn-rcard.key .cn-rcard-k { color: var(--cn); }
-.cn-rcard-v {
-  font-family: var(--font-mono);
-  font-size: 40px;
-  font-weight: 700;
-  color: var(--cn);
-  letter-spacing: -0.02em;
-  line-height: 1;
-  margin-bottom: 8px;
-}
-.cn-rcard-b {
-  font-family: var(--font-sans);
-  font-size: 21px;
-  color: var(--fg-2);
-  line-height: 1.5;
-}
-.cn-rcard-b strong { color: var(--fg-1); font-weight: 600; }
 </style>
 </head>
 <body>
@@ -213,59 +88,30 @@
 
 <deck-stage width="1920" height="1080">
 
-  <!-- ──────────────── 01 COVER ──────────────── -->
-  <section class="slide s-title" data-label="Cover">
+  <section class="slide" data-label="Dacon">
     <div class="top-rule">
       <span>Dacon — 스마트 창고 출고 지연 예측</span>
-      <span>01 / 03</span>
+      <span>Logistics · 2026</span>
     </div>
 
-    <div class="hero" style="flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:0;">
+    <div style="margin-top:40px;">
       <p class="cn-eyebrow">Logistics · Regression · Dacon 2026</p>
-      <h1 class="cn-title">스마트 창고<br>출고 지연 예측</h1>
-      <p class="cn-sub">운영 데이터 25만 행으로 향후 30분 평균 출고 지연(분)을 예측하는 DACON 경진대회. 테스트의 40%가 학습에 없는 창고 layout이라, <strong>모델 튜닝보다 검증 설계와 결합</strong>이 점수를 갈랐다. 4인 팀에서 마감 전 EDA 재정리와 최종 결합 단계를 맡았다.</p>
-
-      <div class="cn-kpi-row">
-        <div class="cn-kpi">
-          <div class="cn-kpi-val">9.755</div>
-          <div class="cn-kpi-lbl">Public LB · MAE</div>
-        </div>
-        <div class="cn-kpi">
-          <div class="cn-kpi-val ink">11위</div>
-          <div class="cn-kpi-lbl">607팀 중 · 상위 2%</div>
-        </div>
-        <div class="cn-kpi">
-          <div class="cn-kpi-val">70+</div>
-          <div class="cn-kpi-lbl">시도 · LB 17회 갱신</div>
-        </div>
-        <div class="cn-kpi">
-          <div class="cn-kpi-val ink">GroupKFold</div>
-          <div class="cn-kpi-lbl">외삽 검증 설계</div>
-        </div>
-      </div>
+      <h1 class="cn-title">스마트 창고 출고 지연 예측</h1>
+      <p class="cn-sub">스마트 창고 운영 데이터로 향후 30분 평균 출고 지연을 예측한 DACON 경진대회. 4인 팀 창동아레나로 <strong>607팀 중 11위 · 상위 2%</strong> 달성.</p>
     </div>
 
-    <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">김희태</a>
-    <span class="pageno">01</span>
-  </section>
-
-  <!-- ──────────────── 02 EDA ──────────────── -->
-  <section class="slide soft" data-label="EDA">
-    <div class="top-rule">
-      <span>탐색적 데이터 분석</span>
-      <span>02 / 03</span>
-    </div>
-
-    <h2 class="cn-h2">"강한 한 방"은 없었고,<br>조합과 파생의 여지가 있었다</h2>
-
-    <div class="cn-eda three">
+    <div class="cn-imgs">
       <div class="cn-fig">
-        <img src="dacon/target-distribution.png" alt="타겟 변수 분포"/>
-        <div class="cn-cap">타겟 분포 — long-tail (max 715.9)</div>
+        <img src="dacon/certificate.png" alt="DACON 수상 인증서"/>
+        <div class="cn-cap">수상 인증서 — 11/607 · TOP 2%</div>
+      </div>
+      <div class="cn-fig">
+        <img src="dacon/target-distribution.png" alt="타겟 분포"/>
+        <div class="cn-cap">타겟 분포 (long-tail)</div>
       </div>
       <div class="cn-fig">
         <img src="dacon/corr-top20.png" alt="타겟 상관 상위 20개 피처"/>
-        <div class="cn-cap">타겟 상관 상위 20개 피처</div>
+        <div class="cn-cap">타겟 상관 상위 20개</div>
       </div>
       <div class="cn-fig">
         <img src="dacon/feature-scatter.png" alt="핵심 파생 피처 산점도"/>
@@ -273,48 +119,8 @@
       </div>
     </div>
 
-    <div class="cn-insight">
-      <p><strong>핵심 발견</strong>: 원시 피처 최고 상관은 0.366 수준 — r=0.9 같은 단일 신호는 없었다. 도메인 파생 <strong>charger_util</strong>(robot_charging ÷ charger_count)이 상관 0.32 → <strong>0.607</strong>로 올라 가장 설명력 있는 신호가 됐고, 마감 전 EDA 재정리가 최종 결합 단계의 의미를 만들었다.</p>
-    </div>
-
     <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">김희태</a>
-    <span class="pageno">02</span>
-  </section>
-
-  <!-- ──────────────── 03 성과 · 인증 ──────────────── -->
-  <section class="slide" data-label="Certificate">
-    <div class="top-rule">
-      <span>성과 · 수상</span>
-      <span>03 / 03</span>
-    </div>
-
-    <h2 class="cn-h2">607팀 중 11위 — 상위 2%</h2>
-
-    <div class="cn-result">
-      <div class="cn-cert">
-        <img src="dacon/certificate.png" alt="DACON Certificate of Achievement — 스마트 창고 출고 지연 예측 AI 경진대회"/>
-        <div class="cn-cert-cap">DACON Monthly — Certificate of Achievement (#D20260529000009)</div>
-      </div>
-
-      <div class="cn-rcol">
-        <div class="cn-rcard key">
-          <div class="cn-rcard-k">최종 순위</div>
-          <div class="cn-rcard-v">11 / 607</div>
-          <div class="cn-rcard-b">스마트 창고 출고 지연 예측 AI 경진대회 · <strong>TOP 2%</strong> (2026.04 – 05)</div>
-        </div>
-        <div class="cn-rcard">
-          <div class="cn-rcard-k">팀 · 창동아레나</div>
-          <div class="cn-rcard-b">4인 팀 — 김희태 · TaeHyun99 · Tayyy · Shion</div>
-        </div>
-        <div class="cn-rcard">
-          <div class="cn-rcard-k">본인 역할</div>
-          <div class="cn-rcard-b">마감 며칠 전 <strong>EDA 재정리</strong>로 미활용 피처·상관 구조를 다시 찾고, <strong>greedy forward 최종 결합(v1320)</strong>으로 제출을 마무리했다.</div>
-        </div>
-      </div>
-    </div>
-
-    <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">김희태</a>
-    <span class="pageno">03</span>
+    <span class="pageno">01</span>
   </section>
 
 </deck-stage>

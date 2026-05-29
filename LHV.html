@@ -8,92 +8,48 @@
 <link rel="stylesheet" href="shared/slide.css"/>
 <script src="shared/deck-stage.js?v=2" defer></script>
 <style>
-:root { --cn: var(--accent-600); --cn-soft: var(--accent-100); }
+:root { --cn: var(--accent-600); }
 
-/* ── 카드뉴스 커버 ── */
 .cn-eyebrow {
   font-family: var(--font-mono);
-  font-size: 26px;
+  font-size: 24px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--cn);
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 .cn-title {
   font-family: var(--font-sans);
   font-weight: 700;
-  font-size: 88px;
-  line-height: 1.05;
+  font-size: 64px;
+  line-height: 1.08;
   letter-spacing: -0.03em;
   color: var(--fg-1);
-  margin: 0 0 24px;
+  margin: 0 0 18px;
 }
 .cn-sub {
   font-family: var(--font-sans);
-  font-size: 30px;
-  line-height: 1.65;
+  font-size: 28px;
+  line-height: 1.6;
   color: var(--fg-2);
-  max-width: 62ch;
+  max-width: 80ch;
   margin: 0;
 }
-.cn-sub strong { color: var(--fg-1); font-weight: 600; }
+.cn-sub strong { color: var(--cn); font-weight: 700; }
 
-.cn-kpi-row {
-  display: flex;
-  gap: 0;
-  border-top: 1px solid var(--rule);
-  padding-top: 40px;
-  margin-top: 52px;
-}
-.cn-kpi {
-  flex: 1;
-  padding: 0 40px;
-  border-right: 1px solid var(--rule-soft);
-}
-.cn-kpi:first-child { padding-left: 0; }
-.cn-kpi:last-child { border-right: none; padding-right: 0; }
-.cn-kpi-val {
-  font-family: var(--font-mono);
-  font-size: 50px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--cn);
-  line-height: 1;
-  margin-bottom: 10px;
-}
-.cn-kpi-val.ink { color: var(--fg-1); }
-.cn-kpi-lbl {
-  font-family: var(--font-mono);
-  font-size: 18px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--fg-3);
-}
-
-/* ── 카드뉴스 EDA ── */
-.cn-h2 {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 46px;
-  line-height: 1.12;
-  letter-spacing: -0.025em;
-  color: var(--fg-1);
-  margin: 36px 0 0;
-}
-.cn-eda {
+.cn-imgs {
   flex: 1;
   display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  margin-top: 32px;
+  margin-top: 44px;
   min-height: 0;
 }
-.cn-eda.two   { grid-template-columns: 1fr 1fr; }
-.cn-eda.three { grid-template-columns: 1fr 1fr 1fr; }
 .cn-fig {
   border: 1px solid var(--rule-soft);
   border-radius: var(--r-3);
   overflow: hidden;
-  background: var(--paper-100);
+  background: #fff;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -108,29 +64,14 @@
 }
 .cn-cap {
   font-family: var(--font-mono);
-  font-size: 17px;
+  font-size: 16px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--fg-3);
-  padding: 14px 18px;
+  padding: 13px 16px;
   border-top: 1px solid var(--rule-soft);
   background: var(--paper-50);
 }
-.cn-insight {
-  margin-top: 24px;
-  padding: 22px 28px;
-  background: var(--cn-soft);
-  border-left: 3px solid var(--cn);
-  border-radius: 0 var(--r-3) var(--r-3) 0;
-}
-.cn-insight p {
-  font-family: var(--font-mono);
-  font-size: 21px;
-  line-height: 1.6;
-  color: var(--fg-2);
-  margin: 0;
-}
-.cn-insight strong { color: var(--cn); font-weight: 700; }
 </style>
 </head>
 <body>
@@ -148,72 +89,35 @@
 
 <deck-stage width="1920" height="1080">
 
-  <!-- ──────────────── 01 COVER ──────────────── -->
-  <section class="slide s-title" data-label="Cover">
+  <section class="slide" data-label="LHV">
     <div class="top-rule">
       <span>LHV — 열풍로 발열량 예측</span>
-      <span>01 / 02</span>
+      <span>Steel · 2026</span>
     </div>
 
-    <div class="hero" style="flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:0;">
+    <div style="margin-top:40px;">
       <p class="cn-eyebrow">Steel Industry · Regression · SeSAC 2026</p>
-      <h1 class="cn-title">열풍로 LHV<br>발열량 예측</h1>
-      <p class="cn-sub">열풍로의 COG·BFG 혼합가스 발열량(LHV)을 5분 주기로 예측한다. 발열량을 바로 못 보니 COG를 보수적으로 더 넣던 운전을, <strong>현재 유량·온도·압력만으로 5분 뒤를 미리 읽는</strong> 데이터 기반 판단으로 바꾸려는 시도였다.</p>
+      <h1 class="cn-title">열풍로 LHV 발열량 예측</h1>
+      <p class="cn-sub">열풍로 COG·BFG 혼합가스의 5분 뒤 발열량(LHV)을 예측. 측정 지연으로 보수적으로 과잉 투입하던 COG를 <strong>데이터 기반 판단</strong>으로 — Ridge RMSE 11.99 / R² 0.428.</p>
+    </div>
 
-      <div class="cn-kpi-row">
-        <div class="cn-kpi">
-          <div class="cn-kpi-val">11.99</div>
-          <div class="cn-kpi-lbl">RMSE (kcal/Nm³)</div>
-        </div>
-        <div class="cn-kpi">
-          <div class="cn-kpi-val ink">0.428</div>
-          <div class="cn-kpi-lbl">R² Score</div>
-        </div>
-        <div class="cn-kpi">
-          <div class="cn-kpi-val">1.24M</div>
-          <div class="cn-kpi-lbl">Nm³/year 절감 추정</div>
-        </div>
-        <div class="cn-kpi">
-          <div class="cn-kpi-val ink">Ridge</div>
-          <div class="cn-kpi-lbl">최고 성능 모델</div>
-        </div>
+    <div class="cn-imgs">
+      <div class="cn-fig">
+        <img src="lhv/img/image4-35.png" alt="상관행렬 히트맵"/>
+        <div class="cn-cap">상관행렬 — 유량과 LHV</div>
+      </div>
+      <div class="cn-fig">
+        <img src="lhv/img/image2-31.png" alt="핵심 변수 히스토그램"/>
+        <div class="cn-cap">핵심 변수 분포</div>
+      </div>
+      <div class="cn-fig">
+        <img src="lhv/img/image3-45.png" alt="SHAP 피처 중요도"/>
+        <div class="cn-cap">SHAP — 피처 중요도</div>
       </div>
     </div>
 
     <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">김희태</a>
     <span class="pageno">01</span>
-  </section>
-
-  <!-- ──────────────── 02 EDA ──────────────── -->
-  <section class="slide soft" data-label="EDA">
-    <div class="top-rule">
-      <span>탐색적 데이터 분석</span>
-      <span>02 / 02</span>
-    </div>
-
-    <h2 class="cn-h2">EDA 한 장이 모델 방향을 바꿨다</h2>
-
-    <div class="cn-eda three">
-      <div class="cn-fig">
-        <img src="lhv/img/image4-35.png" alt="상관행렬 히트맵"/>
-        <div class="cn-cap">상관행렬 — 유량과 LHV의 선형 상관</div>
-      </div>
-      <div class="cn-fig">
-        <img src="lhv/img/image2-31.png" alt="핵심 변수 히스토그램"/>
-        <div class="cn-cap">핵심 변수 분포 · 이상치 확인</div>
-      </div>
-      <div class="cn-fig">
-        <img src="lhv/img/image3-45.png" alt="SHAP 피처 중요도"/>
-        <div class="cn-cap">SHAP — 피처 중요도 · 방향성</div>
-      </div>
-    </div>
-
-    <div class="cn-insight">
-      <p><strong>핵심 발견</strong>: 처음엔 트리 모델이 유리할 거라 봤지만, COG 유량·혼합비가 LHV와 <strong>뚜렷한 선형 상관</strong>을 보였다. 그래서 복잡한 앙상블보다 정규화 선형 모델(Ridge)이 더 안정적으로 맞았다 — RMSE 11.99 / R² 0.428.</p>
-    </div>
-
-    <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">김희태</a>
-    <span class="pageno">02</span>
   </section>
 
 </deck-stage>
