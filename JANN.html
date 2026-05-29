@@ -17,8 +17,8 @@
   html{ scroll-behavior:smooth; }
   body{ margin:0; background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased;
     font-family:var(--font-sans),"Apple SD Gothic Neo",sans-serif;
-    font-size:17px; line-height:1.75; word-break:keep-all; overflow-wrap:break-word;
-    text-rendering:optimizeLegibility; }
+    font-size:1.0625rem; line-height:1.7; letter-spacing:-.01em;
+    word-break:keep-all; overflow-wrap:break-word; text-rendering:optimizeLegibility; }
   a{ color:inherit; text-decoration:none; }
   .wrap{ max-width:1080px; margin:0 auto; padding:0 28px; }
 
@@ -44,9 +44,9 @@
     text-wrap:balance; }
   h2.h2{ font-size:clamp(28px,4vw,46px); font-weight:700; letter-spacing:-.03em; line-height:1.16; margin:0;
     text-wrap:balance; }
-  .lead{ font-size:clamp(17px,1.9vw,21px); line-height:1.75; color:var(--ink-2); margin:var(--s5) 0 0;
-    max-width:30em; text-wrap:pretty; }
-  .lead.wide{ max-width:34em; }
+  .lead{ font-size:clamp(17px,1.9vw,20px); line-height:1.72; color:var(--ink-2); margin:var(--s5) 0 0;
+    max-width:38em; text-wrap:pretty; }
+  .lead.wide{ max-width:43em; }
   .lead strong{ color:var(--ink); font-weight:700; }
   .lead + .lead{ margin-top:var(--s4); }
 
@@ -190,7 +190,7 @@
     <div class="two lead-left">
       <div>
         <p class="kicker">01 — 왜 분자 미식학인가</p>
-        <h2 class="h2">레시피 앱은 재료를 찾고,<br>JANN은 맛의 조합을 찾는다.</h2>
+        <h2 class="h2">레시피 앱은 재료를 찾고, JANN은 맛의 조합을 찾는다.</h2>
         <p class="lead wide">대부분의 레시피 앱은 재료 이름·인기·태그로 추천한다. 정작 <strong>왜 이 재료들이 어울리는지</strong>는 설명하지 못한다. 나는 그 "이유 없는 추천"이 늘 아쉬웠다.</p>
         <p class="lead wide">음식의 향미는 결국 화학 화합물이다. 두 재료가 공유하는 향미 분자가 많을수록 사람은 그 조합을 더 자연스럽게 느낀다. 그렇다면 추천도 그 근거 위에 세울 수 있다고 봤다.</p>
         <p class="cite">근거: Ahn et al., "Flavor network and the principles of food pairing", Scientific Reports, 2011</p>
@@ -249,7 +249,7 @@
     <div class="two lead-left">
       <div>
         <p class="kicker">04 — 파이프라인 설계</p>
-        <h2 class="h2">네트워크가 끊겨도<br>향미 분석은 멈추지 않는다.</h2>
+        <h2 class="h2">네트워크가 끊겨도 향미 분석은 멈추지 않는다.</h2>
         <p class="lead wide">인식은 흔들릴 수 있어도 향미 분석은 항상 돌아가야 한다고 봤다. 그래서 추천의 핵심인 향미 DB를 <strong>SQLite 오프라인</strong>으로 고정하고, 인식 경로만 유연하게 뒀다.</p>
         <p class="lead wide">YOLO가 못 보면 GPT-4o Vision, 그다음 Apple Vision Framework로 넘어가는 3단계 폴백이다.</p>
       </div>
