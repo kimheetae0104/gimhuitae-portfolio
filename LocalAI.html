@@ -169,7 +169,7 @@
       <div class="kpi"><div class="v ac">$0<span style="font-size:16px;">/월</span></div><div class="l">API 비용 — 로컬 추론</div></div>
       <div class="kpi"><div class="v">100%</div><div class="l">로컬 — 데이터 외부 전송 0</div></div>
       <div class="kpi"><div class="v">2.1s</div><div class="l">로컬 LLM 평균 응답</div></div>
-      <div class="kpi"><div class="v ac">0건</div><div class="l">자동 생성 글 수치 환각</div></div>
+      <div class="kpi"><div class="v ac">5단계</div><div class="l">배포 전 생성 글 검증</div></div>
     </div>
     <div class="pmeta">
       <div class="m"><div class="k">역할</div><div class="v">개인 프로젝트 · 설계·구현 전부</div></div>
@@ -270,8 +270,8 @@
         <div class="vc hl"><div class="vn">05</div><div class="vname">Gemini 검증</div><div class="vd">종목 혼동·수치 환각을 다각도 검토, critical이면 배포 차단</div></div>
       </div>
       <div class="zero">
-        <div class="z">0건</div>
-        <p>한 번에 잘 쓰는 모델을 찾기보다 <b>틀린 글이 통과하지 못하는 구조</b>를 먼저 세웠다. Gemini 검증이 critical이면 자동 배포를 멈췄고, 그 결과 <b>수치 환각 0건</b>까지 갔다.</p>
+        <div class="z">5단계</div>
+        <p>한 번에 잘 쓰는 모델을 찾기보다 <b>틀린 글이 통과하지 못하는 구조</b>를 먼저 세웠다. Gemini 검증이 critical이면 자동 배포를 멈춘다. 수치 환각을 <b>대부분 배포 전에 걸러냈지만</b>, 완전히 없애진 못해 검증 규칙은 계속 손보는 중이다.</p>
       </div>
     </div>
 
@@ -283,7 +283,7 @@
         <div class="it"><div class="v">v4~6</div><div><div class="t">벡터 검색 시도 → 한계</div><div class="d">구조 강한 문서엔 정규식이 더 정확. "RAG가 항상 정답은 아니다"를 여기서 배웠다.</div></div></div>
         <div class="it"><div class="v">v7~9</div><div><div class="t">검증 레이어 추가</div><div class="d">잘 쓰게 만들기보다 틀린 글을 거르는 게 급했다. 형식·팩트·모순 검증을 붙였다.</div></div></div>
         <div class="it"><div class="v">v10~12</div><div><div class="t">반자동화로 전환</div><div class="d">완전 자동화보다 사람이 마지막에 판단하는 반자동화가 현실적이라고 봤다. 검수는 끝까지 남겼다.</div></div></div>
-        <div class="it last"><div class="v">v13</div><div><div class="t">RAG + 5중 검증 + 다중 배포</div><div class="d">ChromaDB 220개 글 + Gemini 검증으로 "생성→검증→배포" 루프를 닫았다. 수치 환각 0건 확인.</div></div></div>
+        <div class="it last"><div class="v">v13</div><div><div class="t">RAG + 5중 검증 + 다중 배포</div><div class="d">ChromaDB 220개 글 + Gemini 검증으로 "생성→검증→배포" 루프를 닫았다. 수치 환각을 배포 전에 잡아내는 구조를 갖췄다.</div></div></div>
       </div>
     </div>
   </div>
