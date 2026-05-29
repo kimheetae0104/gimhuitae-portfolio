@@ -131,6 +131,72 @@
   margin: 0;
 }
 .cn-insight strong { color: var(--cn); font-weight: 700; }
+
+/* ── 성과 · 인증 ── */
+.cn-result {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 740px) 1fr;
+  gap: 48px;
+  margin-top: 28px;
+  align-items: center;
+  min-height: 0;
+}
+.cn-cert {
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 10px 32px rgba(17,24,39,0.10);
+}
+.cn-cert img { width: 100%; display: block; }
+.cn-cert-cap {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  padding: 13px 18px;
+  border-top: 1px solid var(--rule-soft);
+  background: var(--paper-50);
+}
+.cn-rcol { display: flex; flex-direction: column; gap: 20px; }
+.cn-rcard {
+  padding: 24px 28px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-3);
+  background: var(--paper-100);
+}
+.cn-rcard.key {
+  border-color: var(--cn);
+  border-left: 3px solid var(--cn);
+  background: var(--cn-soft);
+}
+.cn-rcard-k {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 10px;
+}
+.cn-rcard.key .cn-rcard-k { color: var(--cn); }
+.cn-rcard-v {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--cn);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.cn-rcard-b {
+  font-family: var(--font-sans);
+  font-size: 21px;
+  color: var(--fg-2);
+  line-height: 1.5;
+}
+.cn-rcard-b strong { color: var(--fg-1); font-weight: 600; }
 </style>
 </head>
 <body>
@@ -151,7 +217,7 @@
   <section class="slide s-title" data-label="Cover">
     <div class="top-rule">
       <span>Dacon — 스마트 창고 출고 지연 예측</span>
-      <span>01 / 02</span>
+      <span>01 / 03</span>
     </div>
 
     <div class="hero" style="flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:0;">
@@ -166,7 +232,7 @@
         </div>
         <div class="cn-kpi">
           <div class="cn-kpi-val ink">11위</div>
-          <div class="cn-kpi-lbl">최종 순위 · 상위 4%</div>
+          <div class="cn-kpi-lbl">607팀 중 · 상위 2%</div>
         </div>
         <div class="cn-kpi">
           <div class="cn-kpi-val">70+</div>
@@ -187,7 +253,7 @@
   <section class="slide soft" data-label="EDA">
     <div class="top-rule">
       <span>탐색적 데이터 분석</span>
-      <span>02 / 02</span>
+      <span>02 / 03</span>
     </div>
 
     <h2 class="cn-h2">"강한 한 방"은 없었고,<br>조합과 파생의 여지가 있었다</h2>
@@ -213,6 +279,42 @@
 
     <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">김희태</a>
     <span class="pageno">02</span>
+  </section>
+
+  <!-- ──────────────── 03 성과 · 인증 ──────────────── -->
+  <section class="slide" data-label="Certificate">
+    <div class="top-rule">
+      <span>성과 · 수상</span>
+      <span>03 / 03</span>
+    </div>
+
+    <h2 class="cn-h2">607팀 중 11위 — 상위 2%</h2>
+
+    <div class="cn-result">
+      <div class="cn-cert">
+        <img src="dacon/certificate.png" alt="DACON Certificate of Achievement — 스마트 창고 출고 지연 예측 AI 경진대회"/>
+        <div class="cn-cert-cap">DACON Monthly — Certificate of Achievement (#D20260529000009)</div>
+      </div>
+
+      <div class="cn-rcol">
+        <div class="cn-rcard key">
+          <div class="cn-rcard-k">최종 순위</div>
+          <div class="cn-rcard-v">11 / 607</div>
+          <div class="cn-rcard-b">스마트 창고 출고 지연 예측 AI 경진대회 · <strong>TOP 2%</strong> (2026.04 – 05)</div>
+        </div>
+        <div class="cn-rcard">
+          <div class="cn-rcard-k">팀 · 창동아레나</div>
+          <div class="cn-rcard-b">4인 팀 — 김희태 · TaeHyun99 · Tayyy · Shion</div>
+        </div>
+        <div class="cn-rcard">
+          <div class="cn-rcard-k">본인 역할</div>
+          <div class="cn-rcard-b">마감 며칠 전 <strong>EDA 재정리</strong>로 미활용 피처·상관 구조를 다시 찾고, <strong>greedy forward 최종 결합(v1320)</strong>으로 제출을 마무리했다.</div>
+        </div>
+      </div>
+    </div>
+
+    <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">김희태</a>
+    <span class="pageno">03</span>
   </section>
 
 </deck-stage>
