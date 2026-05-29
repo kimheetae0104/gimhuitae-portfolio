@@ -152,7 +152,7 @@
 
   <p class="kicker">IGCC 복합발전 · 제조 AI</p>
   <h1 class="htitle">가스터빈 배기 NOx 시뮬레이션 &amp; 5분 후 예측</h1>
-  <div class="tagline">점수를 올리기는 쉬웠고, 그 점수를 믿게 만드는 일이 어려웠다.</div>
+  <div class="tagline">R²를 올리는 건 금방이었다. 정작 오래 붙든 건, 그 점수를 믿어도 되는지였다.</div>
 
   <div class="badges">
     <div class="badge">
@@ -174,13 +174,6 @@
     <div class="namepill"><span class="dot"></span><span>NOxO · 가스터빈 배기 NOx 시뮬레이션 &amp; 5분 후 예측 · SeSAC 제조 AI 2026</span></div>
   </div>
 
-  <div class="kpis">
-    <div class="kpi"><div class="n">0.71</div><div class="l">시뮬레이션 NOx R²</div></div>
-    <div class="kpi"><div class="n">0.68</div><div class="l">5분 예측 R²</div></div>
-    <div class="kpi"><div class="n">+0.21</div><div class="l">직전값 유지 기준 대비</div></div>
-    <div class="kpi"><div class="n">27.7ms</div><div class="l">예측 추론 시간</div></div>
-  </div>
-
   <div class="pmeta">
     <div class="col"><div class="k">역할</div><div class="v">팀 프로젝트 · 모델링과 데이터 누수 검증 담당</div></div>
     <div class="col"><div class="k">기간</div><div class="v">2026 · SeSAC 제조 AI 부트캠프 (약 2주)</div></div>
@@ -192,7 +185,7 @@
 <section class="panel" id="problem">
   <p class="sec-kicker">01 — 문제 정의</p>
   <h2 class="h2">같은 발전소 데이터여도<br>현장에서 필요한 질문은 둘이었다.</h2>
-  <p class="lead">"제어밸브를 바꾸면 NOx가 어떻게 되나"라는 <strong>시뮬레이션</strong> 질문과 "지금 이대로면 5분 뒤 NOx는?"이라는 <strong>5분 후 예측</strong> 질문. 입력·갱신 주기·평가가 전혀 달라 하나로 묶지 않고 둘로 분리해 설계했다.</p>
+  <p class="lead">하나는 "제어값을 이렇게 바꾸면 NOx가 어떻게 되지?", 다른 하나는 "지금처럼 두면 5분 뒤 NOx는 얼마지?"였다. 쓰는 입력도, 갱신 주기도, 잘 맞았는지 보는 기준도 달랐다. 한 모델에 욱여넣는 대신 둘로 나눠 만든 이유다.</p>
   <div class="two">
     <div class="mcard">
       <span class="tag">모델 1</span>
@@ -216,7 +209,7 @@
 <section class="panel" id="models">
   <p class="sec-kicker">02 — 모델 1 · 운전 시뮬레이션</p>
   <h2 class="h2">1초 데이터를 그대로 쓰면<br>모델이 과거값을 베끼기 쉬웠다.</h2>
-  <p class="lead">1초 데이터는 인접 값이 거의 같아(자기상관 r=0.989) 과거값 복사 경향이 강하다. <strong>1분 평균 집계</strong>로 의미 있는 변동만 남기고, 원시 39 + 파생 10 = 49개 피처에 <strong>Ridge + LightGBM 앙상블</strong>. NOx R² 0.71은 변동 폭이 워낙 작기 때문(std ≈ 0.19 ppm).</p>
+  <p class="lead">1초 간격이라 옆 값이 거의 똑같다(자기상관 0.989). 그러다 보니 모델이 "방금 값"을 그대로 베껴도 점수가 잘 나왔다. 1분 단위로 평균 내 의미 있는 변동만 남기고, 원시 39개에 파생 10개를 더해 Ridge와 LightGBM을 앙상블했다. 아래 DWATT·TTXM은 거의 물리적으로 정해지는 값이라 쉽게 맞았고, 진짜 어려운 건 NOx였다.</p>
   <div class="chips">
     <div class="chip on"><div class="v">0.71</div><div class="l">NOx R²</div></div>
     <div class="chip"><div class="v">0.999</div><div class="l">DWATT R²</div></div>
@@ -227,8 +220,8 @@
 
 <section class="panel">
   <p class="sec-kicker">03 — 모델 2 · 5분 후 예측</p>
-  <h2 class="h2">5분 후 예측은 평균값보다<br>순간적인 흔들림을 살리는 쪽이었다.</h2>
-  <p class="lead">1분 평균은 미세 변동이 사라져 5분 점예측이 안 됐다. <strong>1초 원시 데이터를 유지</strong>한 채 5분 뒤 값을 직접 맞히는 구조로 바꾸고, 시차·차분·이동통계·상호작용·시간 피처까지 <strong>213개</strong> 구성.</p>
+  <h2 class="h2">5분 뒤를 맞히려면<br>평균이 아니라 순간의 흔들림을 봐야 했다.</h2>
+  <p class="lead">1분 평균을 쓰니 정작 예측에 필요한 미세 변동이 다 깎여 나갔다. 그래서 1초 원시 데이터를 그대로 두고, 5분 뒤 값을 바로 맞히도록 바꿨다. 시차·차분·이동통계·시간 정보까지 더해 피처를 다시 짰다.</p>
   <div class="journey">
     <div class="jstep"><div class="n">0.49</div><div class="l">O₂ 완전 제외 · 누수 차단 기준선</div></div>
     <div class="jstep"><div class="n">0.625</div><div class="l">피처 엔지니어링 · O₂ 없이</div></div>
@@ -247,19 +240,19 @@
     <p class="fk">04 — 핵심 난관 · 데이터 누수</p>
     <div class="big">0.997</div>
     <h2>"너무 좋다"는 의심에서 시작했다.</h2>
-    <p class="flead">O₂ 센서가 NOx와 상관 0.997, 성능이 R²≈0.99까지 치솟았다. 그대로 믿는 대신 원인을 팠다 — CEMS 희석보정식에서 O₂가 <strong>NOx 라벨 계산에 직접 들어간다.</strong> 정답 일부를 보고 맞히는 셈이었다.</p>
+    <p class="flead">O₂ 센서를 넣자 R²가 0.99까지 뛰었다. 보통이면 좋아했겠지만, 너무 잘 나와서 오히려 의심했다. 파보니 라벨 계산식이 문제였다. CEMS가 O₂로 NOx를 보정하는데, 그 O₂를 입력으로 <strong>다시 넣은 셈</strong>이라 정답을 일부 들여다보고 있었다.</p>
     <span class="code">NOx = NOx_raw × (21 − ref) / (21 − O₂)</span>
     <div class="gcards">
       <div class="gcard">
         <span class="gt">모델 1 처리</span>
         <h4>현재 O₂ 제외 → 과거 O₂만</h4>
-        <p>제어 시나리오에선 O₂도 함께 바뀐다. 현재 O₂는 미래 정보. 현재값을 빼고 과거 lag·물리 변환으로 대체했다.</p>
+        <p>제어값을 바꾸면 O₂도 따라 움직인다. 그러니 현재 O₂를 넣는 건 미래를 미리 보는 셈이다. 현재값은 빼고, 과거 값과 물리식 변환으로 대신했다.</p>
         <div class="delta"><span class="was">≈0.99</span><span>→ 누수 제거</span><span class="now">≈0.71</span></div>
       </div>
       <div class="gcard">
         <span class="gt">모델 2 처리</span>
         <h4>O₂ 현재값은 미래 정보 아님을 논증</h4>
-        <p>5분 후 예측에서 O₂(t)는 <strong>이미 관측된 현재값</strong>. 미래 정보가 아님을 확인하고 재포함해 0.49→0.68로 끌어올렸다.</p>
+        <p>반대로 5분 뒤를 예측할 땐 현재 O₂는 <strong>이미 측정이 끝난 값</strong>이라 미래 정보가 아니다. 누수가 아닌 걸 확인하고 다시 넣어 0.49에서 0.68로 올렸다.</p>
         <div class="delta"><span class="was">0.49</span><span>→ 재포함</span><span class="now">≈0.68</span></div>
       </div>
     </div>
@@ -279,15 +272,15 @@
     <div class="mcard tint">
       <span class="tag">기준 대비</span>
       <h3>0.46 → 0.68 (+0.21)</h3>
-      <p style="margin:0;font-size:16px;line-height:1.7;color:#46506A;">"5분 뒤 = 지금 값"으로 찍어도 R²≈0.46. 그래서 절대 R²가 아니라 <strong>기준 모델 대비 개선폭</strong>으로 가치를 판단했다.</p>
+      <p style="margin:0;font-size:16px;line-height:1.7;color:#46506A;">"5분 뒤 값은 지금 값과 같다"고 그냥 찍어도 R²가 0.46은 나온다. 그래서 절대 점수가 아니라, 이 기준선을 얼마나 넘었는지로 모델을 평가했다.</p>
     </div>
     <div class="mcard">
       <span class="tag">한계</span>
       <h3>R² 0.9는 왜 안 나오나</h3>
-      <p style="margin:0;font-size:16px;line-height:1.7;color:#46506A;">이 15일치는 NOx 변동이 거의 없는 정상운전 구간이라 절대 R²를 올릴 여지가 작다. 부하 변동·시동/정지 데이터가 있어야 0.9급이 가능하다.</p>
+      <p style="margin:0;font-size:16px;line-height:1.7;color:#46506A;">받은 15일치가 전부 정상운전 구간이라 NOx가 거의 안 흔들린다. 부하 변동이나 시동·정지 구간이 있어야 더 높은 R²도 노려볼 수 있다.</p>
     </div>
   </div>
-  <div class="takeaway"><p>점수를 밀어 올리는 것보다 <strong>무엇을 입력으로 써도 되는지, 무엇과 비교해야 하는지</strong>를 정하는 일이 더 중요했다. 핵심은 누수 없는 비교 기준을 세우는 일이었다.</p></div>
+  <div class="takeaway"><p>이 프로젝트에서 제일 오래 붙든 건 모델 튜닝이 아니라 <strong>"이 값을 입력으로 써도 되나?"</strong>라는 질문이었다. 점수를 올리는 것보다, 그 점수를 믿을 수 있게 만드는 게 먼저였다.</p></div>
 </section>
 
 <footer class="foot">
