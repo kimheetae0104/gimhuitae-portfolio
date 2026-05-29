@@ -60,6 +60,7 @@
   @media(max-width:740px){ .thi, .thi.cols3{ grid-template-columns:1fr; } }
   .shot{ margin-top:clamp(40px,6vh,72px); border-radius:var(--rad); overflow:hidden; border:1px solid var(--line); box-shadow:0 40px 90px rgba(0,0,0,.5); }
   .shot img{ width:100%; display:block; }
+  .shotcap{ font-family:var(--mono); font-size:12.5px; color:var(--ink-3); margin-top:13px; text-align:center; line-height:1.5; }
 
   .kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; margin-top:clamp(40px,6vh,64px); background:var(--line-soft); border:1px solid var(--line-soft); border-radius:var(--rad); overflow:hidden; }
   .kpi{ background:var(--bg-2); padding:26px 22px; }
@@ -255,6 +256,8 @@
       <span class="ms"><b>6개 소스</b> API 크롤링 — DART·Naver</span>
       <span class="ms"><b>4~6분</b> (수동 2시간 대비)</span>
     </div>
+    <div class="shot" style="margin-top:clamp(36px,5vh,56px);"><img src="localai/img/sheets-result.webp" alt="실제 자동 업로드 결과 — Google Sheets에 기록된 생성 글 목록"/></div>
+    <p class="shotcap">실제 자동 업로드 결과 — 검증 점수·종목명·버전이 Google Sheets에 자동 기록돼, 사람이 마지막 판단을 빠르게 한다.</p>
   </div>
 </section>
 
@@ -303,6 +306,22 @@
         <div class="it"><div class="v">v10~12</div><div><div class="t">반자동화로 전환</div><div class="d">완전 자동화보다 사람이 마지막에 판단하는 반자동화가 현실적이라고 봤다. 검수는 끝까지 남겼다.</div></div></div>
         <div class="it last"><div class="v">v13</div><div><div class="t">RAG + 5중 검증 + 다중 배포</div><div class="d">ChromaDB에 과거 양질 글 220개를 쌓아 품질 참고로 쓰고, GPT·Claude·Gemini 교차 검증까지 얹어 "수집→생성→검증→배포" 루프를 닫았다. 수치 환각을 배포 전에 잡아내는 구조를 갖췄다.</div></div></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIMITS -->
+<section id="limits">
+  <div class="wrap">
+    <div class="col">
+      <p class="eyebrow">03 — 로컬 모델의 한계</p>
+      <h2 class="h2">장점보다 먼저, 한계를 확인했다.</h2>
+      <p class="prose sec-foot">로컬이라서 다 되는 건 아니었다. 어디까지 로컬로 충분하고 어디부터 클라우드가 필요한지 직접 부딪혀 익혔고, 그게 '로컬 초안 + 클라우드 검증'이라는 하이브리드 설계로 이어졌다.</p>
+    </div>
+    <div class="thi cols3 sec-foot">
+      <div class="c"><div class="k">한계 01</div><h3>긴 컨텍스트에 약하다</h3><p>2,000 토큰이 넘는 입력은 응답 품질이 급격히 떨어졌다. 긴 문서는 결국 청킹·전처리가 필요했다.</p></div>
+      <div class="c"><div class="k">한계 02</div><h3>한국어 품질 격차</h3><p>영어보다 한국어 응답이 눈에 띄게 약했다. 모델 선택 기준에 "내 언어에서 쓸 만한가"를 넣어야 했다.</p></div>
+      <div class="c"><div class="k">그래서</div><h3>하이브리드가 답이었다</h3><p>완벽한 대체가 아니라, 로컬로 충분한 곳(초안·개인 데이터)과 클라우드가 나은 곳(검증·품질)을 나눴다.</p></div>
     </div>
   </div>
 </section>
