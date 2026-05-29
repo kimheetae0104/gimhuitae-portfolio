@@ -208,7 +208,7 @@
 
 <section class="panel" id="models">
   <p class="sec-kicker">02 — 모델 1 · 운전 시뮬레이션</p>
-  <h2 class="h2">1초 데이터를 그대로 쓰면<br>모델이 과거값을 베끼기 쉬웠다.</h2>
+  <h2 class="h2">1초 데이터를 그대로 쓰지 않고<br>1분 평균으로 묶었다.</h2>
   <p class="lead">1초 간격이라 옆 값이 거의 똑같다(자기상관 0.989). 그러다 보니 모델이 "방금 값"을 그대로 베껴도 점수가 잘 나왔다. 1분 단위로 평균 내 의미 있는 변동만 남기고, 원시 39개에 파생 10개를 더해 Ridge와 LightGBM을 앙상블했다. 아래 DWATT·TTXM은 거의 물리적으로 정해지는 값이라 쉽게 맞았고, 진짜 어려운 건 NOx였다.</p>
   <div class="chips">
     <div class="chip on"><div class="v">0.71</div><div class="l">NOx R²</div></div>
@@ -220,8 +220,8 @@
 
 <section class="panel">
   <p class="sec-kicker">03 — 모델 2 · 5분 후 예측</p>
-  <h2 class="h2">5분 뒤를 맞히려면<br>평균이 아니라 순간의 흔들림을 봐야 했다.</h2>
-  <p class="lead">1분 평균을 쓰니 정작 예측에 필요한 미세 변동이 다 깎여 나갔다. 그래서 1초 원시 데이터를 그대로 두고, 5분 뒤 값을 바로 맞히도록 바꿨다. 시차·차분·이동통계·시간 정보까지 더해 피처를 다시 짰다.</p>
+  <h2 class="h2">이번엔 거꾸로<br>1초 원시 데이터를 그대로 뒀다.</h2>
+  <p class="lead">모델 1처럼 1분 평균을 쓰면, 정작 5분 예측에 필요한 미세 변동이 다 깎여 나간다. 같은 데이터인데 이번엔 반대 선택이 맞았다. 1초 값을 살린 채로 5분 뒤를 바로 맞히도록 짜고, 시차·차분·이동통계·시간 정보까지 더해 피처를 새로 구성했다.</p>
   <div class="journey">
     <div class="jstep"><div class="n">0.49</div><div class="l">O₂ 완전 제외 · 누수 차단 기준선</div></div>
     <div class="jstep"><div class="n">0.625</div><div class="l">피처 엔지니어링 · O₂ 없이</div></div>
@@ -239,7 +239,7 @@
   <div class="feature">
     <p class="fk">04 — 핵심 난관 · 데이터 누수</p>
     <div class="big">0.997</div>
-    <h2>"너무 좋다"는 의심에서 시작했다.</h2>
+    <h2>R² 0.99는 실력이 아니라<br>데이터 누수였다.</h2>
     <p class="flead">O₂ 센서를 넣자 R²가 0.99까지 뛰었다. 보통이면 좋아했겠지만, 너무 잘 나와서 오히려 의심했다. 파보니 라벨 계산식이 문제였다. CEMS가 O₂로 NOx를 보정하는데, 그 O₂를 입력으로 <strong>다시 넣은 셈</strong>이라 정답을 일부 들여다보고 있었다.</p>
     <span class="code">NOx = NOx_raw × (21 − ref) / (21 − O₂)</span>
     <div class="gcards">
@@ -251,7 +251,7 @@
       </div>
       <div class="gcard">
         <span class="gt">모델 2 처리</span>
-        <h4>O₂ 현재값은 미래 정보 아님을 논증</h4>
+        <h4>5분 예측에선 현재 O₂를 다시 넣었다</h4>
         <p>반대로 5분 뒤를 예측할 땐 현재 O₂는 <strong>이미 측정이 끝난 값</strong>이라 미래 정보가 아니다. 누수가 아닌 걸 확인하고 다시 넣어 0.49에서 0.68로 올렸다.</p>
         <div class="delta"><span class="was">0.49</span><span>→ 재포함</span><span class="now">≈0.68</span></div>
       </div>
