@@ -2,136 +2,69 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8"/>
-<title>LHV — 열풍로 발열량 예측</title>
+<title>LHV — 열풍로 발열량 예측 · 김희태</title>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <link rel="stylesheet" href="shared/tokens.css"/>
-<link rel="stylesheet" href="shared/slide.css"/>
-<script src="shared/deck-stage.js?v=5" defer></script>
 <style>
-:root { --cn: var(--accent-600); }
-
-.cn-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 24px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--cn);
-  margin-bottom: 18px;
-}
-.cn-title {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 64px;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
-  color: var(--fg-1);
-  margin: 0 0 18px;
-}
-.cn-sub {
-  font-family: var(--font-sans);
-  font-size: 28px;
-  line-height: 1.6;
-  color: var(--fg-2);
-  max-width: 80ch;
-  margin: 0;
-}
-.cn-sub strong { color: var(--cn); font-weight: 700; }
-
-.cn-imgs {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-top: 44px;
-  min-height: 0;
-}
-.cn-fig {
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-3);
-  overflow: hidden;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-.cn-fig img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  flex: 1;
-  display: block;
-  min-height: 0;
-}
-.cn-cap {
-  font-family: var(--font-mono);
-  font-size: 16px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--fg-3);
-  padding: 13px 16px;
-  border-top: 1px solid var(--rule-soft);
-  background: var(--paper-50);
-}
-
-/* ── 모바일 반응형 (deck-stage responsive) ── */
-@media (max-width: 768px) {
-  section.slide { padding: 70px 20px 36px; height: auto; overflow: visible; }
-  .top-rule { font-size: 12px; padding-bottom: 16px; }
-  .cn-eyebrow { font-size: 13px; margin-bottom: 12px; }
-  .cn-title { font-size: 32px; }
-  .cn-sub { font-size: 17px; max-width: none; }
-  .cn-imgs { grid-template-columns: 1fr !important; gap: 16px; margin-top: 24px; }
-  .cn-fig img { height: auto; max-height: 78vh; }
-  .pageno, .pageno-mark { display: none; }
-}
+  :root{ --bg:#FAFAF8; --ink:#1A1A1A; --ink-2:#54545A; --ink-3:#8C8C92; --accent:#2647B8; --line:rgba(0,0,0,.10); --line-soft:rgba(0,0,0,.06); --rad:14px;
+    --font-ui:"Plus Jakarta Sans",-apple-system,"Apple SD Gothic Neo",sans-serif; --mono:"Space Mono",ui-monospace,monospace; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:var(--font-ui); font-size:1.0625rem; line-height:1.7;
+    letter-spacing:-.011em; word-break:keep-all; -webkit-font-smoothing:antialiased; }
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width:960px; margin:0 auto; padding:0 28px; }
+  .nav{ border-bottom:1px solid var(--line-soft); }
+  .nav .in{ max-width:960px; margin:0 auto; padding:0 28px; height:56px; display:flex; align-items:center; justify-content:space-between; }
+  .nav .l{ font-weight:700; letter-spacing:-.02em; }
+  .nav .r{ display:flex; gap:18px; align-items:center; }
+  .nav .r a{ font-size:14px; font-weight:600; color:var(--ink-2); }
+  .nav .r a:hover{ color:var(--ink); }
+  .hero{ padding:clamp(48px,8vh,84px) 0 0; }
+  .sidetag{ display:inline-block; font-family:var(--mono); font-size:12px; letter-spacing:.08em; color:var(--ink-3);
+    border:1px solid var(--line); border-radius:999px; padding:6px 13px; }
+  .eyebrow{ font-family:var(--mono); font-size:13px; letter-spacing:.1em; color:var(--accent); margin:20px 0 12px; }
+  h1{ font-size:clamp(34px,5vw,56px); font-weight:800; letter-spacing:-.035em; line-height:1.08; margin:0; text-wrap:balance; }
+  .sub{ font-size:clamp(18px,2vw,21px); line-height:1.6; color:var(--ink-2); margin:18px 0 0; max-width:62ch; text-wrap:pretty; }
+  .sub strong{ color:var(--accent); font-weight:700; }
+  .chips{ display:flex; flex-wrap:wrap; gap:9px; margin-top:22px; }
+  .chip{ font-family:var(--mono); font-size:12.5px; color:var(--ink-2); background:#fff; border:1px solid var(--line); border-radius:999px; padding:7px 13px; }
+  .chip b{ color:var(--ink); }
+  .imgs{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin:clamp(40px,6vh,64px) 0 0; }
+  .fig{ background:#fff; border:1px solid var(--line); border-radius:var(--rad); overflow:hidden; }
+  .fig img{ width:100%; display:block; aspect-ratio:4/3; object-fit:contain; background:#fff; padding:8px; }
+  .cap{ font-size:12.5px; color:var(--ink-3); padding:11px 14px; border-top:1px solid var(--line-soft); }
+  @media(max-width:760px){ .imgs{ grid-template-columns:1fr; } }
+  footer{ margin-top:clamp(56px,8vh,90px); border-top:1px solid var(--line-soft); padding:40px 0; }
+  footer a{ display:inline-flex; align-items:center; gap:9px; font-weight:600; }
+  footer a svg{ stroke:var(--accent); }
 </style>
 </head>
 <body>
+<nav class="nav"><div class="in">
+  <div class="l">LHV</div>
+  <div class="r"><a href="https://github.com/kimheetae0104/sesac-kaggle" target="_blank" rel="noopener">GitHub ↗</a><a href="index.html">← 포트폴리오</a></div>
+</div></nav>
 
-<header class="deck-header">
-  <a href="index.html" class="deck-header-mark">김희태</a>
-  <div style="display:flex;align-items:center;gap:10px;">
-    <a href="https://github.com/kimheetae0104/sesac-kaggle" target="_blank" rel="noopener noreferrer" class="deck-header-back">GitHub ↗</a>
-    <a href="index.html" class="deck-header-back">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
-      포트폴리오
-    </a>
+<section class="hero">
+  <div class="wrap">
+    <span class="sidetag">사이드 프로젝트</span>
+    <p class="eyebrow">철강 공정 · 회귀 · SeSAC 2026</p>
+    <h1>열풍로 LHV 발열량 예측</h1>
+    <p class="sub">열풍로 COG·BFG 혼합가스의 5분 뒤 발열량(LHV)을 예측했다. 측정 지연 때문에 보수적으로 과잉 투입하던 COG를 <strong>데이터 기반 판단</strong>으로 바꾸는 게 목표였다.</p>
+    <div class="chips">
+      <span class="chip">기법 <b>Ridge · SHAP</b></span>
+      <span class="chip">RMSE <b>11.99</b></span>
+      <span class="chip">R² <b>0.428</b></span>
+      <span class="chip">데이터 <b>고로 부대설비</b></span>
+    </div>
+    <div class="imgs">
+      <div class="fig"><img src="lhv/img/image4-35.png" alt="상관행렬 히트맵"/><div class="cap">상관행렬 — 유량과 LHV</div></div>
+      <div class="fig"><img src="lhv/img/image2-31.png" alt="핵심 변수 분포"/><div class="cap">핵심 변수 분포</div></div>
+      <div class="fig"><img src="lhv/img/image3-45.png" alt="SHAP 피처 중요도"/><div class="cap">SHAP — 피처 중요도</div></div>
+    </div>
   </div>
-</header>
+</section>
 
-<deck-stage width="1920" height="1080" responsive>
-
-  <section class="slide" data-label="LHV">
-    <div class="top-rule">
-      <span>LHV — 열풍로 발열량 예측</span>
-      <span>Steel · 2026</span>
-    </div>
-
-    <div style="margin-top:40px;">
-      <p class="cn-eyebrow">Steel Industry · Regression · SeSAC 2026</p>
-      <h1 class="cn-title">열풍로 LHV 발열량 예측</h1>
-      <p class="cn-sub">열풍로 COG·BFG 혼합가스의 5분 뒤 발열량(LHV)을 예측. 측정 지연으로 보수적으로 과잉 투입하던 COG를 <strong>데이터 기반 판단</strong>으로 — Ridge RMSE 11.99 / R² 0.428.</p>
-    </div>
-
-    <div class="cn-imgs">
-      <div class="cn-fig">
-        <img src="lhv/img/image4-35.png" alt="상관행렬 히트맵"/>
-        <div class="cn-cap">상관행렬 — 유량과 LHV</div>
-      </div>
-      <div class="cn-fig">
-        <img src="lhv/img/image2-31.png" alt="핵심 변수 히스토그램"/>
-        <div class="cn-cap">핵심 변수 분포</div>
-      </div>
-      <div class="cn-fig">
-        <img src="lhv/img/image3-45.png" alt="SHAP 피처 중요도"/>
-        <div class="cn-cap">SHAP — 피처 중요도</div>
-      </div>
-    </div>
-
-    <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">김희태</a>
-    <span class="pageno">01</span>
-  </section>
-
-</deck-stage>
+<footer><div class="wrap"><a href="index.html"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg> 포트폴리오로 돌아가기</a></div></footer>
 </body>
 </html>
