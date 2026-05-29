@@ -144,7 +144,7 @@
   </nav>
 
   <p class="kicker">INTEGRATED GASIFICATION COMBINED CYCLE</p>
-  <h1 class="htitle">가스터빈 배기 NOx 시뮬레이션 &amp; 5분 조기경보</h1>
+  <h1 class="htitle">가스터빈 배기 NOx 시뮬레이션 &amp; 5분 후 예측</h1>
   <div class="tagline">놓치면 큰 손실 — 점수보다 누수 없는 예측 구조</div>
 
   <div class="badges">
@@ -164,7 +164,7 @@
 
   <div class="hero-photo">
     <img class="bg" src="noxo/plant-hero.webp" alt="IGCC 천연가스 복합화력 발전소"/>
-    <div class="namepill"><span class="dot"></span><span>NOxO · 가스터빈 배기 NOx 시뮬레이션 &amp; 5분 조기경보 — SeSAC 제조 AI 2026</span></div>
+    <div class="namepill"><span class="dot"></span><span>NOxO · 가스터빈 배기 NOx 시뮬레이션 &amp; 5분 후 예측 — SeSAC 제조 AI 2026</span></div>
   </div>
 
   <div class="kpis">
@@ -178,7 +178,7 @@
 <section class="panel" id="problem">
   <p class="sec-kicker">01 — Problem</p>
   <h2 class="h2">같은 발전소 데이터여도<br>현장에서 필요한 질문은 둘이었다.</h2>
-  <p class="lead">"제어밸브를 바꾸면 NOx가 어떻게 되나"라는 <strong>시뮬레이션</strong> 질문과 "지금 이대로면 5분 뒤 NOx는?"이라는 <strong>조기경보</strong> 질문. 입력·갱신 주기·평가가 전혀 달라 하나로 묶지 않고 둘로 분리해 설계했다.</p>
+  <p class="lead">"제어밸브를 바꾸면 NOx가 어떻게 되나"라는 <strong>시뮬레이션</strong> 질문과 "지금 이대로면 5분 뒤 NOx는?"이라는 <strong>5분 후 예측</strong> 질문. 입력·갱신 주기·평가가 전혀 달라 하나로 묶지 않고 둘로 분리해 설계했다.</p>
   <div class="two">
     <div class="mcard">
       <span class="tag">모델 1</span>
@@ -194,7 +194,7 @@
       <div class="mrow"><span class="k">질문</span><span class="v">5분 뒤 NOx는?</span></div>
       <div class="mrow"><span class="k">입력</span><span class="v">과거 이력 · 1초 원시</span></div>
       <div class="mrow"><span class="k">타겟</span><span class="v">5분 후 NOx 점예측</span></div>
-      <div class="mrow"><span class="k">갱신</span><span class="v">매 1초 실시간 경보</span></div>
+      <div class="mrow"><span class="k">갱신</span><span class="v">매 1초 실시간 예측</span></div>
     </div>
   </div>
 </section>
@@ -213,7 +213,7 @@
 
 <section class="panel">
   <p class="sec-kicker">03 — Model 2 · 5-min Forecast</p>
-  <h2 class="h2">조기경보는 평균값보다<br>순간적인 흔들림을 살리는 쪽이었다.</h2>
+  <h2 class="h2">5분 후 예측은 평균값보다<br>순간적인 흔들림을 살리는 쪽이었다.</h2>
   <p class="lead">1분 평균은 미세 변동이 사라져 5분 점예측이 안 됐다. <strong>1초 원시 데이터를 유지</strong>한 채 5분 뒤 값을 직접 맞히는 구조로 바꾸고, 시차·차분·이동통계·상호작용·시간 피처까지 <strong>213개</strong> 구성.</p>
   <div class="journey">
     <div class="jstep"><div class="n">0.49</div><div class="l">O₂ 완전 제외 · 누수 차단 기준선</div></div>
