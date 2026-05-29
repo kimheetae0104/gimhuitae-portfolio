@@ -58,7 +58,7 @@
   @media(max-width:860px){ .hero-top{ grid-template-columns:1fr; gap:40px; } .devices{ gap:12px; } .iphone{ width:140px; } .iphone.lg{ width:170px; } }
 
   /* meta strip */
-  .pmeta{ display:grid; grid-template-columns:repeat(5,1fr); margin-top:64px; border-top:1px solid var(--line); }
+  .pmeta{ display:grid; grid-template-columns:repeat(4,1fr); margin-top:64px; border-top:1px solid var(--line); }
   .pmeta .col{ padding:20px 18px 4px; border-right:1px solid var(--line-soft); }
   .pmeta .col:last-child{ border-right:none; }
   .pmeta .k{ font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); }
@@ -162,7 +162,6 @@
       <div>
         <p class="kicker">iOS App · 분자 미식학</p>
         <h1 class="title">JANN</h1>
-        <span class="badge-cr">© 컴퓨터프로그램 등록 C-2026-023193</span>
         <p class="lead wide">식재료를 카메라로 비추면, <strong>왜 잘 어울리는지</strong>까지 설명하며 레시피를 추천하는 iOS 앱. 직관이 아니라 향미 화합물의 유사도가 근거다.</p>
       </div>
       <div class="devices">
@@ -177,7 +176,6 @@
       <div class="col"><div class="k">기간</div><div class="v">2026 · 개인 개발</div></div>
       <div class="col"><div class="k">데이터</div><div class="v">식재료 1,530종 · 향미 화합물 1,107개</div></div>
       <div class="col"><div class="k">기술</div><div class="v">SwiftUI · CoreML · YOLOv8n · Python</div></div>
-      <div class="col"><div class="k">등록</div><div class="v">저작권 C-2026-023193<br/>2026.05.13</div></div>
     </div>
   </div>
 </section>
@@ -322,7 +320,7 @@
   <div class="wrap">
     <div class="two">
       <div style="display:flex;flex-direction:column;align-items:center;gap:14px;">
-        <video class="demo-video" src="jann/demo.mp4" poster="jann/demo-poster.jpg" controls preload="metadata" playsinline></video>
+        <video class="demo-video" src="jann/demo.mp4" poster="jann/demo-poster.jpg" autoplay muted loop playsinline controls preload="metadata"></video>
         <div class="lbl" style="font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--ink-3);">iPhone 실기기 화면 녹화 · 2분 5초</div>
       </div>
       <div>
