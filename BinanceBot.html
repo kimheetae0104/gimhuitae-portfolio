@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <link rel="stylesheet" href="shared/tokens.css"/>
 <link rel="stylesheet" href="shared/slide.css"/>
-<script src="shared/deck-stage.js?v=2" defer></script>
+<script src="shared/deck-stage.js?v=5" defer></script>
 <style>
 :root { --cn: var(--accent-600); }
 
@@ -88,6 +88,21 @@
   font-size: 30px;
   color: var(--fg-4);
 }
+
+/* ── 모바일 반응형 (deck-stage responsive) ── */
+@media (max-width: 768px) {
+  section.slide { padding: 70px 20px 36px; height: auto; overflow: visible; }
+  .top-rule { font-size: 12px; padding-bottom: 16px; }
+  .cn-eyebrow { font-size: 13px; margin-bottom: 12px; }
+  .cn-title { font-size: 34px; }
+  .cn-sub { font-size: 17px; max-width: none; }
+  .cn-flow { flex-direction: column; align-items: stretch; gap: 10px; margin-top: 24px; }
+  .cn-arrow { transform: rotate(90deg); justify-content: center; padding: 2px 0; font-size: 24px; }
+  .cn-step { padding: 18px 20px; }
+  .cn-step-name { font-size: 22px; }
+  .cn-step-desc { font-size: 16px; }
+  .pageno, .pageno-mark { display: none; }
+}
 </style>
 </head>
 <body>
@@ -103,7 +118,7 @@
   </div>
 </header>
 
-<deck-stage width="1920" height="1080">
+<deck-stage width="1920" height="1080" responsive>
 
   <section class="slide" data-label="Binance">
     <div class="top-rule">

@@ -263,6 +263,39 @@
       }
       .overlay, .tapzones { display: none !important; }
     }
+
+    /* ── Opt-in responsive flow ──────────────────────────────────────────
+       <deck-stage responsive> reflows into a normal vertically-scrolling
+       page on narrow viewports instead of shrinking the 1920px canvas to
+       an unreadable size. Decks without the attribute are unaffected. */
+    @media (max-width: 768px) {
+      :host([responsive]) {
+        position: static;
+        inset: auto;
+        height: auto;
+        overflow: visible;
+        background: var(--bg, #fff);
+      }
+      :host([responsive]) .stage {
+        position: static;
+        display: block;
+      }
+      :host([responsive]) .canvas {
+        transform: none !important;
+        width: 100% !important;
+        height: auto !important;
+      }
+      :host([responsive]) ::slotted(*) {
+        position: static !important;
+        inset: auto !important;
+        width: 100% !important;
+        height: auto !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+      }
+      :host([responsive]) .overlay { display: none !important; }
+    }
   `;
 
   class DeckStage extends HTMLElement {
@@ -296,6 +329,7 @@
       this._render();
       this._loadNotes();
       this._syncPrintPageRule();
+      this._maybeAutoPrint();
       window.addEventListener('keydown', this._onKey);
       window.addEventListener('resize', this._onResize);
       window.addEventListener('mousemove', this._onMouseMove, { passive: true });
@@ -409,6 +443,13 @@
       // html2canvas 비트마이즈 방식보다 10~30배 빠르고, 텍스트가 벡터로 들어가 검색·확대해도 깨끗.
       this._syncPrintPageRule();
       window.print();
+    }
+
+    /** URL에 ?print 이 있으면 (홈 카드의 PDF 버튼에서 진입) 자동으로 인쇄 대화상자 표시. */
+    _maybeAutoPrint() {
+      if (!/[?&]print\b/.test(location.search)) return;
+      // 슬라이드 레이아웃·이미지가 안정된 뒤 인쇄 (이미지는 최적화되어 가벼움)
+      setTimeout(() => this._downloadPDF(), 800);
     }
 
     /** @page must live in the document stylesheet — it's a no-op inside

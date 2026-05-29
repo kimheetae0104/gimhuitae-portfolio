@@ -2,981 +2,353 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8"/>
-<title>NOxO — IGCC 발전소 NOx 시뮬레이션</title>
+<title>NOxO — IGCC 발전소 NOx 시뮬레이션 · 김희태</title>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="shared/tokens.css"/>
-<link rel="stylesheet" href="shared/slide.css"/>
-<script src="shared/deck-stage.js?v=2" defer></script>
 <style>
+  :root{
+    --blue:#5E76ED; --blue2:#7F94FF; --blue-dark:#3A4FD0;
+    --blue-soft:#EEF1FE; --blue-tint:#F4F6FF;
+    --ink:#1A1F2E; --muted:#6B7390; --line:rgba(94,118,237,.14);
+    --shadow:0 22px 54px rgba(74,99,222,.16);
+    --rad:24px;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:#fff; color:var(--ink);
+    font-family:var(--font-sans),"Apple SD Gothic Neo",sans-serif; -webkit-font-smoothing:antialiased; }
+  a{ color:inherit; }
+  .cs{ max-width:1080px; margin:0 auto; padding:0 28px; }
 
-/* ── 상단 헤더 오버레이 ── */
-.deck-header {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 9999;
-  height: 52px;
-  background: rgba(247,247,248,0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--rule-soft);
-  display: flex;
-  align-items: center;
-  padding: 0 32px;
-  justify-content: space-between;
-  pointer-events: auto;
-}
-.deck-header-mark {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: var(--fg-1);
-  text-decoration: none;
-}
-.deck-header-back {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--fg-3);
-  text-decoration: none;
-  padding: 5px 14px;
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-pill);
-  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
-}
-.deck-header-back:hover { color: var(--fg-1); border-color: var(--rule); }
-.deck-header-back svg { width: 14px; height: 14px; }
+  /* nav */
+  .nav{ position:sticky; top:0; z-index:50; height:58px; display:flex; align-items:center; justify-content:space-between;
+    padding:0 28px; background:rgba(255,255,255,.86); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid var(--line); }
+  .nav .mark{ font-weight:800; letter-spacing:-.02em; font-size:17px; text-decoration:none; color:var(--blue-dark); }
+  .nav .right{ display:flex; gap:8px; }
+  .nav .btn{ font-size:12px; font-weight:600; color:var(--muted); text-decoration:none; border:1px solid var(--line);
+    border-radius:999px; padding:7px 15px; background:#fff; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:.18s; }
+  .nav .btn:hover{ color:var(--blue-dark); border-color:var(--blue2); background:var(--blue-soft); }
+  .nav svg{ width:13px; height:13px; }
 
-/* ── 슬라이드 메타 공통 ── */
-.slide-label {
-  font-family: var(--font-mono);
-  font-size: 24px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--fg-3);
-}
-.slide-num {
-  font-family: var(--font-mono);
-  font-size: 24px;
-  letter-spacing: 0.16em;
-  color: var(--fg-3);
-}
+  /* hero */
+  .hero{ background:linear-gradient(155deg,#5E76ED 0%,#6E83F2 60%,#7F94FF 100%); color:#fff; padding:96px 0 130px; position:relative; overflow:hidden; }
+  .hero::after{ content:""; position:absolute; right:-120px; top:-120px; width:480px; height:480px; border-radius:50%; background:rgba(255,255,255,.10); }
+  .hero .inner{ position:relative; z-index:1; display:grid; grid-template-columns:1.12fr 0.88fr; gap:40px; align-items:center; }
+  .hero-art{ position:relative; display:flex; align-items:center; justify-content:center; animation:floaty 6s ease-in-out infinite; }
+  .hero-art::before{ content:""; position:absolute; width:84%; aspect-ratio:1; border-radius:50%; background:radial-gradient(circle at 50% 48%, rgba(255,255,255,.30), rgba(255,255,255,0) 66%); }
+  .hero-art img{ position:relative; width:100%; max-width:470px; display:block; filter:drop-shadow(0 28px 38px rgba(18,26,80,.38)); }
+  @keyframes floaty{ 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-12px) } }
+  @media (prefers-reduced-motion: reduce){ .hero-art{ animation:none; } }
+  @media (max-width:760px){ .hero .inner{ grid-template-columns:1fr; gap:20px; } .hero-art{ order:-1; max-width:300px; margin:0 auto; } }
+  .hero .eyebrow{ font-size:14px; font-weight:600; letter-spacing:.02em; color:rgba(255,255,255,.85); margin:0 0 20px; }
+  .hero h1{ font-family:'Fredoka',var(--font-sans); font-size:clamp(72px,12vw,150px); font-weight:700; letter-spacing:-.01em; line-height:.92; margin:0; }
+  .nav .mark, footer.foot .ft{ font-family:'Fredoka',var(--font-sans); }
+  .hero .sub{ font-size:clamp(22px,3.2vw,32px); font-weight:700; letter-spacing:-.02em; margin:22px 0 0; }
+  .hero .lead{ font-size:19px; line-height:1.8; color:rgba(255,255,255,.86); max-width:60ch; margin:22px 0 0; }
+  .hero .lead b{ color:#fff; font-weight:700; }
+  .meta-pills{ display:flex; flex-wrap:wrap; gap:10px; margin-top:34px; }
+  .meta-pills .pill{ background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.22); border-radius:999px; padding:9px 18px; font-size:14px; font-weight:600; }
+  .meta-pills .pill span{ opacity:.7; font-weight:500; margin-right:6px; }
+  .design-tags{ display:flex; flex-wrap:wrap; gap:12px; margin-top:18px; }
+  .design-tag{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:10px 14px; border-radius:18px;
+    background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.2);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.2);
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+  }
+  .design-tag::before{
+    content:""; width:8px; height:8px; border-radius:50%;
+    background:linear-gradient(145deg,#fff,#d9e2ff);
+    box-shadow:0 0 0 6px rgba(255,255,255,.08);
+  }
 
-/* ── NOxO accent — teal (emissions / industrial) ── */
-:root {
-  --nox:      #0D7377;
-  --nox-lt:   #E0F4F4;
-  --nox-mid:  #5BA8AB;
-  --nox-dark: #094F52;
-}
+  /* KPI floating cards */
+  .kpis{ max-width:1080px; margin:-78px auto 0; padding:0 28px; position:relative; z-index:5;
+    display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+  .kpi{ background:#fff; border-radius:20px; box-shadow:var(--shadow); padding:26px 24px; border:1px solid var(--line); }
+  .kpi .n{ font-size:clamp(30px,3.6vw,42px); font-weight:800; letter-spacing:-.03em; color:var(--blue-dark); line-height:1; }
+  .kpi .n.ink{ color:var(--ink); }
+  .kpi .l{ font-size:13px; color:var(--muted); margin-top:11px; line-height:1.5; font-weight:500; }
 
-/* ── Cover ── */
-.cover-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 22px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--nox);
-  margin-bottom: 20px;
-}
-.cover-title {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 108px;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  color: var(--fg-1);
-  margin: 0 0 12px;
-}
-.cover-sub {
-  font-family: var(--font-mono);
-  font-size: 26px;
-  color: var(--fg-3);
-  letter-spacing: 0.04em;
-  margin-bottom: 36px;
-}
-.cover-copy {
-  max-width: 1320px;
-}
+  /* sections */
+  section.block{ padding:92px 0; }
+  section.tint{ background:var(--blue-tint); }
+  .sec-label{ display:inline-block; font-size:13px; font-weight:700; letter-spacing:.02em; color:var(--blue-dark);
+    background:var(--blue-soft); border-radius:999px; padding:7px 16px; margin:0 0 20px; }
+  h2.h2{ font-size:clamp(28px,4.2vw,44px); font-weight:800; letter-spacing:-.03em; line-height:1.18; margin:0; color:var(--ink); }
+  .lead{ font-size:18px; line-height:1.85; color:#4A5168; max-width:64ch; margin:22px 0 0; }
+  .lead strong{ color:var(--ink); font-weight:700; }
+  .lead+.lead{ margin-top:16px; }
 
-.kpi-row {
-  display: flex;
-  gap: 0;
-  border-top: 1px solid var(--rule);
-  padding-top: 40px;
-  margin-top: auto;
-}
-.kpi-item {
-  flex: 1;
-  padding-right: 40px;
-  border-right: 1px solid var(--rule-soft);
-}
-.kpi-item:first-child { padding-left: 0; }
-.kpi-item:last-child  { border-right: none; }
-.kpi-item + .kpi-item { padding-left: 40px; }
-.kpi-val {
-  font-family: var(--font-mono);
-  font-size: 52px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--nox);
-  line-height: 1;
-  margin-bottom: 10px;
-}
-.kpi-val.ink { color: var(--fg-1); }
-.kpi-lbl {
-  font-family: var(--font-mono);
-  font-size: 17px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--fg-3);
-}
+  /* figure */
+  figure.fig{ margin:40px 0 0; }
+  .figcap-pill{ display:inline-block; font-size:13px; font-weight:600; color:var(--blue-dark); background:var(--blue-soft); border-radius:999px; padding:8px 16px; margin-bottom:16px; }
+  figure.fig img{ width:100%; display:block; border-radius:var(--rad); box-shadow:var(--shadow); border:1px solid var(--line); background:#fff; }
 
-/* ── Top rule ── */
-.top-rule {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 28px;
-  border-bottom: 1px solid var(--rule);
-  font-family: var(--font-mono);
-  font-size: 22px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--fg-3);
-  margin-bottom: 36px;
-}
+  /* chips */
+  .chips{ display:flex; flex-wrap:wrap; gap:14px; margin-top:30px; }
+  .chip{ background:#fff; border:1px solid var(--line); border-radius:18px; padding:20px 26px; min-width:150px; box-shadow:0 6px 18px rgba(74,99,222,.07); }
+  .chip.on{ background:var(--blue); border-color:var(--blue); color:#fff; }
+  .chip .cv{ font-size:30px; font-weight:800; letter-spacing:-.03em; color:var(--ink); line-height:1; }
+  .chip.on .cv{ color:#fff; }
+  .chip .cl{ font-size:12px; color:var(--muted); margin-top:9px; font-weight:600; }
+  .chip.on .cl{ color:rgba(255,255,255,.8); }
 
-/* ── 두 열 레이아웃 ── */
-.two-col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 56px;
-  flex: 1;
-  align-items: start;
-}
-.sim-layout {
-  grid-template-columns: 1fr 1fr;
-  gap: 56px;
-  align-items: center;
-}
-.sim-copy {
-  max-width: 700px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 100%;
-}
-.sim-copy .slide-h2 {
-  /* 한국어에서 ch 단위는 '0' 너비 기준이라 너무 좁아짐 — <br>로 의도된 2줄 그대로 사용 */
-  max-width: none;
-}
-.sim-copy .slide-body {
-  max-width: 32ch;
-}
-.sim-visual {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  justify-content: center;
-}
-.forecast-layout {
-  grid-template-columns: 1fr 1fr;
-  gap: 56px;
-  align-items: center;
-}
-.forecast-copy {
-  max-width: 700px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 100%;
-}
-.forecast-copy .slide-h2 {
-  /* 한국어에서 ch 단위는 너무 좁음 — <br>로 의도된 2줄 그대로 사용 */
-  max-width: none;
-}
-.forecast-copy .slide-body {
-  max-width: 32ch;
-}
-.forecast-visual {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  justify-content: center;
-}
-.two-col-60-40 {
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  gap: 56px;
-  flex: 1;
-  align-items: start;
-}
+  /* two cards */
+  .two{ display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:38px; }
+  .card{ background:#fff; border:1px solid var(--line); border-radius:var(--rad); padding:30px 32px; box-shadow:0 10px 30px rgba(74,99,222,.08); }
+  .card.tint{ background:var(--blue-soft); border-color:rgba(94,118,237,.2); }
+  .card .ct{ display:inline-block; font-size:12px; font-weight:700; color:var(--blue-dark); background:var(--blue-soft); border-radius:999px; padding:6px 14px; margin-bottom:14px; }
+  .card.tint .ct{ background:#fff; }
+  .card .ch{ font-size:22px; font-weight:800; letter-spacing:-.02em; color:var(--ink); line-height:1.25; margin-bottom:16px; }
+  .crow{ display:flex; justify-content:space-between; gap:14px; padding:11px 0; border-top:1px solid var(--line); font-size:15px; }
+  .crow:first-of-type{ border-top:none; }
+  .crow .ck{ color:var(--muted); font-weight:600; }
+  .crow .cvv{ color:var(--ink); text-align:right; font-weight:600; }
+  .card p.cbody{ margin:0; font-size:16px; line-height:1.7; color:#4A5168; }
+  .card p.cbody strong{ color:var(--ink); font-weight:700; }
 
-/* ── 카드 블록 ── */
-.block-card {
-  padding: 28px 32px;
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-3);
-  background: var(--bg);
-}
-.block-card.accent {
-  background: var(--nox-lt);
-  border-color: var(--nox);
-}
-.block-card .bc-label {
-  font-family: var(--font-mono);
-  font-size: 15px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--fg-4);
-  margin-bottom: 10px;
-}
-.block-card.accent .bc-label { color: var(--nox); }
-.block-card .bc-title {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 30px;
-  color: var(--fg-1);
-  margin-bottom: 10px;
-  line-height: 1.2;
-}
-.block-card .bc-body {
-  font-family: var(--font-sans);
-  font-size: 22px;
-  color: var(--fg-2);
-  line-height: 1.65;
-}
+  /* journey */
+  .journey{ display:flex; gap:14px; margin-top:34px; }
+  .jstep{ flex:1; background:#fff; border:1px solid var(--line); border-radius:20px; padding:24px 22px; box-shadow:0 6px 18px rgba(74,99,222,.07); }
+  .jstep.on{ background:var(--blue); border-color:var(--blue); color:#fff; }
+  .jstep .jn{ font-size:38px; font-weight:800; letter-spacing:-.03em; color:var(--ink); line-height:1; }
+  .jstep.on .jn{ color:#fff; }
+  .jstep .jl{ font-size:14px; color:var(--muted); margin-top:12px; line-height:1.5; font-weight:500; }
+  .jstep.on .jl{ color:rgba(255,255,255,.82); }
+  .jstep .jl b{ color:var(--ink); font-weight:700; }
+  .jstep.on .jl b{ color:#fff; }
 
-/* ── 비교 테이블 (문제 정의) ── */
-.compare-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2px;
-  flex: 1;
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-3);
-  overflow: hidden;
-}
-.cg-cell {
-  padding: 28px 32px;
-  background: var(--bg);
-}
-.cg-cell.head {
-  background: var(--paper-100);
-  border-bottom: 1px solid var(--rule-soft);
-}
-.cg-cell.head-accent {
-  background: var(--nox);
-  border-bottom: none;
-}
-.cg-cell + .cg-cell { border-left: 1px solid var(--rule-soft); }
-.cg-cell.right     { border-left: 1px solid var(--rule-soft); }
-.cg-label {
-  font-family: var(--font-mono);
-  font-size: 15px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--fg-4);
-  margin-bottom: 6px;
-}
-.cg-val {
-  font-family: var(--font-sans);
-  font-size: 22px;
-  color: var(--fg-2);
-  line-height: 1.5;
-}
-.cg-val strong { color: var(--fg-1); font-weight: 600; }
+  /* O2 leak — blue feature block */
+  .leak{ background:linear-gradient(155deg,#5E76ED,#6E83F2); color:#fff; border-radius:32px; padding:56px 52px; margin-top:0; box-shadow:var(--shadow); }
+  .leak .lbl{ display:inline-block; font-size:13px; font-weight:700; background:rgba(255,255,255,.18); border-radius:999px; padding:7px 16px; margin-bottom:22px; }
+  .leak .big{ font-size:clamp(64px,11vw,120px); font-weight:800; letter-spacing:-.05em; line-height:.9; }
+  .leak h2{ font-size:clamp(26px,3.6vw,38px); font-weight:800; letter-spacing:-.02em; line-height:1.2; margin:14px 0 0; }
+  .leak .lead{ color:rgba(255,255,255,.88); max-width:66ch; }
+  .leak .lead strong{ color:#fff; }
+  .codeline{ display:inline-block; font-family:var(--font-mono); font-size:16px; background:rgba(0,0,0,.22); color:#fff; padding:11px 18px; border-radius:12px; margin-top:22px; }
+  .leak .two{ margin-top:34px; }
+  .leak .gcard{ background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:20px; padding:28px 30px; }
+  .leak .gcard .ct{ display:inline-block; font-size:12px; font-weight:700; background:rgba(255,255,255,.2); border-radius:999px; padding:6px 14px; margin-bottom:14px; }
+  .leak .gcard .ch{ font-size:20px; font-weight:800; margin-bottom:14px; line-height:1.3; }
+  .leak .gcard p{ margin:0; font-size:16px; line-height:1.7; color:rgba(255,255,255,.86); }
+  .leak .gcard p strong{ color:#fff; }
+  .delta{ display:flex; align-items:center; gap:14px; margin-top:18px; font-weight:800; }
+  .delta .was{ font-size:24px; opacity:.6; text-decoration:line-through; }
+  .delta .arr{ font-size:14px; opacity:.8; font-weight:600; }
+  .delta .now{ font-size:28px; }
 
-/* ── 피처 / 스펙 그리드 ── */
-.spec-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
-  background: var(--rule-soft);
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-3);
-  overflow: hidden;
-  margin-top: 28px;
-}
-.sg-cell {
-  padding: 22px 24px;
-  background: var(--bg);
-}
-.sg-num {
-  font-family: var(--font-mono);
-  font-size: 38px;
-  font-weight: 700;
-  color: var(--nox);
-  line-height: 1;
-  margin-bottom: 8px;
-}
-.sg-num.ink { color: var(--fg-1); }
-.sg-lbl {
-  font-family: var(--font-sans);
-  font-size: 20px;
-  color: var(--fg-2);
-  line-height: 1.4;
-}
-.sg-sub {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  color: var(--fg-4);
-  margin-top: 4px;
-  letter-spacing: 0.06em;
-}
+  /* validation */
+  .vlist{ margin-top:36px; }
+  .vitem{ display:grid; grid-template-columns:190px 1fr; gap:26px; padding:24px 0; border-bottom:1px solid var(--line); }
+  .vitem:first-child{ border-top:1px solid var(--line); }
+  .vitem .vk{ font-size:15px; font-weight:800; color:var(--blue-dark); }
+  .vitem .vb{ font-size:17px; line-height:1.7; color:#4A5168; }
+  .vitem .vb strong{ color:var(--ink); font-weight:700; }
+  .takeaway{ margin-top:40px; background:var(--blue-soft); border-radius:var(--rad); padding:32px 36px; }
+  .takeaway p{ margin:0; font-size:20px; line-height:1.7; color:var(--blue-dark); font-weight:600; }
+  .takeaway p strong{ font-weight:800; }
 
-/* ── 여정 바 ── */
-.journey-bar {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  margin-top: 28px;
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-3);
-  overflow: hidden;
-}
-.jb-step {
-  flex: 1;
-  padding: 20px 24px;
-  background: var(--bg);
-  border-right: 1px solid var(--rule-soft);
-}
-.jb-step:last-child { border-right: none; }
-.jb-step.highlight { background: var(--nox-lt); }
-.jb-num {
-  font-family: var(--font-mono);
-  font-size: 30px;
-  font-weight: 700;
-  color: var(--fg-3);
-  line-height: 1;
-  margin-bottom: 6px;
-}
-.jb-step.highlight .jb-num { color: var(--nox); }
-.jb-lbl {
-  font-family: var(--font-sans);
-  font-size: 18px;
-  color: var(--fg-3);
-  line-height: 1.4;
-}
-.jb-step.highlight .jb-lbl { color: var(--fg-2); }
+  /* footer */
+  footer.foot{ background:linear-gradient(155deg,#5E76ED,#7F94FF); color:#fff; text-align:center; padding:80px 0; margin-top:92px; }
+  footer.foot .ft{ font-size:24px; font-weight:800; letter-spacing:-.02em; margin:0 0 22px; }
+  footer.foot .back{ display:inline-flex; align-items:center; gap:8px; font-size:14px; font-weight:700; color:var(--blue-dark);
+    background:#fff; border-radius:999px; padding:14px 28px; text-decoration:none; transition:.18s; }
+  footer.foot .back:hover{ transform:translateY(-2px); box-shadow:0 12px 30px rgba(0,0,0,.18); }
 
-/* ── 누수 분석 카드 ── */
-.leak-row {
-  display: grid;
-  grid-template-columns: 0.95fr 1.05fr;
-  gap: 18px;
-  flex: 1;
-  align-items: stretch;
-}
-.leak-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-.leak-stack > .leak-card { flex: 1; min-height: 0; }
-.leak-card {
-  padding: 28px 30px;
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-3);
-  background: var(--bg);
-  display: flex;
-  flex-direction: column;
-}
-.leak-card.evidence-card {
-  padding: 30px 32px;
-}
-.leak-card.warn-card {
-  border-color: #D97706;
-  background: #FFFBEB;
-}
-.leak-card.safe-card {
-  border-color: var(--nox);
-  background: var(--nox-lt);
-}
-.lc-tag {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--fg-4);
-  margin-bottom: 10px;
-}
-.lc-tag.warn { color: #B45309; }
-.lc-tag.safe { color: var(--nox-dark); }
-.lc-title {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 26px;
-  color: var(--fg-1);
-  margin-bottom: 12px;
-  line-height: 1.2;
-}
-.lc-body {
-  font-family: var(--font-sans);
-  font-size: 20px;
-  color: var(--fg-2);
-  line-height: 1.65;
-  flex: 1;
-}
-.evidence-strip {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-top: 18px;
-}
-.evidence-chip {
-  padding: 14px 16px;
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-2);
-  background: var(--paper-100);
-}
-.evidence-chip-k {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--fg-4);
-  margin-bottom: 6px;
-}
-.evidence-chip-v {
-  font-family: var(--font-mono);
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--fg-1);
-}
-.lc-stat {
-  font-family: var(--font-mono);
-  font-size: 24px;
-  font-weight: 700;
-  margin-top: 14px;
-}
-.lc-stat.down { color: var(--fg-3); text-decoration: line-through; }
-.lc-stat.honest { color: var(--nox); }
-
-/* ── 검증 타임라인 ── */
-.val-timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  flex: 1;
-}
-.vt-row {
-  display: flex;
-  gap: 28px;
-  align-items: flex-start;
-  padding: 20px 0;
-  border-bottom: 1px solid var(--rule-soft);
-}
-.vt-row:last-child { border-bottom: none; }
-.vt-label {
-  font-family: var(--font-mono);
-  font-size: 16px;
-  letter-spacing: 0.1em;
-  color: var(--nox);
-  min-width: 120px;
-  flex-shrink: 0;
-  padding-top: 3px;
-}
-.vt-body {
-  font-family: var(--font-sans);
-  font-size: 22px;
-  color: var(--fg-2);
-  line-height: 1.6;
-}
-.vt-body strong { color: var(--fg-1); font-weight: 600; }
-
-.validation-layout {
-  grid-template-columns: 0.94fr 1.06fr;
-  gap: 52px;
-  align-items: start;
-  flex: 0 1 auto;
-}
-.validation-plan {
-  display: flex;
-  flex-direction: column;
-}
-.validation-card {
-  flex: 1;
-  padding: 22px 28px;
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-3);
-  background: var(--paper-100);
-}
-.validation-outcomes {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.validation-outcomes > .outcome-panel.accent { flex: 0 0 auto; }
-.validation-outcomes > .outcome-subgrid { flex: 0 0 auto; }
-.outcome-subgrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-.outcome-panel {
-  padding: 22px 26px;
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-3);
-  background: var(--bg);
-}
-.outcome-panel.accent {
-  border-color: var(--nox);
-  background: var(--nox-lt);
-}
-
-/* ── 성과 카드 ── */
-.outcome-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  flex: 1;
-  align-items: stretch;
-}
-.og-card {
-  padding: 28px 32px;
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-3);
-  background: var(--bg);
-}
-.og-card.accent {
-  background: var(--nox-lt);
-  border-color: var(--nox);
-}
-.og-num {
-  font-family: var(--font-mono);
-  font-size: 44px;
-  font-weight: 700;
-  color: var(--nox);
-  line-height: 1;
-  margin-bottom: 10px;
-}
-.og-title {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 24px;
-  color: var(--fg-1);
-  margin-bottom: 8px;
-}
-.og-body {
-  font-family: var(--font-sans);
-  font-size: 20px;
-  color: var(--fg-2);
-  line-height: 1.6;
-}
-
+  @media (max-width:760px){
+    .kpis{ grid-template-columns:1fr 1fr; gap:14px; margin-top:-60px; }
+    .two{ grid-template-columns:1fr; }
+    .journey{ flex-direction:column; }
+    .vitem{ grid-template-columns:1fr; gap:6px; }
+    .leak{ padding:40px 26px; border-radius:24px; }
+    section.block{ padding:64px 0; }
+  }
+  @media print{
+    .nav,footer.foot{ display:none; }
+    .hero,.leak,footer.foot{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    section.block{ break-inside:avoid; }
+  }
 </style>
 </head>
 <body>
 
-<header class="deck-header">
-  <a href="index.html" class="deck-header-mark">[ HK ]</a>
-  <div style="display:flex;align-items:center;gap:10px;">
-    <a href="index.html" class="deck-header-back">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
-      포트폴리오
-    </a>
+<nav class="nav">
+  <a href="index.html" class="mark">김희태</a>
+  <div class="right">
+    <button type="button" class="btn" onclick="window.print()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3M3 13h10"/></svg>PDF</button>
+    <a class="btn" href="https://github.com/kimheetae0104" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    <a class="btn" href="index.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>포트폴리오</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="cs inner">
+    <div class="hero-copy">
+      <p class="eyebrow">SeSAC 제조 AI · IGCC 발전소 · 팀 프로젝트 · 2026</p>
+      <h1>NOxO</h1>
+      <p class="sub">가스터빈 배기 NOx 시뮬레이션 &amp; 5분 조기경보</p>
+      <p class="lead">IGCC 발전소에서 운전 조건을 바꿨을 때 NOx가 어떻게 달라지는지 미리 가늠하는 프로젝트. 현장 시뮬레이션용 예측기와 5분 후 조기경보 예보기를 나눠 설계했고, 핵심은 높은 수치보다 <b>현장에서 쓸 수 있는, 누수 없는 예측 구조</b>를 만드는 일이었다.</p>
+      <div class="meta-pills">
+        <div class="pill"><span>Role</span>데이터 분석 · 모델링 · 검증</div>
+        <div class="pill"><span>Domain</span>가스터빈 NOx</div>
+        <div class="pill"><span>Stack</span>Python · Ridge · LightGBM</div>
+        <div class="pill"><span>Year</span>2026</div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <img src="noxo/turbine-3d.webp" alt="가스터빈 3D 일러스트"/>
+    </div>
   </div>
 </header>
 
-<deck-stage width="1920" height="1080">
+<div class="kpis">
+  <div class="kpi"><div class="n">0.71</div><div class="l">시뮬레이션 NOx R²</div></div>
+  <div class="kpi"><div class="n">0.68</div><div class="l">5분 예보 R²</div></div>
+  <div class="kpi"><div class="n ink">+0.21</div><div class="l">직전값 유지 기준 대비 개선</div></div>
+  <div class="kpi"><div class="n ink">27.7ms</div><div class="l">예보 추론 시간</div></div>
+</div>
 
-<!-- ═══ 01 Cover ═══ -->
-<section class="slide s-title" data-label="Cover">
-  <div class="top-rule">
-    <span class="slide-label">NOxO — IGCC NOx 시뮬레이션</span>
-    <span class="slide-num">01 / 06</span>
-  </div>
-
-  <div class="hero" style="flex:1;display:flex;flex-direction:column;justify-content:flex-start;padding-top:110px;padding-bottom:0;">
-    <div class="cover-copy">
-      <div class="cover-eyebrow">SeSAC 제조 AI · IGCC 발전소 · 팀 프로젝트 · 2026</div>
-      <div class="cover-title">NOxO</div>
-      <div class="cover-sub">가스터빈 배기 NOx 시뮬레이션</div>
-
-      <p class="slide-body" style="font-size:28px;max-width:52ch;">
-        IGCC 발전소에서 운전 조건을 바꿨을 때
-        NOx와 주요 출력값이 어떻게 달라지는지 미리 가늠하기 위한 프로젝트다.
-        현장 시뮬레이션용 예측기와 5분 후 조기경보 예보기를 나눠 설계했고,
-        센서 갱신 주기와 실제 운전 흐름에 맞는 입력 구성을 다시 정의했다.
-        핵심은 높은 수치보다 <strong>현장에서 쓸 수 있는 예측 구조</strong>를 만드는 일이었다.
-      </p>
-    </div>
-
-    <div class="kpi-row">
-      <div class="kpi-item">
-        <div class="kpi-val">≈ 0.71</div>
-        <div class="kpi-lbl">시뮬레이션 NOx R²</div>
+<!-- 01 Problem -->
+<section class="block">
+  <div class="cs">
+    <span class="sec-label">01 — Problem</span>
+    <h2 class="h2">같은 발전소 데이터여도<br>현장에서 필요한 질문은 둘이었다.</h2>
+    <p class="lead">"제어밸브를 바꾸면 NOx가 어떻게 되나"라는 <strong>시뮬레이션</strong> 질문과 "지금 이대로면 5분 뒤 NOx는?"이라는 <strong>조기경보</strong> 질문. 입력·갱신 주기·평가가 전혀 달라 하나로 묶지 않고 둘로 분리해 설계했다.</p>
+    <div class="two">
+      <div class="card">
+        <div class="ct">모델 1</div>
+        <div class="ch">운전 시뮬레이션 예측기</div>
+        <div class="crow"><span class="ck">질문</span><span class="cvv">제어값을 바꾸면 NOx는?</span></div>
+        <div class="crow"><span class="ck">입력</span><span class="cvv">제어변수 override · 1분 집계</span></div>
+        <div class="crow"><span class="ck">타겟</span><span class="cvv">NOx · DWATT · TTXM</span></div>
+        <div class="crow"><span class="ck">갱신</span><span class="cvv">온디맨드 시뮬레이션</span></div>
       </div>
-      <div class="kpi-item">
-        <div class="kpi-val">≈ 0.68</div>
-        <div class="kpi-lbl">5분 예보 R²</div>
-      </div>
-      <div class="kpi-item">
-        <div class="kpi-val ink">+0.21</div>
-        <div class="kpi-lbl">직전값 유지 기준 대비 R² 개선</div>
-      </div>
-      <div class="kpi-item">
-        <div class="kpi-val ink">27.7 ms</div>
-        <div class="kpi-lbl">예보 추론 시간</div>
+      <div class="card tint">
+        <div class="ct">모델 2</div>
+        <div class="ch">5분 후 NOx 예보기</div>
+        <div class="crow"><span class="ck">질문</span><span class="cvv">5분 뒤 NOx는?</span></div>
+        <div class="crow"><span class="ck">입력</span><span class="cvv">과거 이력 · 1초 원시</span></div>
+        <div class="crow"><span class="ck">타겟</span><span class="cvv">5분 후 NOx 점예측</span></div>
+        <div class="crow"><span class="ck">갱신</span><span class="cvv">매 1초 실시간 경보</span></div>
       </div>
     </div>
   </div>
-  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">01</div>
 </section>
 
-<!-- ═══ 02 문제 정의 ═══ -->
-<section class="slide" data-label="Problem">
-  <div class="top-rule">
-    <span class="slide-label">문제 정의</span>
-    <span class="slide-num">02 / 06</span>
+<!-- 02 Model 1 -->
+<section class="block tint">
+  <div class="cs">
+    <span class="sec-label">02 — Model 1 · Simulation</span>
+    <h2 class="h2">1초 데이터를 그대로 쓰면<br>모델이 과거값을 베끼기 쉬웠다.</h2>
+    <p class="lead">1초 데이터는 인접 값이 거의 같아(자기상관 r=0.989) 모델이 과거값을 복사하기 쉽다. 그래서 <strong>1분 평균으로 집계</strong>해 의미 있는 변동만 남기고, 원시 39개 + 파생 10개 = 49개 피처에 <strong>Ridge + LightGBM 앙상블</strong>을 썼다. NOx R²가 0.71에 머문 건 변동 폭이 워낙 작기 때문이다(std ≈ 0.19 ppm).</p>
+    <div class="chips">
+      <div class="chip on"><div class="cv">0.71</div><div class="cl">NOx R²</div></div>
+      <div class="chip"><div class="cv">0.999</div><div class="cl">DWATT R²</div></div>
+      <div class="chip"><div class="cv">0.997</div><div class="cl">TTXM R²</div></div>
+    </div>
+    <figure class="fig">
+      <span class="figcap-pill">실제 대시보드 · 시뮬레이션 모드</span>
+      <img src="noxo/sim.png" alt="NOxO 시뮬레이션 대시보드"/>
+    </figure>
   </div>
-
-  <h2 class="slide-h2" style="font-size:44px;margin-bottom:32px;">
-    같은 발전소 데이터여도<br>현장에서 필요한 질문은 두 가지였다.
-  </h2>
-
-  <div class="compare-grid" style="flex:1;">
-    <div class="cg-cell head">
-      <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.16em;text-transform:uppercase;color:var(--fg-3);">구분</div>
-    </div>
-    <div class="cg-cell head right" style="border-left:2px solid var(--nox);">
-      <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.16em;text-transform:uppercase;color:var(--fg-3);">비교</div>
-    </div>
-
-    <div class="cg-cell" style="border-top:1px solid var(--rule-soft);padding:20px 32px;">
-      <div class="cg-label">모델</div>
-      <div class="cg-val"><strong>운전 시뮬레이션 예측기</strong></div>
-    </div>
-    <div class="cg-cell right" style="border-top:1px solid var(--rule-soft);background:var(--nox-lt);padding:20px 32px;">
-      <div class="cg-label" style="color:var(--nox);">모델</div>
-      <div class="cg-val" style="color:var(--nox-dark);"><strong>5분 후 NOx 예보기</strong></div>
-    </div>
-
-    <div class="cg-cell" style="border-top:1px solid var(--rule-soft);padding:20px 32px;">
-      <div class="cg-label">질문</div>
-      <div class="cg-val">제어밸브를 이렇게 바꾸면<br>NOx는 어떻게 되나?</div>
-    </div>
-    <div class="cg-cell right" style="border-top:1px solid var(--rule-soft);background:var(--nox-lt);padding:20px 32px;">
-      <div class="cg-label" style="color:var(--nox);">질문</div>
-      <div class="cg-val" style="color:var(--ink-700);">지금 이대로면<br>5분 뒤 NOx는?</div>
-    </div>
-
-    <div class="cg-cell" style="border-top:1px solid var(--rule-soft);padding:20px 32px;">
-      <div class="cg-label">입력</div>
-      <div class="cg-val">제어변수 override<br><span style="font-size:18px;color:var(--fg-4);">→ 1분 집계 데이터</span></div>
-    </div>
-    <div class="cg-cell right" style="border-top:1px solid var(--rule-soft);background:var(--nox-lt);padding:20px 32px;">
-      <div class="cg-label" style="color:var(--nox);">입력</div>
-      <div class="cg-val" style="color:var(--ink-700);">과거 이력 (시차값·이동 통계)<br><span style="font-size:18px;color:var(--nox-mid);">→ 1초 원시 데이터</span></div>
-    </div>
-
-    <div class="cg-cell" style="border-top:1px solid var(--rule-soft);padding:20px 32px;">
-      <div class="cg-label">타겟</div>
-      <div class="cg-val">현재 상태 응답<br><span style="font-size:18px;color:var(--fg-4);">NOx · DWATT · TTXM 다중 출력</span></div>
-    </div>
-    <div class="cg-cell right" style="border-top:1px solid var(--rule-soft);background:var(--nox-lt);padding:20px 32px;">
-      <div class="cg-label" style="color:var(--nox);">타겟</div>
-      <div class="cg-val" style="color:var(--ink-700);">5분 후 NOx<br><span style="font-size:18px;color:var(--nox-mid);">5분 뒤 목표값 점예측</span></div>
-    </div>
-
-    <div class="cg-cell" style="border-top:1px solid var(--rule-soft);padding:20px 32px;">
-      <div class="cg-label">갱신</div>
-      <div class="cg-val">온디맨드 시뮬레이션</div>
-    </div>
-    <div class="cg-cell right" style="border-top:1px solid var(--rule-soft);background:var(--nox-lt);padding:20px 32px;">
-      <div class="cg-label" style="color:var(--nox);">갱신</div>
-      <div class="cg-val" style="color:var(--ink-700);">매 1초 실시간 경보</div>
-    </div>
-  </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">02</div>
 </section>
 
-<!-- ═══ 03 모델 1 — 시뮬레이션 예측기 ═══ -->
-<section class="slide soft" data-label="Simulation">
-  <div class="top-rule">
-    <span class="slide-label">모델 1 · 시뮬레이션</span>
-    <span class="slide-num">03 / 06</span>
-  </div>
-
-  <div class="two-col sim-layout">
-    <div class="sim-copy">
-      <h2 class="slide-h2" style="font-size:36px;margin-bottom:24px;line-height:1.3;">
-        1초 데이터를 그대로 쓰면<br>모델이 과거값을 베끼기 쉬웠다.
-      </h2>
-      <p class="slide-body" style="font-size:22px;margin-bottom:20px;">
-        1초 데이터는 인접 값이 거의 같아(자기상관 r=0.989),
-        모델이 과거값을 그대로 복사하는 경향이 강하다.
-        그래서 시뮬레이션 예측기에서는 1분 평균으로 집계해
-        학습에 의미 있는 변동만 남겼다.
-      </p>
-      <p class="slide-body" style="font-size:22px;margin-bottom:20px;">
-        원시 피처 39개에
-        주요 제어 변수의 시차값과 이동 통계 등 파생 피처 10개를 더해 총 49개를 만들었다.
-        모델은 Ridge와 LightGBM 앙상블로 구성했다.
-      </p>
-      <p class="slide-body" style="font-size:22px;">
-        NOx R²가 0.71에 머문 건
-        NOx 자체의 변동 폭이 워낙 작기 때문이다 (std ≈ 0.19 ppm).
-        같은 조건에서도 DWATT·TTXM보다 NOx가 훨씬 까다로운 타깃이었다.
-      </p>
+<!-- 03 Model 2 -->
+<section class="block">
+  <div class="cs">
+    <span class="sec-label">03 — Model 2 · 5-min Forecast</span>
+    <h2 class="h2">조기경보는 평균값보다<br>순간적인 흔들림을 살리는 쪽이었다.</h2>
+    <p class="lead">1분 평균은 미세 변동이 사라져 5분 점예측이 안 됐다. 그래서 <strong>1초 원시 데이터를 유지</strong>한 채 5분 뒤 값을 직접 맞히는 구조로 바꾸고, 시차·차분·이동통계·상호작용·시간 피처까지 <strong>213개</strong>를 구성했다.</p>
+    <div class="journey">
+      <div class="jstep"><div class="jn">0.49</div><div class="jl">O₂ 완전 제외<br><b>누수 차단 기준선</b></div></div>
+      <div class="jstep"><div class="jn">0.625</div><div class="jl">피처 엔지니어링<br>O₂ 없이</div></div>
+      <div class="jstep on"><div class="jn">0.68</div><div class="jl">O₂ 재포함<br><b>누수 아님 확인</b></div></div>
     </div>
-
-    <div class="sim-visual">
-      <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:2px;">실제 대시보드 — 시뮬레이션 모드</div>
-      <div style="border-radius:var(--r-3);overflow:hidden;border:1px solid var(--rule-soft);flex:1;">
-        <img src="noxo/sim.png" alt="NOxO 시뮬레이션 대시보드"
-          style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
-        <div style="padding:14px 16px;border:1px solid var(--nox);border-radius:var(--r-3);background:var(--nox-lt);text-align:center;">
-          <div style="font-family:var(--font-mono);font-size:24px;font-weight:700;color:var(--nox-dark);">0.71</div>
-          <div style="font-family:var(--font-mono);font-size:11px;color:var(--nox);margin-top:3px;">NOx R²</div>
-        </div>
-        <div style="padding:14px 16px;border:1px solid var(--nox);border-radius:var(--r-3);background:var(--nox-lt);text-align:center;">
-          <div style="font-family:var(--font-mono);font-size:24px;font-weight:700;color:var(--nox-dark);">0.999</div>
-          <div style="font-family:var(--font-mono);font-size:11px;color:var(--nox);margin-top:3px;">DWATT R²</div>
-        </div>
-        <div style="padding:14px 16px;border:1px solid var(--nox);border-radius:var(--r-3);background:var(--nox-lt);text-align:center;">
-          <div style="font-family:var(--font-mono);font-size:24px;font-weight:700;color:var(--nox-dark);">0.997</div>
-          <div style="font-family:var(--font-mono);font-size:11px;color:var(--nox);margin-top:3px;">TTXM R²</div>
-        </div>
-      </div>
+    <div class="chips">
+      <div class="chip on"><div class="cv">0.68</div><div class="cl">5분 예보 R²</div></div>
+      <div class="chip"><div class="cv">27.7ms</div><div class="cl">추론 (예산 50ms)</div></div>
+      <div class="chip"><div class="cv">213</div><div class="cl">features</div></div>
     </div>
+    <figure class="fig">
+      <span class="figcap-pill">실제 대시보드 · 실시간 예측 모드</span>
+      <img src="noxo/predict.png" alt="NOxO 실시간 예측 대시보드"/>
+    </figure>
   </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">03</div>
 </section>
 
-<!-- ═══ 04 모델 2 — 5분 후 NOx 예보기 ═══ -->
-<section class="slide" data-label="Forecast">
-  <div class="top-rule">
-    <span class="slide-label">모델 2 · 5분 예보</span>
-    <span class="slide-num">04 / 06</span>
-  </div>
-
-  <div class="two-col forecast-layout">
-    <div class="forecast-copy">
-      <h2 class="slide-h2" style="font-size:36px;margin-bottom:24px;line-height:1.3;">
-        조기경보는 평균값보다<br>순간적인 흔들림을 살리는 쪽이 중요했다.
-      </h2>
-      <p class="slide-body" style="font-size:22px;margin-bottom:20px;">
-        1분 평균으로 바꾸면 미세 변동이 사라져
-        5분 뒤 점예측이 잘 되지 않았다.
-        그래서 1초 원시 데이터를 유지한 채,
-        5분 뒤 값을 직접 맞히는 구조로 접근을 바꿨다.
-      </p>
-      <p class="slide-body" style="font-size:22px;margin-bottom:20px;">
-        NOx와 운전변수의 시차값, 차분, 이동 통계, 상호작용, 시간 피처까지 더해 213개를 구성했다.
-        모델은 Ridge와 LightGBM 앙상블을 썼고,
-        추론 시간은 27.7 ms로 예산 50 ms 안에 들어왔다.
-      </p>
-
-      <div style="margin-top:8px;">
-        <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:10px;">R² 개선 여정</div>
-        <div class="journey-bar">
-          <div class="jb-step">
-            <div class="jb-num">0.49</div>
-            <div class="jb-lbl">O₂ 완전 제외<br><span style="font-size:14px;color:var(--fg-4);">누수 차단 기준선</span></div>
-          </div>
-          <div class="jb-step">
-            <div class="jb-num">0.625</div>
-            <div class="jb-lbl">피처 엔지니어링<br><span style="font-size:14px;color:var(--fg-4);">O₂ 없이</span></div>
-          </div>
-          <div class="jb-step highlight">
-            <div class="jb-num">0.68</div>
-            <div class="jb-lbl">O₂ 재포함<br><span style="font-size:14px;color:var(--nox-mid);">누수 아님을 확인한 최종안</span></div>
-          </div>
+<!-- 04 O2 leakage -->
+<section class="block tint">
+  <div class="cs">
+    <div class="leak">
+      <span class="lbl">04 — Key Challenge · Data Leakage</span>
+      <div class="big">0.997</div>
+      <h2>"너무 좋다"는 의심에서 시작했다.</h2>
+      <p class="lead">O₂ 센서가 NOx와 상관 0.997, 성능이 R²≈0.99까지 치솟았다. 그대로 믿는 대신 원인을 팠다 — CEMS 희석보정식에서 O₂가 <strong>NOx 라벨 계산에 직접 들어간다.</strong> 정답 일부를 보고 맞히는 셈이었다.</p>
+      <span class="codeline">NOx = NOx_raw × (21 − ref) / (21 − O₂)</span>
+      <div class="two">
+        <div class="gcard">
+          <div class="ct">모델 1 처리</div>
+          <div class="ch">현재 O₂ 제외 → 과거 O₂만</div>
+          <p>제어 시나리오에선 O₂도 함께 바뀐다. 현재 O₂는 미래 정보다. 현재값을 빼고 과거 lag·물리 변환으로 대체했다.</p>
+          <div class="delta"><span class="was">≈0.99</span><span class="arr">→ 누수 제거</span><span class="now">≈0.71</span></div>
         </div>
-      </div>
-    </div>
-
-    <div class="forecast-visual">
-      <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:2px;">실제 대시보드 — 실시간 예측 모드</div>
-      <div style="border-radius:var(--r-3);overflow:hidden;border:1px solid var(--rule-soft);flex:1;">
-        <img src="noxo/predict.png" alt="NOxO 실시간 예측 대시보드"
-          style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
-        <div style="padding:14px 16px;border:1px solid var(--nox);border-radius:var(--r-3);background:var(--nox-lt);text-align:center;">
-          <div style="font-family:var(--font-mono);font-size:24px;font-weight:700;color:var(--nox-dark);">≈ 0.68</div>
-          <div style="font-family:var(--font-mono);font-size:11px;color:var(--nox);margin-top:3px;">5분 예보 R²</div>
-        </div>
-        <div style="padding:14px 16px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--bg);text-align:center;">
-          <div style="font-family:var(--font-mono);font-size:24px;font-weight:700;color:var(--fg-1);">27.7ms</div>
-          <div style="font-family:var(--font-mono);font-size:11px;color:var(--fg-4);margin-top:3px;">추론 시간</div>
-        </div>
-        <div style="padding:14px 16px;border:1px solid var(--rule-soft);border-radius:var(--r-3);background:var(--bg);text-align:center;">
-          <div style="font-family:var(--font-mono);font-size:24px;font-weight:700;color:var(--fg-1);">213</div>
-          <div style="font-family:var(--font-mono);font-size:11px;color:var(--fg-4);margin-top:3px;">features</div>
+        <div class="gcard">
+          <div class="ct">모델 2 처리</div>
+          <div class="ch">O₂ 현재값은 미래 정보 아님을 논증</div>
+          <p>5분 후 예측에서 O₂(t)는 <strong>이미 관측된 현재값</strong>. 미래 정보가 아님을 확인하고 재포함해 0.49→0.68로 끌어올렸다.</p>
+          <div class="delta"><span class="was">0.49</span><span class="arr">→ 재포함</span><span class="now">≈0.68</span></div>
         </div>
       </div>
     </div>
   </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">04</div>
 </section>
 
-<!-- ═══ 05 O₂ 데이터 누수 ═══ -->
-<section class="slide soft" data-label="Leakage">
-  <div class="top-rule">
-    <span class="slide-label">핵심 챌린지 · O₂ 누수</span>
-    <span class="slide-num">05 / 06</span>
-  </div>
-
-  <h2 class="slide-h2" style="font-size:38px;margin-bottom:28px;">
-    상관 0.997 — "너무 좋다"는 의심에서 시작했다.
-  </h2>
-
-  <div class="leak-row">
-    <div class="leak-card evidence-card" style="background:var(--paper-100);border-color:var(--rule-soft);">
-      <div class="lc-tag">발견 · 원인 규명</div>
-      <div class="lc-title">O₂는 왜 NOx와 거의 똑같이 움직이나</div>
-      <div class="lc-body">
-        O₂ 센서(AIT_H1_902)가 NOx와 상관 0.997를 보였다.
-        모델 성능이 R²≈0.99까지 올라 이상 징후로 판단했다.
-        <br><br>
-        CEMS는 O₂ 희석보정식 <code style="font-size:16px;">NOx = NOx_raw × (21−ref) / (21−O₂)</code> 을 적용한다.
-        O₂가 NOx 라벨 계산식에 직접 들어간다는 뜻이다.
-        O₂를 입력에 넣으면 정답 일부를 보고 맞히는 셈이었다.
+<!-- 05 Validation -->
+<section class="block">
+  <div class="cs">
+    <span class="sec-label">05 — Validation &amp; Outcome</span>
+    <h2 class="h2">점수가 새지 않도록<br>검증을 먼저 설계했다.</h2>
+    <div class="vlist">
+      <div class="vitem"><div class="vk">Holdout</div><div class="vb">마지막 하루를 통째로 떼어 최종 테스트로만 사용. 학습은 그 전 <strong>14일치</strong>만, holdout은 모델 선택에 일절 쓰지 않았다.</div></div>
+      <div class="vitem"><div class="vk">CV 방식</div><div class="vb">시계열이라 무작위 split 금지. <strong>Expanding-window CV</strong>로 미래 정보가 과거로 새지 않게 했다.</div></div>
+      <div class="vitem"><div class="vk">Gap</div><div class="vb">학습/검증 사이 <strong>300초 간격</strong>을 둬 직전 값 복사만으로 점수가 부풀지 않게 했다.</div></div>
+      <div class="vitem"><div class="vk">타겟 생성</div><div class="vb">5분 후 타겟은 각 split 내부에서만 생성해 경계를 분리했다.</div></div>
+    </div>
+    <div class="two">
+      <div class="card tint">
+        <div class="ct">직전값 유지 기준 대비</div>
+        <div class="ch">0.46 → 0.68 (+0.21)</div>
+        <p class="cbody">"5분 뒤 = 지금 값"으로 찍어도 R²≈0.46. 그래서 절대 R²가 아니라 <strong>기준 모델 대비 개선폭</strong>으로 가치를 판단했다.</p>
       </div>
-      <div class="evidence-strip">
-        <div class="evidence-chip">
-          <div class="evidence-chip-k">상관계수</div>
-          <div class="evidence-chip-v">0.997</div>
-        </div>
-        <div class="evidence-chip">
-          <div class="evidence-chip-k">누수 전 R²</div>
-          <div class="evidence-chip-v">≈ 0.99</div>
-        </div>
+      <div class="card">
+        <div class="ct">R² 0.9는 왜 안 나오나</div>
+        <div class="ch">정상운전 구간의 한계</div>
+        <p class="cbody">이 15일치는 NOx 변동이 거의 없는 정상운전 구간이라 절대 R²를 올릴 여지가 작다. 부하 변동·시동/정지 데이터가 있어야 0.9급이 가능하다.</p>
       </div>
     </div>
-
-    <div class="leak-stack">
-      <div class="leak-card warn-card">
-        <div class="lc-tag warn">시뮬레이션 예측기 처리</div>
-        <div class="lc-title">O₂ 현재값 제외 → 과거 O₂만 활용</div>
-        <div class="lc-body">
-          현재 O₂를 제외하자 성능이 현실적인 수준으로 내려왔다.
-          과거 O₂ lag와 물리 변환(O₂-safe)으로 0.85까지 회복했다.
-          <br><br>
-          운전자가 제어값을 바꾸는 시나리오에서는 O₂도 함께 바뀐다.
-          현재 O₂를 그대로 쓰면 미래 정보를 보는 것과 같다.
-        </div>
-        <div style="margin-top:14px;display:flex;gap:16px;align-items:center;">
-          <div style="font-family:var(--font-mono);font-size:26px;font-weight:700;text-decoration:line-through;color:#9CA3AF;">≈ 0.99</div>
-          <div style="font-family:var(--font-mono);font-size:18px;color:#B45309;">→ 누수 제거 후</div>
-          <div style="font-family:var(--font-mono);font-size:26px;font-weight:700;color:#92400E;">≈ 0.71</div>
-        </div>
-      </div>
-
-      <div class="leak-card safe-card">
-        <div class="lc-tag safe">5분 예보기 처리</div>
-        <div class="lc-title">O₂ 현재값은 미래 정보가 아님을 논증</div>
-        <div class="lc-body">
-          처음엔 O₂를 완전히 제외한 상태에서 R²≈0.49로 시작했다.
-          <br><br>
-          5분 후를 예측할 때 O₂(t)는 이미 관측된 현재값이다.
-          미래 정보가 아님을 확인한 뒤 입력에 다시 포함했고, R²≈0.68까지 개선했다.
-        </div>
-        <div style="margin-top:14px;display:flex;gap:16px;align-items:center;">
-          <div style="font-family:var(--font-mono);font-size:26px;font-weight:700;color:#9CA3AF;">0.49</div>
-          <div style="font-family:var(--font-mono);font-size:18px;color:var(--nox-mid);">→ 재포함 후</div>
-          <div style="font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--nox-dark);">≈ 0.68</div>
-        </div>
-      </div>
+    <div class="takeaway">
+      <p>점수를 밀어 올리는 것보다 <strong>무엇을 입력으로 써도 되는지, 무엇과 비교해야 하는지</strong>를 정하는 일이 더 중요했다. 핵심은 누수 없는 비교 기준을 세우는 일이었다.</p>
     </div>
   </div>
-
-  <div style="margin-top:18px;margin-bottom:48px;padding:16px 24px;background:var(--nox-lt);border-left:3px solid var(--nox);border-radius:0 var(--r-3) var(--r-3) 0;">
-    <p style="font-family:var(--font-sans);font-size:22px;color:var(--nox-dark);margin:0;line-height:1.6;">
-      높은 R² 자체보다, 누수를 제거한 뒤 0.71 / 0.68 기준에서 모델 성능을 다시 해석했다.
-    </p>
-  </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">05</div>
 </section>
 
-<!-- ═══ 06 검증 설계 + 성과 ═══ -->
-<section class="slide" data-label="Validation">
-  <div class="top-rule">
-    <span class="slide-label">검증 설계 · 성과</span>
-    <span class="slide-num">06 / 06</span>
-  </div>
+<footer class="foot">
+  <p class="ft">NOxO — 누수 없는 예측 구조</p>
+  <a href="index.html" class="back">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M10 3L5 8l5 5"/></svg>
+    포트폴리오로 돌아가기
+  </a>
+</footer>
 
-  <div class="two-col validation-layout" style="margin:auto 0;">
-    <!-- 왼쪽: 검증 설계 -->
-    <div class="validation-plan">
-      <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:16px;">검증 설계</div>
-      <div class="validation-card">
-      <div class="val-timeline">
-        <div class="vt-row">
-          <div class="vt-label">HOLDOUT</div>
-          <div class="vt-body">마지막 하루(2025-08-25)를 통째로 따로 떼어 최종 테스트 셋으로 썼다. 학습은 그 전 <strong>14일치</strong>(8/11~8/24)만 사용했고, holdout은 모델 선택에 쓰지 않았다.</div>
-        </div>
-        <div class="vt-row">
-          <div class="vt-label">CV 방식</div>
-          <div class="vt-body">시계열 데이터라 무작위 split은 금지했다. <strong>Expanding-window CV</strong>로 시간을 따라 검증해 미래 정보가 과거로 새지 않게 했다.</div>
-        </div>
-        <div class="vt-row">
-          <div class="vt-label">GAP</div>
-          <div class="vt-body">학습/검증 사이 <strong>300초 간격</strong>을 두어 바로 직전 값 복사만으로 점수가 부풀지 않게 했다.</div>
-        </div>
-        <div class="vt-row" style="border-bottom:none;">
-          <div class="vt-label">타겟 생성</div>
-          <div class="vt-body">5분 후 타겟은 각 split 내부에서만 만들었다. holdout 데이터가 학습 타깃에 섞이지 않도록 경계를 분리했다.</div>
-        </div>
-      </div>
-      </div>
-    </div>
-
-    <!-- 오른쪽: 성과 + 배운 점 -->
-    <div class="validation-outcomes">
-      <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:2px;">성과 · 배운 점</div>
-
-      <div class="outcome-panel accent" style="padding:24px 26px;">
-        <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--nox);margin-bottom:8px;">직전값 유지 기준 비교</div>
-        <div style="font-family:var(--font-sans);font-size:20px;color:var(--nox-dark);line-height:1.6;">
-          1초 정상상태 데이터에서 "5분 뒤 = 지금 값"으로만 찍어도 R²≈0.46이 나온다.
-          그래서 절대 R²가 아니라 <strong>기준 모델 대비 개선폭(+0.21)</strong>으로 모델 가치를 판단했다.
-        </div>
-        <div style="margin-top:12px;font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--nox-dark);">0.46 → 0.68 &nbsp;(+0.21)</div>
-      </div>
-
-      <div class="outcome-subgrid">
-        <div class="outcome-panel">
-          <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:8px;">R² 0.9는 왜 안 나오나</div>
-          <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);line-height:1.6;">
-            이 15일치 데이터는 NOx 변동이 거의 없는 정상운전 구간이라 절대 R²를 끌어올릴 여지가 작다.
-            부하 변동·시동/정지처럼 NOx가 크게 흔들리는 데이터가 있어야 0.9급이 가능하다.
-          </div>
-        </div>
-
-        <div class="outcome-panel" style="background:var(--paper-100);">
-        <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-4);margin-bottom:8px;">배운 것</div>
-        <div style="font-family:var(--font-sans);font-size:20px;color:var(--fg-2);line-height:1.6;">
-            점수를 밀어 올리는 것보다 <strong style="color:var(--fg-1);">무엇을 입력으로 써도 되는지, 무엇과 비교해야 하는지</strong>를 정하는 일이 더 중요했다.
-            결국 이 프로젝트의 핵심은 누수 없는 비교 기준을 세우는 일이었다.
-        </div>
-      </div>
-      </div>
-    </div>
-  </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">06</div>
-</section>
-
-</deck-stage>
+<script>
+if(/[?&]print\b/.test(location.search)){ window.addEventListener('load',function(){ setTimeout(function(){ window.print(); },500); }); }
+</script>
 </body>
 </html>

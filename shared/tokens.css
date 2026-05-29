@@ -295,3 +295,17 @@ hr {
   border-top: 1px solid var(--rule);
   margin: var(--s-6) 0;
 }
+
+/* ── 접근성: 모션 최소화 선호 사용자 ──
+   tokens.css는 모든 페이지가 로드 → 전 페이지 애니메이션·전환·부드러운 스크롤 무력화 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  html { scroll-behavior: auto !important; }
+}
