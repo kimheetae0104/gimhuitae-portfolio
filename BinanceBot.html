@@ -2,172 +2,74 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8"/>
-<title>Binance ML Bot — 급등 탐지 자동화</title>
+<title>Binance ML Bot — 급등 탐지 자동화 · 김희태</title>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <link rel="stylesheet" href="shared/tokens.css"/>
-<link rel="stylesheet" href="shared/slide.css"/>
-<script src="shared/deck-stage.js?v=5" defer></script>
 <style>
-:root { --cn: var(--accent-600); }
-
-.cn-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 24px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--cn);
-  margin-bottom: 18px;
-}
-.cn-title {
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 64px;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  color: var(--fg-1);
-  margin: 0 0 18px;
-}
-.cn-sub {
-  font-family: var(--font-sans);
-  font-size: 28px;
-  line-height: 1.6;
-  color: var(--fg-2);
-  max-width: 80ch;
-  margin: 0;
-}
-.cn-sub strong { color: var(--cn); font-weight: 700; }
-
-.cn-flow {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-top: 44px;
-  min-height: 0;
-}
-.cn-step {
-  flex: 1;
-  align-self: stretch;
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-3);
-  background: #fff;
-  padding: 30px 26px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.cn-step.accent { background: var(--cn); border-color: var(--cn); }
-.cn-step-num {
-  font-family: var(--font-mono);
-  font-size: 18px;
-  letter-spacing: 0.14em;
-  color: var(--fg-4);
-  margin-bottom: 14px;
-}
-.cn-step.accent .cn-step-num { color: rgba(255,255,255,0.5); }
-.cn-step-name {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 28px;
-  color: var(--fg-1);
-  line-height: 1.25;
-  margin-bottom: 12px;
-}
-.cn-step.accent .cn-step-name { color: #fff; }
-.cn-step-desc {
-  font-family: var(--font-mono);
-  font-size: 20px;
-  line-height: 1.55;
-  color: var(--fg-3);
-}
-.cn-step.accent .cn-step-desc { color: rgba(255,255,255,0.72); }
-.cn-arrow {
-  display: flex;
-  align-items: center;
-  font-family: var(--font-mono);
-  font-size: 30px;
-  color: var(--fg-4);
-}
-
-/* ── 모바일 반응형 (deck-stage responsive) ── */
-@media (max-width: 768px) {
-  section.slide { padding: 70px 20px 36px; height: auto; overflow: visible; }
-  .top-rule { font-size: 12px; padding-bottom: 16px; }
-  .cn-eyebrow { font-size: 13px; margin-bottom: 12px; }
-  .cn-title { font-size: 34px; }
-  .cn-sub { font-size: 17px; max-width: none; }
-  .cn-flow { flex-direction: column; align-items: stretch; gap: 10px; margin-top: 24px; }
-  .cn-arrow { transform: rotate(90deg); justify-content: center; padding: 2px 0; font-size: 24px; }
-  .cn-step { padding: 18px 20px; }
-  .cn-step-name { font-size: 22px; }
-  .cn-step-desc { font-size: 16px; }
-  .pageno, .pageno-mark { display: none; }
-}
+  :root{ --bg:#FAFAF8; --ink:#1A1A1A; --ink-2:#54545A; --ink-3:#8C8C92; --accent:#2647B8; --line:rgba(0,0,0,.10); --line-soft:rgba(0,0,0,.06); --rad:14px;
+    --font-ui:"Plus Jakarta Sans",-apple-system,"Apple SD Gothic Neo",sans-serif; --mono:"Space Mono",ui-monospace,monospace; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:var(--font-ui); font-size:1.0625rem; line-height:1.7;
+    letter-spacing:-.011em; word-break:keep-all; -webkit-font-smoothing:antialiased; }
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width:960px; margin:0 auto; padding:0 28px; }
+  .nav{ border-bottom:1px solid var(--line-soft); }
+  .nav .in{ max-width:960px; margin:0 auto; padding:0 28px; height:56px; display:flex; align-items:center; justify-content:space-between; }
+  .nav .l{ font-weight:700; letter-spacing:-.02em; }
+  .nav .r{ display:flex; gap:18px; align-items:center; }
+  .nav .r a{ font-size:14px; font-weight:600; color:var(--ink-2); }
+  .nav .r a:hover{ color:var(--ink); }
+  .hero{ padding:clamp(48px,8vh,84px) 0 0; }
+  .sidetag{ display:inline-block; font-family:var(--mono); font-size:12px; letter-spacing:.08em; color:var(--ink-3);
+    border:1px solid var(--line); border-radius:999px; padding:6px 13px; }
+  .eyebrow{ font-family:var(--mono); font-size:13px; letter-spacing:.1em; color:var(--accent); margin:20px 0 12px; }
+  h1{ font-size:clamp(34px,5vw,56px); font-weight:800; letter-spacing:-.035em; line-height:1.08; margin:0; text-wrap:balance; }
+  .sub{ font-size:clamp(18px,2vw,21px); line-height:1.6; color:var(--ink-2); margin:18px 0 0; max-width:62ch; text-wrap:pretty; }
+  .sub strong{ color:var(--accent); font-weight:700; }
+  .chips{ display:flex; flex-wrap:wrap; gap:9px; margin-top:22px; }
+  .chip{ font-family:var(--mono); font-size:12.5px; color:var(--ink-2); background:#fff; border:1px solid var(--line); border-radius:999px; padding:7px 13px; }
+  .chip b{ color:var(--ink); }
+  .flow{ display:flex; gap:10px; flex-wrap:wrap; margin:clamp(40px,6vh,64px) 0 0; }
+  .step{ flex:1; min-width:140px; background:#fff; border:1px solid var(--line); border-radius:var(--rad); padding:20px 18px; }
+  .step.on{ border-color:var(--accent); }
+  .step .n{ font-family:var(--mono); font-size:12px; color:var(--ink-3); }
+  .step.on .n{ color:var(--accent); }
+  .step .nm{ font-size:17px; font-weight:700; margin:8px 0 6px; letter-spacing:-.01em; }
+  .step .d{ font-size:13.5px; color:var(--ink-2); line-height:1.5; }
+  @media(max-width:760px){ .flow{ flex-direction:column; } }
+  footer{ margin-top:clamp(56px,8vh,90px); border-top:1px solid var(--line-soft); padding:40px 0; }
+  footer a{ display:inline-flex; align-items:center; gap:9px; font-weight:600; }
+  footer a svg{ stroke:var(--accent); }
 </style>
 </head>
 <body>
+<nav class="nav"><div class="in">
+  <div class="l">Binance ML Bot</div>
+  <div class="r"><a href="https://github.com/kimheetae0104/binance_bot2" target="_blank" rel="noopener">GitHub ↗</a><a href="index.html">← 포트폴리오</a></div>
+</div></nav>
 
-<header class="deck-header">
-  <a href="index.html" class="deck-header-mark">김희태</a>
-  <div style="display:flex;align-items:center;gap:10px;">
-    <a href="https://github.com/kimheetae0104/binance_bot2" target="_blank" rel="noopener noreferrer" class="deck-header-back">GitHub ↗</a>
-    <a href="index.html" class="deck-header-back">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
-      포트폴리오
-    </a>
+<section class="hero">
+  <div class="wrap">
+    <span class="sidetag">사이드 프로젝트</span>
+    <p class="eyebrow">암호화폐 · 분류 · 개인 2023</p>
+    <h1>Binance ML Bot — 급등 코인 선별 봇</h1>
+    <p class="sub">수백 개 코인을 직접 훑지 않고 급등 직전 신호를 거르는 트레이딩 봇. 규칙 필터로 후보를 좁히고 <strong>XGB+LGB 앙상블 + SMOTE</strong>로 "지금 볼 가치 있는 코인"만 추렸다.</p>
+    <div class="chips">
+      <span class="chip">데이터 <b>CCXT · Binance API</b></span>
+      <span class="chip">모델 <b>XGBoost · LightGBM</b></span>
+      <span class="chip">불균형 <b>SMOTE</b></span>
+      <span class="chip">알림 <b>P(SURGE) ≥ 0.83</b></span>
+    </div>
+    <div class="flow">
+      <div class="step"><div class="n">01</div><div class="nm">데이터 수집</div><div class="d">CCXT · Binance API 1분봉 OHLCV</div></div>
+      <div class="step"><div class="n">02</div><div class="nm">기술 지표</div><div class="d">RSI · MACD · 볼린저밴드 · 거래량</div></div>
+      <div class="step"><div class="n">03</div><div class="nm">1차 필터</div><div class="d">규칙 기반 스크리닝으로 후보 압축</div></div>
+      <div class="step"><div class="n">04</div><div class="nm">ML 앙상블</div><div class="d">XGBoost · LightGBM 소프트 보팅</div></div>
+      <div class="step on"><div class="n">05</div><div class="nm">신호 출력</div><div class="d">P(SURGE) 임계값 초과 시 알림</div></div>
+    </div>
   </div>
-</header>
+</section>
 
-<deck-stage width="1920" height="1080" responsive>
-
-  <section class="slide" data-label="Binance">
-    <div class="top-rule">
-      <span>Binance ML Bot — 급등 탐지 자동화</span>
-      <span>Crypto · 2023</span>
-    </div>
-
-    <div style="margin-top:40px;">
-      <p class="cn-eyebrow">Crypto · Classification · Personal 2023</p>
-      <h1 class="cn-title">Binance ML Bot</h1>
-      <p class="cn-sub">수백 개 코인을 직접 훑지 않고 급등 직전 신호를 거르는 트레이딩 봇. 규칙 필터로 후보를 좁히고 <strong>XGB+LGB 앙상블 + SMOTE</strong>로 "지금 볼 가치 있는 코인"만 추렸다 (P(SURGE) ≥ 0.83 알림).</p>
-    </div>
-
-    <div class="cn-flow">
-      <div class="cn-step">
-        <div class="cn-step-num">01</div>
-        <div class="cn-step-name">데이터 수집</div>
-        <div class="cn-step-desc">CCXT · Binance API<br>1분봉 OHLCV</div>
-      </div>
-      <div class="cn-arrow">→</div>
-      <div class="cn-step">
-        <div class="cn-step-num">02</div>
-        <div class="cn-step-name">기술 지표</div>
-        <div class="cn-step-desc">RSI · MACD<br>볼린저밴드 · 거래량</div>
-      </div>
-      <div class="cn-arrow">→</div>
-      <div class="cn-step">
-        <div class="cn-step-num">03</div>
-        <div class="cn-step-name">1차 필터</div>
-        <div class="cn-step-desc">규칙 기반 스크리닝<br>후보 압축</div>
-      </div>
-      <div class="cn-arrow">→</div>
-      <div class="cn-step">
-        <div class="cn-step-num">04</div>
-        <div class="cn-step-name">ML 앙상블</div>
-        <div class="cn-step-desc">XGBoost · LightGBM<br>소프트 보팅</div>
-      </div>
-      <div class="cn-arrow">→</div>
-      <div class="cn-step accent">
-        <div class="cn-step-num">05</div>
-        <div class="cn-step-name">신호 출력</div>
-        <div class="cn-step-desc">P(SURGE) 임계값<br>초과 시 알림</div>
-      </div>
-    </div>
-
-    <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">김희태</a>
-    <span class="pageno">01</span>
-  </section>
-
-</deck-stage>
+<footer><div class="wrap"><a href="index.html"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg> 포트폴리오로 돌아가기</a></div></footer>
 </body>
 </html>
