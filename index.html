@@ -112,9 +112,9 @@
   /* Hero H1 — 두 줄을 동일 크기 / 톤 차이만 */
   .hero-h1 .hero-pre,
   .hero-h1 .hero-key{
-    font-size: 44px;
-    line-height: 1.22;
-    letter-spacing: -0.03em;
+    font-size: clamp(38px, 5.2vw, 68px);
+    line-height: 1.16;
+    letter-spacing: -0.035em;
     display: block;
     text-wrap: balance;
   }
@@ -252,23 +252,6 @@ if (location.protocol === 'file:') {
               <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg>
             </a>
             <a href="#about" class="btn-ghost">소개</a>
-          </div>
-          <div class="hero-atlas" aria-label="포트폴리오 주제 개요">
-            <article class="atlas-card atlas-industrial">
-              <div class="atlas-label">제조 · 산업</div>
-              <div class="atlas-title">공정과 센서 데이터</div>
-              <p>NOxO·LHV·Skinpass처럼 물리 공정과 센서 흐름에서 예측·이상탐지 문제를 다룹니다.</p>
-            </article>
-            <article class="atlas-card atlas-service">
-              <div class="atlas-label">서비스 개발</div>
-              <div class="atlas-title">사용자가 쓰는 앱</div>
-              <p>JANN·INKK는 모델을 실제 제품으로 끝까지 만들어, 사용자가 직접 쓰는 경험으로 연결합니다.</p>
-            </article>
-            <article class="atlas-card atlas-ai">
-              <div class="atlas-label">AI 워크플로우 자동화</div>
-              <div class="atlas-title">시스템과 에이전트</div>
-              <p>Local AI와 자동화 프로젝트는 반복 작업을 시스템·에이전트로 묶어 자동으로 돌아가게 합니다.</p>
-            </article>
           </div>
         </div>
         <div class="hero-right">
