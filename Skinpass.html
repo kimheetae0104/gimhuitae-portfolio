@@ -6,94 +6,50 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <link rel="stylesheet" href="shared/tokens.css"/>
 <link rel="stylesheet" href="shared/slide.css"/>
-<script src="shared/deck-stage.js?v=2" defer></script>
+<script src="shared/deck-stage.js?v=5" defer></script>
 <style>
-:root { --cn: #7C3AED; --cn-soft: rgba(124,58,237,0.08); }
+:root { --cn: #7C3AED; }
 
-/* ── 카드뉴스 커버 ── */
 .cn-eyebrow {
   font-family: var(--font-mono);
-  font-size: 26px;
+  font-size: 24px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--cn);
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 .cn-title {
   font-family: var(--font-sans);
   font-weight: 700;
-  font-size: 88px;
-  line-height: 1.05;
+  font-size: 64px;
+  line-height: 1.08;
   letter-spacing: -0.03em;
   color: var(--fg-1);
-  margin: 0 0 24px;
+  margin: 0 0 18px;
 }
 .cn-sub {
   font-family: var(--font-sans);
-  font-size: 30px;
-  line-height: 1.65;
+  font-size: 28px;
+  line-height: 1.6;
   color: var(--fg-2);
-  max-width: 62ch;
+  max-width: 80ch;
   margin: 0;
 }
-.cn-sub strong { color: var(--fg-1); font-weight: 600; }
+.cn-sub strong { color: var(--cn); font-weight: 700; }
 
-.cn-kpi-row {
-  display: flex;
-  gap: 0;
-  border-top: 1px solid var(--rule);
-  padding-top: 40px;
-  margin-top: 52px;
-}
-.cn-kpi {
-  flex: 1;
-  padding: 0 40px;
-  border-right: 1px solid var(--rule-soft);
-}
-.cn-kpi:first-child { padding-left: 0; }
-.cn-kpi:last-child { border-right: none; padding-right: 0; }
-.cn-kpi-val {
-  font-family: var(--font-mono);
-  font-size: 50px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--cn);
-  line-height: 1;
-  margin-bottom: 10px;
-}
-.cn-kpi-val.ink { color: var(--fg-1); }
-.cn-kpi-lbl {
-  font-family: var(--font-mono);
-  font-size: 18px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--fg-3);
-}
-
-/* ── 카드뉴스 EDA ── */
-.cn-h2 {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 46px;
-  line-height: 1.12;
-  letter-spacing: -0.025em;
-  color: var(--fg-1);
-  margin: 36px 0 0;
-}
-.cn-eda {
+.cn-imgs {
   flex: 1;
   display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  margin-top: 32px;
+  margin-top: 44px;
   min-height: 0;
 }
-.cn-eda.two   { grid-template-columns: 1fr 1fr; }
-.cn-eda.three { grid-template-columns: 1fr 1fr 1fr; }
 .cn-fig {
   border: 1px solid var(--rule-soft);
   border-radius: var(--r-3);
   overflow: hidden;
-  background: var(--paper-100);
+  background: #fff;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -108,29 +64,26 @@
 }
 .cn-cap {
   font-family: var(--font-mono);
-  font-size: 17px;
+  font-size: 16px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--fg-3);
-  padding: 14px 18px;
+  padding: 13px 16px;
   border-top: 1px solid var(--rule-soft);
   background: var(--paper-50);
 }
-.cn-insight {
-  margin-top: 24px;
-  padding: 22px 28px;
-  background: var(--cn-soft);
-  border-left: 3px solid var(--cn);
-  border-radius: 0 var(--r-3) var(--r-3) 0;
+
+/* ── 모바일 반응형 (deck-stage responsive) ── */
+@media (max-width: 768px) {
+  section.slide { padding: 70px 20px 36px; height: auto; overflow: visible; }
+  .top-rule { font-size: 12px; padding-bottom: 16px; }
+  .cn-eyebrow { font-size: 13px; margin-bottom: 12px; }
+  .cn-title { font-size: 32px; }
+  .cn-sub { font-size: 17px; max-width: none; }
+  .cn-imgs { grid-template-columns: 1fr !important; gap: 16px; margin-top: 24px; }
+  .cn-fig img { height: auto; max-height: 78vh; }
+  .pageno, .pageno-mark { display: none; }
 }
-.cn-insight p {
-  font-family: var(--font-mono);
-  font-size: 21px;
-  line-height: 1.6;
-  color: var(--fg-2);
-  margin: 0;
-}
-.cn-insight strong { color: var(--cn); font-weight: 700; }
 </style>
 </head>
 <body>
@@ -146,54 +99,21 @@
   </div>
 </header>
 
-<deck-stage width="1920" height="1080">
+<deck-stage width="1920" height="1080" responsive>
 
-  <!-- ──────────────── 01 COVER ──────────────── -->
-  <section class="slide s-title" data-label="Cover">
+  <section class="slide" data-label="Skinpass">
     <div class="top-rule">
       <span>Skinpass — 비계획 공정 예측</span>
-      <span>01 / 02</span>
+      <span>Cold Rolling · 2026</span>
     </div>
 
-    <div class="hero" style="flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:0;">
+    <div style="margin-top:40px;">
       <p class="cn-eyebrow">Cold Rolling · Classification · SeSAC 2026</p>
-      <h1 class="cn-title">냉연 Skinpass<br>비계획 공정 예측</h1>
-      <p class="cn-sub">냉연 코일 투입 전에 비계획 공정(재작업·수정 압연) 발생 가능성을 예측한다. 핵심은 다 맞히는 게 아니라 <strong>놓치면 큰 손실이 나는 코일을 먼저 잡는 것</strong> — 그래서 정확도가 아닌 Recall 중심으로 설계했다.</p>
-
-      <div class="cn-kpi-row">
-        <div class="cn-kpi">
-          <div class="cn-kpi-val">0.83</div>
-          <div class="cn-kpi-lbl">Recall (비계획 탐지율)</div>
-        </div>
-        <div class="cn-kpi">
-          <div class="cn-kpi-val ink">40.8%</div>
-          <div class="cn-kpi-lbl">클래스 불균형 비율</div>
-        </div>
-        <div class="cn-kpi">
-          <div class="cn-kpi-val">SMOTE</div>
-          <div class="cn-kpi-lbl">불균형 처리 기법</div>
-        </div>
-        <div class="cn-kpi">
-          <div class="cn-kpi-val ink">LGBM</div>
-          <div class="cn-kpi-lbl">최고 성능 모델</div>
-        </div>
-      </div>
+      <h1 class="cn-title">냉연 Skinpass 비계획 공정 예측</h1>
+      <p class="cn-sub">냉연 코일 투입 전에 비계획 공정(재작업·수정 압연) 발생 가능성을 예측. 정확도보다 <strong>Recall 중심</strong>으로 설계해 비계획 코일을 놓치지 않는 데 집중 — LightGBM Recall 0.83.</p>
     </div>
 
-    <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">김희태</a>
-    <span class="pageno">01</span>
-  </section>
-
-  <!-- ──────────────── 02 EDA ──────────────── -->
-  <section class="slide soft" data-label="EDA">
-    <div class="top-rule">
-      <span>탐색적 데이터 분석</span>
-      <span>02 / 02</span>
-    </div>
-
-    <h2 class="cn-h2">데이터가 보여준 건 단일 임계값이 아니라<br>조합과 불균형이었다</h2>
-
-    <div class="cn-eda three">
+    <div class="cn-imgs">
       <div class="cn-fig">
         <img src="skinpass/img/image9.png" alt="클래스 불균형 및 강종별 발생률"/>
         <div class="cn-cap">클래스 불균형 · 강종별 발생률</div>
@@ -208,12 +128,8 @@
       </div>
     </div>
 
-    <div class="cn-insight">
-      <p><strong>핵심 발견</strong>: 강종·두께·압하율 조합이 비계획 발생에 영향을 줬지만 단일 임계값으론 구분되지 않았다. 게다가 불균형(40.8%) 탓에 정확도는 무의미 → <strong>Recall 우선 + SMOTE</strong>로 LightGBM Recall 0.83 (비계획 코일 10개 중 약 8개 사전 탐지).</p>
-    </div>
-
     <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">김희태</a>
-    <span class="pageno">02</span>
+    <span class="pageno">01</span>
   </section>
 
 </deck-stage>

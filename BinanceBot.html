@@ -6,94 +6,55 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <link rel="stylesheet" href="shared/tokens.css"/>
 <link rel="stylesheet" href="shared/slide.css"/>
-<script src="shared/deck-stage.js?v=2" defer></script>
+<script src="shared/deck-stage.js?v=5" defer></script>
 <style>
-:root { --cn: var(--accent-600); --cn-soft: var(--accent-100); }
+:root { --cn: var(--accent-600); }
 
-/* ── 카드뉴스 커버 ── */
 .cn-eyebrow {
   font-family: var(--font-mono);
-  font-size: 26px;
+  font-size: 24px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--cn);
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 .cn-title {
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 88px;
-  line-height: 1.02;
+  font-size: 64px;
+  line-height: 1.05;
   letter-spacing: -0.03em;
   color: var(--fg-1);
-  margin: 0 0 24px;
+  margin: 0 0 18px;
 }
 .cn-sub {
   font-family: var(--font-sans);
-  font-size: 30px;
-  line-height: 1.65;
+  font-size: 28px;
+  line-height: 1.6;
   color: var(--fg-2);
-  max-width: 62ch;
+  max-width: 80ch;
   margin: 0;
 }
-.cn-sub strong { color: var(--fg-1); font-weight: 600; }
+.cn-sub strong { color: var(--cn); font-weight: 700; }
 
-.cn-kpi-row {
-  display: flex;
-  gap: 0;
-  border-top: 1px solid var(--rule);
-  padding-top: 40px;
-  margin-top: 52px;
-}
-.cn-kpi {
-  flex: 1;
-  padding: 0 40px;
-  border-right: 1px solid var(--rule-soft);
-}
-.cn-kpi:first-child { padding-left: 0; }
-.cn-kpi:last-child { border-right: none; padding-right: 0; }
-.cn-kpi-val {
-  font-family: var(--font-mono);
-  font-size: 48px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--cn);
-  line-height: 1;
-  margin-bottom: 10px;
-}
-.cn-kpi-val.ink { color: var(--fg-1); }
-.cn-kpi-lbl {
-  font-family: var(--font-mono);
-  font-size: 18px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--fg-3);
-}
-
-/* ── 카드뉴스 접근/파이프라인 ── */
-.cn-h2 {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 46px;
-  line-height: 1.12;
-  letter-spacing: -0.025em;
-  color: var(--fg-1);
-  margin: 36px 0 0;
-}
 .cn-flow {
+  flex: 1;
   display: flex;
-  align-items: stretch;
+  align-items: center;
   gap: 14px;
-  margin-top: 40px;
+  margin-top: 44px;
+  min-height: 0;
 }
 .cn-step {
   flex: 1;
+  align-self: stretch;
   border: 1px solid var(--rule-soft);
   border-radius: var(--r-3);
-  background: var(--paper-100);
-  padding: 26px 24px;
+  background: #fff;
+  padding: 30px 26px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 .cn-step.accent { background: var(--cn); border-color: var(--cn); }
 .cn-step-num {
@@ -107,73 +68,41 @@
 .cn-step-name {
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 26px;
+  font-size: 28px;
   color: var(--fg-1);
   line-height: 1.25;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 .cn-step.accent .cn-step-name { color: #fff; }
 .cn-step-desc {
   font-family: var(--font-mono);
-  font-size: 19px;
+  font-size: 20px;
   line-height: 1.55;
   color: var(--fg-3);
-  margin-top: auto;
 }
 .cn-step.accent .cn-step-desc { color: rgba(255,255,255,0.72); }
 .cn-arrow {
   display: flex;
   align-items: center;
   font-family: var(--font-mono);
-  font-size: 28px;
+  font-size: 30px;
   color: var(--fg-4);
 }
-.cn-pains {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 24px;
-  margin-top: 32px;
+
+/* ── 모바일 반응형 (deck-stage responsive) ── */
+@media (max-width: 768px) {
+  section.slide { padding: 70px 20px 36px; height: auto; overflow: visible; }
+  .top-rule { font-size: 12px; padding-bottom: 16px; }
+  .cn-eyebrow { font-size: 13px; margin-bottom: 12px; }
+  .cn-title { font-size: 34px; }
+  .cn-sub { font-size: 17px; max-width: none; }
+  .cn-flow { flex-direction: column; align-items: stretch; gap: 10px; margin-top: 24px; }
+  .cn-arrow { transform: rotate(90deg); justify-content: center; padding: 2px 0; font-size: 24px; }
+  .cn-step { padding: 18px 20px; }
+  .cn-step-name { font-size: 22px; }
+  .cn-step-desc { font-size: 16px; }
+  .pageno, .pageno-mark { display: none; }
 }
-.cn-pain {
-  border-top: 1px solid var(--rule-soft);
-  padding-top: 20px;
-}
-.cn-pain-k {
-  font-family: var(--font-mono);
-  font-size: 17px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--fg-4);
-  margin-bottom: 10px;
-}
-.cn-pain-t {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 25px;
-  color: var(--fg-1);
-  margin-bottom: 8px;
-}
-.cn-pain-b {
-  font-family: var(--font-sans);
-  font-size: 21px;
-  line-height: 1.55;
-  color: var(--fg-2);
-}
-.cn-insight {
-  margin-top: 28px;
-  padding: 22px 28px;
-  background: var(--cn-soft);
-  border-left: 3px solid var(--cn);
-  border-radius: 0 var(--r-3) var(--r-3) 0;
-}
-.cn-insight p {
-  font-family: var(--font-mono);
-  font-size: 21px;
-  line-height: 1.6;
-  color: var(--fg-2);
-  margin: 0;
-}
-.cn-insight strong { color: var(--cn); font-weight: 700; }
 </style>
 </head>
 <body>
@@ -189,52 +118,19 @@
   </div>
 </header>
 
-<deck-stage width="1920" height="1080">
+<deck-stage width="1920" height="1080" responsive>
 
-  <!-- ──────────────── 01 COVER ──────────────── -->
-  <section class="slide s-title" data-label="Cover">
+  <section class="slide" data-label="Binance">
     <div class="top-rule">
       <span>Binance ML Bot — 급등 탐지 자동화</span>
-      <span>01 / 02</span>
+      <span>Crypto · 2023</span>
     </div>
 
-    <div class="hero" style="flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:0;">
+    <div style="margin-top:40px;">
       <p class="cn-eyebrow">Crypto · Classification · Personal 2023</p>
-      <h1 class="cn-title">Binance<br>ML Bot</h1>
-      <p class="cn-sub">수백 개 코인을 사람이 직접 훑지 않고도 급등 직전 신호를 먼저 거르는 트레이딩 봇이다. 규칙 기반 1차 필터로 후보를 좁히고, 기술 지표와 ML 분류기로 <strong>"지금 볼 가치가 있는 코인"</strong>만 추려주는 흐름을 설계했다.</p>
-
-      <div class="cn-kpi-row">
-        <div class="cn-kpi">
-          <div class="cn-kpi-val">500+</div>
-          <div class="cn-kpi-lbl">탐색 범위 · USDT 마켓</div>
-        </div>
-        <div class="cn-kpi">
-          <div class="cn-kpi-val ink">0.83</div>
-          <div class="cn-kpi-lbl">알림 기준 P(SURGE)</div>
-        </div>
-        <div class="cn-kpi">
-          <div class="cn-kpi-val">XGB+LGB</div>
-          <div class="cn-kpi-lbl">소프트 보팅 앙상블</div>
-        </div>
-        <div class="cn-kpi">
-          <div class="cn-kpi-val ink">SMOTE</div>
-          <div class="cn-kpi-lbl">소수 클래스 보정</div>
-        </div>
-      </div>
+      <h1 class="cn-title">Binance ML Bot</h1>
+      <p class="cn-sub">수백 개 코인을 직접 훑지 않고 급등 직전 신호를 거르는 트레이딩 봇. 규칙 필터로 후보를 좁히고 <strong>XGB+LGB 앙상블 + SMOTE</strong>로 "지금 볼 가치 있는 코인"만 추렸다 (P(SURGE) ≥ 0.83 알림).</p>
     </div>
-
-    <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">김희태</a>
-    <span class="pageno">01</span>
-  </section>
-
-  <!-- ──────────────── 02 PIPELINE ──────────────── -->
-  <section class="slide soft" data-label="Pipeline">
-    <div class="top-rule">
-      <span>접근 · 데이터 → 신호 흐름</span>
-      <span>02 / 02</span>
-    </div>
-
-    <h2 class="cn-h2">전부 맞히기보다 후보를 먼저 줄였다</h2>
 
     <div class="cn-flow">
       <div class="cn-step">
@@ -245,7 +141,7 @@
       <div class="cn-arrow">→</div>
       <div class="cn-step">
         <div class="cn-step-num">02</div>
-        <div class="cn-step-name">기술 지표 계산</div>
+        <div class="cn-step-name">기술 지표</div>
         <div class="cn-step-desc">RSI · MACD<br>볼린저밴드 · 거래량</div>
       </div>
       <div class="cn-arrow">→</div>
@@ -264,34 +160,12 @@
       <div class="cn-step accent">
         <div class="cn-step-num">05</div>
         <div class="cn-step-name">신호 출력</div>
-        <div class="cn-step-desc">P(SURGE) 임계값<br>초과 시 알림 발송</div>
+        <div class="cn-step-desc">P(SURGE) 임계값<br>초과 시 알림</div>
       </div>
-    </div>
-
-    <div class="cn-pains">
-      <div class="cn-pain">
-        <div class="cn-pain-k">Pain 01</div>
-        <div class="cn-pain-t">정보 과부하</div>
-        <div class="cn-pain-b">500개 이상 페어를 사람이 직접 보는 건 불가능</div>
-      </div>
-      <div class="cn-pain">
-        <div class="cn-pain-k">Pain 02</div>
-        <div class="cn-pain-t">후행 지표의 한계</div>
-        <div class="cn-pain-b">RSI·MACD 단독은 "이미 오른 뒤"에 신호가 뜬다</div>
-      </div>
-      <div class="cn-pain">
-        <div class="cn-pain-k">Pain 03</div>
-        <div class="cn-pain-t">극심한 불균형</div>
-        <div class="cn-pain-b">급등 이벤트는 3% 미만 — 단순 분류기는 항상 "아니오"</div>
-      </div>
-    </div>
-
-    <div class="cn-insight">
-      <p><strong>핵심 설계</strong>: 정답률보다 오신호를 줄이는 게 목표였다. 규칙 필터로 후보를 좁히고 ML 앙상블 + SMOTE로 희귀한 급등 신호를 살려, <strong>P(SURGE) ≥ 0.83</strong>일 때만 알림을 냈다.</p>
     </div>
 
     <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">김희태</a>
-    <span class="pageno">02</span>
+    <span class="pageno">01</span>
   </section>
 
 </deck-stage>
