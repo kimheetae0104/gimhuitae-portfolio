@@ -2,372 +2,282 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8"/>
-<title>NOxO — IGCC 발전소 NOx 시뮬레이션 · 김희태</title>
+<title>NOxO — IGCC 가스터빈 NOx 시뮬레이션 · 김희태</title>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="shared/tokens.css"/>
 <style>
   :root{
-    --blue:#5E76ED; --blue2:#7F94FF; --blue-dark:#3A4FD0;
-    --blue-soft:#EEF1FE; --blue-tint:#F4F6FF;
-    --ink:#1A1F2E; --muted:#6B7390; --line:rgba(94,118,237,.14);
-    --shadow:0 22px 54px rgba(74,99,222,.16);
-    --rad:24px;
+    --ink:#16271A; --navy:#1F3A24; --sky:#79AE4B; --sky-soft:#EBF3E1;
+    --blue:#4E8A3E; --blue-deep:#356B2C; --bg:#E8EBE3; --card:#fff;
+    --muted:#5C6B57; --line:rgba(22,39,26,.10);
+    --shadow:0 24px 60px rgba(24,50,28,.12); --rad:26px;
   }
   *{ box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
-  body{ margin:0; background:#fff; color:var(--ink);
+  body{ margin:0; background:var(--bg); color:var(--ink);
     font-family:var(--font-sans),"Apple SD Gothic Neo",sans-serif; -webkit-font-smoothing:antialiased; }
-  a{ color:inherit; }
-  .cs{ max-width:1080px; margin:0 auto; padding:0 28px; }
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width:1200px; margin:0 auto; padding:0 24px; }
 
-  /* nav */
-  .nav{ position:sticky; top:0; z-index:50; height:58px; display:flex; align-items:center; justify-content:space-between;
-    padding:0 28px; background:rgba(255,255,255,.86); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid var(--line); }
-  .nav .mark{ font-weight:800; letter-spacing:-.02em; font-size:17px; text-decoration:none; color:var(--blue-dark); }
-  .nav .right{ display:flex; gap:8px; }
-  .nav .btn{ font-size:12px; font-weight:600; color:var(--muted); text-decoration:none; border:1px solid var(--line);
-    border-radius:999px; padding:7px 15px; background:#fff; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:.18s; }
-  .nav .btn:hover{ color:var(--blue-dark); border-color:var(--blue2); background:var(--blue-soft); }
-  .nav svg{ width:13px; height:13px; }
+  .panel{ background:var(--card); border-radius:30px; box-shadow:var(--shadow); padding:34px 40px; margin:22px auto; max-width:1200px; }
+  @media(max-width:760px){ .panel{ padding:24px 20px; border-radius:22px; } }
 
-  /* hero */
-  .hero{ background:linear-gradient(155deg,#5E76ED 0%,#6E83F2 60%,#7F94FF 100%); color:#fff; padding:96px 0 130px; position:relative; overflow:hidden; }
-  .hero::after{ content:""; position:absolute; right:-120px; top:-120px; width:480px; height:480px; border-radius:50%; background:rgba(255,255,255,.10); }
-  .hero .inner{ position:relative; z-index:1; display:grid; grid-template-columns:1.12fr 0.88fr; gap:40px; align-items:center; }
-  .hero-art{ position:relative; display:flex; align-items:center; justify-content:center; animation:floaty 6s ease-in-out infinite; background:linear-gradient(160deg, rgba(255,255,255,.96), rgba(228,236,255,.88)); border-radius:34px; padding:26px 28px; box-shadow:0 34px 64px rgba(20,30,90,.22); border:1px solid rgba(255,255,255,.48); }
-  .hero-art::before{ content:""; position:absolute; width:84%; aspect-ratio:1; border-radius:50%; background:radial-gradient(circle at 50% 48%, rgba(255,255,255,.30), rgba(255,255,255,0) 66%); }
-  .hero-art::after{ content:""; position:absolute; width:220px; height:220px; top:-48px; right:-36px; border-radius:50%; background:radial-gradient(circle, rgba(126,148,255,.32) 0%, rgba(126,148,255,0) 72%); }
-  .hero-art img{ position:relative; width:100%; max-width:470px; display:block; z-index:1; filter:drop-shadow(0 28px 38px rgba(18,26,80,.32)); }
-  .hero-orbit{
-    position:absolute; z-index:2; padding:12px 15px; border-radius:18px;
-    background:rgba(255,255,255,.72); border:1px solid rgba(255,255,255,.66);
-    box-shadow:0 18px 30px rgba(31,45,108,.16), inset 0 1px 0 rgba(255,255,255,.84);
-    font-family:var(--font-mono); font-size:10px; line-height:1.5; letter-spacing:.09em; text-transform:uppercase; color:#4c5eb7;
-    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
-  }
-  .hero-orbit strong{ display:block; margin-top:4px; font-size:11px; color:#243474; }
-  .hero-orbit.top{ left:-24px; top:28px; }
-  .hero-orbit.bottom{ right:-22px; bottom:30px; }
-  @keyframes floaty{ 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-12px) } }
-  @media (prefers-reduced-motion: reduce){ .hero-art{ animation:none; } }
-  @media (max-width:760px){ .hero .inner{ grid-template-columns:1fr; gap:20px; } .hero-art{ order:-1; max-width:300px; margin:0 auto; } }
-  .hero .eyebrow{ font-size:14px; font-weight:600; letter-spacing:.02em; color:rgba(255,255,255,.85); margin:0 0 20px; }
-  .hero h1{ font-family:'Fredoka',var(--font-sans); font-size:clamp(72px,12vw,150px); font-weight:700; letter-spacing:-.01em; line-height:.92; margin:0; }
-  .nav .mark, footer.foot .ft{ font-family:'Fredoka',var(--font-sans); }
-  .hero .sub{ font-size:clamp(22px,3.2vw,32px); font-weight:700; letter-spacing:-.02em; margin:22px 0 0; }
-  .hero .lead{ font-size:19px; line-height:1.8; color:rgba(255,255,255,.86); max-width:60ch; margin:22px 0 0; }
-  .hero .lead b{ color:#fff; font-weight:700; }
-  .meta-pills{ display:flex; flex-wrap:wrap; gap:10px; margin-top:34px; }
-  .meta-pills .pill{ background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.22); border-radius:999px; padding:9px 18px; font-size:14px; font-weight:600; }
-  .meta-pills .pill span{ opacity:.7; font-weight:500; margin-right:6px; }
-  .design-tags{ display:flex; flex-wrap:wrap; gap:12px; margin-top:18px; }
-  .design-tag{
-    display:inline-flex; align-items:center; gap:8px;
-    padding:10px 14px; border-radius:18px;
-    background:rgba(255,255,255,.14);
-    border:1px solid rgba(255,255,255,.2);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.2);
-    font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase;
-  }
-  .design-tag::before{
-    content:""; width:8px; height:8px; border-radius:50%;
-    background:linear-gradient(145deg,#fff,#d9e2ff);
-    box-shadow:0 0 0 6px rgba(255,255,255,.08);
-  }
+  .nav{ display:flex; align-items:center; justify-content:space-between; margin-bottom:30px; }
+  .nav .left{ display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.02em; color:var(--ink); }
+  .nav .dot{ width:18px; height:18px; border:2px solid var(--blue); border-radius:50%; }
+  .nav .links{ display:flex; gap:26px; align-items:center; }
+  .nav .links a{ font-size:14px; font-weight:600; color:var(--muted); }
+  .nav .links a:hover{ color:var(--ink); }
+  .nav .links a.cta{ color:var(--blue); }
+  @media(max-width:760px){ .nav .links{ display:none; } }
 
-  /* KPI floating cards */
-  .kpis{ max-width:1080px; margin:-78px auto 0; padding:0 28px; position:relative; z-index:5;
-    display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
-  .kpi{ position:relative; overflow:hidden; background:linear-gradient(160deg, rgba(255,255,255,.96), rgba(237,242,255,.90)); border-radius:24px; box-shadow:var(--shadow); padding:26px 24px; border:1px solid rgba(255,255,255,.62); }
-  .kpi::before{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(255,255,255,.46), transparent 55%); pointer-events:none; }
-  .kpi .n{ font-size:clamp(30px,3.6vw,42px); font-weight:800; letter-spacing:-.03em; color:var(--blue-dark); line-height:1; }
-  .kpi .n.ink{ color:var(--ink); }
-  .kpi .l{ font-size:13px; color:var(--muted); margin-top:11px; line-height:1.5; font-weight:500; }
+  .kicker{ font-size:clamp(20px,3.4vw,40px); font-weight:800; letter-spacing:.01em; line-height:1.05; color:var(--sky); text-transform:uppercase; margin:0; }
+  .htitle{ font-size:clamp(26px,4.6vw,56px); font-weight:800; letter-spacing:-.02em; line-height:1.06; color:var(--ink); margin:6px 0 0; }
+  .tagline{ display:inline-block; margin-top:22px; background:#fff; border:1px solid var(--line); box-shadow:0 8px 22px rgba(20,40,80,.08);
+    border-radius:999px; padding:12px 22px; font-size:16px; font-weight:600; color:var(--navy); }
+  .badges{ display:flex; gap:30px; margin-top:24px; flex-wrap:wrap; }
+  .badge{ display:flex; flex-direction:column; align-items:center; gap:9px; width:90px; text-align:center; }
+  .badge .circ{ width:62px; height:62px; border-radius:50%; border:1.5px solid var(--blue); background:var(--sky-soft); color:var(--blue-deep); display:flex; align-items:center; justify-content:center; }
+  .badge .circ svg{ width:28px; height:28px; }
+  .badge .bt{ font-size:14px; font-weight:800; color:var(--ink); }
+  .badge .bs{ font-size:10px; letter-spacing:.12em; color:var(--muted); text-transform:uppercase; }
+  .hero-photo{ position:relative; margin-top:26px; border-radius:28px; overflow:hidden; box-shadow:var(--shadow); }
+  .hero-photo img.bg{ width:100%; height:clamp(280px,42vw,520px); object-fit:cover; display:block; }
+  .hero-photo .namepill{ position:absolute; right:20px; bottom:20px; background:rgba(143,200,227,.92); color:var(--navy);
+    border-radius:18px; padding:16px 24px; font-weight:700; line-height:1.4; max-width:58%; backdrop-filter:blur(2px); display:flex; align-items:center; gap:14px; }
+  .hero-photo .namepill .dot{ width:34px; height:34px; border:2px solid var(--navy); border-radius:50%; flex-shrink:0; }
+  .hero-photo .turbine-float{ position:absolute; left:18px; bottom:10px; width:clamp(170px,24vw,310px); filter:drop-shadow(0 20px 30px rgba(10,25,60,.45)); }
+  @media(max-width:760px){ .hero-photo .turbine-float{ display:none; } .hero-photo .namepill{ max-width:92%; right:12px; bottom:12px; padding:12px 16px; } }
 
-  /* sections */
-  section.block{ padding:92px 0; }
-  section.tint{ background:var(--blue-tint); }
-  .sec-label{ display:inline-block; font-size:13px; font-weight:700; letter-spacing:.02em; color:var(--blue-dark);
-    background:var(--blue-soft); border-radius:999px; padding:7px 16px; margin:0 0 20px; }
-  h2.h2{ font-size:clamp(28px,4.2vw,44px); font-weight:800; letter-spacing:-.03em; line-height:1.18; margin:0; color:var(--ink); }
-  .lead{ font-size:18px; line-height:1.85; color:#4A5168; max-width:64ch; margin:22px 0 0; }
+  .kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:24px; }
+  .kpi{ background:var(--sky-soft); border-radius:20px; padding:22px 20px; }
+  .kpi .n{ font-size:clamp(26px,3.4vw,40px); font-weight:800; letter-spacing:-.02em; color:var(--blue-deep); line-height:1; }
+  .kpi .l{ font-size:13px; color:var(--muted); margin-top:10px; font-weight:600; line-height:1.5; }
+  @media(max-width:760px){ .kpis{ grid-template-columns:1fr 1fr; } }
+
+  .sec-kicker{ font-size:14px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--sky); margin:0 0 8px; }
+  h2.h2{ font-size:clamp(24px,3.6vw,40px); font-weight:800; letter-spacing:-.02em; line-height:1.14; color:var(--ink); margin:0; }
+  .lead{ font-size:17px; line-height:1.8; color:#46506A; max-width:66ch; margin:20px 0 0; }
   .lead strong{ color:var(--ink); font-weight:700; }
-  .lead+.lead{ margin-top:16px; }
+  .lead+.lead{ margin-top:14px; }
 
-  /* figure */
-  figure.fig{ margin:40px 0 0; }
-  .figcap-pill{ display:inline-block; font-size:13px; font-weight:600; color:var(--blue-dark); background:var(--blue-soft); border-radius:999px; padding:8px 16px; margin-bottom:16px; }
-  figure.fig img{ width:100%; display:block; border-radius:var(--rad); box-shadow:var(--shadow); border:1px solid var(--line); background:#fff; }
+  .two{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:30px; }
+  .mcard{ border:1px solid var(--line); border-radius:22px; padding:26px 28px; background:#fff; }
+  .mcard.tint{ background:var(--sky-soft); border-color:rgba(143,200,227,.5); }
+  .mcard .tag{ display:inline-block; font-size:12px; font-weight:800; letter-spacing:.04em; color:#fff; background:var(--blue); border-radius:999px; padding:6px 14px; margin-bottom:14px; }
+  .mcard h3{ font-size:21px; font-weight:800; letter-spacing:-.01em; color:var(--ink); margin:0 0 14px; }
+  .mrow{ display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-top:1px solid var(--line); font-size:15px; }
+  .mrow:first-of-type{ border-top:none; }
+  .mrow .k{ color:var(--muted); font-weight:600; }
+  .mrow .v{ color:var(--ink); font-weight:600; text-align:right; }
 
-  /* chips */
-  .chips{ display:flex; flex-wrap:wrap; gap:14px; margin-top:30px; }
-  .chip{ background:linear-gradient(160deg, rgba(255,255,255,.96), rgba(239,243,255,.86)); border:1px solid rgba(255,255,255,.72); border-radius:22px; padding:20px 26px; min-width:150px; box-shadow:0 12px 26px rgba(74,99,222,.08), inset 0 1px 0 rgba(255,255,255,.9); }
-  .chip.on{ background:linear-gradient(160deg, #5E76ED, #7D91FF); border-color:rgba(255,255,255,.22); color:#fff; }
-  .chip .cv{ font-size:30px; font-weight:800; letter-spacing:-.03em; color:var(--ink); line-height:1; }
-  .chip.on .cv{ color:#fff; }
-  .chip .cl{ font-size:12px; color:var(--muted); margin-top:9px; font-weight:600; }
-  .chip.on .cl{ color:rgba(255,255,255,.8); }
+  .chips{ display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; }
+  .chip{ border:1px solid var(--line); border-radius:16px; padding:18px 24px; min-width:140px; background:#fff; }
+  .chip.on{ background:var(--blue); border-color:var(--blue); color:#fff; }
+  .chip .v{ font-size:28px; font-weight:800; letter-spacing:-.02em; color:var(--ink); line-height:1; }
+  .chip.on .v{ color:#fff; }
+  .chip .l{ font-size:12px; color:var(--muted); margin-top:8px; font-weight:600; }
+  .chip.on .l{ color:rgba(255,255,255,.85); }
 
-  /* two cards */
-  .two{ display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:38px; }
-  .card{ background:linear-gradient(160deg, rgba(255,255,255,.96), rgba(239,243,255,.90)); border:1px solid rgba(255,255,255,.72); border-radius:28px; padding:30px 32px; box-shadow:0 18px 38px rgba(74,99,222,.10), inset 0 1px 0 rgba(255,255,255,.92); }
-  .card.tint{ background:linear-gradient(160deg, rgba(238,241,254,.94), rgba(255,255,255,.86)); border-color:rgba(94,118,237,.18); }
-  .card .ct{ display:inline-block; font-size:12px; font-weight:700; color:var(--blue-dark); background:var(--blue-soft); border-radius:999px; padding:6px 14px; margin-bottom:14px; }
-  .card.tint .ct{ background:#fff; }
-  .card .ch{ font-size:22px; font-weight:800; letter-spacing:-.02em; color:var(--ink); line-height:1.25; margin-bottom:16px; }
-  .crow{ display:flex; justify-content:space-between; gap:14px; padding:11px 0; border-top:1px solid var(--line); font-size:15px; }
-  .crow:first-of-type{ border-top:none; }
-  .crow .ck{ color:var(--muted); font-weight:600; }
-  .crow .cvv{ color:var(--ink); text-align:right; font-weight:600; }
-  .card p.cbody{ margin:0; font-size:16px; line-height:1.7; color:#4A5168; }
-  .card p.cbody strong{ color:var(--ink); font-weight:700; }
+  figure.fig{ margin:30px 0 0; }
+  .fcap{ display:inline-block; font-size:13px; font-weight:700; color:var(--blue-deep); background:var(--sky-soft); border-radius:999px; padding:8px 16px; margin-bottom:14px; }
+  figure.fig img, figure.fig video{ width:100%; display:block; border-radius:22px; border:1px solid var(--line); box-shadow:var(--shadow); }
 
-  /* journey */
-  .journey{ display:flex; gap:14px; margin-top:34px; }
-  .jstep{ flex:1; background:linear-gradient(160deg, rgba(255,255,255,.96), rgba(239,243,255,.88)); border:1px solid rgba(255,255,255,.72); border-radius:24px; padding:24px 22px; box-shadow:0 12px 26px rgba(74,99,222,.08), inset 0 1px 0 rgba(255,255,255,.9); }
-  .jstep.on{ background:linear-gradient(160deg, #5E76ED, #7D91FF); border-color:rgba(255,255,255,.22); color:#fff; }
-  .jstep .jn{ font-size:38px; font-weight:800; letter-spacing:-.03em; color:var(--ink); line-height:1; }
-  .jstep.on .jn{ color:#fff; }
-  .jstep .jl{ font-size:14px; color:var(--muted); margin-top:12px; line-height:1.5; font-weight:500; }
-  .jstep.on .jl{ color:rgba(255,255,255,.82); }
-  .jstep .jl b{ color:var(--ink); font-weight:700; }
-  .jstep.on .jl b{ color:#fff; }
+  .journey{ display:flex; gap:14px; margin-top:30px; }
+  .jstep{ flex:1; border:1px solid var(--line); border-radius:18px; padding:22px; background:#fff; }
+  .jstep.on{ background:var(--blue); border-color:var(--blue); color:#fff; }
+  .jstep .n{ font-size:34px; font-weight:800; color:var(--ink); line-height:1; }
+  .jstep.on .n{ color:#fff; }
+  .jstep .l{ font-size:13px; color:var(--muted); margin-top:10px; line-height:1.5; }
+  .jstep.on .l{ color:rgba(255,255,255,.85); }
+  @media(max-width:760px){ .journey{ flex-direction:column; } .two{ grid-template-columns:1fr; } }
 
-  /* O2 leak — blue feature block */
-  .leak{ position:relative; overflow:hidden; background:linear-gradient(155deg,#5E76ED,#6E83F2); color:#fff; border-radius:38px; padding:56px 52px; margin-top:0; box-shadow:var(--shadow); }
-  .leak::before{ content:""; position:absolute; width:320px; height:320px; right:-80px; top:-100px; border-radius:50%; background:radial-gradient(circle, rgba(255,255,255,.18) 0%, rgba(255,255,255,0) 72%); }
-  .leak::after{ content:""; position:absolute; width:220px; height:220px; left:-70px; bottom:-90px; border-radius:50%; background:radial-gradient(circle, rgba(255,255,255,.12) 0%, rgba(255,255,255,0) 72%); }
-  .leak .lbl{ display:inline-block; font-size:13px; font-weight:700; background:rgba(255,255,255,.18); border-radius:999px; padding:7px 16px; margin-bottom:22px; }
-  .leak .big{ font-size:clamp(64px,11vw,120px); font-weight:800; letter-spacing:-.05em; line-height:.9; }
-  .leak h2{ font-size:clamp(26px,3.6vw,38px); font-weight:800; letter-spacing:-.02em; line-height:1.2; margin:14px 0 0; }
-  .leak .lead{ color:rgba(255,255,255,.88); max-width:66ch; }
-  .leak .lead strong{ color:#fff; }
-  .codeline{ display:inline-block; font-family:var(--font-mono); font-size:16px; background:rgba(0,0,0,.22); color:#fff; padding:11px 18px; border-radius:12px; margin-top:22px; }
-  .leak .two{ margin-top:34px; }
-  .leak .gcard{ position:relative; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.24); border-radius:24px; padding:28px 30px; box-shadow:inset 0 1px 0 rgba(255,255,255,.22); }
-  .leak .gcard .ct{ display:inline-block; font-size:12px; font-weight:700; background:rgba(255,255,255,.2); border-radius:999px; padding:6px 14px; margin-bottom:14px; }
-  .leak .gcard .ch{ font-size:20px; font-weight:800; margin-bottom:14px; line-height:1.3; }
-  .leak .gcard p{ margin:0; font-size:16px; line-height:1.7; color:rgba(255,255,255,.86); }
-  .leak .gcard p strong{ color:#fff; }
-  .delta{ display:flex; align-items:center; gap:14px; margin-top:18px; font-weight:800; }
-  .delta .was{ font-size:24px; opacity:.6; text-decoration:line-through; }
-  .delta .arr{ font-size:14px; opacity:.8; font-weight:600; }
-  .delta .now{ font-size:28px; }
+  .feature{ position:relative; border-radius:28px; overflow:hidden; margin-top:8px; box-shadow:var(--shadow); padding:48px 44px; color:#fff;
+    background:linear-gradient(180deg, rgba(20,45,26,.55), rgba(20,45,26,.82)), url('noxo/refinery-band.webp') center/cover; }
+  .feature .fk{ font-size:13px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--sky); margin:0 0 10px; }
+  .feature .big{ font-size:clamp(56px,9vw,104px); font-weight:800; letter-spacing:-.03em; line-height:.9; }
+  .feature h2{ font-size:clamp(22px,3.2vw,34px); font-weight:800; margin:12px 0 0; }
+  .feature .flead{ font-size:17px; line-height:1.75; color:rgba(255,255,255,.9); max-width:64ch; margin:16px 0 0; }
+  .feature .flead strong{ color:#fff; }
+  .feature .code{ display:inline-block; font-family:var(--font-mono); font-size:15px; background:rgba(0,0,0,.3); border-radius:10px; padding:10px 16px; margin-top:18px; }
+  .gcards{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:30px; }
+  .gcard{ background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:18px; padding:24px 26px; backdrop-filter:blur(6px); }
+  .gcard .gt{ font-size:12px; font-weight:800; background:rgba(255,255,255,.2); border-radius:999px; padding:6px 12px; display:inline-block; margin-bottom:12px; }
+  .gcard h4{ font-size:19px; font-weight:800; margin:0 0 12px; }
+  .gcard p{ margin:0; font-size:15px; line-height:1.65; color:rgba(255,255,255,.88); }
+  .gcard p strong{ color:#fff; }
+  .delta{ display:flex; align-items:center; gap:12px; margin-top:14px; font-weight:800; }
+  .delta .was{ font-size:22px; opacity:.6; text-decoration:line-through; }
+  .delta .now{ font-size:26px; }
+  @media(max-width:760px){ .gcards{ grid-template-columns:1fr; } .feature{ padding:32px 22px; } }
 
-  /* validation */
-  .vlist{ margin-top:36px; }
-  .vitem{ display:grid; grid-template-columns:190px 1fr; gap:26px; padding:24px 0; border-bottom:1px solid var(--line); }
+  .vlist{ margin-top:28px; }
+  .vitem{ display:grid; grid-template-columns:180px 1fr; gap:24px; padding:22px 0; border-bottom:1px solid var(--line); }
   .vitem:first-child{ border-top:1px solid var(--line); }
-  .vitem .vk{ font-size:15px; font-weight:800; color:var(--blue-dark); }
-  .vitem .vb{ font-size:17px; line-height:1.7; color:#4A5168; }
+  .vitem .vk{ font-size:14px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--blue-deep); }
+  .vitem .vb{ font-size:16px; line-height:1.7; color:#46506A; }
   .vitem .vb strong{ color:var(--ink); font-weight:700; }
-  .takeaway{ margin-top:40px; background:var(--blue-soft); border-radius:var(--rad); padding:32px 36px; }
-  .takeaway p{ margin:0; font-size:20px; line-height:1.7; color:var(--blue-dark); font-weight:600; }
+  .takeaway{ margin-top:30px; background:var(--sky-soft); border-left:4px solid var(--blue); border-radius:0 18px 18px 0; padding:28px 32px; }
+  .takeaway p{ margin:0; font-size:19px; line-height:1.7; color:var(--navy); font-weight:600; }
   .takeaway p strong{ font-weight:800; }
+  @media(max-width:760px){ .vitem{ grid-template-columns:1fr; gap:6px; } }
 
-  /* footer */
-  footer.foot{ background:linear-gradient(155deg,#5E76ED,#7F94FF); color:#fff; text-align:center; padding:80px 0; margin-top:92px; }
-  footer.foot .ft{ font-size:24px; font-weight:800; letter-spacing:-.02em; margin:0 0 22px; }
-  footer.foot .back{ display:inline-flex; align-items:center; gap:8px; font-size:14px; font-weight:700; color:var(--blue-dark);
-    background:#fff; border-radius:999px; padding:14px 28px; text-decoration:none; transition:.18s; }
-  footer.foot .back:hover{ transform:translateY(-2px); box-shadow:0 12px 30px rgba(0,0,0,.18); }
+  footer.foot{ text-align:center; padding:40px 0 70px; color:var(--muted); }
+  footer.foot .back{ display:inline-flex; align-items:center; gap:8px; font-weight:700; color:var(--ink); background:#fff; border:1px solid var(--line); border-radius:999px; padding:13px 26px; }
+  footer.foot .back:hover{ border-color:var(--blue); color:var(--blue); }
 
-  @media (max-width:760px){
-    .kpis{ grid-template-columns:1fr 1fr; gap:14px; margin-top:-60px; }
-    .two{ grid-template-columns:1fr; }
-    .journey{ flex-direction:column; }
-    .vitem{ grid-template-columns:1fr; gap:6px; }
-    .leak{ padding:40px 26px; border-radius:24px; }
-    section.block{ padding:64px 0; }
-    .hero-orbit.top{ left:0; top:-18px; }
-    .hero-orbit.bottom{ right:0; bottom:-18px; }
-  }
-  @media print{
-    .nav,footer.foot{ display:none; }
-    .hero,.leak,footer.foot{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-    section.block{ break-inside:avoid; }
-  }
+  @media print{ .nav .links,footer.foot{ display:none; } .panel,.feature{ break-inside:avoid; } *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <a href="index.html" class="mark">김희태</a>
-  <div class="right">
-    <button type="button" class="btn" onclick="window.print()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3M3 13h10"/></svg>PDF</button>
-    <a class="btn" href="https://github.com/kimheetae0104" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-    <a class="btn" href="index.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>포트폴리오</a>
-  </div>
-</nav>
-
-<!-- HERO -->
-<header class="hero">
-  <div class="cs inner">
-    <div class="hero-copy">
-      <p class="eyebrow">SeSAC 제조 AI · IGCC 발전소 · 팀 프로젝트 · 2026</p>
-      <h1>NOxO</h1>
-      <p class="sub">가스터빈 배기 NOx 시뮬레이션 &amp; 5분 조기경보</p>
-      <p class="lead">IGCC 발전소에서 운전 조건을 바꿨을 때 NOx가 어떻게 달라지는지 미리 가늠하는 프로젝트. 현장 시뮬레이션용 예측기와 5분 후 조기경보 예보기를 나눠 설계했고, 핵심은 높은 수치보다 <b>현장에서 쓸 수 있는, 누수 없는 예측 구조</b>를 만드는 일이었다.</p>
-      <div class="meta-pills">
-        <div class="pill"><span>Role</span>데이터 분석 · 모델링 · 검증</div>
-        <div class="pill"><span>Domain</span>가스터빈 NOx</div>
-        <div class="pill"><span>Stack</span>Python · Ridge · LightGBM</div>
-        <div class="pill"><span>Year</span>2026</div>
-      </div>
-      <div class="design-tags" aria-label="디자인 방향">
-        <div class="design-tag">3D turbine render</div>
-        <div class="design-tag">clay control deck</div>
-        <div class="design-tag">soft industrial blue</div>
-      </div>
+<section class="panel" style="margin-top:22px;">
+  <nav class="nav">
+    <div class="left"><span class="dot"></span> NOxO — IGCC NOx</div>
+    <div class="links">
+      <a href="#problem">문제</a>
+      <a href="#models">모델</a>
+      <a href="#challenge">데이터 누수</a>
+      <a href="#validation">검증</a>
+      <a class="cta" href="index.html">← 포트폴리오</a>
     </div>
-    <div class="hero-art">
-      <div class="hero-orbit top">Interface Mood<strong>3D + Clay</strong></div>
-      <div class="hero-orbit bottom">Project Theme<strong>Industrial Simulation</strong></div>
-      <img src="noxo/turbine-3d.webp" alt="가스터빈 3D 일러스트"/>
+  </nav>
+
+  <p class="kicker">INTEGRATED GASIFICATION COMBINED CYCLE</p>
+  <h1 class="htitle">가스터빈 배기 NOx 시뮬레이션 &amp; 5분 조기경보</h1>
+  <div class="tagline">놓치면 큰 손실 — 점수보다 누수 없는 예측 구조</div>
+
+  <div class="badges">
+    <div class="badge">
+      <span class="circ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c5-2 8-6 8-11V5l-8-2-8 2v5c0 5 3 9 8 11z"/><path d="M9.5 12.5l1.8 1.8 3.7-3.8"/></svg></span>
+      <span class="bt">저탄소</span><span class="bs">Low-Carbon</span>
+    </div>
+    <div class="badge">
+      <span class="circ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4 4 0 1 1 .8-7.9A5.5 5.5 0 0 1 18 11a3.5 3.5 0 0 1-.5 7H7z"/></svg></span>
+      <span class="bt">저배출</span><span class="bs">Low-NOx</span>
+    </div>
+    <div class="badge">
+      <span class="circ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8"/><path d="M20 4v4h-4"/><path d="M20 12a8 8 0 0 1-13.7 5.6L4 16"/><path d="M4 20v-4h4"/></svg></span>
+      <span class="bt">복합발전</span><span class="bs">Combined Cycle</span>
     </div>
   </div>
-</header>
 
-<div class="kpis">
-  <div class="kpi"><div class="n">0.71</div><div class="l">시뮬레이션 NOx R²</div></div>
-  <div class="kpi"><div class="n">0.68</div><div class="l">5분 예보 R²</div></div>
-  <div class="kpi"><div class="n ink">+0.21</div><div class="l">직전값 유지 기준 대비 개선</div></div>
-  <div class="kpi"><div class="n ink">27.7ms</div><div class="l">예보 추론 시간</div></div>
+  <div class="hero-photo">
+    <img class="bg" src="noxo/plant-hero.webp" alt="IGCC 천연가스 복합화력 발전소"/>
+    <div class="namepill"><span class="dot"></span><span>NOxO · 가스터빈 배기 NOx 시뮬레이션 &amp; 5분 조기경보 — SeSAC 제조 AI 2026</span></div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="n">0.71</div><div class="l">시뮬레이션 NOx R²</div></div>
+    <div class="kpi"><div class="n">0.68</div><div class="l">5분 예보 R²</div></div>
+    <div class="kpi"><div class="n">+0.21</div><div class="l">직전값 유지 기준 대비</div></div>
+    <div class="kpi"><div class="n">27.7ms</div><div class="l">예보 추론 시간</div></div>
+  </div>
+</section>
+
+<section class="panel" id="problem">
+  <p class="sec-kicker">01 — Problem</p>
+  <h2 class="h2">같은 발전소 데이터여도<br>현장에서 필요한 질문은 둘이었다.</h2>
+  <p class="lead">"제어밸브를 바꾸면 NOx가 어떻게 되나"라는 <strong>시뮬레이션</strong> 질문과 "지금 이대로면 5분 뒤 NOx는?"이라는 <strong>조기경보</strong> 질문. 입력·갱신 주기·평가가 전혀 달라 하나로 묶지 않고 둘로 분리해 설계했다.</p>
+  <div class="two">
+    <div class="mcard">
+      <span class="tag">모델 1</span>
+      <h3>운전 시뮬레이션 예측기</h3>
+      <div class="mrow"><span class="k">질문</span><span class="v">제어값을 바꾸면 NOx는?</span></div>
+      <div class="mrow"><span class="k">입력</span><span class="v">제어변수 override · 1분 집계</span></div>
+      <div class="mrow"><span class="k">타겟</span><span class="v">NOx · DWATT · TTXM</span></div>
+      <div class="mrow"><span class="k">갱신</span><span class="v">온디맨드 시뮬레이션</span></div>
+    </div>
+    <div class="mcard tint">
+      <span class="tag">모델 2</span>
+      <h3>5분 후 NOx 예보기</h3>
+      <div class="mrow"><span class="k">질문</span><span class="v">5분 뒤 NOx는?</span></div>
+      <div class="mrow"><span class="k">입력</span><span class="v">과거 이력 · 1초 원시</span></div>
+      <div class="mrow"><span class="k">타겟</span><span class="v">5분 후 NOx 점예측</span></div>
+      <div class="mrow"><span class="k">갱신</span><span class="v">매 1초 실시간 경보</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="models">
+  <p class="sec-kicker">02 — Model 1 · Simulation</p>
+  <h2 class="h2">1초 데이터를 그대로 쓰면<br>모델이 과거값을 베끼기 쉬웠다.</h2>
+  <p class="lead">1초 데이터는 인접 값이 거의 같아(자기상관 r=0.989) 과거값 복사 경향이 강하다. <strong>1분 평균 집계</strong>로 의미 있는 변동만 남기고, 원시 39 + 파생 10 = 49개 피처에 <strong>Ridge + LightGBM 앙상블</strong>. NOx R² 0.71은 변동 폭이 워낙 작기 때문(std ≈ 0.19 ppm).</p>
+  <div class="chips">
+    <div class="chip on"><div class="v">0.71</div><div class="l">NOx R²</div></div>
+    <div class="chip"><div class="v">0.999</div><div class="l">DWATT R²</div></div>
+    <div class="chip"><div class="v">0.997</div><div class="l">TTXM R²</div></div>
+  </div>
+  <figure class="fig"><span class="fcap">실제 대시보드 · 시뮬레이션 모드</span><video poster="noxo/sim-poster.webp" autoplay muted loop playsinline preload="metadata" aria-label="시뮬레이션 모드 대시보드 데모 영상"><source src="noxo/sim.webm" type="video/webm"/><source src="noxo/sim.mp4" type="video/mp4"/></video></figure>
+</section>
+
+<section class="panel">
+  <p class="sec-kicker">03 — Model 2 · 5-min Forecast</p>
+  <h2 class="h2">조기경보는 평균값보다<br>순간적인 흔들림을 살리는 쪽이었다.</h2>
+  <p class="lead">1분 평균은 미세 변동이 사라져 5분 점예측이 안 됐다. <strong>1초 원시 데이터를 유지</strong>한 채 5분 뒤 값을 직접 맞히는 구조로 바꾸고, 시차·차분·이동통계·상호작용·시간 피처까지 <strong>213개</strong> 구성.</p>
+  <div class="journey">
+    <div class="jstep"><div class="n">0.49</div><div class="l">O₂ 완전 제외 · 누수 차단 기준선</div></div>
+    <div class="jstep"><div class="n">0.625</div><div class="l">피처 엔지니어링 · O₂ 없이</div></div>
+    <div class="jstep on"><div class="n">0.68</div><div class="l">O₂ 재포함 · 누수 아님 확인</div></div>
+  </div>
+  <div class="chips">
+    <div class="chip on"><div class="v">0.68</div><div class="l">5분 예보 R²</div></div>
+    <div class="chip"><div class="v">27.7ms</div><div class="l">추론 (예산 50ms)</div></div>
+    <div class="chip"><div class="v">213</div><div class="l">features</div></div>
+  </div>
+  <figure class="fig"><span class="fcap">실제 대시보드 · 실시간 예측 모드</span><video poster="noxo/predict-poster.webp" autoplay muted loop playsinline preload="metadata" aria-label="5분 후 예측 모드 대시보드 데모 영상"><source src="noxo/predict.webm" type="video/webm"/><source src="noxo/predict.mp4" type="video/mp4"/></video></figure>
+</section>
+
+<div class="wrap" id="challenge">
+  <div class="feature">
+    <p class="fk">04 — Key Challenge · Data Leakage</p>
+    <div class="big">0.997</div>
+    <h2>"너무 좋다"는 의심에서 시작했다.</h2>
+    <p class="flead">O₂ 센서가 NOx와 상관 0.997, 성능이 R²≈0.99까지 치솟았다. 그대로 믿는 대신 원인을 팠다 — CEMS 희석보정식에서 O₂가 <strong>NOx 라벨 계산에 직접 들어간다.</strong> 정답 일부를 보고 맞히는 셈이었다.</p>
+    <span class="code">NOx = NOx_raw × (21 − ref) / (21 − O₂)</span>
+    <div class="gcards">
+      <div class="gcard">
+        <span class="gt">모델 1 처리</span>
+        <h4>현재 O₂ 제외 → 과거 O₂만</h4>
+        <p>제어 시나리오에선 O₂도 함께 바뀐다. 현재 O₂는 미래 정보. 현재값을 빼고 과거 lag·물리 변환으로 대체했다.</p>
+        <div class="delta"><span class="was">≈0.99</span><span>→ 누수 제거</span><span class="now">≈0.71</span></div>
+      </div>
+      <div class="gcard">
+        <span class="gt">모델 2 처리</span>
+        <h4>O₂ 현재값은 미래 정보 아님을 논증</h4>
+        <p>5분 후 예측에서 O₂(t)는 <strong>이미 관측된 현재값</strong>. 미래 정보가 아님을 확인하고 재포함해 0.49→0.68로 끌어올렸다.</p>
+        <div class="delta"><span class="was">0.49</span><span>→ 재포함</span><span class="now">≈0.68</span></div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- 01 Problem -->
-<section class="block">
-  <div class="cs">
-    <span class="sec-label">01 — Problem</span>
-    <h2 class="h2">같은 발전소 데이터여도<br>현장에서 필요한 질문은 둘이었다.</h2>
-    <p class="lead">"제어밸브를 바꾸면 NOx가 어떻게 되나"라는 <strong>시뮬레이션</strong> 질문과 "지금 이대로면 5분 뒤 NOx는?"이라는 <strong>조기경보</strong> 질문. 입력·갱신 주기·평가가 전혀 달라 하나로 묶지 않고 둘로 분리해 설계했다.</p>
-    <div class="two">
-      <div class="card">
-        <div class="ct">모델 1</div>
-        <div class="ch">운전 시뮬레이션 예측기</div>
-        <div class="crow"><span class="ck">질문</span><span class="cvv">제어값을 바꾸면 NOx는?</span></div>
-        <div class="crow"><span class="ck">입력</span><span class="cvv">제어변수 override · 1분 집계</span></div>
-        <div class="crow"><span class="ck">타겟</span><span class="cvv">NOx · DWATT · TTXM</span></div>
-        <div class="crow"><span class="ck">갱신</span><span class="cvv">온디맨드 시뮬레이션</span></div>
-      </div>
-      <div class="card tint">
-        <div class="ct">모델 2</div>
-        <div class="ch">5분 후 NOx 예보기</div>
-        <div class="crow"><span class="ck">질문</span><span class="cvv">5분 뒤 NOx는?</span></div>
-        <div class="crow"><span class="ck">입력</span><span class="cvv">과거 이력 · 1초 원시</span></div>
-        <div class="crow"><span class="ck">타겟</span><span class="cvv">5분 후 NOx 점예측</span></div>
-        <div class="crow"><span class="ck">갱신</span><span class="cvv">매 1초 실시간 경보</span></div>
-      </div>
+<section class="panel" id="validation" style="margin-top:22px;">
+  <p class="sec-kicker">05 — Validation &amp; Outcome</p>
+  <h2 class="h2">점수가 새지 않도록<br>검증을 먼저 설계했다.</h2>
+  <div class="vlist">
+    <div class="vitem"><div class="vk">Holdout</div><div class="vb">마지막 하루를 통째로 떼어 최종 테스트로만 사용. 학습은 그 전 <strong>14일치</strong>만, holdout은 모델 선택에 일절 쓰지 않았다.</div></div>
+    <div class="vitem"><div class="vk">CV 방식</div><div class="vb">시계열이라 무작위 split 금지. <strong>Expanding-window CV</strong>로 미래 정보가 과거로 새지 않게 했다.</div></div>
+    <div class="vitem"><div class="vk">Gap</div><div class="vb">학습/검증 사이 <strong>300초 간격</strong>을 둬 직전 값 복사만으로 점수가 부풀지 않게 했다.</div></div>
+    <div class="vitem"><div class="vk">타겟 생성</div><div class="vb">5분 후 타겟은 각 split 내부에서만 생성해 경계를 분리했다.</div></div>
+  </div>
+  <div class="two" style="margin-top:30px;">
+    <div class="mcard tint">
+      <span class="tag">기준 대비</span>
+      <h3>0.46 → 0.68 (+0.21)</h3>
+      <p style="margin:0;font-size:16px;line-height:1.7;color:#46506A;">"5분 뒤 = 지금 값"으로 찍어도 R²≈0.46. 그래서 절대 R²가 아니라 <strong>기준 모델 대비 개선폭</strong>으로 가치를 판단했다.</p>
+    </div>
+    <div class="mcard">
+      <span class="tag">한계</span>
+      <h3>R² 0.9는 왜 안 나오나</h3>
+      <p style="margin:0;font-size:16px;line-height:1.7;color:#46506A;">이 15일치는 NOx 변동이 거의 없는 정상운전 구간이라 절대 R²를 올릴 여지가 작다. 부하 변동·시동/정지 데이터가 있어야 0.9급이 가능하다.</p>
     </div>
   </div>
-</section>
-
-<!-- 02 Model 1 -->
-<section class="block tint">
-  <div class="cs">
-    <span class="sec-label">02 — Model 1 · Simulation</span>
-    <h2 class="h2">1초 데이터를 그대로 쓰면<br>모델이 과거값을 베끼기 쉬웠다.</h2>
-    <p class="lead">1초 데이터는 인접 값이 거의 같아(자기상관 r=0.989) 모델이 과거값을 복사하기 쉽다. 그래서 <strong>1분 평균으로 집계</strong>해 의미 있는 변동만 남기고, 원시 39개 + 파생 10개 = 49개 피처에 <strong>Ridge + LightGBM 앙상블</strong>을 썼다. NOx R²가 0.71에 머문 건 변동 폭이 워낙 작기 때문이다(std ≈ 0.19 ppm).</p>
-    <div class="chips">
-      <div class="chip on"><div class="cv">0.71</div><div class="cl">NOx R²</div></div>
-      <div class="chip"><div class="cv">0.999</div><div class="cl">DWATT R²</div></div>
-      <div class="chip"><div class="cv">0.997</div><div class="cl">TTXM R²</div></div>
-    </div>
-    <figure class="fig">
-      <span class="figcap-pill">실제 대시보드 · 시뮬레이션 모드</span>
-      <img src="noxo/sim.png" alt="NOxO 시뮬레이션 대시보드"/>
-    </figure>
-  </div>
-</section>
-
-<!-- 03 Model 2 -->
-<section class="block">
-  <div class="cs">
-    <span class="sec-label">03 — Model 2 · 5-min Forecast</span>
-    <h2 class="h2">조기경보는 평균값보다<br>순간적인 흔들림을 살리는 쪽이었다.</h2>
-    <p class="lead">1분 평균은 미세 변동이 사라져 5분 점예측이 안 됐다. 그래서 <strong>1초 원시 데이터를 유지</strong>한 채 5분 뒤 값을 직접 맞히는 구조로 바꾸고, 시차·차분·이동통계·상호작용·시간 피처까지 <strong>213개</strong>를 구성했다.</p>
-    <div class="journey">
-      <div class="jstep"><div class="jn">0.49</div><div class="jl">O₂ 완전 제외<br><b>누수 차단 기준선</b></div></div>
-      <div class="jstep"><div class="jn">0.625</div><div class="jl">피처 엔지니어링<br>O₂ 없이</div></div>
-      <div class="jstep on"><div class="jn">0.68</div><div class="jl">O₂ 재포함<br><b>누수 아님 확인</b></div></div>
-    </div>
-    <div class="chips">
-      <div class="chip on"><div class="cv">0.68</div><div class="cl">5분 예보 R²</div></div>
-      <div class="chip"><div class="cv">27.7ms</div><div class="cl">추론 (예산 50ms)</div></div>
-      <div class="chip"><div class="cv">213</div><div class="cl">features</div></div>
-    </div>
-    <figure class="fig">
-      <span class="figcap-pill">실제 대시보드 · 실시간 예측 모드</span>
-      <img src="noxo/predict.png" alt="NOxO 실시간 예측 대시보드"/>
-    </figure>
-  </div>
-</section>
-
-<!-- 04 O2 leakage -->
-<section class="block tint">
-  <div class="cs">
-    <div class="leak">
-      <span class="lbl">04 — Key Challenge · Data Leakage</span>
-      <div class="big">0.997</div>
-      <h2>"너무 좋다"는 의심에서 시작했다.</h2>
-      <p class="lead">O₂ 센서가 NOx와 상관 0.997, 성능이 R²≈0.99까지 치솟았다. 그대로 믿는 대신 원인을 팠다 — CEMS 희석보정식에서 O₂가 <strong>NOx 라벨 계산에 직접 들어간다.</strong> 정답 일부를 보고 맞히는 셈이었다.</p>
-      <span class="codeline">NOx = NOx_raw × (21 − ref) / (21 − O₂)</span>
-      <div class="two">
-        <div class="gcard">
-          <div class="ct">모델 1 처리</div>
-          <div class="ch">현재 O₂ 제외 → 과거 O₂만</div>
-          <p>제어 시나리오에선 O₂도 함께 바뀐다. 현재 O₂는 미래 정보다. 현재값을 빼고 과거 lag·물리 변환으로 대체했다.</p>
-          <div class="delta"><span class="was">≈0.99</span><span class="arr">→ 누수 제거</span><span class="now">≈0.71</span></div>
-        </div>
-        <div class="gcard">
-          <div class="ct">모델 2 처리</div>
-          <div class="ch">O₂ 현재값은 미래 정보 아님을 논증</div>
-          <p>5분 후 예측에서 O₂(t)는 <strong>이미 관측된 현재값</strong>. 미래 정보가 아님을 확인하고 재포함해 0.49→0.68로 끌어올렸다.</p>
-          <div class="delta"><span class="was">0.49</span><span class="arr">→ 재포함</span><span class="now">≈0.68</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 05 Validation -->
-<section class="block">
-  <div class="cs">
-    <span class="sec-label">05 — Validation &amp; Outcome</span>
-    <h2 class="h2">점수가 새지 않도록<br>검증을 먼저 설계했다.</h2>
-    <div class="vlist">
-      <div class="vitem"><div class="vk">Holdout</div><div class="vb">마지막 하루를 통째로 떼어 최종 테스트로만 사용. 학습은 그 전 <strong>14일치</strong>만, holdout은 모델 선택에 일절 쓰지 않았다.</div></div>
-      <div class="vitem"><div class="vk">CV 방식</div><div class="vb">시계열이라 무작위 split 금지. <strong>Expanding-window CV</strong>로 미래 정보가 과거로 새지 않게 했다.</div></div>
-      <div class="vitem"><div class="vk">Gap</div><div class="vb">학습/검증 사이 <strong>300초 간격</strong>을 둬 직전 값 복사만으로 점수가 부풀지 않게 했다.</div></div>
-      <div class="vitem"><div class="vk">타겟 생성</div><div class="vb">5분 후 타겟은 각 split 내부에서만 생성해 경계를 분리했다.</div></div>
-    </div>
-    <div class="two">
-      <div class="card tint">
-        <div class="ct">직전값 유지 기준 대비</div>
-        <div class="ch">0.46 → 0.68 (+0.21)</div>
-        <p class="cbody">"5분 뒤 = 지금 값"으로 찍어도 R²≈0.46. 그래서 절대 R²가 아니라 <strong>기준 모델 대비 개선폭</strong>으로 가치를 판단했다.</p>
-      </div>
-      <div class="card">
-        <div class="ct">R² 0.9는 왜 안 나오나</div>
-        <div class="ch">정상운전 구간의 한계</div>
-        <p class="cbody">이 15일치는 NOx 변동이 거의 없는 정상운전 구간이라 절대 R²를 올릴 여지가 작다. 부하 변동·시동/정지 데이터가 있어야 0.9급이 가능하다.</p>
-      </div>
-    </div>
-    <div class="takeaway">
-      <p>점수를 밀어 올리는 것보다 <strong>무엇을 입력으로 써도 되는지, 무엇과 비교해야 하는지</strong>를 정하는 일이 더 중요했다. 핵심은 누수 없는 비교 기준을 세우는 일이었다.</p>
-    </div>
-  </div>
+  <div class="takeaway"><p>점수를 밀어 올리는 것보다 <strong>무엇을 입력으로 써도 되는지, 무엇과 비교해야 하는지</strong>를 정하는 일이 더 중요했다. 핵심은 누수 없는 비교 기준을 세우는 일이었다.</p></div>
 </section>
 
 <footer class="foot">
-  <p class="ft">NOxO — 누수 없는 예측 구조</p>
-  <a href="index.html" class="back">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M10 3L5 8l5 5"/></svg>
-    포트폴리오로 돌아가기
-  </a>
+  <a class="back" href="index.html"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg> 포트폴리오로 돌아가기</a>
 </footer>
 
 <script>
