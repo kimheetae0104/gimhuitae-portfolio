@@ -1151,7 +1151,7 @@ footer .row{
           <li>AX 직무 채용 라운드 진행</li>
           <li>코딩 에이전트(Claude Code · Cursor) 워크플로우 정착 중</li>
         </ul>
-        <div class="now-footer">갱신 · <time datetime="2026-05-30">2026.05.30</time></div>
+        <div class="now-footer">갱신 · <time class="js-today" datetime="2026-05-30">2026.05.30</time></div>
       </aside>
     </div>
   </div>
@@ -1276,7 +1276,7 @@ footer .row{
 
       <article class="proj-card">
         <div class="proj-thumb">
-          <img src="blog-agent-rag/img/sheets-result.png" alt="Blog Agent 발행 결과" loading="lazy">
+          <img src="blog-agent-rag/img/sheets-result.png" alt="Blog Agent — 발행 결과 시트" loading="lazy">
         </div>
         <div class="proj-body">
           <div class="proj-meta">
@@ -1340,6 +1340,7 @@ footer .row{
   <div class="container">
     <div class="section-head">
       <span class="section-num">04 · 이력</span>
+      <h2 class="section-title">이력.</h2>
     </div>
 
     <div class="resume">
@@ -1469,7 +1470,7 @@ footer .row{
 <footer>
   <div class="row">
     <span>© 2026 김희태</span>
-    <span>마지막 업데이트 · <time datetime="2026-05-30">2026.05.30</time></span>
+    <span>마지막 업데이트 · <time class="js-today" datetime="2026-05-30">2026.05.30</time></span>
   </div>
 </footer>
 
@@ -1703,6 +1704,22 @@ footer .row{
   /* 다이얼로그 미지원 브라우저 폴백 */
   dialog:not([open]){display:none}
 </style>
+
+<script>
+/* 오늘 날짜 자동 갱신 — .js-today 모두 today로 (Now 패널, 푸터) */
+(() => {
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = String(today.getMonth() + 1).padStart(2, '0');
+  const d = String(today.getDate()).padStart(2, '0');
+  const iso = `${y}-${m}-${d}`;
+  const display = `${y}.${m}.${d}`;
+  document.querySelectorAll('.js-today').forEach(el => {
+    el.setAttribute('datetime', iso);
+    el.textContent = display;
+  });
+})();
+</script>
 
 <script>
 (() => {
