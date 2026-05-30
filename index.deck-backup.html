@@ -1,0 +1,950 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<title>김희태 포트폴리오</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="추진력으로 승부하는 AX 엔지니어 김희태입니다. 아이디어가 있다면 LLM과 에이전트로 빠르게 프로토타입을 만들어 테스트하고 검증합니다."/>
+
+<!-- Open Graph / 소셜 공유 미리보기 -->
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="김희태 — Portfolio 2026"/>
+<meta property="og:title" content="김희태 — AI Engineer Portfolio 2026"/>
+<meta property="og:description" content="추진력으로 승부하는 AX 엔지니어 김희태입니다."/>
+<meta property="og:url" content="https://gimhuitae-portfolio.vercel.app"/>
+<meta property="og:image" content="https://gimhuitae-portfolio.vercel.app/og.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="김희태 — 추진력으로 승부하는 AX 엔지니어"/>
+<meta property="og:locale" content="ko_KR"/>
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="김희태 — AI Engineer Portfolio 2026"/>
+<meta name="twitter:description" content="추진력으로 승부하는 AX 엔지니어 김희태입니다."/>
+<meta name="twitter:image" content="https://gimhuitae-portfolio.vercel.app/og.png"/>
+<link rel="stylesheet" href="shared/tokens.css"/>
+<link rel="stylesheet" href="shared/index.css?v=2"/>
+
+<!-- v3 디자인 그래프트 — Pretendard Variable + Inter Variable (Korean·Latin 옵티컬 사이징) -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+
+<style>
+/* ── v3 디자인 그래프트 (paco · rauno · emil · brittany 패턴) ── */
+
+/* Variable 폰트 자동 옵티컬 사이징 + 고급 글리프 */
+html{
+  font-feature-settings:"cv01","ss03","kern","calt";
+  font-variation-settings:"opsz" auto;
+}
+body, button, input, select, textarea{
+  font-family:"Pretendard Variable","Pretendard","Plus Jakarta Sans",system-ui,-apple-system,sans-serif;
+}
+
+/* 헤드라인 자동 줄바꿈 균형 (한글 단어 단위 자연 분기) */
+h1,h2,h3,h4{text-wrap:balance}
+p{text-wrap:pretty}
+
+/* 셀렉션 — 브랜드 액센트 톤 */
+::selection{background:color-mix(in oklab, #1a3a6e 18%, transparent);color:inherit;text-shadow:none}
+
+/* 포커스 링 — Vercel DS 3중 (투명 → 배경 → 액센트) */
+:focus-visible{
+  outline:none;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,.08),
+    0 0 0 2px var(--bg, #fff),
+    0 0 0 4px #1a3a6e;
+  border-radius:6px;
+}
+
+/* 모션 줄이기 OS 선호 존중 (이미 없으면 추가) */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+}
+
+/* paco.me 이징·듀레이션 토큰 (인터랙션 일관성 도구로 노출) */
+:root{
+  --ease-out-expo:cubic-bezier(.19,1,.22,1);
+  --ease-out-cubic:cubic-bezier(.215,.61,.355,1);
+  --transition-xx:.24s;
+  --transition-fast:.1s;
+}
+
+/* ──────────────────────────────────────
+   프로젝트 카드 — v3 외관만 (이미지·컬러뱃지·PDF버튼 그대로)
+   ────────────────────────────────────── */
+
+/* Vercel DS 그림자: 보더+small 기본, hover 시 medium */
+#projects .pcard{
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, #15171a 8%, transparent),
+    0 1px 2px color-mix(in oklab, #15171a 8%, transparent);
+  transition:transform var(--transition-xx) var(--ease-out-expo),
+             box-shadow var(--transition-xx) var(--ease-out-expo);
+}
+#projects .pcard:hover{
+  transform:translateY(-1px);
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, #15171a 8%, transparent),
+    0 2px 2px color-mix(in oklab, #15171a 4%, transparent),
+    0 8px 8px -8px color-mix(in oklab, #15171a 4%, transparent);
+}
+
+/* 타이틀 — Pretendard Variable 활성화 + 가독성 */
+#projects .ptitle{
+  font-family:"Pretendard Variable","Pretendard",inherit;
+  font-weight:800;
+  letter-spacing:-0.025em;
+  text-wrap:balance;
+}
+
+/* 설명 — text-wrap pretty (한 글자 떨어짐 방지) */
+#projects .pdesc{
+  text-wrap:pretty;
+}
+
+  /* 접근성: 키보드 스킵 링크 (포커스 시에만 노출) */
+  .skip-link{
+    position:absolute; left:-9999px; top:0; z-index:100000;
+    background:#111827; color:#fff; padding:10px 16px;
+    border-radius:0 0 8px 0; font-size:14px; text-decoration:none;
+  }
+  .skip-link:focus{ left:0; }
+
+  /* Hero — bar와 role 사이 여백 축소 */
+  .hero-body{
+    padding-top: 32px !important;
+  }
+
+  /* Hero — 프로필 사진을 텍스트 옆에 (데스크톱 2칼럼) */
+  @media (min-width: 769px){
+    .hero-body{ grid-template-columns: 1.3fr 0.7fr !important; gap: 48px; }
+  }
+  .hero-right{ display:flex; align-items:center; justify-content:flex-end; }
+  .hero-photo{
+    width:100%; max-width:248px; aspect-ratio:3/4; height:auto;
+    object-fit:cover; border-radius:18px;
+    box-shadow:0 18px 44px rgba(17,24,39,.20); display:block;
+  }
+  @media (max-width: 768px){
+    .hero-right{ justify-content:flex-start; margin-top:8px; }
+    .hero-photo{ max-width:150px; }
+  }
+
+  /* Projects 섹션 — section-head와 첫 카테고리 사이 여백 축소
+     원인: .projects-inner의 flex gap:64px이 모든 자식 사이에 들어감 */
+  #projects .section-head{
+    padding-bottom: 8px !important;
+    margin-bottom: 0 !important;
+  }
+  #projects .projects-inner > .section-head + .ps-section-block{
+    margin-top: -40px;
+  }
+
+  /* 섹션 간 여백 축소 — projects ↔ about 사이 공백 줄이기 */
+  #projects.ps-section{ padding-bottom: 56px !important; }
+  #about.about-section{ padding-top: 56px !important; }
+
+  /* 프로젝트 — 카테고리별 한 줄 (제조1 / 서비스2 / AI1) */
+  #projects .proj-row{ display:grid; grid-template-columns:1fr 2fr 1fr; gap:28px; align-items:stretch; }
+  #projects .proj-group{ display:flex; flex-direction:column; }
+  #projects .grp-label{ font-family:var(--font-sans); font-size:16px; font-weight:700; color:#1f2937; margin-bottom:14px; text-align:left; letter-spacing:-0.01em; }
+  #projects .proj-row .pcards{ display:grid; gap:18px; flex:1; }
+  #projects .proj-row .pcard-wrap{ height:100%; }
+  #projects .proj-row .pcards.g1{ grid-template-columns:1fr; }
+  #projects .proj-row .pcards.g2{ grid-template-columns:1fr 1fr; }
+  #projects .proj-row .pthumb{ aspect-ratio:4/3; }
+  @media (max-width:1024px){
+    #projects .proj-row{ grid-template-columns:1fr; gap:36px; }
+  }
+  @media (max-width:640px){
+    #projects .proj-row .pcards.g2{ grid-template-columns:1fr; }
+  }
+
+  /* 홈 카드 — 우측 상단 PDF 다운로드 버튼 */
+  #projects .pcard-wrap{ position:relative; display:flex; }
+  #projects .pcard-wrap > .pcard{ flex:1; }
+  #projects .card-pdf{
+    position:absolute; top:10px; right:10px; z-index:5;
+    display:inline-flex; align-items:center; gap:5px;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.04em; font-weight:600;
+    color:#1f2937; background:rgba(255,255,255,.93);
+    border:1px solid rgba(17,24,39,.14); border-radius:999px;
+    padding:5px 11px; cursor:pointer; box-shadow:0 2px 10px rgba(17,24,39,.12);
+  }
+  #projects .card-pdf:hover{ background:#fff; border-color:rgba(17,24,39,.3); }
+  #projects .card-pdf svg{ width:12px; height:12px; }
+
+  /* 카테고리 라벨 키움 — 11px → 22px, 부제도 16px로 */
+  #projects .ps-section-block > .ps-label{
+    font-size: 22px !important;
+    letter-spacing: -0.01em !important;
+    text-transform: none !important;
+    color: #1f2937 !important;
+    font-weight: 700 !important;
+    margin-bottom: 4px !important;
+    font-family: var(--font-sans) !important;
+  }
+
+  /* Hero H1 — 두 줄을 동일 크기 / 톤 차이만 */
+  .hero-h1 .hero-pre,
+  .hero-h1 .hero-key{
+    font-size: clamp(38px, 5.2vw, 68px);
+    line-height: 1.16;
+    letter-spacing: -0.035em;
+    display: block;
+    text-wrap: balance;
+  }
+  .hero-h1 .hero-pre{
+    color: #475569;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .hero-h1 .hero-key{
+    color: var(--accent-600);
+    font-weight: 800;
+  }
+  @media (max-width: 768px){
+    .hero-h1 .hero-pre,
+    .hero-h1 .hero-key{ font-size: 30px; }
+  }
+
+  /* Golden Circle (WHY/HOW/WHAT) 카드 — impact-strip 슬롯 재용도 */
+  .impact-strip .impact-inner{
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    justify-content: center;
+    gap: 32px;
+    max-width: 1080px;
+  }
+  .impact-strip .impact-item{
+    padding: 36px 32px;
+    text-align: center;
+  }
+  .impact-strip .impact-pre{
+    font-size: 12px;
+    color: #94a3b8;
+    letter-spacing: .04em;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    text-transform: none;
+  }
+  .impact-strip .impact-num{
+    font-family: var(--font-sans);
+    font-weight: 800;
+    letter-spacing: -.02em;
+    color: var(--accent-600);
+    margin-top: 8px;
+    margin-bottom: 14px;
+  }
+  .impact-strip .impact-label{
+    font-family: var(--font-sans);
+    font-size: 16px;
+    letter-spacing: 0;
+    text-transform: none;
+    color: #1f2937;
+    font-weight: 600;
+    line-height: 1.55;
+    margin-top: 0;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .impact-strip .impact-sub{
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin-top: 10px;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media (max-width: 768px){
+    .impact-strip .impact-inner{
+      grid-template-columns: 1fr !important;
+    }
+  }
+
+  /* Manufacturing 카테고리 — 1x4 한 줄 배치 */
+  .pcards-grid-4{
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .pcards-grid-4 .pthumb{ aspect-ratio: 4/3; }
+  @media (max-width: 1024px){
+    .pcards-grid-4{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 640px){
+    .pcards-grid-4{ grid-template-columns: 1fr; }
+  }
+</style>
+<script>
+if (location.protocol === 'file:') {
+  document.documentElement.classList.add('is-file-protocol');
+}
+</script>
+</head>
+<body>
+
+<a href="#projects" class="skip-link">본문 바로가기</a>
+
+<div class="grid-bg"></div>
+
+<!-- ═══ SITE HEADER ═══ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="./index.html" class="mark" style="text-decoration:none;color:inherit">김희태 포트폴리오</a>
+    <nav class="site-nav-links">
+      <a href="#projects">프로젝트</a>
+      <a href="#about">소개</a>
+      <a href="#career">경력</a>
+      <a href="mailto:heetae104@gmail.com">연락처</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero-section">
+  <div class="hero-inner">
+    <div class="hero-wrap">
+      <div class="hero-body">
+        <div class="hero-bg-dot"></div>
+        <div class="hero-left">
+          <div class="hero-role">
+            AX 엔지니어
+            <span class="avail-badge">구직 중</span>
+          </div>
+          <h1 class="hero-h1">
+            <span class="hero-pre">추진력으로 승부하는</span>
+            <span class="hero-key">AX 엔지니어 김희태입니다.</span>
+          </h1>
+          <p class="hero-desc">
+            아이디어가 있다면 <strong>LLM과 에이전트로 빠르게 프로토타입</strong>을 만들어 테스트하고 검증합니다.
+          </p>
+          <div class="hero-cta-row">
+            <a href="#projects" class="btn-primary">
+              프로젝트 보기
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg>
+            </a>
+            <a href="#about" class="btn-ghost">소개</a>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="hero-portrait-shell">
+            <img src="assets/profile.webp" alt="김희태 프로필 사진" class="hero-photo" width="260" height="347" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 핵심 성과 ═══ -->
+<div class="impact-strip">
+  <div class="impact-inner">
+    <div class="impact-item">
+      <div class="impact-pre">01</div>
+      <div class="impact-num">WHY</div>
+      <div class="impact-label">기술보다 먼저, 해결해야 할 문제를 정의합니다.</div>
+      <div class="impact-sub">사람과 현장을 이해하지 못한 기술은 오래 작동하기 어렵다고 믿습니다.</div>
+    </div>
+    <div class="impact-item">
+      <div class="impact-pre">02</div>
+      <div class="impact-num">HOW</div>
+      <div class="impact-label">사람과 현장의 맥락을 이해하고, 작은 시도와 검증을 반복합니다.</div>
+      <div class="impact-sub">문제를 구조화하고, 실제로 작동하는 방식에 집중합니다.</div>
+    </div>
+    <div class="impact-item">
+      <div class="impact-pre">03</div>
+      <div class="impact-num">WHAT</div>
+      <div class="impact-label">데이터와 AI를 활용해 현실의 문제를 해결하는 서비스를 만듭니다.</div>
+      <div class="impact-sub">단순한 구현보다, 실제로 쓰이고 작동하는 결과를 지향합니다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PROJECTS ═══ -->
+<section class="ps-section" id="projects">
+  <div class="projects-inner">
+
+    <div class="section-head">
+      <div class="label">프로젝트</div>
+    </div>
+
+    <!-- ── 주요 프로젝트 (카테고리 라벨 + 한 줄) ── -->
+    <div class="ps-section-block js-section-fade" style="border-top:none;padding-top:0">
+      <div class="ps-label" style="margin-bottom:20px">주요 프로젝트</div>
+      <div class="proj-row">
+        <div class="proj-group">
+          <div class="grp-label">제조·산업</div>
+          <div class="pcards g1">
+        <a class="pcard d-noxo" href="NOxO.html">
+          <div class="pthumb t-noxo" style="padding:0;overflow:hidden;">
+            <img src="noxo/sim.png" alt="NOxO 대시보드 — 시뮬레이션 모드" loading="lazy"
+              style="width:100%;height:100%;object-fit:cover;object-position:top left;">
+          </div>
+          <div class="pinfo">
+            <div class="pmeta-row"><div class="pnum">№ 03 · 발전소 시뮬레이션 · 2026.05</div></div>
+            <div class="ptitle">NOxO — IGCC 발전소 NOx 시뮬레이션</div>
+            <div class="pdesc">운전 시뮬레이션 예측기와 5분 후 조기경보 모델을 설계·구현한 SeSAC 최종 프로젝트. 센서 누수를 찾아내고 검증 기준을 다시 설계했다.</div>
+            <div class="tech-row">
+              <span class="tech-icon blue">Python</span>
+              <span class="tech-icon gray">Ridge</span>
+              <span class="tech-icon green">LightGBM</span>
+              <span class="tech-icon dark">시계열</span>
+              <span class="tech-icon orange">Feature Eng.</span>
+            </div>
+          </div>
+        </a>
+          </div>
+        </div>
+        <div class="proj-group">
+          <div class="grp-label">서비스 개발</div>
+          <div class="pcards g2">
+        <a class="pcard d-jann" href="JANN.html">
+          <div class="pthumb t-jann">
+            <img src="jann/img/tsne-clustering.png" alt="JANN t-SNE 클러스터링" loading="lazy">
+          </div>
+          <div class="pinfo">
+            <div class="pmeta-row"><div class="pnum">№ 05 · 향미 데이터 · 2026</div></div>
+            <div class="ptitle">JANN — 향미 데이터 레시피 추천</div>
+            <div class="pdesc">향미 화합물 데이터를 바탕으로 재료 조합을 추천하는 iOS 앱. Python 모델을 CoreML로 변환해 온디바이스 추론으로 연결했다.</div>
+            <div class="tech-row">
+              <span class="tech-icon orange">SwiftUI</span>
+              <span class="tech-icon blue">Python</span>
+              <span class="tech-icon green">CoreML</span>
+            </div>
+          </div>
+        </a>
+        <a class="pcard d-inkk" href="INKK.html">
+          <div class="pthumb" style="padding:0;overflow:hidden;">
+            <img src="inkk/thumb.webp" alt="INKK 서비스 화면" style="width:100%;height:100%;object-fit:cover;object-position:top;" loading="lazy">
+          </div>
+          <div class="pinfo">
+            <div class="pmeta-row"><div class="pnum">№ 08 · AI 서비스 · 2026</div></div>
+            <div class="ptitle">INKK — 카드뉴스 자동 생성</div>
+            <div class="pdesc">콘텐츠 입력부터 카드뉴스 생성과 배포까지 연결한 AI 서비스. 현재 얼리 액세스 형태로 운영 중이다.</div>
+            <div class="tech-row">
+              <span class="tech-icon" style="background:#FEF3C7;color:#92400E;border:1px solid #FCD34D;">얼리 액세스</span>
+              <span class="tech-icon">Next.js 16</span>
+              <span class="tech-icon">Supabase</span>
+              <span class="tech-icon">Stripe</span>
+              <span class="tech-icon">Groq / Claude</span>
+            </div>
+          </div>
+        </a>
+          </div>
+        </div>
+        <div class="proj-group">
+          <div class="grp-label">AI 워크플로우 자동화</div>
+          <div class="pcards g1">
+        <a class="pcard d-ai" href="LocalAI.html">
+          <div class="pthumb t-ai" style="padding:24px 28px;align-items:stretch;justify-content:center">
+            <svg width="100%" viewBox="0 0 460 160" fill="none">
+              <defs>
+                <linearGradient id="aiModelGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#EFF6FF"/>
+                  <stop offset="100%" stop-color="#C7D7F8"/>
+                </linearGradient>
+                <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                  <path d="M0 0 L6 3 L0 6Z" fill="rgba(30,58,138,.35)"/>
+                </marker>
+              </defs>
+              <path d="M112 80 L148 80" stroke="rgba(30,58,138,.25)" stroke-width="1.5" marker-end="url(#arr)"/>
+              <path d="M308 80 L344 80" stroke="rgba(30,58,138,.25)" stroke-width="1.5" marker-end="url(#arr)"/>
+              <text x="56"  y="22" font-family="monospace" font-size="9" fill="rgba(17,24,39,.38)" text-anchor="middle" letter-spacing=".06em">USER</text>
+              <text x="228" y="22" font-family="monospace" font-size="9" fill="rgba(30,58,138,.65)" text-anchor="middle" letter-spacing=".06em" font-weight="600">LOCAL MODEL</text>
+              <text x="400" y="22" font-family="monospace" font-size="9" fill="rgba(17,24,39,.38)" text-anchor="middle" letter-spacing=".06em">RESPONSE</text>
+              <rect x="8"   y="32" width="96"  height="96" rx="12" fill="white" stroke="rgba(30,58,138,.12)" stroke-width="1.5"/>
+              <circle cx="56" cy="62" r="14" fill="#DBEAFE" stroke="rgba(30,58,138,.2)" stroke-width="1.5"/>
+              <circle cx="56" cy="59" r="5"  fill="#1E3A8A" opacity=".6"/>
+              <path d="M42 76 Q56 68 70 76" stroke="#1E3A8A" stroke-width="1.5" fill="none" opacity=".5"/>
+              <text x="56" y="95"  font-family="monospace" font-size="9" fill="#374151" text-anchor="middle">입력</text>
+              <text x="56" y="108" font-family="monospace" font-size="8" fill="#9CA3AF" text-anchor="middle">질문 / 코드</text>
+              <rect x="152" y="24" width="152" height="112" rx="14" fill="url(#aiModelGrad)" stroke="rgba(30,58,138,.28)" stroke-width="2"/>
+              <rect x="178" y="40" width="100" height="38" rx="8" fill="white" stroke="rgba(30,58,138,.12)" stroke-width="1"/>
+              <text x="228" y="57" font-family="monospace" font-size="11" font-weight="bold" fill="#1E3A8A" text-anchor="middle">Gemma 4</text>
+              <text x="228" y="70" font-family="monospace" font-size="8" fill="#6B7280" text-anchor="middle">via Ollama</text>
+              <text x="228" y="95"  font-family="monospace" font-size="9" fill="#374151" text-anchor="middle">100% 로컬 실행</text>
+              <text x="228" y="108" font-family="monospace" font-size="8" fill="#6B7280" text-anchor="middle">No API · No Cloud</text>
+              <rect x="348" y="32" width="104" height="96" rx="12" fill="white" stroke="rgba(30,58,138,.12)" stroke-width="1.5"/>
+              <rect x="362" y="46" width="76" height="9" rx="3" fill="#DBEAFE"/>
+              <rect x="362" y="60" width="60" height="9" rx="3" fill="#DBEAFE" opacity=".7"/>
+              <rect x="362" y="74" width="70" height="9" rx="3" fill="#DBEAFE" opacity=".5"/>
+              <rect x="362" y="88" width="50" height="9" rx="3" fill="#DBEAFE" opacity=".35"/>
+              <text x="400" y="112" font-family="monospace" font-size="8" fill="#9CA3AF" text-anchor="middle">오프라인 응답</text>
+            </svg>
+          </div>
+          <div class="pinfo">
+            <div class="pmeta-row"><div class="pnum">№ 06 · 로컬 AI · 2026.04</div></div>
+            <div class="ptitle">Local AI — 로컬 LLM 워크플로우</div>
+            <div class="pdesc">Ollama 기반 로컬 LLM로 만든 도구 모음 — Obsidian·AntiGravity를 엮은 로컬 AI 작업 환경과, 크롤링·RAG·DART 검증을 거쳐 발행하는 경제 블로그 글 자동화까지. 모두 클라우드 없이 로컬에서 실행한다.</div>
+            <div class="tech-row">
+              <span class="tech-icon blue">Python</span>
+              <span class="tech-icon dark">Ollama</span>
+              <span class="tech-icon orange">RAG</span>
+              <span class="tech-icon gray">ChromaDB</span>
+              <span class="tech-icon gray">Obsidian</span>
+            </div>
+          </div>
+        </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ── 4. 데이터 분석 · 사이드 ── -->
+    <div class="ps-section-block js-section-fade">
+      <div class="ps-label" style="margin-bottom:24px">사이드 프로젝트</div>
+      <div class="pcards pcards-grid-4">
+        <a class="pcard d-lhv" href="LHV.html">
+          <div class="pthumb t-lhv" style="padding:0;overflow:hidden;">
+            <img src="lhv/img/image4-35.png" alt="LHV 상관행렬 히트맵 (EDA)" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center;background:#fff;">
+          </div>
+          <div class="pinfo">
+            <div class="pmeta-row"><div class="pnum">제조 AI · 2026.03</div></div>
+            <div class="ptitle">LHV — 열풍로 발열량 5분 예측</div>
+            <div class="pdesc">고로 부대설비 데이터로 발열량(LHV)을 5분 단위로 예측한 SeSAC 분석.</div>
+            <div class="tech-row">
+              <span class="tech-icon gray">Ridge</span>
+              <span class="tech-icon blue">SHAP</span>
+              <span class="tech-icon">분석 리포트</span>
+            </div>
+          </div>
+        </a>
+        <a class="pcard d-skin" href="Skinpass.html">
+          <div class="pthumb t-skin" style="padding:0;overflow:hidden;">
+            <img src="skinpass/img/image9.png" alt="Skinpass 클래스 불균형·강종별 발생률 (EDA)" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center;background:#fff;">
+          </div>
+          <div class="pinfo">
+            <div class="pmeta-row"><div class="pnum">공정 품질 예측 · 2026.04</div></div>
+            <div class="ptitle">Skinpass — 코일 투입 전 비계획 공정 예측</div>
+            <div class="pdesc">냉연 코일 데이터로 비계획 공정 발생 가능성을 분류한 SeSAC 분석. Recall 중심 설계.</div>
+            <div class="tech-row">
+              <span class="tech-icon green">LightGBM</span>
+              <span class="tech-icon dark">SMOTE</span>
+              <span class="tech-icon">분석 리포트</span>
+            </div>
+          </div>
+        </a>
+        <a class="pcard d-bot" href="BinanceBot.html">
+          <div class="pthumb t-bot">
+            <div class="thumb-inner">
+              <svg width="340" height="130" viewBox="0 0 200 110" fill="none">
+                <path d="M10 85 Q30 75 50 60 Q70 45 90 40 Q110 35 130 28 Q150 22 170 18 Q185 14 195 12" stroke="rgba(30,58,138,.25)" stroke-width="1.5" stroke-dasharray="4 3"/>
+                <line x1="18" y1="72" x2="18" y2="92" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="14" y="78" width="8" height="9" rx="1.5" fill="#34D399"/>
+                <line x1="36" y1="58" x2="36" y2="80" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="32" y="62" width="8" height="13" rx="1.5" fill="#34D399"/>
+                <line x1="54" y1="65" x2="54" y2="85" stroke="#FCA5A5" stroke-width="1.5"/>
+                <rect x="50" y="68" width="8" height="12" rx="1.5" fill="#FCA5A5"/>
+                <line x1="72" y1="52" x2="72" y2="70" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="68" y="55" width="8" height="10" rx="1.5" fill="#34D399"/>
+                <line x1="90" y1="44" x2="90" y2="65" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="86" y="48" width="8" height="11" rx="1.5" fill="#34D399"/>
+                <line x1="108" y1="22" x2="108" y2="48" stroke="#1E3A8A" stroke-width="2"/>
+                <rect x="103" y="26" width="10" height="16" rx="2" fill="#1E3A8A"/>
+                <line x1="126" y1="30" x2="126" y2="52" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="122" y="34" width="8" height="12" rx="1.5" fill="#34D399"/>
+                <line x1="144" y1="38" x2="144" y2="58" stroke="#FCA5A5" stroke-width="1.5"/>
+                <rect x="140" y="41" width="8" height="11" rx="1.5" fill="#FCA5A5"/>
+                <line x1="162" y1="25" x2="162" y2="46" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="158" y="28" width="8" height="12" rx="1.5" fill="#34D399"/>
+                <line x1="180" y1="18" x2="180" y2="38" stroke="#34D399" stroke-width="1.5"/>
+                <rect x="176" y="21" width="8" height="11" rx="1.5" fill="#34D399"/>
+                <rect x="14"  y="96" width="8"  height="8"  rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="32"  y="94" width="8"  height="10" rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="50"  y="97" width="8"  height="7"  rx="1" fill="rgba(252,165,165,.3)"/>
+                <rect x="68"  y="95" width="8"  height="9"  rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="86"  y="93" width="8"  height="11" rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="103" y="90" width="10" height="14" rx="1" fill="rgba(30,58,138,.2)"/>
+                <rect x="122" y="94" width="8"  height="10" rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="140" y="96" width="8"  height="8"  rx="1" fill="rgba(252,165,165,.3)"/>
+                <rect x="158" y="93" width="8"  height="11" rx="1" fill="rgba(52,211,153,.3)"/>
+                <rect x="176" y="91" width="8"  height="13" rx="1" fill="rgba(52,211,153,.3)"/>
+              </svg>
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#059669;margin-top:10px">ML 예측 가능성 검증</div>
+            </div>
+          </div>
+          <div class="pinfo">
+            <div class="pmeta-row"><div class="pnum">알고리즘 트레이딩 · 2023</div></div>
+            <div class="ptitle">Binance ML Bot — 급등 코인 선별 트레이딩 봇</div>
+            <div class="pdesc">기술 지표 필터 + ML 앙상블로 500개 이상 USDT 페어의 급등 신호를 탐지한 개인 프로젝트.</div>
+            <div class="tech-row">
+              <span class="tech-icon blue">Python</span>
+              <span class="tech-icon orange">XGBoost</span>
+              <span class="tech-icon gray">SMOTE</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section class="about-section" id="about">
+  <div class="about-inner">
+    <div class="section-head">
+      <div class="label">소개</div>
+      <div class="count">김희태</div>
+    </div>
+    <div class="about-wrap js-fade">
+      <div class="about-grid">
+        <div>
+          <div class="about-role">AI/ML Engineer</div>
+          <h2 class="about-name">사람과 현장을 이해하는 방식으로<br>문제를 해결해왔습니다.</h2>
+          <p class="about-copy">사회복지 현장에서 이용자·실무자·행정 사이를 연결하며 서로 다른 입장과 제약 속에서 <strong>실제로 작동하는 해결책</strong>을 만드는 과정을 경험했습니다.</p>
+          <p class="about-copy" style="margin-top:14px">이 경험은 기술을 보는 관점에도 영향을 주었습니다. "무엇을 만들 수 있는가"보다 <strong>"왜 필요한가, 실제로 작동하는가"</strong>를 먼저 묻습니다.</p>
+          <p class="about-copy" style="margin-top:14px">지금은 Python·AI·데이터로 문제를 구조화하고 검증 가능한 해결책을 만드는 <strong>AI 엔지니어로 성장하고 있습니다.</strong></p>
+          <div class="about-links">
+            <a href="mailto:heetae104@gmail.com" class="alink">이메일 보내기 →</a>
+            <a href="https://github.com/kimheetae0104" target="_blank" rel="noopener noreferrer" class="alink">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="about-stack">
+          <div class="astack-row">
+            <div class="asc">ML</div>
+            <div class="asv">XGBoost · LightGBM · Ridge · Logistic Regression · SHAP · SMOTE · Scikit-Learn</div>
+          </div>
+          <div class="astack-row">
+            <div class="asc">언어 / 환경</div>
+            <div class="asv">Python · SwiftUI · CoreML · SQL · Git</div>
+          </div>
+          <div class="astack-row">
+            <div class="asc">AI / 자동화</div>
+            <div class="asv">Ollama · Claude API · Obsidian · Prompt Engineering</div>
+          </div>
+          <div class="astack-row">
+            <div class="asc">도메인</div>
+            <div class="asv">제조 AI (고로·냉연) · SCM · 알고리즘 트레이딩 · iOS · LLM</div>
+          </div>
+          <div class="astack-row">
+            <div class="asc">연락처</div>
+            <div class="asv">heetae104@gmail.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CAREER TIMELINE ═══ -->
+<section class="timeline-section" id="career">
+  <div class="timeline-inner">
+    <div class="section-head" style="max-width:860px;margin-left:auto;margin-right:auto">
+      <div class="label">경력</div>
+      <div class="count">경력 · 경험 · 교육 · 자격</div>
+    </div>
+    <div class="tl-sections js-fade">
+
+      <!-- ── 왼쪽: 경력·경험·교육 ── -->
+      <div class="tl-col">
+
+      <div class="tl-group g-work">
+        <div class="tl-group-header">
+          <span class="tl-group-label g-work">경력</span>
+          <div class="tl-group-rule"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2023.01<br>— 2024.11</div>
+          <div class="tl-right">
+            <div class="tl-place">CCC아가페실버센터</div>
+            <div class="tl-role">운영지원팀 · 사원 / 사회복지사 · <strong>1년 11개월</strong></div>
+            <div class="tl-bullets">
+              <div class="tl-bullet">사회복지 행정 업무 전반 — 입소자 관리, 생활기록부 작성, 보고 문서 처리</div>
+              <div class="tl-bullet">입소 어르신 상담·서비스 연계·돌봄 지원</div>
+              <div class="tl-bullet">소방안전관리 — 정기 점검, 비상대응 훈련, 안전관리계획 수립</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-group g-exp">
+        <div class="tl-group-header">
+          <span class="tl-group-label g-exp">경험</span>
+          <div class="tl-group-rule"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2025.08<br>— 2025.10</div>
+          <div class="tl-right">
+            <div class="tl-place">티아이지주식회사</div>
+            <div class="tl-role">기록물 관리 업무 · 아르바이트 · <strong>계약만료</strong></div>
+            <div class="tl-bullets">
+              <div class="tl-bullet">기록물 전산 입력 및 문서 분류·정리, 보관 재배치</div>
+              <div class="tl-bullet">행정 기록 관리 효율화 지원 및 기록물 아카이빙</div>
+            </div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2025.04<br>— 2025.07</div>
+          <div class="tl-right">
+            <div class="tl-place">서울강남시니어클럽</div>
+            <div class="tl-role">사업단 행정 지원 · 인턴 · <strong>계약만료</strong></div>
+            <div class="tl-bullets">
+              <div class="tl-bullet">사업단 행정업무 (문서·전산·공문) 및 행사 지원</div>
+              <div class="tl-bullet">노인 일자리 사업처 조사 및 연계처 발굴 지원</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-group g-edu">
+        <div class="tl-group-header">
+          <span class="tl-group-label g-edu">교육</span>
+          <div class="tl-group-rule"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2025.12<br>— 2026.06</div>
+          <div class="tl-right">
+            <div class="tl-place">청년취업사관학교 새싹 (SeSAC)</div>
+            <div class="tl-role">제조 AI 특화 과정 · 수료</div>
+            <div class="tl-bullets">
+              <div class="tl-bullet">제조 도메인 기초 이해 및 데이터 분석 통계·파이썬 심화</div>
+              <div class="tl-bullet">컴퓨터비전, 시계열·센서 데이터 분석, 공정 최적화 / 수요예측</div>
+              <div class="tl-bullet">생성형 AI 활용 및 응용 프로젝트 수행</div>
+            </div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2021.11<br>— 2022.04</div>
+          <div class="tl-right">
+            <div class="tl-place">스마트인재개발원</div>
+            <div class="tl-role">K-Digital Training · 빅데이터 분석 서비스 개발자 과정 (NCS)</div>
+            <div class="tl-bullets">
+              <div class="tl-bullet">빅데이터 분석·처리·시각화 전반 학습</div>
+              <div class="tl-bullet">머신러닝·딥러닝 기초 프로젝트 수행</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-group g-school">
+        <div class="tl-group-header">
+          <span class="tl-group-label g-school">학력</span>
+          <div class="tl-group-rule"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2014.03<br>— 2020.02</div>
+          <div class="tl-right">
+            <div class="tl-place">전남대학교</div>
+            <div class="tl-role">생활복지학과 · 4년제 · 주간 · 졸업</div>
+          </div>
+        </div>
+      </div>
+
+      </div><!-- /tl-col left -->
+
+      <!-- ── 오른쪽: 공모전·자격증·어학 ── -->
+      <div class="tl-col">
+
+      <div class="tl-group g-contest">
+        <div class="tl-group-header">
+          <span class="tl-group-label g-contest">공모전</span>
+          <div class="tl-group-rule"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2026.05</div>
+          <div class="tl-right">
+            <div class="tl-place">스마트 창고 출고 지연 예측 AI 경진대회</div>
+            <div class="tl-role">데이콘 주관 · <strong style="color:#9333EA">Private 11위 · 상위 2%</strong></div>
+            <a href="dacon/certificate.webp" target="_blank" rel="noopener noreferrer" title="수상 인증서 원본 보기" style="display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:5px 6px 5px 5px;border:1px solid rgba(17,24,39,.12);border-radius:8px;text-decoration:none;line-height:0;">
+              <img src="dacon/certificate.webp" alt="DACON 수상 인증서 — 11/607 · TOP 2%" width="120" style="display:block;width:120px;height:auto;border-radius:5px;"/>
+              <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;color:#6b7280;line-height:1.3;padding-right:6px;">증명서<br>보기 ↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-group g-cert">
+        <div class="tl-group-header">
+          <span class="tl-group-label g-cert">저작권</span>
+          <div class="tl-group-rule"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2026.05</div>
+          <div class="tl-right">
+            <div class="tl-place">JANN — 향미 데이터 레시피 추천 앱</div>
+            <div class="tl-role">컴퓨터프로그램 저작권 등록 · <strong>C-2026-023193</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-group g-cert">
+        <div class="tl-group-header">
+          <span class="tl-group-label g-cert">자격증</span>
+          <div class="tl-group-rule"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2025.03</div>
+          <div class="tl-right">
+            <div class="tl-place">데이터분석준전문가 ADsP</div>
+            <div class="tl-role">한국데이터베이스진흥원 · <strong>최종합격</strong></div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2025.02</div>
+          <div class="tl-right">
+            <div class="tl-place">정보처리기사</div>
+            <div class="tl-role">한국산업인력공단 · 필기합격</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2022.12</div>
+          <div class="tl-right">
+            <div class="tl-place">SQL개발자 SQLD</div>
+            <div class="tl-role">한국데이터베이스진흥센터 · <strong>최종합격</strong></div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2022.12</div>
+          <div class="tl-right">
+            <div class="tl-place">리눅스마스터 2급</div>
+            <div class="tl-role">한국정보통신인력개발센터 · <strong>최종합격</strong></div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2019.09</div>
+          <div class="tl-right">
+            <div class="tl-place">1종 대형 운전면허</div>
+            <div class="tl-role">경찰청 · <strong>최종합격</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-group g-lang">
+        <div class="tl-group-header">
+          <span class="tl-group-label g-lang">어학</span>
+          <div class="tl-group-rule"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2024.12</div>
+          <div class="tl-right">
+            <div class="tl-place">OPIc Intermediate Mid 2</div>
+            <div class="tl-role">영어 · PASS</div>
+          </div>
+        </div>
+      </div>
+
+      </div><!-- /tl-col right -->
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+
+    <div class="footer-body">
+      <!-- 왼쪽: 브랜드 -->
+      <div class="footer-brand">
+        <div class="footer-wordmark">김희태</div>
+        <p class="footer-tagline">AI 엔지니어 · 데이터 · 머신러닝</p>
+      </div>
+
+      <!-- 가운데: 내비게이션 -->
+      <div class="footer-nav-group">
+        <div class="footer-nav-label">바로가기</div>
+        <a href="#projects" class="footer-nav-link">프로젝트</a>
+        <a href="#about" class="footer-nav-link">소개</a>
+        <a href="#career" class="footer-nav-link">경력</a>
+      </div>
+
+      <!-- 오른쪽: 연락처 -->
+      <div class="footer-nav-group">
+        <div class="footer-nav-label">연락처</div>
+        <a href="mailto:heetae104@gmail.com" class="footer-nav-link">
+          heetae104@gmail.com
+        </a>
+        <a href="https://github.com/kimheetae0104" target="_blank" rel="noopener noreferrer" class="footer-nav-link">
+          github.com/kimheetae0104
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 김희태</span>
+      <span class="footer-loc">서울</span>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+(function(){
+  var counters = document.querySelectorAll('.counter');
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var el = e.target;
+      var target = parseFloat(el.dataset.target);
+      var suffix = el.dataset.suffix || '';
+      var decimals = parseInt(el.dataset.decimals || '0');
+      var dur = 1400; var start = performance.now();
+      function tick(now){
+        var p = Math.min((now-start)/dur,1);
+        var ease = 1-Math.pow(1-p,3);
+        el.textContent = (target*ease).toFixed(decimals)+suffix;
+        if(p<1) requestAnimationFrame(tick);
+        else el.textContent = target.toFixed(decimals)+suffix;
+      }
+      requestAnimationFrame(tick);
+      obs.unobserve(el);
+    });
+  },{threshold:0.4});
+  counters.forEach(function(c){obs.observe(c);});
+})();
+(function(){
+  var fades = document.querySelectorAll('.js-fade');
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}
+    });
+  },{threshold:0.08});
+  fades.forEach(function(el){obs.observe(el);});
+})();
+(function(){
+  var blocks = document.querySelectorAll('.js-section-fade');
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('is-visible');obs.unobserve(e.target);}
+    });
+  },{threshold:0.06});
+  blocks.forEach(function(el){obs.observe(el);});
+})();
+</script>
+<script>
+/* 홈 프로젝트 카드 우측 상단에 PDF 다운로드 버튼 주입 */
+(function(){
+  document.querySelectorAll('#projects a.pcard[href]').forEach(function(card){
+    if(card.parentNode && card.parentNode.classList.contains('pcard-wrap')) return;
+    var href = card.getAttribute('href');
+    if(!/\.html$/i.test(href)) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'pcard-wrap';
+    card.parentNode.insertBefore(wrap, card);
+    wrap.appendChild(card);
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'card-pdf';
+    b.setAttribute('aria-label', 'PDF 다운로드');
+    b.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v8M5 7l3 3 3-3M3 13h10"/></svg>PDF';
+    b.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      var u = href + (href.indexOf('?')>=0 ? '&' : '?') + 'print';
+      window.open(u, '_blank', 'noopener');
+    });
+    wrap.appendChild(b);
+  });
+})();
+</script>
+</body>
+</html>
