@@ -5,7 +5,7 @@
 <title>김희태.포트폴리오 — 추진력으로 승부하는 AX 엔지니어</title>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="description" content="추진력으로 승부하는 AX 엔지니어 김희태입니다. 아이디어가 있다면 LLM과 에이전트로 빠르게 프로토타입을 만들어 테스트하고 검증합니다."/>
-<meta name="color-scheme" content="light dark"/>
+<meta name="color-scheme" content="light"/>
 <meta property="og:title" content="추진력으로 승부하는 AX 엔지니어 김희태"/>
 <meta property="og:description" content="아이디어가 있다면 LLM과 에이전트로 빠르게 프로토타입을 만들어 테스트하고 검증합니다."/>
 <meta property="og:type" content="website"/>
@@ -24,8 +24,7 @@
 <meta name="twitter:image" content="https://gimhuitae-portfolio.vercel.app/og.png"/>
 
 <!-- Safari 주소창 — 라이트/다크 자동 전환 -->
-<meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#fafaf9">
 
 <link rel="canonical" href="https://gimhuitae-portfolio.vercel.app/">
 
@@ -138,7 +137,7 @@
   }
 
   /* ── 다크모드 — Radix Sand Dark (단순 반전 X) ── */
-  @media (prefers-color-scheme: dark){
+  @media not all {  /* 다크모드 비활성화 — light only. 복구 시 'not all' → '(prefers-color-scheme: dark)' */
     :root{
       --color-gray-100:#111110; --color-gray-200:#1a1a18; --color-gray-300:#222221;
       --color-gray-400:#2a2a28; --color-gray-500:#31312e; --color-gray-600:#3b3a37;
@@ -365,7 +364,7 @@
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .8 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
     background-size:200px 200px;
   }
-  @media (prefers-color-scheme: dark){
+  @media not all {  /* 다크모드 비활성화 — light only. 복구 시 'not all' → '(prefers-color-scheme: dark)' */
     .body-grain{opacity:.06;mix-blend-mode:screen}
   }
   @media (prefers-reduced-data:reduce){
@@ -431,7 +430,7 @@
   :root{accent-color:var(--accent);caret-color:var(--accent)}
 
   /* ── 다크 모드 톤다운 — 채도/밝기 낮춰서 차분하게 ── */
-  @media (prefers-color-scheme: dark){
+  @media not all {  /* 다크모드 비활성화 — light only. 복구 시 'not all' → '(prefers-color-scheme: dark)' */
     /* 카드 썸네일 — 밝은 그라데이션이 다크에서 튐 */
     .proj-thumb{filter:brightness(.62) saturate(.7)}
 
