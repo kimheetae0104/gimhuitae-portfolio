@@ -10,6 +10,18 @@
 <meta property="og:description" content="아이디어가 있다면 LLM과 에이전트로 빠르게 프로토타입을 만들어 테스트하고 검증합니다."/>
 <meta property="og:type" content="website"/>
 <meta property="og:locale" content="ko_KR"/>
+<meta property="og:url" content="https://gimhuitae-portfolio.vercel.app/"/>
+<meta property="og:site_name" content="김희태.포트폴리오"/>
+<meta property="og:image" content="https://gimhuitae-portfolio.vercel.app/og.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="김희태 — 추진력으로 승부하는 AX 엔지니어"/>
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="추진력으로 승부하는 AX 엔지니어 김희태"/>
+<meta name="twitter:description" content="LLM과 에이전트로 빠르게 프로토타입을 만들어 테스트하고 검증합니다."/>
+<meta name="twitter:image" content="https://gimhuitae-portfolio.vercel.app/og.png"/>
 
 <!-- Safari 주소창 — 라이트/다크 자동 전환 -->
 <meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)">
@@ -442,7 +454,14 @@ a{color:inherit;text-decoration:none}
 .nav-links{display:flex;gap:28px;font-family:var(--font-display);font-size:13px;color:var(--ink-2);font-weight:500;letter-spacing:.02em}
 .nav-links a{padding:6px 0;transition:color .2s}
 .nav-links a:hover{color:var(--accent)}
-@media (max-width:680px){.nav-links{gap:16px;font-size:11.5px}}
+@media (max-width:680px){
+  .nav-links{gap:14px;font-size:11.5px;letter-spacing:0}
+  /* 매우 좁은 화면: 소개/기술 숨기고 핵심만 (프로젝트/연락) */
+  .nav-links a:nth-child(1),.nav-links a:nth-child(2){display:none}
+}
+@media (max-width:420px){
+  .nav-brand{font-size:14px}
+}
 
 /* ---------- Section ---------- */
 section{padding:120px 0 96px;scroll-margin-top:80px}
@@ -572,10 +591,47 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 }
 
 /* ---------- About ---------- */
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
-@media (max-width:780px){.about-grid{grid-template-columns:1fr;gap:32px}}
-.about p{font-size:16px;color:var(--ink-2);line-height:1.85;margin:0 0 18px}
+.about-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(220px,1fr);gap:64px;align-items:start}
+@media (max-width:780px){.about-grid{grid-template-columns:1fr;gap:36px}}
+.about p{font-size:16px;color:var(--ink-2);line-height:1.85;margin:0 0 18px;max-width:60ch}
 .about p strong{color:var(--ink);font-weight:700}
+
+/* Now 패널 — paco/derek sivers 'now' 무브 (지금 하는 것) */
+.now-panel{
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px 24px;background:var(--bg-card);
+  box-shadow:var(--ds-shadow-border-small);
+}
+.now-panel .now-head{
+  font-family:var(--font-display);font-size:11.5px;font-weight:700;
+  letter-spacing:.18em;color:var(--accent);text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;margin-bottom:18px;
+}
+.now-panel .now-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent);
+}
+@media (prefers-reduced-motion: no-preference){
+  .now-panel .now-dot{animation:nowPulse 2.2s var(--ease-in-out-quart) infinite}
+}
+@keyframes nowPulse{
+  0%,100%{box-shadow:0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent)}
+  50%{box-shadow:0 0 0 7px color-mix(in oklab, var(--accent) 8%, transparent)}
+}
+.now-panel ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.now-panel li{
+  font-size:14px;color:var(--ink-2);line-height:1.55;
+  padding-left:14px;position:relative;
+}
+.now-panel li::before{
+  content:"";position:absolute;left:0;top:9px;width:5px;height:5px;
+  background:var(--ink-4);border-radius:50%;
+}
+.now-panel li strong{color:var(--ink);font-weight:700}
+.now-panel .now-footer{
+  margin-top:18px;padding-top:14px;border-top:1px dashed var(--line);
+  font-family:var(--font-mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em;
+}
 .about-side{
   background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius);
   padding:28px;
@@ -863,16 +919,29 @@ footer .row{
       <h2 class="section-title">엔지니어가 AX를 한다.</h2>
       <p class="section-sub">컨설팅 슬라이드가 아니라, 작동하는 코드로 AI 전환을 만듭니다.</p>
     </div>
-    <div class="about">
-      <p>
-        LLM과 에이전트로 기업의 반복 업무를 자동화하는 <strong>AX 엔지니어</strong>입니다.
-        모델 정확도보다 <strong>현장에서 어떤 일이 어떻게 바뀌었는지</strong>를 본질로 봅니다.
-      </p>
-      <p>
-        <strong>문제 정의 → 구조 설계 → 프로토타입 → 검증·운영</strong>까지 한 사이클로 끌고 갑니다.
-        아이디어가 떠오르면 <strong>코딩 에이전트(Claude Code · Cursor)로 곧장 프로토타입</strong>에 옮기고,
-        막히면 가설을 바꿔가며 빠르게 여러 번 시도합니다. <strong>풀릴 때까지 멈추지 않습니다.</strong>
-      </p>
+    <div class="about-grid">
+      <div class="about">
+        <p>
+          LLM과 에이전트로 기업의 반복 업무를 자동화하는 <strong>AX 엔지니어</strong>입니다.
+          모델 정확도보다 <strong>현장에서 어떤 일이 어떻게 바뀌었는지</strong>를 본질로 봅니다.
+        </p>
+        <p>
+          <strong>문제 정의 → 구조 설계 → 프로토타입 → 검증·운영</strong>까지 한 사이클로 끌고 갑니다.
+          아이디어가 떠오르면 <strong>코딩 에이전트(Claude Code · Cursor)로 곧장 프로토타입</strong>에 옮기고,
+          막히면 가설을 바꿔가며 빠르게 여러 번 시도합니다. <strong>풀릴 때까지 멈추지 않습니다.</strong>
+        </p>
+      </div>
+
+      <aside class="now-panel" aria-label="지금 하고 있는 것">
+        <div class="now-head"><span class="now-dot" aria-hidden="true"></span>지금 · Now</div>
+        <ul>
+          <li><strong>INKK</strong> 얼리 액세스 사용자 모집 중</li>
+          <li><strong>Blog Agent</strong> 운영 + v2 설계</li>
+          <li>AX 직무 채용 라운드 진행</li>
+          <li>이 포트폴리오 사이트 자체 개발 중</li>
+        </ul>
+        <div class="now-footer">갱신 · <time datetime="2026-05-30">2026.05.30</time></div>
+      </aside>
     </div>
   </div>
 </section>
@@ -1081,6 +1150,10 @@ footer .row{
     <span>마지막 업데이트 · <time datetime="2026-05-30">2026.05.30</time></span>
   </div>
 </footer>
+
+<!-- Vercel Analytics (배포 후 자동 활성) + Speed Insights -->
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
 
 <script type="module">
 /* ──────────────────────────────────────────────────────────
