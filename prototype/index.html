@@ -191,9 +191,9 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 }
 .proj-card:hover{transform:translateY(-2px);box-shadow:0 12px 24px -18px rgba(0,0,0,.25);border-color:#cfd2d6}
 .proj-thumb{
-  aspect-ratio:16/10;
+  aspect-ratio:16/9;
   display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-display);font-size:22px;font-weight:800;letter-spacing:-0.02em;
+  font-family:var(--font-display);font-size:20px;font-weight:800;letter-spacing:-0.02em;
   border-bottom:1px solid var(--line);
   background-size:cover;background-position:center;background-repeat:no-repeat;
   position:relative;
@@ -204,7 +204,7 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
   color:rgba(255,255,255,.85);background:rgba(0,0,0,.45);
   padding:3px 8px;border-radius:4px;text-transform:uppercase;
 }
-.proj-body{padding:20px 22px 22px;display:flex;flex-direction:column;gap:10px;flex:1}
+.proj-body{padding:18px 20px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
 .proj-meta{
   font-family:var(--font-display);font-size:11px;color:var(--ink-3);
   letter-spacing:.14em;text-transform:uppercase;font-weight:600;
@@ -212,28 +212,32 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 }
 .proj-meta .tag{padding:2px 8px;background:var(--accent-soft);color:var(--accent);border-radius:99px;letter-spacing:.02em}
 .proj-title{
-  font-family:var(--font-display);font-size:20px;font-weight:800;
-  letter-spacing:-0.02em;margin:0;color:var(--ink);
+  font-family:var(--font-display);font-size:17px;font-weight:800;
+  letter-spacing:-0.02em;margin:0;color:var(--ink);line-height:1.3;
 }
-.proj-desc{font-size:14.5px;color:var(--ink-2);line-height:1.65;margin:0;flex:1}
+.proj-desc{font-size:13.5px;color:var(--ink-2);line-height:1.6;margin:0;flex:1}
 
-.proj-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;margin-bottom:4px}
-.proj-featured .proj-metrics{margin-top:14px}
-.proj-metric{padding:12px 14px;background:var(--bg-soft);border-radius:8px;border:1px solid var(--line-soft)}
-.proj-metric .k{font-family:var(--font-display);font-size:10.5px;font-weight:600;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
-.proj-metric .v{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--accent);letter-spacing:-0.02em;line-height:1.2}
-.proj-metric .v small{font-size:12px;font-weight:600;color:var(--ink-3);margin-left:2px}
+/* 컴팩트 인라인 메트릭 — 카드 안에서 한 줄로 */
+.proj-metrics-inline{
+  display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:4px;
+  font-family:var(--font-display);font-size:12px;color:var(--ink-2);font-weight:600;
+}
+.proj-metrics-inline .m{display:inline-flex;align-items:baseline;gap:4px}
+.proj-metrics-inline .m .k{color:var(--ink-3);font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.proj-metrics-inline .m .v{color:var(--accent);font-weight:800;letter-spacing:-0.01em}
+.proj-metrics-inline .m::after{content:"·";margin-left:14px;color:var(--ink-4);font-weight:400}
+.proj-metrics-inline .m:last-child::after{content:""}
 
 .proj-stack{
-  display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:8px;
-  font-family:var(--font-display);font-size:12px;color:var(--ink-3);font-weight:500;
+  display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px;
+  font-family:var(--font-display);font-size:11.5px;color:var(--ink-3);font-weight:500;
 }
 .proj-stack span::after{content:"·";margin-left:12px;color:var(--ink-4)}
 .proj-stack span:last-child::after{content:""}
 
 .proj-links{
-  display:flex;gap:14px;font-family:var(--font-display);font-size:13px;font-weight:600;
-  padding-top:14px;border-top:1px solid var(--line);margin-top:8px;
+  display:flex;gap:14px;font-family:var(--font-display);font-size:12.5px;font-weight:600;
+  padding-top:12px;border-top:1px solid var(--line);margin-top:6px;
 }
 .proj-links a{color:var(--ink-2);transition:color .2s}
 .proj-links a:hover{color:var(--accent)}
@@ -444,13 +448,12 @@ footer .row{
             주제 한 줄을 넣으면 LangGraph 기반 멀티 에이전트(Planner·Writer·Critic·Designer)가
             6장 카드뉴스를 자동 생성. 카드뉴스 1편 제작에 2~3시간 걸리던 작업을 분 단위로 단축.
           </p>
-          <div class="proj-metrics">
-            <div class="proj-metric"><div class="k">제작 시간</div><div class="v">2h → 4m</div></div>
-            <div class="proj-metric"><div class="k">검증 점수</div><div class="v">2.4 → 4.1<small>/5</small></div></div>
-            <div class="proj-metric"><div class="k">호출 비용</div><div class="v">−30<small>%</small></div></div>
+          <div class="proj-metrics-inline">
+            <span class="m"><span class="k">제작</span><span class="v">2h→4m</span></span>
+            <span class="m"><span class="k">검증</span><span class="v">2.4→4.1</span></span>
+            <span class="m"><span class="k">비용</span><span class="v">−30%</span></span>
           </div>
           <div class="proj-stack"><span>Next.js</span><span>LangGraph</span><span>Claude API</span><span>Vercel</span></div>
-          <span class="ph">수치는 자리만 잡은 가데이터 — 실제 값으로 교체 필요</span>
           <div class="proj-links">
             <a class="detail" href="../INKK.html">Detail</a>
             <a href="#">Demo</a>
@@ -475,13 +478,12 @@ footer .row{
             LangGraph + RAG로 자료 수집 → 초안 → 사실 검증 → 톤 검수까지 한 사이클을 자동화.
             글 1편 작성에 4~5시간 걸리던 작업을 30분으로 단축.
           </p>
-          <div class="proj-metrics">
-            <div class="proj-metric"><div class="k">작성 시간</div><div class="v">5h → 30m</div></div>
-            <div class="proj-metric"><div class="k">사실 검증률</div><div class="v">~92<small>%</small></div></div>
-            <div class="proj-metric"><div class="k">PoC 기간</div><div class="v">3주</div></div>
+          <div class="proj-metrics-inline">
+            <span class="m"><span class="k">작성</span><span class="v">5h→30m</span></span>
+            <span class="m"><span class="k">검증률</span><span class="v">~92%</span></span>
+            <span class="m"><span class="k">PoC</span><span class="v">3주</span></span>
           </div>
           <div class="proj-stack"><span>LangGraph</span><span>RAG</span><span>Claude API</span><span>FastAPI</span></div>
-          <span class="ph">수치는 자리만 잡은 가데이터</span>
           <div class="proj-links">
             <a class="detail" href="../BlogAgentRAG.html">Detail</a>
             <a href="#">Demo</a>
@@ -506,13 +508,12 @@ footer .row{
             Ollama 기반 로컬 LLM + LangGraph로 파일·웹·캘린더 도구를 호출하는 개인 작업 비서.
             외부 API 의존 없이 보안이 중요한 도메인에서 사용 가능한 형태로 설계.
           </p>
-          <div class="proj-metrics">
-            <div class="proj-metric"><div class="k">로컬 추론</div><div class="v">~800<small>ms</small></div></div>
-            <div class="proj-metric"><div class="k">도구 수</div><div class="v">12<small>개</small></div></div>
-            <div class="proj-metric"><div class="k">월 비용</div><div class="v">$0</div></div>
+          <div class="proj-metrics-inline">
+            <span class="m"><span class="k">추론</span><span class="v">~800ms</span></span>
+            <span class="m"><span class="k">도구</span><span class="v">12개</span></span>
+            <span class="m"><span class="k">월비용</span><span class="v">$0</span></span>
           </div>
           <div class="proj-stack"><span>Python</span><span>Ollama</span><span>LangGraph</span><span>MCP</span></div>
-          <span class="ph">수치는 자리만 잡은 가데이터</span>
           <div class="proj-links">
             <a class="detail" href="../LocalAI.html">Detail</a>
             <a href="#">Demo</a>
