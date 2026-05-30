@@ -191,15 +191,16 @@
   }
   .skip-link:focus-visible{transform:translateY(0)}
 
-  /* 헤드라인 — text-wrap balance + 음수 letter-spacing -.05em (Paco) */
+  /* 헤드라인 — 한글 보정 (Pretendard 기준 -0.025 ~ -0.03이 한계, 그 이상은 글자 붙음) */
   h1,h2,h3,h4{
     text-wrap:balance;
-    letter-spacing:-0.04em;
+    letter-spacing:-0.025em;
     font-variation-settings:"opsz" auto;
+    word-break:keep-all;
   }
-  h1{letter-spacing:-0.05em}
-  /* 본문 — text-wrap pretty (한 줄 단어 떨어짐 방지) */
-  p{text-wrap:pretty}
+  h1{letter-spacing:-0.03em}
+  /* 본문 — text-wrap pretty + 한글 어절 단위 줄바꿈 */
+  p{text-wrap:pretty;word-break:keep-all;overflow-wrap:break-word}
 
   /* 모션 화이트리스트 — 기본 OFF, 사용자 OK 시 ON */
   @media (prefers-reduced-motion: no-preference){
@@ -515,7 +516,7 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
   display:inline-flex;align-items:center;gap:10px;
 }
 .section-num::after{content:"";width:32px;height:1.5px;background:var(--accent)}
-.section-title{font-family:var(--font-display);font-size:38px;letter-spacing:-0.025em;font-weight:800;margin:0 0 16px;line-height:1.15}
+.section-title{font-family:var(--font-display);font-size:40px;letter-spacing:-0.03em;font-weight:750;margin:0 0 16px;line-height:1.2}
 .section-sub{font-size:15px;color:var(--ink-3);max-width:620px;margin:0;line-height:1.65}
 @media (max-width:680px){.section-title{font-size:26px}section{padding:80px 0 64px}.section-head{margin-bottom:40px}}
 
@@ -636,8 +637,14 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 /* ---------- About ---------- */
 .about-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(220px,1fr);gap:64px;align-items:start}
 @media (max-width:780px){.about-grid{grid-template-columns:1fr;gap:36px}}
-.about p{font-size:16px;color:var(--ink-2);line-height:1.85;margin:0 0 18px;max-width:60ch}
-.about p strong{color:var(--ink);font-weight:700}
+.about p{font-size:16px;color:var(--ink-2);line-height:1.85;margin:0 0 20px;max-width:62ch;letter-spacing:-0.005em}
+.about p:last-child{margin-bottom:0}
+/* 강조 — 흰색 볼드 폭격 대신 accent 컬러 + 하단 라인 (다크에서 눈피로 ↓) */
+.about p strong{
+  color:var(--ink);font-weight:600;
+  background-image:linear-gradient(transparent 62%, color-mix(in oklab, var(--accent) 28%, transparent) 62%);
+  background-repeat:no-repeat;padding:0 2px;
+}
 
 /* Now 패널 — paco/derek sivers 'now' 무브 (지금 하는 것) */
 .now-panel{
@@ -670,7 +677,7 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
   content:"";position:absolute;left:0;top:9px;width:5px;height:5px;
   background:var(--ink-4);border-radius:50%;
 }
-.now-panel li strong{color:var(--ink);font-weight:700}
+.now-panel li strong{color:var(--ink);font-weight:600}
 .now-panel .now-footer{
   margin-top:18px;padding-top:14px;border-top:1px dashed var(--line);
   font-family:var(--font-mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em;
@@ -689,19 +696,29 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 .about-side li strong{color:var(--ink);font-weight:700;display:block;margin-bottom:2px}
 
 /* ---------- Skills ---------- */
-.skills{display:grid;grid-template-columns:200px 1fr;gap:18px 36px}
-@media (max-width:680px){.skills{grid-template-columns:1fr;gap:8px 0}}
+.skills{display:grid;grid-template-columns:180px 1fr;gap:0 48px}
+@media (max-width:680px){.skills{grid-template-columns:1fr;gap:4px 0}}
 .skills .cat{
-  font-family:var(--font-display);font-size:13px;font-weight:700;
-  color:var(--ink);letter-spacing:.02em;padding-top:4px;
+  font-family:var(--font-display);font-size:12.5px;font-weight:600;
+  color:var(--ink-2);letter-spacing:.04em;padding:24px 0;
+  text-transform:uppercase;
 }
+@media (max-width:680px){.skills .cat{padding:20px 0 6px;font-size:11.5px}}
 .skills .list{
-  display:flex;flex-wrap:wrap;gap:6px 16px;
-  padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:20px;
-  font-size:14.5px;color:var(--ink-2);font-weight:500;
+  display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;
+  padding:24px 0;border-bottom:1px solid var(--line);
+  font-size:15px;color:var(--ink);font-weight:500;letter-spacing:-0.005em;
 }
-.skills .row:last-child .list{border-bottom:0;margin-bottom:0;padding-bottom:0}
-.skills .list span::after{content:"·";margin-left:16px;color:var(--ink-4)}
+@media (max-width:680px){
+  .skills .list{padding:0 0 20px;margin-bottom:20px}
+}
+.skills .row:last-child .list{border-bottom:0}
+.skills .row{display:contents}
+.skills .row .cat{border-bottom:1px solid var(--line)}
+.skills .row:last-child .cat{border-bottom:0}
+@media (max-width:680px){.skills .row .cat,.skills .row:last-child .cat{border-bottom:0}}
+.skills .list span{color:var(--ink-2)}
+.skills .list span::after{content:"·";margin-left:20px;color:var(--ink-4);font-weight:400}
 .skills .list span:last-child::after{content:""}
 
 /* ---------- Projects ---------- */
@@ -1039,18 +1056,17 @@ footer .row{
   <div class="container">
     <div class="section-head">
       <span class="section-num">01 · 소개</span>
-      <h2 class="section-title">코드로 만드는 AX.</h2>
+      <h2 class="section-title">일하는 방식을 바꿉니다.</h2>
     </div>
     <div class="about-grid">
       <div class="about">
         <p>
-          LLM과 에이전트로 기업의 반복 업무를 자동화하는 <strong>AX 엔지니어</strong>입니다.
-          모델 정확도보다 <strong>현장에서 어떤 일이 어떻게 바뀌었는지</strong>를 본질로 봅니다.
+          LLM과 에이전트로 기업의 반복 업무를 자동화합니다.
+          지표만 좋은 모델이 아니라, <strong>실제로 일이 바뀌는 시스템</strong>을 만듭니다.
         </p>
         <p>
-          <strong>문제 정의 → 구조 설계 → 프로토타입 → 검증·운영</strong>까지 한 사이클로 끌고 갑니다.
-          아이디어가 떠오르면 <strong>코딩 에이전트(Claude Code · Cursor)로 곧장 프로토타입</strong>에 옮기고,
-          막히면 가설을 바꿔가며 빠르게 여러 번 시도합니다. <strong>풀릴 때까지 멈추지 않습니다.</strong>
+          문제 정의 → 구조 설계 → 프로토타입 → 검증·운영까지 한 사이클로 끌고 갑니다.
+          아이디어가 떠오르면 코딩 에이전트로 곧장 프로토타입에 옮기고, 가설을 바꿔가며 빠르게 시도합니다.
         </p>
       </div>
 
@@ -1073,24 +1089,24 @@ footer .row{
   <div class="container">
     <div class="section-head">
       <span class="section-num">02 · 기술</span>
-      <h2 class="section-title">자주 쓰는 도구들.</h2>
+      <h2 class="section-title">실제로 쓰는 것들.</h2>
     </div>
     <div class="skills">
       <div class="row" style="display:contents">
-        <div class="cat">LLM · 에이전트</div>
-        <div class="list"><span>OpenAI</span><span>Anthropic</span><span>Groq</span><span>LangGraph</span><span>LangChain</span><span>RAG</span><span>ChromaDB</span><span>Ollama</span><span>MCP</span></div>
+        <div class="cat">AI · 에이전트</div>
+        <div class="list"><span>Claude</span><span>OpenAI</span><span>LangGraph</span><span>RAG</span><span>MCP</span></div>
       </div>
       <div class="row" style="display:contents">
-        <div class="cat">머신러닝 · 데이터</div>
-        <div class="list"><span>scikit-learn</span><span>XGBoost</span><span>LightGBM</span><span>Ridge</span><span>SHAP</span><span>시계열</span><span>pandas</span><span>NumPy</span><span>SQL</span></div>
+        <div class="cat">데이터 · ML</div>
+        <div class="list"><span>Python</span><span>pandas</span><span>scikit-learn</span><span>LightGBM</span><span>SQL</span></div>
       </div>
       <div class="row" style="display:contents">
-        <div class="cat">개발</div>
-        <div class="list"><span>Python</span><span>TypeScript</span><span>Swift</span><span>Next.js</span><span>React</span><span>FastAPI</span><span>SwiftUI</span><span>CoreML</span><span>Xcode</span><span>Vercel</span><span>Cloudflare</span><span>Supabase</span><span>Firebase</span><span>Docker</span></div>
+        <div class="cat">프로덕트</div>
+        <div class="list"><span>TypeScript</span><span>Next.js</span><span>Swift</span><span>CoreML</span><span>Supabase</span></div>
       </div>
       <div class="row" style="display:contents">
-        <div class="cat">AI-Native 개발</div>
-        <div class="list"><span>Claude Code</span><span>Codex</span><span>Cursor</span><span>Antigravity</span><span>Git</span><span>Notion</span></div>
+        <div class="cat">작업 환경</div>
+        <div class="list"><span>Claude Code</span><span>Cursor</span><span>Git</span></div>
       </div>
     </div>
   </div>
