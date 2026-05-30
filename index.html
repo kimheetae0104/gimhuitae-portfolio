@@ -424,6 +424,49 @@
 
   /* ── 액센트 캐럿 색 (입력 필드 / 텍스트 영역) ── */
   :root{accent-color:var(--accent);caret-color:var(--accent)}
+
+  /* ── 다크 모드 톤다운 — 채도/밝기 낮춰서 차분하게 ── */
+  @media (prefers-color-scheme: dark){
+    /* 카드 썸네일 — 밝은 그라데이션이 다크에서 튐 */
+    .proj-thumb{filter:brightness(.62) saturate(.7)}
+
+    /* 그레인 — 더 옅게 */
+    .body-grain{opacity:.035}
+
+    /* Hero 마우스 글로우 — 다크엔 거의 안 보이게 */
+    .hero::before{opacity:0 !important}
+
+    /* Now 패널 펄스 — 다크에선 정적으로 (시각 노이즈 ↓) */
+    .now-panel .now-dot{
+      animation:none !important;
+      box-shadow:0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent);
+    }
+
+    /* 액션 primary 버튼 — 화이트 강조 X, Sand 700 톤 */
+    .action.primary{
+      background:var(--color-gray-700);
+      color:var(--color-gray-1200);
+      border-color:var(--color-gray-700);
+    }
+    .action.primary:hover{
+      background:var(--accent);
+      border-color:var(--accent);
+      color:#0f1115;
+    }
+
+    /* 메타 태그 — 액센트 농도 낮춤 */
+    .proj-meta .tag{
+      background:color-mix(in oklab, var(--accent) 14%, transparent);
+      color:var(--color-gray-1100);
+    }
+
+    /* CTA primary 버튼 (Hero) — 너무 튀지 않게 */
+    .hero .ctas a.primary{
+      background:var(--color-gray-700);
+      color:var(--color-gray-1200);
+    }
+    .hero .ctas a.primary:hover{background:var(--accent);color:#0f1115}
+  }
 }
 body{
   background:var(--bg);color:var(--ink);
