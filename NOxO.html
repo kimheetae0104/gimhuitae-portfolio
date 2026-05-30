@@ -141,7 +141,15 @@
   footer.foot .back{ display:inline-flex; align-items:center; gap:8px; font-weight:700; color:var(--ink); background:#fff; border:1px solid var(--line); border-radius:999px; padding:13px 26px; }
   footer.foot .back:hover{ border-color:var(--blue); color:var(--blue); }
 
-  @media print{ .nav .links,footer.foot{ display:none; } .panel,.feature{ break-inside:avoid; } *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
+  @media print{
+    .nav .links,footer.foot{ display:none; }
+    .panel,.feature{ break-inside:avoid; }
+    /* 핵심 기술(.thi) 박스는 표지와 분리 → 별도 페이지로 */
+    .thi{ break-before:page; page-break-before:always; }
+    .thi .c{ break-inside:avoid; }
+    h2,h3,.htitle{ break-after:avoid; page-break-after:avoid; }
+    *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  }
 </style>
 </head>
 <body>
