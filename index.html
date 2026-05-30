@@ -741,6 +741,23 @@ section{padding:96px 0;scroll-margin-top:80px}
   background:color-mix(in oklab, var(--accent) 12%, transparent);
   border-color:transparent;color:var(--accent);font-weight:700;
 }
+.resume-body .cert-link{
+  display:inline-flex;align-items:center;gap:10px;margin-top:14px;
+  padding:6px 12px 6px 6px;border:1px solid var(--line);border-radius:10px;
+  font-family:var(--font-display);font-size:12px;font-weight:600;
+  color:var(--ink-2);background:var(--bg);text-decoration:none;
+  transition:border-color .15s,color .15s,background .15s;
+}
+.resume-body .cert-link img{
+  width:64px;height:42px;object-fit:cover;border-radius:5px;display:block;
+  border:1px solid var(--line-soft);
+}
+.resume-body .cert-link svg{color:var(--ink-3);transition:color .15s,transform .15s}
+.resume-body .cert-link:hover{
+  border-color:var(--accent);color:var(--accent);
+  background:color-mix(in oklab, var(--accent) 4%, transparent);
+}
+.resume-body .cert-link:hover svg{color:var(--accent);transform:translate(2px,-2px)}
 @media (max-width:680px){
   .resume-row{grid-template-columns:1fr;gap:6px;padding:14px 0}
   .resume-date{font-size:11.5px;color:var(--ink-3)}
@@ -1398,6 +1415,11 @@ footer .row{
             <div class="place">스마트 창고 출고 지연 예측 AI 경진대회 · DACON</div>
             <div class="role">Private 11위 / 607팀 <span class="meta">· TOP 2%</span></div>
             <div class="badges"><span class="highlight">Top 2%</span></div>
+            <a class="cert-link action" href="dacon/certificate.webp" aria-label="DACON 수상 인증서 보기">
+              <img src="dacon/certificate.webp" alt="DACON 수상 인증서" width="96" height="64" loading="lazy"/>
+              <span>증명서 보기</span>
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+            </a>
           </div>
         </div>
         <div class="resume-row">
