@@ -76,6 +76,39 @@ p{text-wrap:pretty}
   --transition-fast:.1s;
 }
 
+/* ──────────────────────────────────────
+   프로젝트 카드 — v3 외관만 (이미지·컬러뱃지·PDF버튼 그대로)
+   ────────────────────────────────────── */
+
+/* Vercel DS 그림자: 보더+small 기본, hover 시 medium */
+#projects .pcard{
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, #15171a 8%, transparent),
+    0 1px 2px color-mix(in oklab, #15171a 8%, transparent);
+  transition:transform var(--transition-xx) var(--ease-out-expo),
+             box-shadow var(--transition-xx) var(--ease-out-expo);
+}
+#projects .pcard:hover{
+  transform:translateY(-1px);
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, #15171a 8%, transparent),
+    0 2px 2px color-mix(in oklab, #15171a 4%, transparent),
+    0 8px 8px -8px color-mix(in oklab, #15171a 4%, transparent);
+}
+
+/* 타이틀 — Pretendard Variable 활성화 + 가독성 */
+#projects .ptitle{
+  font-family:"Pretendard Variable","Pretendard",inherit;
+  font-weight:800;
+  letter-spacing:-0.025em;
+  text-wrap:balance;
+}
+
+/* 설명 — text-wrap pretty (한 글자 떨어짐 방지) */
+#projects .pdesc{
+  text-wrap:pretty;
+}
+
   /* 접근성: 키보드 스킵 링크 (포커스 시에만 노출) */
   .skip-link{
     position:absolute; left:-9999px; top:0; z-index:100000;
