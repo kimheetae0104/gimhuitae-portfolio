@@ -11,82 +11,332 @@
 <meta property="og:description" content="LLM·RAG·에이전트로 기업의 반복 업무를 4주 안에 운영으로 옮깁니다."/>
 <meta property="og:type" content="website"/>
 <meta property="og:locale" content="ko_KR"/>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<!-- Safari 주소창 — 라이트/다크 자동 전환 -->
+<meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
+
+<link rel="canonical" href="https://gimhuitae-portfolio.vercel.app/">
+
+<!-- Variable 폰트 self-load (CLS=0) — Pretendard Variable + Inter Variable -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap">
+
+<!-- Schema.org Person — 구글에 '사람'으로 인식 -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"김희태","alternateName":"Heetae Kim","jobTitle":"AX Engineer","url":"https://gimhuitae-portfolio.vercel.app/","email":"mailto:heetae104@gmail.com","sameAs":["https://github.com/kimheetae0104"],"description":"추진력으로 승부하는 AX 엔지니어. LLM·RAG·에이전트로 기업의 반복 업무를 4주 안에 동작하는 도구로 옮깁니다.","knowsAbout":["AI Transformation","LLM","RAG","LangGraph","AI Agent","업무 자동화","PoC","디지털 전환"]}
+</script>
 <style>
-:root{
-  --bg:#ffffff;
-  --bg-soft:#f7f7f5;
-  --bg-card:#ffffff;
-  --ink:#15171a;
-  --ink-2:#3d4148;
-  --ink-3:#6b6f76;
-  --ink-4:#a8acb3;
-  --line:#e8eaed;
-  --line-soft:#f1f2f4;
-  --accent:#1a3a6e;          /* deep navy */
-  --accent-2:#3858a3;
-  --accent-soft:#eaf0fa;
-  --positive:#0f7d4d;
-  --warn:#a14c1e;
-  --radius:10px;
-  --max:1080px;
-  --font-sans:"Pretendard","Inter",system-ui,-apple-system,sans-serif;
-  --font-display:"Inter","Pretendard",system-ui,sans-serif;
-  --font-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-html{scroll-behavior:smooth}
+/* ──────────────────────────────────────────────────────────────
+   캐스케이드 레이어 — Tailwind v4 + jhey.dev signature 패턴
+   reset → tokens → base → components → utilities → signature
+   ────────────────────────────────────────────────────────────── */
+@layer reset, tokens, base, components, utilities, signature;
 
-/* ---------- 접근성 ---------- */
-.skip-link{
-  position:absolute;left:0;top:0;
-  background:var(--ink);color:#fff;padding:10px 16px;
-  font-family:var(--font-display);font-size:13px;font-weight:600;
-  border-radius:0 0 8px 0;text-decoration:none;
-  transform:translateY(-110%);transition:transform .2s;
-  z-index:100;
-}
-.skip-link:focus{transform:translateY(0)}
-
-:focus-visible{outline:2.5px solid var(--accent);outline-offset:3px;border-radius:6px}
-button:focus-visible,a:focus-visible{outline-offset:4px}
-
-/* 모션 줄이기 선호 */
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    animation-duration:.01ms !important;
-    animation-iteration-count:1 !important;
-    transition-duration:.01ms !important;
-    scroll-behavior:auto !important;
-  }
-}
-
-/* 스크롤 reveal (IntersectionObserver로 토글) */
-.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
-.reveal.is-in{opacity:1;transform:none}
-
-/* 다크 모드 — prefers-color-scheme 자동 */
-@media (prefers-color-scheme:dark){
+@layer tokens {
   :root{
-    --bg:#0f1115;
-    --bg-soft:#171a20;
-    --bg-card:#171a20;
-    --ink:#f0f2f5;
-    --ink-2:#c6cad1;
-    --ink-3:#8e939c;
-    --ink-4:#5a6068;
-    --line:#272b33;
-    --line-soft:#1f232a;
-    --accent:#7aa2e3;
-    --accent-2:#a6c0ec;
-    --accent-soft:#1a2638;
+    /* ── 색: Radix Sand 12-step (Emil Kowalski / Vercel DS) ── */
+    --color-gray-100:#fdfdfc; --color-gray-200:#f9f9f8; --color-gray-300:#f1f0ef;
+    --color-gray-400:#e9e9e7; --color-gray-500:#e2e1de; --color-gray-600:#dad9d6;
+    --color-gray-700:#cfceca; --color-gray-800:#bbbab5; --color-gray-900:#8d8d86;
+    --color-gray-1000:#82827c; --color-gray-1100:#63635e; --color-gray-1200:#21201c;
+
+    /* ── 시맨틱 매핑 ── */
+    --bg:           var(--color-gray-100);
+    --bg-soft:      var(--color-gray-200);
+    --bg-card:      #ffffff;
+    --ink:          var(--color-gray-1200);
+    --ink-2:        var(--color-gray-1100);
+    --ink-3:        var(--color-gray-1000);
+    --ink-4:        var(--color-gray-800);
+    --line:         var(--color-gray-500);
+    --line-soft:    var(--color-gray-400);
+
+    /* ── 액센트 — sRGB 폴백 + display-p3 (Rauno 패턴) ── */
+    --accent:       #1a3a6e;
+    --accent:       color(display-p3 0.10 0.22 0.43);
+    --accent-2:     #3858a3;
+    --accent-soft:  color-mix(in oklab, var(--accent) 12%, transparent);
+    --selection:    color-mix(in oklab, var(--accent) 25%, transparent);
+
+    /* ── 그림자 (Vercel DS — 보더+그림자 합성) ── */
+    --ds-shadow-border:        0 0 0 1px color-mix(in oklab, var(--ink) 8%, transparent);
+    --ds-shadow-small:         0 1px 2px color-mix(in oklab, var(--ink) 8%, transparent);
+    --ds-shadow-medium:        0 2px 2px color-mix(in oklab, var(--ink) 4%, transparent),
+                               0 8px 8px -8px color-mix(in oklab, var(--ink) 4%, transparent);
+    --ds-shadow-large:         0 2px 2px color-mix(in oklab, var(--ink) 4%, transparent),
+                               0 8px 16px -4px color-mix(in oklab, var(--ink) 8%, transparent);
+    --ds-shadow-border-small:  var(--ds-shadow-border), var(--ds-shadow-small);
+    --ds-shadow-border-medium: var(--ds-shadow-border), var(--ds-shadow-medium);
+
+    /* ── 듀레이션 7종 (paco.me 그대로) ── */
+    --transition-fastest:80ms;
+    --transition-fast:.1s;
+    --transition-med:.16s;
+    --transition-xx:.24s;
+    --transition-xxl:.32s;
+    --transition-long:.48s;
+    --transition-slow:1.2s;
+
+    /* ── 이징 12종 (paco.me 그대로) ── */
+    --ease-in-cubic:cubic-bezier(.55,.055,.675,.19);
+    --ease-out-cubic:cubic-bezier(.215,.61,.355,1);
+    --ease-in-out-cubic:cubic-bezier(.645,.045,.355,1);
+    --ease-in-quart:cubic-bezier(.895,.03,.685,.22);
+    --ease-out-quart:cubic-bezier(.165,.84,.44,1);
+    --ease-in-out-quart:cubic-bezier(.77,0,.175,1);
+    --ease-in-expo:cubic-bezier(.95,.05,.795,.035);
+    --ease-out-expo:cubic-bezier(.19,1,.22,1);
+    --ease-in-out-expo:cubic-bezier(1,0,0,1);
+    --ease-in-circ:cubic-bezier(.6,.04,.98,.335);
+    --ease-out-circ:cubic-bezier(.075,.82,.165,1);
+    --ease-in-out-circ:cubic-bezier(.785,.135,.15,.86);
+
+    /* ── 간격 8px 스케일 (paco.me) ── */
+    --gap-s:4px; --gap-2x:16px; --gap-3x:24px; --gap-4x:32px;
+    --gap-6x:48px; --gap-8x:64px; --gap-12x:72px; --gap-16x:128px;
+
+    /* ── 콘텐츠 폭 (Paco/Samuel/mxstbr 합의값) ── */
+    --content-width:640px;
+    --container-md:1080px;
+    --body-margin:max(24px, env(safe-area-inset-left));
+
+    /* ── 폰트 ── */
+    --font-sans:"Pretendard Variable","Pretendard","Inter",system-ui,-apple-system,sans-serif;
+    --font-display:"Inter","Pretendard Variable","Pretendard",system-ui,sans-serif;
+    --font-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font-variations:"opsz" auto;
+    --font-settings:"cv01","ss03","kern","calt","case";
+
+    /* ── 라디우스 ── */
+    --radius:10px;
+    --radius-lg:14px;
+
+    /* ── 호환 토큰 (기존 CSS 유지) ── */
+    --accent-deep:#142a52;
+    --positive:#0f7d4d;
+    --warn:#a14c1e;
+    --max:1080px;
   }
-  .nav{background:rgba(15,17,21,.86)}
-  .skip-link{background:#fff;color:var(--ink)}
+
+  /* ── 다크모드 — Radix Sand Dark (단순 반전 X) ── */
+  @media (prefers-color-scheme: dark){
+    :root{
+      --color-gray-100:#111110; --color-gray-200:#191918; --color-gray-300:#222221;
+      --color-gray-400:#2a2a28; --color-gray-500:#31312e; --color-gray-600:#3b3a37;
+      --color-gray-700:#494844; --color-gray-800:#62605b; --color-gray-900:#6f6d66;
+      --color-gray-1000:#7c7b74; --color-gray-1100:#b5b3ad; --color-gray-1200:#eeeeec;
+      --bg-card:        var(--color-gray-200);
+      --accent:         #7aa2e3;
+      --accent:         color(display-p3 0.48 0.64 0.89);
+    }
+  }
+}
+@layer reset {
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{min-height:100vh;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  img,svg,video{display:block;max-width:100%}
+  button,input,select,textarea{font:inherit;color:inherit}
+  /* Variable 폰트 자동 옵티컬 사이징 — Emil Kowalski 패턴 */
+  html{
+    font-variation-settings:var(--font-variations);
+    font-feature-settings:var(--font-settings);
+  }
+  /* 모션 줄이기 — 기본은 모션 OFF, no-preference 일 때만 ON (Brittany 화이트리스트) */
+  *,*::before,*::after{transition:none;animation:none}
+  /* 셀렉션 — 브랜드 컬러로 (Paco) */
+  ::selection{background:var(--selection);color:var(--ink);text-shadow:none}
+}
+
+@layer base {
+  /* 포커스 링 3중 (Vercel DS: 1px 투명 → 2px 배경 → 4px 컬러) */
+  :focus-visible{
+    outline:none;
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--ink) 8%, transparent),
+      0 0 0 2px var(--bg),
+      0 0 0 4px var(--accent);
+    border-radius:6px;
+  }
+
+  /* skip link — Brittany Chiang 패턴 (visible-on-focus) */
+  .skip-link{
+    position:absolute;top:0;left:0;z-index:100;
+    background:#facc15;color:#0f172a;
+    padding:12px 18px;
+    font-family:var(--font-display);font-size:12px;font-weight:800;
+    letter-spacing:.14em;text-transform:uppercase;text-decoration:none;
+    border-radius:0 0 10px 0;
+    transform:translateY(-110%);
+  }
+  .skip-link:focus-visible{transform:translateY(0)}
+
+  /* 헤드라인 — text-wrap balance + 음수 letter-spacing -.05em (Paco) */
+  h1,h2,h3,h4{
+    text-wrap:balance;
+    letter-spacing:-0.04em;
+    font-variation-settings:"opsz" auto;
+  }
+  h1{letter-spacing:-0.05em}
+  /* 본문 — text-wrap pretty (한 줄 단어 떨어짐 방지) */
+  p{text-wrap:pretty}
+
+  /* 모션 화이트리스트 — 기본 OFF, 사용자 OK 시 ON */
+  @media (prefers-reduced-motion: no-preference){
+    *,*::before,*::after{
+      transition-property:color, background-color, border-color, fill, stroke,
+                          box-shadow, opacity, transform, filter, backdrop-filter;
+      transition-duration:var(--transition-fast);
+      transition-timing-function:var(--ease-out-cubic);
+    }
+    a, button, .proj-card, .step, .nav-links a {
+      transition-duration:var(--transition-xx);
+      transition-timing-function:var(--ease-out-expo);
+    }
+    html{scroll-behavior:smooth}
+  }
+}
+
+@layer utilities {
+  /* 시각적 숨김 — sr-only (Brittany Tailwind 디폴트) */
+  .sr-only{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0;
+  }
+  /* 스크롤 reveal — IntersectionObserver 토글 */
+  .reveal{
+    opacity:0;transform:translateY(12px);
+    transition:opacity var(--transition-xxl) var(--ease-out-expo),
+               transform var(--transition-xxl) var(--ease-out-expo) !important;
+  }
+  .reveal.is-in{opacity:1;transform:none}
+}
+
+@layer signature {
+  /* ── 스크롤 progress bar (상단 1px 라인) ── */
+  .scroll-progress{
+    position:fixed;top:0;left:0;height:2px;
+    width:var(--progress, 0%);
+    background:linear-gradient(90deg, var(--accent), var(--accent-2));
+    z-index:60;pointer-events:none;
+    transition:width 80ms linear;
+  }
+
+  /* ── 마우스 따라가는 hero 글로우 (--mx, --my CSS 변수로 위치) ── */
+  .hero{
+    --mx:50%; --my:30%;
+    position:relative;isolation:isolate;
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(600px circle at var(--mx) var(--my),
+      color-mix(in oklab, var(--accent) 8%, transparent),
+      transparent 60%);
+    opacity:0;
+    transition:opacity 600ms var(--ease-out-expo);
+  }
+  @media (hover:hover) and (prefers-reduced-motion: no-preference){
+    .hero:hover::before{opacity:1}
+  }
+
+  /* ── 네비 — 호버/활성 시 그라데이션 underline reveal ── */
+  .nav-links a{position:relative;padding:6px 2px}
+  .nav-links a::after{
+    content:"";position:absolute;left:0;right:0;bottom:-2px;height:1.5px;
+    background:linear-gradient(90deg, var(--accent), var(--accent-2));
+    transform-origin:left;transform:scaleX(0);
+    transition:transform var(--transition-xx) var(--ease-out-expo);
+  }
+  .nav-links a:hover::after,
+  .nav-links a[aria-current="page"]::after{transform:scaleX(1)}
+  .nav-links a[aria-current="page"]{color:var(--accent);font-weight:700}
+
+  /* ── Hero entrance — 도착 시 스태거 fade-up (paco.me 호흡) ── */
+  @media (prefers-reduced-motion: no-preference){
+    .hero .eyebrow,
+    .hero .hero-pre,
+    .hero .hero-name,
+    .hero .lede,
+    .hero .role-chips,
+    .hero .ctas,
+    .hero .meta{
+      animation:heroIn 760ms var(--ease-out-expo) backwards;
+    }
+    .hero .hero-pre{animation-delay:60ms}
+    .hero .hero-name{animation-delay:140ms}
+    .hero .lede{animation-delay:240ms}
+    .hero .role-chips{animation-delay:340ms}
+    .hero .ctas{animation-delay:440ms}
+    .hero .meta{animation-delay:540ms}
+    @keyframes heroIn{
+      from{opacity:0;transform:translateY(14px)}
+      to  {opacity:1;transform:none}
+    }
+  }
+
+  /* ── 카드 detail 링크 — 화살표 mini-interaction ── */
+  .proj-links a.detail{
+    display:inline-flex;align-items:center;gap:6px;position:relative;
+  }
+  .proj-links a.detail::after{
+    content:"→";display:inline-block;
+    transition:transform var(--transition-xx) var(--ease-out-expo);
+  }
+  .proj-links a.detail:hover::after{transform:translateX(4px)}
+  .proj-links a:not(.detail)::after{
+    content:"↗";display:inline-block;margin-left:4px;
+    transition:transform var(--transition-xx) var(--ease-out-expo);
+  }
+  .proj-links a:not(.detail):hover::after{transform:translate(2px,-2px)}
+
+  /* ── CTA 버튼 — 호버 시 transform −1px + 그림자 강화 ── */
+  .hero .ctas a.primary{box-shadow:var(--ds-shadow-small)}
+  .hero .ctas a.primary:hover{
+    transform:translateY(-1px);
+    box-shadow:var(--ds-shadow-medium);
+    background:var(--ink);
+  }
+  .hero .ctas a.ghost:hover{transform:translateY(-1px)}
+
+  /* ── 칩 — 호버 시 미세 lift ── */
+  .hero .role-chips li{
+    transition:transform var(--transition-fast) var(--ease-out-cubic),
+               background var(--transition-fast) var(--ease-out-cubic);
+  }
+  .hero .role-chips li:hover{
+    transform:translateY(-1px);
+    background:color-mix(in oklab, var(--accent) 18%, transparent);
+  }
+
+  /* ── nav backdrop-filter 다층 (Paco brightness 곱하기) ── */
+  .nav{
+    backdrop-filter:saturate(180%) blur(14px);
+    -webkit-backdrop-filter:saturate(180%) blur(14px);
+    background:color-mix(in oklab, var(--bg) 86%, transparent);
+  }
+  @supports not (backdrop-filter: blur(1px)){
+    .nav{background:var(--bg)}
+  }
+
+  /* ── 본문 폭 제한 (Paco 640 기준 readability) ── */
+  .about-grid p,
+  .section-sub{max-width:65ch}
+
+  /* ── 인쇄 스타일 (시니어 디테일) ── */
+  @media print{
+    .nav,.scroll-progress,.ctas,.skip-link{display:none !important}
+    body{background:#fff;color:#000}
+    .hero{padding:0}
+    section{padding:24px 0;page-break-inside:avoid}
+    a{color:#000;text-decoration:underline}
+    .proj-card{break-inside:avoid;page-break-inside:avoid}
+  }
 }
 body{
   background:var(--bg);color:var(--ink);
@@ -251,12 +501,15 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 @media (max-width:520px){.proj-grid{grid-template-columns:1fr}}
 
 .proj-card{
-  background:var(--bg-card);border:1px solid var(--line);
-  border-radius:var(--radius);overflow:hidden;
+  background:var(--bg-card);border-radius:var(--radius);overflow:hidden;
   display:flex;flex-direction:column;
-  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  border:1px solid transparent;
+  box-shadow:var(--ds-shadow-border-small);
 }
-.proj-card:hover{transform:translateY(-2px);box-shadow:0 12px 24px -18px rgba(0,0,0,.25);border-color:#cfd2d6}
+.proj-card:hover{
+  transform:translateY(-1px);
+  box-shadow:var(--ds-shadow-border-medium);
+}
 .proj-thumb{
   aspect-ratio:16/9;
   display:flex;align-items:center;justify-content:center;
@@ -370,6 +623,7 @@ footer .row{
 <body>
 
 <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+<div class="scroll-progress" aria-hidden="true"></div>
 
 <!-- ============ 상단 네비게이션 ============ -->
 <nav class="nav" aria-label="주요 메뉴">
@@ -752,45 +1006,138 @@ footer .row{
   </div>
 </footer>
 
-<script>
-(()=>{
-  // 스크롤 reveal — 섹션이 뷰포트에 들어오면 fade-up
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const targets = document.querySelectorAll('section, .proj-card, .step, .about-side');
-  targets.forEach(el=>el.classList.add('reveal'));
-  if(reduce){ targets.forEach(el=>el.classList.add('is-in')); }
-  else{
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting){
-          e.target.classList.add('is-in');
-          io.unobserve(e.target);
-        }
-      });
-    },{threshold:0.12, rootMargin:'0px 0px -8% 0px'});
-    targets.forEach(el=>io.observe(el));
+<script type="module">
+/* ──────────────────────────────────────────────────────────
+   김희태.포트폴리오 — 클라이언트 인터랙션
+   - 스크롤 reveal (IntersectionObserver)
+   - 스크롤 progress bar (rAF + scroll)
+   - 네비 스크롤 스파이 + aria-current
+   - Hero 마우스 글로우 (CSS --mx, --my)
+   - prefetch on intent (hover/focus → 디테일 페이지 prefetch)
+   - 모션 줄이기 선호 존중
+   ────────────────────────────────────────────────────────── */
+(() => {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* 1) 스크롤 reveal */
+  {
+    const targets = document.querySelectorAll('section, .proj-card, .step, .about-side');
+    targets.forEach(el => el.classList.add('reveal'));
+    if (reduceMotion) {
+      targets.forEach(el => el.classList.add('is-in'));
+    } else {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-in');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      targets.forEach(el => io.observe(el));
+    }
   }
 
-  // 네비게이션 — 현재 보고 있는 섹션 강조
-  const links = document.querySelectorAll('.nav-links a[href^="#"]');
-  const linkMap = new Map();
-  links.forEach(a=>{
-    const id = a.getAttribute('href').slice(1);
-    const sec = document.getElementById(id);
-    if(sec) linkMap.set(sec, a);
-  });
-  const spy = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      const a = linkMap.get(e.target);
-      if(!a) return;
-      if(e.isIntersecting){
-        links.forEach(l=>{l.removeAttribute('aria-current');l.style.color='';});
-        a.setAttribute('aria-current','page');
-        a.style.color='var(--accent)';
-      }
+  /* 2) 스크롤 progress bar — rAF로 throttle */
+  {
+    const bar = document.querySelector('.scroll-progress');
+    if (bar) {
+      let ticking = false;
+      const update = () => {
+        const h = document.documentElement;
+        const max = h.scrollHeight - h.clientHeight;
+        const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+        bar.style.setProperty('--progress', pct.toFixed(2) + '%');
+        ticking = false;
+      };
+      const onScroll = () => {
+        if (!ticking) {
+          requestAnimationFrame(update);
+          ticking = true;
+        }
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      update();
+    }
+  }
+
+  /* 3) 네비 스크롤 스파이 — aria-current로 표시 (CSS가 색·underline 처리) */
+  {
+    const links = document.querySelectorAll('.nav-links a[href^="#"]');
+    const linkMap = new Map();
+    links.forEach(a => {
+      const id = a.getAttribute('href').slice(1);
+      const sec = document.getElementById(id);
+      if (sec) linkMap.set(sec, a);
     });
-  },{rootMargin:'-40% 0px -55% 0px'});
-  linkMap.forEach((a,sec)=>spy.observe(sec));
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        const a = linkMap.get(e.target);
+        if (!a) return;
+        if (e.isIntersecting) {
+          links.forEach(l => l.removeAttribute('aria-current'));
+          a.setAttribute('aria-current', 'page');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    linkMap.forEach((a, sec) => spy.observe(sec));
+  }
+
+  /* 4) Hero 마우스 글로우 — --mx, --my CSS 변수 업데이트 */
+  if (!reduceMotion && window.matchMedia('(hover: hover)').matches) {
+    const hero = document.querySelector('.hero');
+    if (hero) {
+      let raf = 0;
+      const onMove = (e) => {
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          const r = hero.getBoundingClientRect();
+          hero.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+          hero.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+          raf = 0;
+        });
+      };
+      hero.addEventListener('mousemove', onMove);
+    }
+  }
+
+  /* 5) prefetch on intent — 디테일 링크 hover/focus 시 미리 가져오기 */
+  {
+    const prefetched = new Set();
+    const prefetch = (href) => {
+      if (prefetched.has(href)) return;
+      if (!href || href === '#' || href.startsWith('mailto:')) return;
+      const l = document.createElement('link');
+      l.rel = 'prefetch';
+      l.href = href;
+      l.as = 'document';
+      document.head.appendChild(l);
+      prefetched.add(href);
+    };
+    const trigger = (e) => {
+      const a = e.target.closest('a[href]');
+      if (a) prefetch(a.getAttribute('href'));
+    };
+    document.querySelectorAll('.proj-links a').forEach(a => {
+      a.addEventListener('pointerenter', trigger, { once: false });
+      a.addEventListener('focusin', trigger, { once: false });
+    });
+  }
+
+  /* 6) View Transitions API — 같은 페이지 anchor 이동 시 부드러운 페이드 */
+  if (document.startViewTransition && !reduceMotion) {
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href').slice(1);
+        const target = document.getElementById(id);
+        if (!target) return;
+        e.preventDefault();
+        document.startViewTransition(() => {
+          target.scrollIntoView({ behavior: 'instant', block: 'start' });
+        });
+      });
+    });
+  }
 })();
 </script>
 
