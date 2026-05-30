@@ -503,8 +503,8 @@ a{color:inherit;text-decoration:none}
 .nav-links a:hover{color:var(--accent)}
 @media (max-width:680px){
   .nav-links{gap:14px;font-size:11.5px;letter-spacing:0}
-  /* 매우 좁은 화면: 소개/이력/기술 숨기고 핵심만 (프로젝트/연락) */
-  .nav-links a:nth-child(1),.nav-links a:nth-child(2),.nav-links a:nth-child(3){display:none}
+  /* 매우 좁은 화면: 소개·기술·이력 숨기고 핵심만 (프로젝트/연락) */
+  .nav-links a:nth-child(1),.nav-links a:nth-child(2),.nav-links a:nth-child(4){display:none}
 }
 @media (max-width:420px){
   .nav-brand{font-size:14px}
@@ -1063,9 +1063,9 @@ footer .row{
     <a class="nav-brand" href="#home" aria-label="홈으로">김희태<span class="dot">.</span>포트폴리오</a>
     <div class="nav-links" role="list">
       <a href="#about" role="listitem">소개</a>
-      <a href="#resume" role="listitem">이력</a>
       <a href="#skills" role="listitem">기술</a>
       <a href="#projects" role="listitem">프로젝트</a>
+      <a href="#resume" role="listitem">이력</a>
       <a href="#contact" role="listitem">연락</a>
     </div>
   </div>
@@ -1140,122 +1140,11 @@ footer .row{
   </div>
 </section>
 
-<!-- ============ RESUME / EXPERIENCE ============ -->
-<section id="resume">
-  <div class="container">
-    <div class="section-head">
-      <span class="section-num">02 · 이력</span>
-      <h2 class="section-title">걸어온 길.</h2>
-    </div>
-
-    <div class="resume">
-
-      <div class="resume-group">
-        <h3>경력</h3>
-        <div class="resume-row">
-          <div class="resume-date">2023.01<br>— 2024.11</div>
-          <div class="resume-body">
-            <div class="place">CCC아가페실버센터</div>
-            <div class="role">운영지원팀 사원 · 사회복지사 <span class="meta">· 1년 11개월</span></div>
-            <p class="desc">입소자 관리, 보고 문서, 정기 안전 점검·비상대응 훈련까지 사회복지 행정 전반을 담당했습니다.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="resume-group">
-        <h3>단기 경험</h3>
-        <div class="resume-row">
-          <div class="resume-date">2025.08<br>— 2025.10</div>
-          <div class="resume-body">
-            <div class="place">티아이지</div>
-            <div class="role">기록물 관리 · 아르바이트 <span class="meta">· 계약만료</span></div>
-            <p class="desc">기록물 전산 입력·문서 분류·보관 재배치, 행정 기록 아카이빙을 담당했습니다.</p>
-          </div>
-        </div>
-        <div class="resume-row">
-          <div class="resume-date">2025.04<br>— 2025.07</div>
-          <div class="resume-body">
-            <div class="place">서울강남시니어클럽</div>
-            <div class="role">사업단 행정 지원 · 인턴 <span class="meta">· 계약만료</span></div>
-            <p class="desc">사업단 행정업무(문서·전산·공문)와 노인 일자리 사업처 발굴을 지원했습니다.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="resume-group">
-        <h3>교육</h3>
-        <div class="resume-row">
-          <div class="resume-date">2025.12<br>— 2026.06</div>
-          <div class="resume-body">
-            <div class="place">청년취업사관학교 새싹 (SeSAC)</div>
-            <div class="role">제조 AI 특화 과정 · 수료</div>
-            <p class="desc">시계열·센서 데이터 분석, 컴퓨터비전, 공정 최적화·수요 예측, 생성형 AI 응용 프로젝트를 수행했습니다.</p>
-          </div>
-        </div>
-        <div class="resume-row">
-          <div class="resume-date">2021.11<br>— 2022.04</div>
-          <div class="resume-body">
-            <div class="place">스마트인재개발원</div>
-            <div class="role">K-Digital Training · 빅데이터 분석 서비스 개발자 과정 (NCS)</div>
-            <p class="desc">빅데이터 분석·처리·시각화 전반과 머신러닝·딥러닝 기초를 학습했습니다.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="resume-group">
-        <h3>학력</h3>
-        <div class="resume-row">
-          <div class="resume-date">2014.03<br>— 2020.02</div>
-          <div class="resume-body">
-            <div class="place">전남대학교</div>
-            <div class="role">생활복지학과 · 4년제 · 졸업</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="resume-group">
-        <h3>수상 · 자격 · 어학</h3>
-        <div class="resume-row">
-          <div class="resume-date">2026.05</div>
-          <div class="resume-body">
-            <div class="place">스마트 창고 출고 지연 예측 AI 경진대회 · DACON</div>
-            <div class="role">Private 11위 / 607팀 <span class="meta">· TOP 2%</span></div>
-            <div class="badges"><span class="highlight">Top 2%</span></div>
-          </div>
-        </div>
-        <div class="resume-row">
-          <div class="resume-date">2026.05</div>
-          <div class="resume-body">
-            <div class="place">JANN — 향미 데이터 레시피 추천 앱</div>
-            <div class="role">컴퓨터프로그램 저작권 등록 <span class="meta">· C-2026-023193</span></div>
-          </div>
-        </div>
-        <div class="resume-row">
-          <div class="resume-date">자격</div>
-          <div class="resume-body">
-            <div class="badges">
-              <span>ADsP</span><span>SQLD</span><span>리눅스마스터 2급</span><span>정보처리기사(필기)</span><span>1종 대형</span>
-            </div>
-          </div>
-        </div>
-        <div class="resume-row">
-          <div class="resume-date">2024.12</div>
-          <div class="resume-body">
-            <div class="place">OPIc Intermediate Mid 2</div>
-            <div class="role">영어 · PASS</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
 <!-- ============ SKILLS ============ -->
 <section id="skills" style="background:var(--bg-soft)">
   <div class="container">
     <div class="section-head">
-      <span class="section-num">03 · 기술</span>
+      <span class="section-num">02 · 기술</span>
       <h2 class="section-title">기술 스택.</h2>
     </div>
     <div class="skills">
@@ -1283,7 +1172,7 @@ footer .row{
 <section id="projects">
   <div class="container">
     <div class="section-head">
-      <span class="section-num">04 · 프로젝트</span>
+      <span class="section-num">03 · 프로젝트</span>
       <h2 class="section-title">만든 것들.</h2>
     </div>
 
@@ -1426,6 +1315,117 @@ footer .row{
         </a>
       </li>
     </ul>
+  </div>
+</section>
+
+<!-- ============ RESUME / EXPERIENCE ============ -->
+<section id="resume">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">04 · 이력</span>
+      <h2 class="section-title">걸어온 길.</h2>
+    </div>
+
+    <div class="resume">
+
+      <div class="resume-group">
+        <h3>경력</h3>
+        <div class="resume-row">
+          <div class="resume-date">2023.01<br>— 2024.11</div>
+          <div class="resume-body">
+            <div class="place">CCC아가페실버센터</div>
+            <div class="role">운영지원팀 사원 · 사회복지사 <span class="meta">· 1년 11개월</span></div>
+            <p class="desc">입소자 관리, 보고 문서, 정기 안전 점검·비상대응 훈련까지 사회복지 행정 전반을 담당했습니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="resume-group">
+        <h3>단기 경험</h3>
+        <div class="resume-row">
+          <div class="resume-date">2025.08<br>— 2025.10</div>
+          <div class="resume-body">
+            <div class="place">티아이지</div>
+            <div class="role">기록물 관리 · 아르바이트 <span class="meta">· 계약만료</span></div>
+            <p class="desc">기록물 전산 입력·문서 분류·보관 재배치, 행정 기록 아카이빙을 담당했습니다.</p>
+          </div>
+        </div>
+        <div class="resume-row">
+          <div class="resume-date">2025.04<br>— 2025.07</div>
+          <div class="resume-body">
+            <div class="place">서울강남시니어클럽</div>
+            <div class="role">사업단 행정 지원 · 인턴 <span class="meta">· 계약만료</span></div>
+            <p class="desc">사업단 행정업무(문서·전산·공문)와 노인 일자리 사업처 발굴을 지원했습니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="resume-group">
+        <h3>교육</h3>
+        <div class="resume-row">
+          <div class="resume-date">2025.12<br>— 2026.06</div>
+          <div class="resume-body">
+            <div class="place">청년취업사관학교 새싹 (SeSAC)</div>
+            <div class="role">제조 AI 특화 과정 · 수료</div>
+            <p class="desc">시계열·센서 데이터 분석, 컴퓨터비전, 공정 최적화·수요 예측, 생성형 AI 응용 프로젝트를 수행했습니다.</p>
+          </div>
+        </div>
+        <div class="resume-row">
+          <div class="resume-date">2021.11<br>— 2022.04</div>
+          <div class="resume-body">
+            <div class="place">스마트인재개발원</div>
+            <div class="role">K-Digital Training · 빅데이터 분석 서비스 개발자 과정 (NCS)</div>
+            <p class="desc">빅데이터 분석·처리·시각화 전반과 머신러닝·딥러닝 기초를 학습했습니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="resume-group">
+        <h3>학력</h3>
+        <div class="resume-row">
+          <div class="resume-date">2014.03<br>— 2020.02</div>
+          <div class="resume-body">
+            <div class="place">전남대학교</div>
+            <div class="role">생활복지학과 · 4년제 · 졸업</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="resume-group">
+        <h3>수상 · 자격 · 어학</h3>
+        <div class="resume-row">
+          <div class="resume-date">2026.05</div>
+          <div class="resume-body">
+            <div class="place">스마트 창고 출고 지연 예측 AI 경진대회 · DACON</div>
+            <div class="role">Private 11위 / 607팀 <span class="meta">· TOP 2%</span></div>
+            <div class="badges"><span class="highlight">Top 2%</span></div>
+          </div>
+        </div>
+        <div class="resume-row">
+          <div class="resume-date">2026.05</div>
+          <div class="resume-body">
+            <div class="place">JANN — 향미 데이터 레시피 추천 앱</div>
+            <div class="role">컴퓨터프로그램 저작권 등록 <span class="meta">· C-2026-023193</span></div>
+          </div>
+        </div>
+        <div class="resume-row">
+          <div class="resume-date">자격</div>
+          <div class="resume-body">
+            <div class="badges">
+              <span>ADsP</span><span>SQLD</span><span>리눅스마스터 2급</span><span>정보처리기사(필기)</span><span>1종 대형</span>
+            </div>
+          </div>
+        </div>
+        <div class="resume-row">
+          <div class="resume-date">2024.12</div>
+          <div class="resume-body">
+            <div class="place">OPIc Intermediate Mid 2</div>
+            <div class="role">영어 · PASS</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
 
