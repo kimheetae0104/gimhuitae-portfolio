@@ -819,6 +819,12 @@ section{padding:72px 0;scroll-margin-top:80px}
 @media (max-width:520px){.proj-grid{grid-template-columns:1fr}}
 
 /* ── 사이드 프로젝트 텍스트 리스트 (paco · brittany 패턴) ── */
+.side-label{
+  font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--ink-3);
+  letter-spacing:.14em;text-transform:uppercase;margin:0 0 20px;
+  display:flex;align-items:center;gap:12px;
+}
+.side-label::after{content:"";flex:1;height:1px;background:var(--line)}
 .side-projects{list-style:none;padding:0;margin:0;border-top:1px solid var(--line)}
 .side-projects li{border-bottom:1px solid var(--line)}
 .side-row{
@@ -1305,6 +1311,7 @@ footer .row{
     </div>
 
     <!-- 사이드 프로젝트 (텍스트 리스트 — paco/brittany 패턴) -->
+    <h3 class="side-label">사이드 프로젝트</h3>
     <ul class="side-projects">
       <li>
         <a class="side-row" href="LHV.html" aria-label="LHV 자세히 보기">
@@ -1325,11 +1332,11 @@ footer .row{
         </a>
       </li>
       <li>
-        <a class="side-row" href="BinanceBot.html" aria-label="Quant ML 자세히 보기">
+        <a class="side-row" href="BinanceBot.html" aria-label="Binance ML Bot 자세히 보기">
           <span class="s-year">2023</span>
-          <span class="s-title">Quant ML</span>
-          <span class="s-desc">암호화폐 USDT 페어 시계열 신호 탐지 실험. ML 앙상블 + 백테스트·리스크 관리 파이프라인.</span>
-          <span class="s-stack">Python · XGBoost · LightGBM · 시계열 · 백테스트</span>
+          <span class="s-title">Binance ML Bot</span>
+          <span class="s-desc">수백 개 코인 중 급등 직전 신호만 거르는 트레이딩 봇. 규칙 필터 + XGB·LGB 앙상블 + SMOTE로 임계값 위만 알림.</span>
+          <span class="s-stack">Python · XGBoost · LightGBM · SMOTE · CCXT</span>
           <span class="s-arrow" aria-hidden="true">↗</span>
         </a>
       </li>
