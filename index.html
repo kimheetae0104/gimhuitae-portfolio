@@ -25,7 +25,57 @@
 <meta name="twitter:image" content="https://gimhuitae-portfolio.vercel.app/og.png"/>
 <link rel="stylesheet" href="shared/tokens.css"/>
 <link rel="stylesheet" href="shared/index.css?v=2"/>
+
+<!-- v3 디자인 그래프트 — Pretendard Variable + Inter Variable (Korean·Latin 옵티컬 사이징) -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+
 <style>
+/* ── v3 디자인 그래프트 (paco · rauno · emil · brittany 패턴) ── */
+
+/* Variable 폰트 자동 옵티컬 사이징 + 고급 글리프 */
+html{
+  font-feature-settings:"cv01","ss03","kern","calt";
+  font-variation-settings:"opsz" auto;
+}
+body, button, input, select, textarea{
+  font-family:"Pretendard Variable","Pretendard","Plus Jakarta Sans",system-ui,-apple-system,sans-serif;
+}
+
+/* 헤드라인 자동 줄바꿈 균형 (한글 단어 단위 자연 분기) */
+h1,h2,h3,h4{text-wrap:balance}
+p{text-wrap:pretty}
+
+/* 셀렉션 — 브랜드 액센트 톤 */
+::selection{background:color-mix(in oklab, #1a3a6e 18%, transparent);color:inherit;text-shadow:none}
+
+/* 포커스 링 — Vercel DS 3중 (투명 → 배경 → 액센트) */
+:focus-visible{
+  outline:none;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,.08),
+    0 0 0 2px var(--bg, #fff),
+    0 0 0 4px #1a3a6e;
+  border-radius:6px;
+}
+
+/* 모션 줄이기 OS 선호 존중 (이미 없으면 추가) */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+}
+
+/* paco.me 이징·듀레이션 토큰 (인터랙션 일관성 도구로 노출) */
+:root{
+  --ease-out-expo:cubic-bezier(.19,1,.22,1);
+  --ease-out-cubic:cubic-bezier(.215,.61,.355,1);
+  --transition-xx:.24s;
+  --transition-fast:.1s;
+}
+
   /* 접근성: 키보드 스킵 링크 (포커스 시에만 노출) */
   .skip-link{
     position:absolute; left:-9999px; top:0; z-index:100000;
