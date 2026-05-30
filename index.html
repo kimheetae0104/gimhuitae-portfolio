@@ -134,7 +134,7 @@
     --accent-deep:#142a52;
     --positive:#0f7d4d;
     --warn:#a14c1e;
-    --max:1080px;
+    --max:1120px;
   }
 
   /* ── 다크모드 — Radix Sand Dark (단순 반전 X) ── */
@@ -508,16 +508,16 @@ a{color:inherit;text-decoration:none}
 
 /* ---------- Section ---------- */
 section{padding:120px 0 96px;scroll-margin-top:80px}
-.section-head{margin-bottom:56px}
+.section-head{margin-bottom:48px}
 .section-num{
   font-family:var(--font-display);font-size:12px;color:var(--accent);font-weight:700;
-  letter-spacing:.18em;margin-bottom:14px;text-transform:uppercase;
+  letter-spacing:.18em;margin-bottom:16px;text-transform:uppercase;
   display:inline-flex;align-items:center;gap:10px;
 }
 .section-num::after{content:"";width:32px;height:1.5px;background:var(--accent)}
-.section-title{font-family:var(--font-display);font-size:38px;letter-spacing:-0.025em;font-weight:800;margin:0 0 12px;line-height:1.15}
-.section-sub{font-size:15px;color:var(--ink-3);max-width:580px;margin:0;line-height:1.65}
-@media (max-width:680px){.section-title{font-size:26px}section{padding:80px 0 64px}}
+.section-title{font-family:var(--font-display);font-size:38px;letter-spacing:-0.025em;font-weight:800;margin:0 0 16px;line-height:1.15}
+.section-sub{font-size:15px;color:var(--ink-3);max-width:620px;margin:0;line-height:1.65}
+@media (max-width:680px){.section-title{font-size:26px}section{padding:80px 0 64px}.section-head{margin-bottom:40px}}
 
 /* ---------- Hero ---------- */
 .hero{padding:120px 0 72px}
@@ -724,7 +724,7 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
   color:var(--ink-3);letter-spacing:.06em;text-transform:none;
 }
 
-.proj-featured{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:80px}
+.proj-featured{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:96px}
 @media (max-width:780px){.proj-featured{grid-template-columns:1fr;gap:16px}}
 
 .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
@@ -823,8 +823,9 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
   padding:3px 8px;border-radius:4px;text-transform:uppercase;
 }
 
-/* 카드 본문 — 4·8·12·16·20 픽셀 스케일로 통일 */
-.proj-body{padding:20px;display:flex;flex-direction:column;gap:12px;flex:1}
+/* 카드 본문 — 8pt grid (Vercel/Linear/Brittany 표준 24px) */
+.proj-body{padding:24px;display:flex;flex-direction:column;gap:14px;flex:1}
+@media (max-width:480px){.proj-body{padding:20px;gap:12px}}
 .proj-meta{
   font-family:var(--font-display);font-size:11px;color:var(--ink-3);
   letter-spacing:.14em;text-transform:uppercase;font-weight:600;
@@ -832,42 +833,43 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 }
 .proj-meta .tag{padding:2px 8px;background:var(--accent-soft);color:var(--accent);border-radius:99px;letter-spacing:.02em}
 .proj-title{
-  font-family:var(--font-display);font-size:17px;font-weight:800;
-  letter-spacing:-0.02em;margin:0;color:var(--ink);line-height:1.3;
+  font-family:var(--font-display);font-size:19px;font-weight:800;
+  letter-spacing:-0.025em;margin:0;color:var(--ink);line-height:1.25;
 }
 .proj-desc{font-size:13.5px;color:var(--ink-2);line-height:1.6;margin:0;flex:1}
 
 /* 프로젝트 요약 — 왜 / 어떻게 / 결과 3줄 라벨 */
-.proj-summary{display:grid;gap:10px;margin:0;padding:0;flex:1}
+.proj-summary{display:grid;gap:12px;margin:0;padding:0;flex:1}
 .proj-summary > div{
   display:grid;
-  grid-template-columns:44px 1fr;
-  gap:12px;align-items:baseline;
+  grid-template-columns:48px 1fr;
+  gap:14px;align-items:baseline;
 }
 .proj-summary dt{
   font-family:var(--font-display);
-  font-size:10.5px;font-weight:700;
+  font-size:11px;font-weight:700;
   color:var(--accent);
   letter-spacing:.12em;text-transform:uppercase;
   margin:0;
 }
 .proj-summary dd{
-  font-size:13.5px;color:var(--ink-2);
-  line-height:1.55;margin:0;
+  font-size:14px;color:var(--ink-2);
+  line-height:1.6;margin:0;
 }
 .proj-summary dd strong{color:var(--ink);font-weight:700}
 
 /* 프로젝트 카드 — 액션 버튼 row (cdg 패턴: README · 이미지 · 영상) */
 .proj-actions{
   display:flex;gap:8px;flex-wrap:wrap;
-  padding-top:16px;border-top:1px solid var(--line);margin-top:auto;
+  padding-top:20px;border-top:1px solid var(--line);margin-top:auto;
 }
 .action{
   display:inline-flex;align-items:center;gap:6px;
-  font-family:var(--font-display);font-size:12px;font-weight:600;
-  padding:8px 12px;border:1px solid var(--line);border-radius:8px;
+  font-family:var(--font-display);font-size:12.5px;font-weight:600;
+  padding:10px 14px;border:1px solid var(--line);border-radius:8px;
   color:var(--ink-2);background:var(--bg);
   text-decoration:none;letter-spacing:-0.005em;
+  min-height:36px;
 }
 .action:hover{
   border-color:var(--accent);color:var(--accent);
@@ -914,7 +916,7 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 .approach-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--bg-card)}
 @media (max-width:900px){.approach-grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:520px){.approach-grid{grid-template-columns:1fr}}
-.step{padding:28px 24px;border-right:1px solid var(--line);position:relative}
+.step{padding:32px 28px;border-right:1px solid var(--line);position:relative}
 .step:last-child{border-right:0}
 @media (max-width:900px){
   .step:nth-child(2){border-right:0}
@@ -926,23 +928,23 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 }
 .step .n{
   font-family:var(--font-display);font-size:11.5px;color:var(--accent);font-weight:700;
-  letter-spacing:.18em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;
+  letter-spacing:.18em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;
 }
 .step .n::before{content:"";width:14px;height:1.5px;background:var(--accent)}
-.step h3{font-family:var(--font-display);font-size:18px;font-weight:800;margin:0 0 10px;letter-spacing:-0.015em;color:var(--ink)}
+.step h3{font-family:var(--font-display);font-size:18px;font-weight:800;margin:0 0 12px;letter-spacing:-0.02em;color:var(--ink);line-height:1.3}
 .step p{font-size:14px;color:var(--ink-2);line-height:1.7;margin:0}
 
 /* ---------- Contact ---------- */
 .contact .line{
-  font-family:var(--font-display);font-size:42px;letter-spacing:-0.025em;font-weight:800;
+  font-family:var(--font-display);font-size:42px;letter-spacing:-0.03em;font-weight:800;
   line-height:1.2;margin:0 0 24px;max-width:780px;color:var(--ink);
 }
 .contact .line strong{color:var(--accent)}
-.contact .sub{font-size:16px;color:var(--ink-2);max-width:620px;margin:0 0 36px;line-height:1.75}
-.contact .links{display:flex;gap:10px;flex-wrap:wrap}
+.contact .sub{font-size:16px;color:var(--ink-2);max-width:620px;margin:0 0 40px;line-height:1.75}
+.contact .links{display:flex;gap:12px;flex-wrap:wrap}
 .contact .links a{
   font-family:var(--font-display);font-size:14px;font-weight:600;
-  padding:13px 22px;border-radius:99px;letter-spacing:.01em;transition:all .15s;
+  padding:14px 24px;border-radius:99px;letter-spacing:.01em;transition:all .15s;
 }
 .contact .links a.primary{background:var(--accent);color:#fff}
 .contact .links a.primary:hover{background:var(--ink)}
