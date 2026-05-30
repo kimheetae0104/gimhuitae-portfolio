@@ -1268,9 +1268,9 @@ footer .row{
           </div>
           <h3 class="proj-title">NOxO</h3>
           <dl class="proj-summary">
-            <div><dt>왜</dt><dd>발전소 NOx는 운전원이 매번 추이를 살피며 운영합니다.</dd></div>
-            <div><dt>어떻게</dt><dd>1초 시세를 1분 평균으로 묶고, Ridge·LightGBM 시계열 앙상블로 5분 뒤 NOx를 예측했습니다.</dd></div>
-            <div><dt>결과</dt><dd>시뮬레이션은 작동했지만, R² 0.99가 <strong>CEMS 라벨 누수에서 온 점수</strong>라는 걸 찾아내 검증 기준을 다시 설계했습니다.</dd></div>
+            <div><dt>왜</dt><dd>발전소 NOx는 운전원이 매번 추이를 살피며 운영하는 구조</dd></div>
+            <div><dt>어떻게</dt><dd>1초 시세를 1분 평균으로 묶고, Ridge·LightGBM 시계열 앙상블로 5분 뒤 NOx 예측</dd></div>
+            <div><dt>결과</dt><dd>시뮬레이션 작동. R² 0.99가 <strong>CEMS 라벨 누수에서 온 점수</strong>인 걸 발견해 검증 기준 재설계</dd></div>
           </dl>
           <div class="proj-stack"><span>Python</span><span>Ridge·LightGBM</span><span>시계열</span></div>
           <div class="proj-actions">
@@ -1293,9 +1293,9 @@ footer .row{
           </div>
           <h3 class="proj-title">JANN</h3>
           <dl class="proj-summary">
-            <div><dt>왜</dt><dd>향미 화합물 1,107개 데이터는 식품학자들이 쓰던 자료라 일반 사용자는 접근하기 어려웠습니다.</dd></div>
-            <div><dt>어떻게</dt><dd>Python 추천 모델을 CoreML로 변환해 SwiftUI iOS 앱에 넣었고, t-SNE 클러스터링으로 비슷한 재료를 묶었습니다.</dd></div>
-            <div><dt>결과</dt><dd><strong>네트워크 호출 없이 기기 안에서 추론합니다</strong>. 컴퓨터프로그램 저작권 등록(C-2026-023193) 완료.</dd></div>
+            <div><dt>왜</dt><dd>향미 화합물 1,107개 데이터, 식품학자 전용 자료라 일반 사용자 접근 불가</dd></div>
+            <div><dt>어떻게</dt><dd>Python 추천 모델을 CoreML로 변환해 SwiftUI iOS 앱에 내장, t-SNE 클러스터링으로 유사 재료 묶음</dd></div>
+            <div><dt>결과</dt><dd><strong>네트워크 호출 없이 기기 내 추론</strong>. 컴퓨터프로그램 저작권 등록(C-2026-023193) 완료</dd></div>
           </dl>
           <div class="proj-stack"><span>SwiftUI</span><span>CoreML</span><span>t-SNE</span></div>
           <div class="proj-actions">
@@ -1322,9 +1322,9 @@ footer .row{
           </div>
           <h3 class="proj-title">INKK</h3>
           <dl class="proj-summary">
-            <div><dt>왜</dt><dd>1인 콘텐츠 운영자는 카드뉴스 1편에 보통 2~3시간을 씁니다.</dd></div>
-            <div><dt>어떻게</dt><dd>LangGraph 멀티 에이전트 4개(Planner·Writer·Critic·Designer)로 글을 나누고, Next.js 프런트와 Stripe 결제까지 붙였습니다.</dd></div>
-            <div><dt>결과</dt><dd>주제 한 줄을 넣으면 <strong>카드뉴스 6장 + 본문 카피가 자동 생성</strong>됩니다.</dd></div>
+            <div><dt>왜</dt><dd>1인 콘텐츠 운영자가 카드뉴스 1편에 보통 2~3시간 소요</dd></div>
+            <div><dt>어떻게</dt><dd>LangGraph 멀티 에이전트 4개(Planner·Writer·Critic·Designer)로 역할 분리, Next.js 프런트와 Stripe 결제까지 결합</dd></div>
+            <div><dt>결과</dt><dd>주제 한 줄 입력 → <strong>카드뉴스 6장 + 본문 카피 자동 생성</strong></dd></div>
           </dl>
           <div class="proj-stack"><span>Next.js</span><span>LangGraph</span><span>Supabase·Stripe</span></div>
           <div class="proj-actions">
@@ -1348,9 +1348,9 @@ footer .row{
           </div>
           <h3 class="proj-title">Blog Agent</h3>
           <dl class="proj-summary">
-            <div><dt>왜</dt><dd>경제 블로그를 직접 운영하면서 글 쓰기·사실 확인·발행을 매번 손으로 했습니다.</dd></div>
-            <div><dt>어떻게</dt><dd>Ollama 로컬 LLM으로 초안을 쓰고, RAG로 사내 노트를 참조하고, DART 공시로 수치를 검증한 뒤 시트에 발행합니다. 노드는 LangGraph로 묶었습니다.</dd></div>
-            <div><dt>결과</dt><dd>한 편이 작성·검증·발행까지 한 흐름으로 처리됩니다. <strong>에이전트 인프라를 분리해 다른 작업에도 재사용</strong>합니다.</dd></div>
+            <div><dt>왜</dt><dd>직접 운영하는 경제 블로그의 글 쓰기·사실 확인·발행이 매번 수동 작업</dd></div>
+            <div><dt>어떻게</dt><dd>Ollama 로컬 LLM 초안 → RAG 사내 노트 참조 → DART 공시 수치 검증 → 시트 자동 발행, 노드는 LangGraph로 결합</dd></div>
+            <div><dt>결과</dt><dd>한 편이 작성·검증·발행까지 한 흐름으로 처리. <strong>에이전트 인프라를 분리해 다른 작업에도 재사용 가능</strong></dd></div>
           </dl>
           <div class="proj-stack"><span>Ollama</span><span>LangGraph</span><span>RAG·ChromaDB</span></div>
           <div class="proj-actions">
