@@ -6,563 +6,90 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <link rel="stylesheet" href="shared/tokens.css"/>
 <link rel="stylesheet" href="shared/slide.css"/>
-<script src="shared/deck-stage.js?v=2" defer></script>
+<script src="shared/deck-stage.js?v=5" defer></script>
 <style>
+:root { --cn: #6D28D9; }
 
-/* ── 상단 헤더 오버레이 ── */
-.deck-header {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 9999;
-  height: 52px;
-  background: rgba(247,247,248,0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--rule-soft);
-  display: flex;
-  align-items: center;
-  padding: 0 32px;
-  justify-content: space-between;
-  pointer-events: auto;
-}
-.deck-header-mark {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: var(--fg-1);
-  text-decoration: none;
-}
-.deck-header-back {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--fg-3);
-  text-decoration: none;
-  padding: 5px 14px;
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-pill);
-  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
-}
-.deck-header-back:hover { color: var(--fg-1); border-color: var(--rule); }
-.deck-header-back svg { width: 14px; height: 14px; }
-
-/* ── 슬라이드 메타 공통 ── */
-.slide-label {
+.cn-eyebrow {
   font-family: var(--font-mono);
   font-size: 24px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--fg-3);
+  color: var(--cn);
+  margin-bottom: 18px;
 }
-.slide-num {
-  font-family: var(--font-mono);
-  font-size: 24px;
-  letter-spacing: 0.16em;
-  color: var(--fg-3);
-}
-
-/* ── DACON accent — violet (index 카드와 동일 계열) ── */
-:root {
-  --dac:      #6D28D9;
-  --dac-lt:   #F2ECFB;
-  --dac-mid:  #9466D0;
-  --dac-dark: #4C1D95;
-}
-
-/* ── Cover ── */
-.cover-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 21px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--dac);
-  margin-bottom: 22px;
-}
-.cover-title {
+.cn-title {
   font-family: var(--font-sans);
   font-weight: 700;
-  font-size: 116px;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  color: var(--fg-1);
-  margin: 0 0 14px;
-}
-.cover-sub {
-  font-family: var(--font-mono);
-  font-size: 25px;
-  color: var(--fg-3);
-  letter-spacing: 0.02em;
-  margin-bottom: 36px;
-}
-
-/* ── KPI row ── */
-.kpi-row {
-  display: flex;
-  gap: 0;
-  border-top: 1px solid var(--rule);
-  padding-top: 40px;
-}
-.kpi-item {
-  flex: 1;
-  padding-right: 36px;
-  border-right: 1px solid var(--rule-soft);
-}
-.kpi-item:first-child { padding-left: 0; }
-.kpi-item:last-child  { border-right: none; }
-.kpi-item + .kpi-item { padding-left: 36px; }
-.kpi-val {
-  font-family: var(--font-mono);
-  font-size: 50px;
-  font-weight: 700;
+  font-size: 64px;
+  line-height: 1.08;
   letter-spacing: -0.03em;
-  color: var(--dac);
-  line-height: 1;
-  margin-bottom: 10px;
-}
-.kpi-val.ink {
   color: var(--fg-1);
+  margin: 0 0 18px;
+}
+.cn-sub {
   font-family: var(--font-sans);
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-size: 28px;
+  line-height: 1.6;
+  color: var(--fg-2);
+  max-width: 80ch;
+  margin: 0;
 }
-.kpi-lbl {
-  font-family: var(--font-mono);
-  font-size: 16px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--fg-3);
-}
+.cn-sub strong { color: var(--cn); font-weight: 700; }
 
-/* ── Top rule ── */
-.top-rule {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 26px;
-  border-bottom: 1px solid var(--rule);
-  font-family: var(--font-mono);
-  font-size: 21px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--fg-3);
-  margin-bottom: 34px;
-}
-
-/* ── 두 열 레이아웃 ── */
-.two-col {
+.cn-imgs {
+  flex: 1;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 56px;
-  flex: 1;
-  align-items: stretch;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin-top: 44px;
+  min-height: 0;
 }
-.two-col.tight { gap: 44px; }
-/* 채워진 컬럼 안에서 내용을 세로 중앙 정렬 */
-.two-col > div {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* 본문(top-rule 아래)이 슬라이드를 채우도록 */
-.vfill {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-/* ── 정의 리스트 ── */
-.def-row {
-  padding: 22px 0;
-  border-bottom: 1px solid var(--rule-soft);
-}
-.def-row:first-child { padding-top: 4px; }
-.def-row:last-child  { border-bottom: none; }
-.def-k {
-  font-family: var(--font-mono);
-  font-size: 16px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--dac);
-  margin-bottom: 9px;
-}
-.def-v {
-  font-family: var(--font-sans);
-  font-size: 25px;
-  color: var(--fg-2);
-  line-height: 1.5;
-}
-.def-v strong { color: var(--fg-1); font-weight: 600; }
-
-/* ── overlap 바 ── */
-.overlap {
-  display: flex;
-  height: 150px;
-  border-radius: var(--r-3);
-  overflow: hidden;
-  border: 1px solid var(--rule-soft);
-}
-.ov-seg {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 14px;
-}
-.ov-seen   { background: var(--dac-lt);  color: var(--dac-dark); }
-.ov-unseen { background: #FBEAE7;        color: #B5331E; }
-.ov-pct {
-  font-family: var(--font-mono);
-  font-size: 46px;
-  font-weight: 700;
-  line-height: 1;
-}
-.ov-lbl {
-  font-family: var(--font-mono);
-  font-size: 15px;
-  margin-top: 10px;
-  letter-spacing: 0.04em;
-}
-
-/* ── 3축 미니 항목 ── */
-.axis-row {
-  display: flex;
-  gap: 10px;
-  margin: 4px 0 24px;
-}
-.axis-chip {
-  flex: 1;
-  padding: 16px 18px;
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-3);
-  background: var(--bg);
-}
-.axis-n {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  color: var(--dac);
-  margin-bottom: 6px;
-}
-.axis-t {
-  font-family: var(--font-sans);
-  font-size: 21px;
-  font-weight: 600;
-  color: var(--fg-1);
-}
-
-/* ── 이미지 프레임 ── */
-.img-frame {
+.cn-fig {
   border: 1px solid var(--rule-soft);
   border-radius: var(--r-3);
   overflow: hidden;
-  background: var(--bg);
-}
-.img-frame img { width: 100%; height: auto; display: block; }
-.img-cap {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--fg-4);
-  margin-top: 12px;
-}
-
-/* ── 진단 테이블 ── */
-table.diag {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: var(--font-sans);
-  margin-top: auto;
-}
-table.diag th {
-  font-family: var(--font-mono);
-  font-size: 17px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--fg-3);
-  text-align: left;
-  padding: 0 22px 14px;
-  border-bottom: 1px solid var(--rule);
-}
-table.diag td {
-  padding: 21px 22px;
-  vertical-align: top;
-  border-bottom: 1px solid var(--rule-soft);
-  font-size: 23px;
-  line-height: 1.45;
-  color: var(--fg-2);
-}
-table.diag tr:last-child td { border-bottom: none; }
-table.diag .c1 { font-weight: 600; color: var(--fg-1); width: 26%; }
-table.diag .c3 { color: var(--dac-dark); font-weight: 500; width: 30%; }
-
-/* ── 결론 스트립 ── */
-.concl {
-  margin-top: auto;
-  background: var(--ink-900);
-  color: #F4F4F6;
-  border-radius: var(--r-3);
-  padding: 24px 32px;
-  font-family: var(--font-sans);
-  font-size: 25px;
-  line-height: 1.5;
-}
-.concl strong { color: #fff; font-weight: 700; }
-
-/* ── 안전망 카드 ── */
-.net-row { display: flex; gap: 16px; flex: 1; }
-.net-card {
-  flex: 1;
-  padding: 26px 28px;
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-3);
-  background: var(--bg);
+  background: #fff;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  min-height: 0;
 }
-.net-card.accent { background: var(--dac-lt); border-color: var(--dac); }
-.net-tag {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--fg-4);
-  margin-bottom: 12px;
+.cn-fig img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  flex: 1;
+  display: block;
+  min-height: 0;
 }
-.net-card.accent .net-tag { color: var(--dac); }
-.net-title {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 25px;
-  color: var(--fg-1);
-  margin-bottom: 12px;
-  line-height: 1.25;
-}
-.net-body {
-  font-family: var(--font-sans);
-  font-size: 20px;
-  color: var(--fg-2);
-  line-height: 1.6;
-}
-
-/* ── 인용 박스 ── */
-.quote {
-  margin-top: 22px;
-  background: var(--dac-lt);
-  border-left: 4px solid var(--dac);
-  border-radius: 0 var(--r-3) var(--r-3) 0;
-  padding: 22px 30px;
-  font-family: var(--font-sans);
-  font-size: 24px;
-  line-height: 1.55;
-  color: var(--dac-dark);
-}
-.quote strong { font-weight: 700; }
-
-/* ── 본문 단락 ── */
-.lead-k {
+.cn-cap {
   font-family: var(--font-mono);
   font-size: 16px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--dac);
-  margin-bottom: 10px;
-}
-.para {
-  font-family: var(--font-sans);
-  font-size: 23px;
-  line-height: 1.62;
-  color: var(--fg-2);
-  margin: 0 0 22px;
-}
-.para strong { color: var(--fg-1); font-weight: 600; }
-
-/* ── 본인 기여 박스 ── */
-.mine {
-  padding: 22px 26px;
-  border: 1px solid var(--dac);
-  border-radius: var(--r-3);
-  background: var(--dac-lt);
-}
-.mine-tag {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--dac);
-  margin-bottom: 8px;
-}
-.mine-body {
-  font-family: var(--font-sans);
-  font-size: 20px;
-  line-height: 1.6;
-  color: var(--dac-dark);
-}
-
-/* ── greedy 흐름 ── */
-.gflow { display: flex; flex-direction: column; align-self: center; width: 100%; }
-.gf-step {
-  padding: 20px 26px;
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-3);
-  background: var(--bg);
-  text-align: center;
-}
-.gf-step.final { background: var(--dac-lt); border-color: var(--dac); }
-.gf-k {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--fg-4);
-}
-.gf-v {
-  font-family: var(--font-sans);
-  font-size: 25px;
-  font-weight: 600;
-  color: var(--fg-1);
-  margin-top: 6px;
-}
-.gf-step.final .gf-v { color: var(--dac-dark); }
-.gf-arrow {
-  text-align: center;
-  font-family: var(--font-mono);
-  font-size: 15px;
-  color: var(--dac-mid);
-  padding: 9px 0;
-  letter-spacing: 0.04em;
-}
-
-/* ── Ablation 테이블 ── */
-table.ablation {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: var(--font-sans);
-  margin-top: auto;
-}
-table.ablation th {
-  font-family: var(--font-mono);
-  font-size: 17px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--fg-3);
-  padding: 0 20px 14px;
-  border-bottom: 1px solid var(--rule);
-  text-align: left;
-}
-table.ablation th.r, table.ablation td.r { text-align: right; }
-table.ablation td {
-  padding: 18px 20px;
-  border-bottom: 1px solid var(--rule-soft);
-  font-size: 24px;
-  color: var(--fg-2);
-}
-table.ablation tr:last-child td { border-bottom: none; }
-table.ablation td.step { color: var(--fg-1); }
-table.ablation td.num {
-  font-family: var(--font-mono);
-  font-feature-settings: "tnum";
-  color: var(--fg-1);
-}
-table.ablation tr.hl td { background: var(--dac-lt); }
-table.ablation tr.hl td.num,
-table.ablation tr.hl td.step { color: var(--dac-dark); font-weight: 600; }
-table.ablation .delta { color: var(--dac); font-weight: 600; }
-
-/* ── takeaway ── */
-.takeaway {
-  margin-top: auto;
-  background: var(--dac-lt);
-  border-left: 4px solid var(--dac);
-  border-radius: 0 var(--r-3) var(--r-3) 0;
-  padding: 22px 30px;
-  font-family: var(--font-sans);
-  font-size: 23px;
-  line-height: 1.55;
-  color: var(--dac-dark);
-}
-.takeaway strong { font-weight: 700; }
-
-/* ── 역할 카드 ── */
-.role-card {
-  padding: 24px 28px;
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-3);
-  background: var(--bg);
-  margin-bottom: 16px;
-}
-.role-card.mine-card { background: var(--dac-lt); border-color: var(--dac); }
-.role-card:last-child { margin-bottom: 0; }
-.role-tag {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--fg-4);
-  margin-bottom: 10px;
-}
-.role-card.mine-card .role-tag { color: var(--dac); }
-.role-title {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 24px;
-  color: var(--fg-1);
-  margin-bottom: 8px;
-}
-.role-body {
-  font-family: var(--font-sans);
-  font-size: 20px;
-  line-height: 1.6;
-  color: var(--fg-2);
+  padding: 13px 16px;
+  border-top: 1px solid var(--rule-soft);
+  background: var(--paper-50);
 }
 
-/* ── 배운 점 카드 ── */
-.learn-card {
-  padding: 22px 26px;
-  border: 1px solid var(--rule-soft);
-  border-radius: var(--r-3);
-  background: var(--bg);
-  margin-bottom: 14px;
+/* ── 모바일 반응형 (deck-stage responsive) ── */
+@media (max-width: 768px) {
+  section.slide { padding: 70px 20px 36px; height: auto; overflow: visible; }
+  .top-rule { font-size: 12px; padding-bottom: 16px; }
+  .cn-eyebrow { font-size: 13px; margin-bottom: 12px; }
+  .cn-title { font-size: 32px; }
+  .cn-sub { font-size: 17px; max-width: none; }
+  .cn-imgs { grid-template-columns: 1fr !important; gap: 16px; margin-top: 24px; }
+  .cn-fig img { height: auto; max-height: 78vh; }
+  .pageno, .pageno-mark { display: none; }
 }
-.learn-card:last-child { margin-bottom: 0; }
-.learn-k {
-  font-family: var(--font-mono);
-  font-size: 16px;
-  letter-spacing: 0.06em;
-  color: var(--dac);
-  margin-bottom: 8px;
-}
-.learn-b {
-  font-family: var(--font-sans);
-  font-size: 20px;
-  line-height: 1.58;
-  color: var(--fg-2);
-}
-.learn-b strong { color: var(--fg-1); font-weight: 600; }
-
-.col-label {
-  font-family: var(--font-mono);
-  font-size: 15px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--fg-4);
-  margin-bottom: 16px;
-}
-
 </style>
 </head>
 <body>
 
 <header class="deck-header">
-  <a href="index.html" class="deck-header-mark">[ HK ]</a>
+  <a href="index.html" class="deck-header-mark">김희태</a>
   <div style="display:flex;align-items:center;gap:10px;">
     <a href="index.html" class="deck-header-back">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
@@ -571,440 +98,42 @@ table.ablation .delta { color: var(--dac); font-weight: 600; }
   </div>
 </header>
 
-<deck-stage width="1920" height="1080">
+<deck-stage width="1920" height="1080" responsive>
 
-<!-- ═══ 01 Cover ═══ -->
-<section class="slide s-title" data-label="Cover">
-  <div class="top-rule">
-    <span class="slide-label">Dacon — 스마트 창고 출고 지연 예측</span>
-    <span class="slide-num">01 / 08</span>
-  </div>
-
-  <div class="hero" style="flex:1;display:flex;flex-direction:column;justify-content:space-between;padding-top:48px;padding-bottom:0;gap:32px;">
-    <div class="cover-eyebrow">Logistics · Regression · Dacon 2026</div>
-    <div class="cover-title">스마트 창고 출고 지연 예측</div>
-    <div class="cover-sub">학습에 없는 창고 layout까지 버티는 출고 지연 예측</div>
-
-    <p class="slide-body" style="font-size:27px;max-width:68ch;">
-      스마트 창고 운영 데이터 25만 행으로
-      향후 30분 평균 출고 지연 시간(분)을 예측하는 DACON 경진대회 프로젝트다.
-      핵심 난점은 테스트의 40%가 학습 데이터에 없는 창고 layout이라
-      익숙한 패턴 암기보다 <strong>낯선 창고에도 버티는 예측</strong>이 중요했다는 점이다.
-      4인 팀 창동아레나에서 베이스 모델 이후
-      <strong>검증 기준 정리와 최종 결합 단계</strong>를 맡았다.
-    </p>
-
-    <div class="kpi-row">
-      <div class="kpi-item">
-        <div class="kpi-val">9.75493</div>
-        <div class="kpi-lbl">Public LB · MAE</div>
-      </div>
-      <div class="kpi-item">
-        <div class="kpi-val">9.96629</div>
-        <div class="kpi-lbl">Private LB · MAE</div>
-      </div>
-      <div class="kpi-item">
-        <div class="kpi-val ink">11위</div>
-        <div class="kpi-lbl">최종 순위 · 상위 4%</div>
-      </div>
-      <div class="kpi-item">
-        <div class="kpi-val ink">70+</div>
-        <div class="kpi-lbl">시도 · LB 17회 갱신</div>
-      </div>
-    </div>
-  </div>
-  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">01</div>
-</section>
-
-<!-- ═══ 02 문제 정의 ═══ -->
-<section class="slide soft" data-label="Problem">
-  <div class="top-rule">
-    <span class="slide-label">문제 정의</span>
-    <span class="slide-num">02 / 08</span>
-  </div>
-
-  <div class="vfill">
-  <h2 class="slide-h2" style="font-size:42px;margin-bottom:34px;">
-    테스트의 40%는 학습 데이터에 없는 창고다.
-  </h2>
-
-  <div class="two-col">
-    <div>
-      <div class="def-row">
-        <div class="def-k">타겟</div>
-        <div class="def-v">향후 30분 평균 <strong>출고 지연 시간(분)</strong> 예측<br>회귀 문제 · 평가지표 <strong>MAE</strong></div>
-      </div>
-      <div class="def-row">
-        <div class="def-k">데이터</div>
-        <div class="def-v">train <strong>250,000행</strong> = 10,000 시나리오 × 25 스텝<br>test 50,000행 · layout_info 300개 layout 정적 메타</div>
-      </div>
-      <div class="def-row">
-        <div class="def-k">타겟 분포</div>
-        <div class="def-v">오른쪽 꼬리가 긴 분포<br>zero 2.7%, 중앙값 9.0, <strong>max 715.9</strong></div>
-      </div>
+  <section class="slide" data-label="Dacon">
+    <div class="top-rule">
+      <span>Dacon — 스마트 창고 출고 지연 예측</span>
+      <span>Logistics · 2026</span>
     </div>
 
-    <div style="display:flex;flex-direction:column;gap:24px;">
-      <!-- 타겟 분포 차트 -->
-      <div>
-        <div class="col-label">타겟 분포 — avg_delay_minutes_next_30m</div>
-        <img src="dacon/target-distribution.png" alt="타겟 변수 히스토그램 + 박스플롯"
-          style="display:block;width:100%;border:1px solid var(--rule-soft);border-radius:8px;background:#fff;"/>
-      </div>
-      <!-- layout 60/40 overlap -->
-      <div>
-        <div class="col-label">test 행의 layout 구성</div>
-        <div class="overlap">
-          <div class="ov-seg ov-seen" style="flex:60;">
-            <div class="ov-pct">60%</div>
-            <div class="ov-lbl">train에 있는 layout</div>
-          </div>
-          <div class="ov-seg ov-unseen" style="flex:40;">
-            <div class="ov-pct">40%</div>
-            <div class="ov-lbl">train에 없는 layout</div>
-          </div>
-        </div>
-        <p class="para" style="margin-top:18px;font-size:18px;">
-          무작위 K-Fold CV는 이 구조에서 무의미하다.
-          핵심은 보간이 아니라 <strong>외삽</strong>이다.
-          그래서 모델보다 먼저 검증 설계를 바꿔야 했다.
-        </p>
-      </div>
-    </div>
-  </div>
-  </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">02</div>
-</section>
-
-<!-- ═══ 03 데이터 분석 ═══ -->
-<section class="slide" data-label="EDA">
-  <div class="top-rule">
-    <span class="slide-label">데이터 분석</span>
-    <span class="slide-num">03 / 08</span>
-  </div>
-
-  <div class="vfill">
-  <h2 class="slide-h2" style="font-size:42px;margin-bottom:30px;">
-    EDA가 보여준 건 "강한 한 방"보다<br>조합과 파생의 여지였다.
-  </h2>
-
-  <div class="two-col">
-    <div>
-      <div class="lead-k">피처 3축 프레임</div>
-      <div class="axis-row">
-        <div class="axis-chip"><div class="axis-n">01</div><div class="axis-t">구조 용량</div></div>
-        <div class="axis-chip"><div class="axis-n">02</div><div class="axis-t">용량 부하</div></div>
-        <div class="axis-chip"><div class="axis-n">03</div><div class="axis-t">혼잡</div></div>
-      </div>
-      <p class="para">
-        원시 피처 최고 상관은 <strong>low_battery_ratio 0.366</strong>,
-        battery_mean 0.359 수준이었다.
-        즉, r=0.9 같은 결정적 단일 신호는 없었다.
-      </p>
-      <p class="para" style="margin-bottom:0;">
-        그래서 도메인 파생이 핵심이었다.
-        <strong>charger_util</strong>(robot_charging ÷ charger_count)은
-        원시 상관 0.32에서 파생 후 <strong>0.607</strong>까지 올라
-        가장 설명력 있는 단일 신호가 됐다.
-      </p>
+    <div style="margin-top:40px;">
+      <p class="cn-eyebrow">Logistics · Regression · Dacon 2026</p>
+      <h1 class="cn-title">스마트 창고 출고 지연 예측</h1>
+      <p class="cn-sub">스마트 창고 운영 데이터로 향후 30분 평균 출고 지연을 예측한 DACON 경진대회. 4인 팀 창동아레나로 <strong>607팀 중 11위 · 상위 2%</strong> 달성.</p>
     </div>
 
-    <div>
-      <div class="img-frame">
+    <div class="cn-imgs">
+      <div class="cn-fig">
+        <img src="dacon/certificate.webp" alt="DACON 수상 인증서"/>
+        <div class="cn-cap">수상 인증서 — 11/607 · TOP 2%</div>
+      </div>
+      <div class="cn-fig">
+        <img src="dacon/target-distribution.png" alt="타겟 분포"/>
+        <div class="cn-cap">타겟 분포 (long-tail)</div>
+      </div>
+      <div class="cn-fig">
         <img src="dacon/corr-top20.png" alt="타겟 상관 상위 20개 피처"/>
+        <div class="cn-cap">타겟 상관 상위 20개</div>
       </div>
-      <div class="img-cap">EDA — 타겟과의 상관관계 상위 20개 피처</div>
-    </div>
-  </div>
-  </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">03</div>
-</section>
-
-<!-- ═══ 04 척추 ① 진단 ═══ -->
-<section class="slide soft" data-label="Diagnosis">
-  <div class="top-rule">
-    <span class="slide-label">진단</span>
-    <span class="slide-num">04 / 08</span>
-  </div>
-
-  <div class="vfill">
-  <h2 class="slide-h2" style="font-size:42px;margin-bottom:32px;">
-    모델보다 먼저, 어떤 방식으로 평가할지를 다시 정의해야 했다.
-  </h2>
-
-  <table class="diag">
-    <thead>
-      <tr><th class="c1">구조 특성</th><th>진단</th><th class="c3">강제된 설계 결정</th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="c1">layout 중복 60/40</td>
-        <td>test 행의 40%가 train에 없는 layout이라 외삽 문제가 발생</td>
-        <td class="c3">무작위 K-Fold 폐기</td>
-      </tr>
-      <tr>
-        <td class="c1">분포 차이</td>
-        <td>train/test를 구분하는 분류기가 정확도 0.987로 맞힐 만큼 분포 차이가 컸다</td>
-        <td class="c3">top-30% 난이도 평가</td>
-      </tr>
-      <tr>
-        <td class="c1">타깃 long-tail</td>
-        <td>high-y(≥60) 5.1%가 전체 MAE의 1.4를 차지</td>
-        <td class="c3">log1p 학습 · tail 보정</td>
-      </tr>
-      <tr>
-        <td class="c1">layout 간 6.5배 격차</td>
-        <td>layout별 y_mean 7.2 ~ 47.0</td>
-        <td class="c3">GroupKFold(layout_id)</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="concl">
-    random K-Fold OOF는 실제 제출 성능을 제대로 설명하지 못한다.
-    <strong>점수를 더 잘 만드는 모델보다, 실제 test에 가까운 검증 방식</strong>이 먼저였다.
-  </div>
-  </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">04</div>
-</section>
-
-<!-- ═══ 05 척추 ② 검증축 ═══ -->
-<section class="slide" data-label="Validation">
-  <div class="top-rule">
-    <span class="slide-label">검증 설계</span>
-    <span class="slide-num">05 / 08</span>
-  </div>
-
-  <div class="vfill">
-  <h2 class="slide-h2" style="font-size:42px;margin-bottom:32px;">
-    LB 과적합을 막기 위해 검증 장치를 세 겹으로 쌓았다.
-  </h2>
-
-  <div class="net-row">
-    <div class="net-card">
-      <div class="net-tag">안전망 1 · 누수 차단</div>
-      <div class="net-title">GroupKFold<br>(5, layout_id)</div>
-      <div class="net-body">
-        layout을 평가 단위로 묶어 누수를 차단했다.
-        같은 창고가 학습·검증 폴드에 동시에 들어가지 않게 했다.
-      </div>
-    </div>
-    <div class="net-card accent">
-      <div class="net-tag">안전망 2 · LB 정렬</div>
-      <div class="net-title">top-30%<br>난이도 지표</div>
-      <div class="net-body">
-        test와 가장 닮은 상위 30% 구간만 따로 평가했다.
-        OOF를 실제 LB 조건에 맞추기 위한 핵심 장치였다.
-      </div>
-    </div>
-    <div class="net-card">
-      <div class="net-tag">안전망 3 · 과적합 제어</div>
-      <div class="net-title">2단계<br>결합 검증</div>
-      <div class="net-body">
-        fold마다 base weight를 따로 최적화.
-        메타 모델이 검증 폴드에 과적합되는 것을 차단했다.
-      </div>
-    </div>
-  </div>
-
-  <div class="quote">
-    OOF full MAE가 좋아져도 LB 점수가 오히려 나빠지는 일이 반복됐다.
-    대형 스태킹 조합은 자유도가 과도하게 커져 검증 점수만 좋아지기 쉬웠다.
-    <strong>그래서 점수가 아니라 일반화되는 결합 방식을 고르는 쪽으로 접근을 바꿨다.</strong>
-  </div>
-  </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">05</div>
-</section>
-
-<!-- ═══ 06 척추 ③ 최종 결합 v1320 (본인 기여) ═══ -->
-<section class="slide soft" data-label="Ensemble">
-  <div class="top-rule">
-    <span class="slide-label">최종 결합</span>
-    <span class="slide-num">06 / 08</span>
-  </div>
-
-  <div class="vfill">
-  <h2 class="slide-h2" style="font-size:42px;margin-bottom:30px;">
-    마지막 단계의 핵심은 모델을 더 만드는 일이 아니라<br>조합의 자유도를 통제하는 일이었다.
-  </h2>
-
-  <div class="two-col tight">
-    <div>
-      <div class="lead-k">왜 결합 단계가 핵심이었나</div>
-      <p class="para">
-        단일 모델은 OOF MAE 8.4 부근에서 포화했고,
-        유사 모델끼리는 상관계수 0.99 이상이라 단순 평균이 큰 의미가 없었다.
-        결국 <strong>20개 후보 중 어떤 조합을 남길지</strong>가 핵심 문제가 됐다.
-      </p>
-      <div class="lead-k">greedy forward selection</div>
-      <p class="para">
-        시작 10개 소스에서 출발해, 후보를 하나씩 추가하되
-        <strong>top-30% MAE가 단조 개선될 때만 채택</strong>했다.
-        5라운드 안에 개선 후보가 없으면 종료해,
-        조합이 끝없이 불어나는 걸 선택 규칙 자체로 막았다.
-      </p>
-      <div class="mine">
-        <div class="mine-tag">● 본인 작업 흐름 · EDA 재정리 → 결합</div>
-        <div class="mine-body">
-          팀은 각자 EDA부터 모델·LB 제출까지 <strong>독립 트랙</strong>으로 돌리고,
-          점수가 잘 나온 코드를 공유·확장하는 방식이었다.
-          본인도 같은 방식으로 진행했고, 공모전 마감 며칠 전 <strong>EDA를 다시 깊이 파서</strong>
-          피처 간 상관관계와 미활용 피처를 재분석했다.
-          그 진단 위에서 <strong>마지막 결합 단계(LGB 변형 풀 + greedy forward)를 가져가</strong>
-          최종 제출 <code style="font-size:0.92em;">v1320_FINAL_clipped.csv</code>를 만들었다.
-        </div>
+      <div class="cn-fig">
+        <img src="dacon/feature-scatter.png" alt="핵심 파생 피처 산점도"/>
+        <div class="cn-cap">핵심 파생 피처 산점도</div>
       </div>
     </div>
 
-    <div style="display:flex;flex-direction:column;height:100%;justify-content:center;">
-      <div class="gflow">
-        <div class="gf-step">
-          <div class="gf-k">소스 풀</div>
-          <div class="gf-v">20개 후보 (base · meta · LGB 변형)</div>
-        </div>
-        <div class="gf-arrow">↓　시작셋 선정</div>
-        <div class="gf-step">
-          <div class="gf-k">시작셋</div>
-          <div class="gf-v">10개 소스</div>
-        </div>
-        <div class="gf-arrow">↓　후보 1개씩 · top-30 단조 개선만 채택</div>
-        <div class="gf-step">
-          <div class="gf-k">greedy 5라운드</div>
-          <div class="gf-v">Linear NNLS + LGB meta blend</div>
-        </div>
-        <div class="gf-arrow">↓　개선 후보 없음 → 종료</div>
-        <div class="gf-step final">
-          <div class="gf-k">FINAL · v1320</div>
-          <div class="gf-v">top-30 OOF 9.6534 → Public 9.75493 / Private 9.96629</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">06</div>
-</section>
-
-<!-- ═══ 07 결과 & Ablation ═══ -->
-<section class="slide" data-label="Result">
-  <div class="top-rule">
-    <span class="slide-label">결과</span>
-    <span class="slide-num">07 / 08</span>
-  </div>
-
-  <div class="vfill">
-  <h2 class="slide-h2" style="font-size:42px;margin-bottom:30px;">
-    다양성 확보와 일반화 기준 결합이 함께 성과를 만들었다.
-  </h2>
-
-  <table class="ablation">
-    <thead>
-      <tr><th>단계</th><th class="r">est_LB</th><th class="r">Δ</th></tr>
-    </thead>
-    <tbody>
-      <tr><td class="step">베이스라인 — 단일 LGB</td><td class="num r">10.50</td><td class="r">—</td></tr>
-      <tr class="hl"><td class="step">+ 다양성 — 6개 이질 base</td><td class="num r">9.93</td><td class="num r delta">−0.57</td></tr>
-      <tr><td class="step">+ 메타 · 잔차 보강</td><td class="num r">9.87</td><td class="num r delta">−0.06</td></tr>
-      <tr><td class="step">+ layout anchor 보정</td><td class="num r">9.85</td><td class="num r delta">−0.02</td></tr>
-      <tr><td class="step">+ LGB 변형 풀</td><td class="num r">9.78</td><td class="num r delta">−0.07</td></tr>
-      <tr class="hl"><td class="step">+ greedy 결합 — FINAL</td><td class="num r">9.749</td><td class="num r delta">−0.03</td></tr>
-    </tbody>
-  </table>
-
-  <div class="takeaway">
-    한 축은 <strong>다양성 확보</strong>였고, 다른 축은 <strong>일반화 기준 결합</strong>이었다.
-    모델 튜닝보다 검증과 결합 설계가 최종 점수에 더 큰 영향을 줬다.
-  </div>
-  </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">07</div>
-</section>
-
-<!-- ═══ 08 본인 기여 & 회고 ═══ -->
-<section class="slide soft" data-label="Summary">
-  <div class="top-rule">
-    <span class="slide-label">정리</span>
-    <span class="slide-num">08 / 08</span>
-  </div>
-
-  <div class="vfill">
-  <h2 class="slide-h2" style="font-size:42px;margin-bottom:32px;">
-    각자 트랙으로 돌리다, 마감 전 EDA를 다시 파서 결합으로 닫았다.
-  </h2>
-
-  <div class="two-col">
-    <div>
-      <div class="col-label">본인 작업 흐름</div>
-      <div class="role-card">
-        <div class="role-tag">Phase 1 · 팀 공통 · 독립 트랙</div>
-        <div class="role-title">각자 EDA → 모델 → LB 제출 반복</div>
-        <div class="role-body">
-          4인 팀 모두 본인 트랙으로 EDA·모델링·검증·제출을 돌리고,
-          점수가 잘 나온 코드를 공유·확장하는 방식.
-        </div>
-      </div>
-      <div class="role-card mine-card">
-        <div class="role-tag">● Phase 2 · 본인 주도 · 마감 며칠 전</div>
-        <div class="role-title">EDA 재정리 — 피처 상관·미활용 피처 분석</div>
-        <div class="role-body">
-          공모전 마감 며칠 전, EDA를 처음부터 다시 파서
-          <strong>피처 간 상관관계</strong>와 그동안 <strong>활용하지 않은 피처</strong>를 새로 찾아
-          모델 검증에 반영했다.
-        </div>
-      </div>
-      <div class="role-card mine-card">
-        <div class="role-tag">● Phase 3 · 본인 주도 · 마지막 결합</div>
-        <div class="role-title">v1320 — greedy forward 결합</div>
-        <div class="role-body">
-          재정리한 진단 위에서 LGB 변형 풀(forward-lag · diverse · quantile) 생성,
-          greedy forward로 조합 탐색,
-          최종 제출 <code style="font-size:0.9em;">v1320_FINAL_clipped.csv</code> 산출.
-        </div>
-      </div>
-    </div>
-
-    <div>
-      <div class="col-label">배운 것</div>
-      <div class="learn-card">
-        <div class="learn-k">OOF ≠ LB</div>
-        <div class="learn-b">
-          OOF 게이트를 다 통과해도 LB 점수가 오히려 나빠지는 현상을 관찰했다.
-          greedy forward selection으로 <strong>결합 단계의 자유도 폭주를 제어</strong>했다.
-        </div>
-      </div>
-      <div class="learn-card">
-        <div class="learn-k">점수가 아니라 설계</div>
-        <div class="learn-b">
-          검증 점수를 그대로 최적화하지 않고,
-          <strong>test와 닮은 구간(top-30%)</strong>을 별도 평가 기준으로 다시 세웠다.
-        </div>
-      </div>
-      <div class="learn-card">
-        <div class="learn-k">마감 전 EDA가 결정적이었다</div>
-        <div class="learn-b">
-          초반엔 각자 LB 점수 끌어올리는 데 집중했지만, 마감 며칠 전 <strong>EDA를 한 번 더 깊이 파면서</strong>
-          못 본 피처 신호와 상관 구조를 찾은 게 결합 단계의 의미를 만들었다.
-          <strong>EDA는 한 번으로 끝나지 않는다.</strong>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
-
-  <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">[ HK ]</a>
-  <div class="pageno">08</div>
-</section>
+    <a href="index.html" class="pageno-mark" style="text-decoration:none;color:inherit;">김희태</a>
+    <span class="pageno">01</span>
+  </section>
 
 </deck-stage>
 </body>
