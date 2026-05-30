@@ -883,17 +883,7 @@ section{padding:72px 0;scroll-margin-top:80px}
   box-shadow:var(--ds-shadow-border-medium);
 }
 
-/* 카드 전체를 primary 링크로 — '자세히' 버튼이 카드 전체 클릭 영역 커버 */
-.proj-card .action.primary::after{
-  content:"";
-  position:absolute;inset:0;
-  z-index:1;
-}
-/* 나머지 버튼·이미지 링크는 위에 떠서 개별 작동 */
-.proj-card .proj-actions a:not(.primary),
-.proj-card .proj-thumb a{
-  position:relative;z-index:2;
-}
+/* 카드 전체 클릭 → primary 링크로 이동 (JS 처리, .proj-card-click 스크립트 참조) */
 /* 썸네일 — 모든 카드 동일 비율 (16:9), 이미지 cover 채움 */
 .proj-thumb{
   aspect-ratio:16/9;
@@ -1718,6 +1708,20 @@ footer .row{
 </style>
 
 <script>
+/* 카드 어디 클릭해도 primary 링크(자세히)로 이동 — 자식 <a>는 native 동작 */
+(() => {
+  document.querySelectorAll('.proj-card').forEach(card => {
+    const primary = card.querySelector('a.action.primary');
+    if (!primary) return;
+    card.addEventListener('click', (e) => {
+      // 자식 <a>(이미지·영상·PDF·자세히) 클릭은 그대로 native
+      if (e.target.closest('a')) return;
+      // 그 외 카드 어디든 (썸네일·메타·본문·스택 ...) primary로
+      primary.click();
+    });
+  });
+})();
+
 /* 오늘 날짜 자동 갱신 — .js-today 모두 today로 (Now 패널, 푸터) */
 (() => {
   const today = new Date();
