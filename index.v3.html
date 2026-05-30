@@ -1,0 +1,1409 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<title>김희태.포트폴리오 — 추진력으로 승부하는 AX 엔지니어</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="추진력으로 승부하는 AX 엔지니어 김희태입니다. 아이디어가 있다면 LLM과 에이전트로 빠르게 프로토타입을 만들어 테스트하고 검증합니다."/>
+<meta name="color-scheme" content="light dark"/>
+<meta property="og:title" content="추진력으로 승부하는 AX 엔지니어 김희태"/>
+<meta property="og:description" content="아이디어가 있다면 LLM과 에이전트로 빠르게 프로토타입을 만들어 테스트하고 검증합니다."/>
+<meta property="og:type" content="website"/>
+<meta property="og:locale" content="ko_KR"/>
+<meta property="og:url" content="https://gimhuitae-portfolio.vercel.app/"/>
+<meta property="og:site_name" content="김희태.포트폴리오"/>
+<meta property="og:image" content="https://gimhuitae-portfolio.vercel.app/og.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="김희태 — 추진력으로 승부하는 AX 엔지니어"/>
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="추진력으로 승부하는 AX 엔지니어 김희태"/>
+<meta name="twitter:description" content="LLM과 에이전트로 빠르게 프로토타입을 만들어 테스트하고 검증합니다."/>
+<meta name="twitter:image" content="https://gimhuitae-portfolio.vercel.app/og.png"/>
+
+<!-- Safari 주소창 — 라이트/다크 자동 전환 -->
+<meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
+
+<link rel="canonical" href="https://gimhuitae-portfolio.vercel.app/">
+
+<!-- 인라인 SVG 파비콘 — 김 모노그램 (Sand 1200 / Navy 액센트, 다크모드 대응) -->
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="%23fdfdfc"/><text x="32" y="44" font-family="-apple-system,system-ui,sans-serif" font-size="38" font-weight="800" text-anchor="middle" fill="%2321201c">김</text><circle cx="50" cy="14" r="4" fill="%231a3a6e"/></svg>'>
+
+<!-- Variable 폰트 self-load (CLS=0) — Pretendard Variable + Inter Variable -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap">
+
+<!-- Schema.org Person — 구글에 '사람'으로 인식 -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"김희태","alternateName":"Heetae Kim","jobTitle":"AX Engineer","url":"https://gimhuitae-portfolio.vercel.app/","email":"mailto:heetae104@gmail.com","sameAs":["https://github.com/kimheetae0104"],"description":"추진력으로 승부하는 AX 엔지니어. 아이디어가 있다면 LLM과 에이전트로 빠르게 프로토타입을 만들어 테스트하고 검증합니다.","knowsAbout":["AI Transformation","LLM","RAG","LangGraph","AI Agent","업무 자동화","PoC","디지털 전환"]}
+</script>
+<style>
+/* ──────────────────────────────────────────────────────────────
+   캐스케이드 레이어 — Tailwind v4 + jhey.dev signature 패턴
+   reset → tokens → base → components → utilities → signature
+   ────────────────────────────────────────────────────────────── */
+@layer reset, tokens, base, components, utilities, signature;
+
+@layer tokens {
+  :root{
+    /* ── 색: Radix Sand 12-step (Emil Kowalski / Vercel DS) ── */
+    --color-gray-100:#fdfdfc; --color-gray-200:#f9f9f8; --color-gray-300:#f1f0ef;
+    --color-gray-400:#e9e9e7; --color-gray-500:#e2e1de; --color-gray-600:#dad9d6;
+    --color-gray-700:#cfceca; --color-gray-800:#bbbab5; --color-gray-900:#8d8d86;
+    --color-gray-1000:#82827c; --color-gray-1100:#63635e; --color-gray-1200:#21201c;
+
+    /* ── 시맨틱 매핑 ── */
+    --bg:           var(--color-gray-100);
+    --bg-soft:      var(--color-gray-200);
+    --bg-card:      #ffffff;
+    --ink:          var(--color-gray-1200);
+    --ink-2:        var(--color-gray-1100);
+    --ink-3:        var(--color-gray-1000);
+    --ink-4:        var(--color-gray-800);
+    --line:         var(--color-gray-500);
+    --line-soft:    var(--color-gray-400);
+
+    /* ── 액센트 — sRGB 폴백 + display-p3 (Rauno 패턴) ── */
+    --accent:       #1a3a6e;
+    --accent:       color(display-p3 0.10 0.22 0.43);
+    --accent-2:     #3858a3;
+    --accent-soft:  color-mix(in oklab, var(--accent) 12%, transparent);
+    --selection:    color-mix(in oklab, var(--accent) 25%, transparent);
+
+    /* ── 그림자 (Vercel DS — 보더+그림자 합성) ── */
+    --ds-shadow-border:        0 0 0 1px color-mix(in oklab, var(--ink) 8%, transparent);
+    --ds-shadow-small:         0 1px 2px color-mix(in oklab, var(--ink) 8%, transparent);
+    --ds-shadow-medium:        0 2px 2px color-mix(in oklab, var(--ink) 4%, transparent),
+                               0 8px 8px -8px color-mix(in oklab, var(--ink) 4%, transparent);
+    --ds-shadow-large:         0 2px 2px color-mix(in oklab, var(--ink) 4%, transparent),
+                               0 8px 16px -4px color-mix(in oklab, var(--ink) 8%, transparent);
+    --ds-shadow-border-small:  var(--ds-shadow-border), var(--ds-shadow-small);
+    --ds-shadow-border-medium: var(--ds-shadow-border), var(--ds-shadow-medium);
+
+    /* ── 듀레이션 7종 (paco.me 그대로) ── */
+    --transition-fastest:80ms;
+    --transition-fast:.1s;
+    --transition-med:.16s;
+    --transition-xx:.24s;
+    --transition-xxl:.32s;
+    --transition-long:.48s;
+    --transition-slow:1.2s;
+
+    /* ── 이징 12종 (paco.me 그대로) ── */
+    --ease-in-cubic:cubic-bezier(.55,.055,.675,.19);
+    --ease-out-cubic:cubic-bezier(.215,.61,.355,1);
+    --ease-in-out-cubic:cubic-bezier(.645,.045,.355,1);
+    --ease-in-quart:cubic-bezier(.895,.03,.685,.22);
+    --ease-out-quart:cubic-bezier(.165,.84,.44,1);
+    --ease-in-out-quart:cubic-bezier(.77,0,.175,1);
+    --ease-in-expo:cubic-bezier(.95,.05,.795,.035);
+    --ease-out-expo:cubic-bezier(.19,1,.22,1);
+    --ease-in-out-expo:cubic-bezier(1,0,0,1);
+    --ease-in-circ:cubic-bezier(.6,.04,.98,.335);
+    --ease-out-circ:cubic-bezier(.075,.82,.165,1);
+    --ease-in-out-circ:cubic-bezier(.785,.135,.15,.86);
+
+    /* ── 간격 8px 스케일 (paco.me) ── */
+    --gap-s:4px; --gap-2x:16px; --gap-3x:24px; --gap-4x:32px;
+    --gap-6x:48px; --gap-8x:64px; --gap-12x:72px; --gap-16x:128px;
+
+    /* ── 콘텐츠 폭 (Paco/Samuel/mxstbr 합의값) ── */
+    --content-width:640px;
+    --container-md:1080px;
+    --body-margin:max(24px, env(safe-area-inset-left));
+
+    /* ── 폰트 ── */
+    --font-sans:"Pretendard Variable","Pretendard","Inter",system-ui,-apple-system,sans-serif;
+    --font-display:"Inter","Pretendard Variable","Pretendard",system-ui,sans-serif;
+    --font-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font-variations:"opsz" auto;
+    --font-settings:"cv01","ss03","kern","calt","case";
+
+    /* ── 라디우스 ── */
+    --radius:10px;
+    --radius-lg:14px;
+
+    /* ── 호환 토큰 (기존 CSS 유지) ── */
+    --accent-deep:#142a52;
+    --positive:#0f7d4d;
+    --warn:#a14c1e;
+    --max:1080px;
+  }
+
+  /* ── 다크모드 — Radix Sand Dark (단순 반전 X) ── */
+  @media (prefers-color-scheme: dark){
+    :root{
+      --color-gray-100:#111110; --color-gray-200:#191918; --color-gray-300:#222221;
+      --color-gray-400:#2a2a28; --color-gray-500:#31312e; --color-gray-600:#3b3a37;
+      --color-gray-700:#494844; --color-gray-800:#62605b; --color-gray-900:#6f6d66;
+      --color-gray-1000:#7c7b74; --color-gray-1100:#b5b3ad; --color-gray-1200:#eeeeec;
+      --bg-card:        var(--color-gray-200);
+      --accent:         #7aa2e3;
+      --accent:         color(display-p3 0.48 0.64 0.89);
+    }
+  }
+}
+@layer reset {
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{min-height:100vh;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  img,svg,video{display:block;max-width:100%}
+  button,input,select,textarea{font:inherit;color:inherit}
+  /* Variable 폰트 자동 옵티컬 사이징 — Emil Kowalski 패턴 */
+  html{
+    font-variation-settings:var(--font-variations);
+    font-feature-settings:var(--font-settings);
+  }
+  /* 모션 줄이기 — 기본은 모션 OFF, no-preference 일 때만 ON (Brittany 화이트리스트) */
+  *,*::before,*::after{transition:none;animation:none}
+  /* 셀렉션 — 브랜드 컬러로 (Paco) */
+  ::selection{background:var(--selection);color:var(--ink);text-shadow:none}
+}
+
+@layer base {
+  /* 포커스 링 3중 (Vercel DS: 1px 투명 → 2px 배경 → 4px 컬러) */
+  :focus-visible{
+    outline:none;
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--ink) 8%, transparent),
+      0 0 0 2px var(--bg),
+      0 0 0 4px var(--accent);
+    border-radius:6px;
+  }
+
+  /* skip link — Brittany Chiang 패턴 (visible-on-focus) */
+  .skip-link{
+    position:absolute;top:0;left:0;z-index:100;
+    background:#facc15;color:#0f172a;
+    padding:12px 18px;
+    font-family:var(--font-display);font-size:12px;font-weight:800;
+    letter-spacing:.14em;text-transform:uppercase;text-decoration:none;
+    border-radius:0 0 10px 0;
+    transform:translateY(-110%);
+  }
+  .skip-link:focus-visible{transform:translateY(0)}
+
+  /* 헤드라인 — text-wrap balance + 음수 letter-spacing -.05em (Paco) */
+  h1,h2,h3,h4{
+    text-wrap:balance;
+    letter-spacing:-0.04em;
+    font-variation-settings:"opsz" auto;
+  }
+  h1{letter-spacing:-0.05em}
+  /* 본문 — text-wrap pretty (한 줄 단어 떨어짐 방지) */
+  p{text-wrap:pretty}
+
+  /* 모션 화이트리스트 — 기본 OFF, 사용자 OK 시 ON */
+  @media (prefers-reduced-motion: no-preference){
+    *,*::before,*::after{
+      transition-property:color, background-color, border-color, fill, stroke,
+                          box-shadow, opacity, transform, filter, backdrop-filter;
+      transition-duration:var(--transition-fast);
+      transition-timing-function:var(--ease-out-cubic);
+    }
+    a, button, .proj-card, .step, .nav-links a {
+      transition-duration:var(--transition-xx);
+      transition-timing-function:var(--ease-out-expo);
+    }
+    html{scroll-behavior:smooth}
+  }
+}
+
+@layer utilities {
+  /* 시각적 숨김 — sr-only (Brittany Tailwind 디폴트) */
+  .sr-only{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0;
+  }
+  /* 스크롤 reveal — IntersectionObserver 토글 */
+  .reveal{
+    opacity:0;transform:translateY(12px);
+    transition:opacity var(--transition-xxl) var(--ease-out-expo),
+               transform var(--transition-xxl) var(--ease-out-expo) !important;
+  }
+  .reveal.is-in{opacity:1;transform:none}
+}
+
+@layer signature {
+  /* ── 스크롤 progress bar (상단 1px 라인) ── */
+  .scroll-progress{
+    position:fixed;top:0;left:0;height:2px;
+    width:var(--progress, 0%);
+    background:linear-gradient(90deg, var(--accent), var(--accent-2));
+    z-index:60;pointer-events:none;
+    transition:width 80ms linear;
+  }
+
+  /* ── 마우스 따라가는 hero 글로우 (--mx, --my CSS 변수로 위치) ── */
+  .hero{
+    --mx:50%; --my:30%;
+    position:relative;isolation:isolate;
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(600px circle at var(--mx) var(--my),
+      color-mix(in oklab, var(--accent) 8%, transparent),
+      transparent 60%);
+    opacity:0;
+    transition:opacity 600ms var(--ease-out-expo);
+  }
+  @media (hover:hover) and (prefers-reduced-motion: no-preference){
+    .hero:hover::before{opacity:1}
+  }
+
+  /* ── 네비 — 호버/활성 시 그라데이션 underline reveal ── */
+  .nav-links a{position:relative;padding:6px 2px}
+  .nav-links a::after{
+    content:"";position:absolute;left:0;right:0;bottom:-2px;height:1.5px;
+    background:linear-gradient(90deg, var(--accent), var(--accent-2));
+    transform-origin:left;transform:scaleX(0);
+    transition:transform var(--transition-xx) var(--ease-out-expo);
+  }
+  .nav-links a:hover::after,
+  .nav-links a[aria-current="page"]::after{transform:scaleX(1)}
+  .nav-links a[aria-current="page"]{color:var(--accent);font-weight:700}
+
+  /* ── Hero entrance — 도착 시 스태거 fade-up (paco.me 호흡) ── */
+  @media (prefers-reduced-motion: no-preference){
+    .hero .eyebrow,
+    .hero .hero-pre,
+    .hero .hero-name,
+    .hero .lede,
+    .hero .role-chips,
+    .hero .ctas,
+    .hero .meta{
+      animation:heroIn 760ms var(--ease-out-expo) backwards;
+    }
+    .hero .hero-pre{animation-delay:60ms}
+    .hero .hero-name{animation-delay:140ms}
+    .hero .lede{animation-delay:240ms}
+    .hero .role-chips{animation-delay:340ms}
+    .hero .ctas{animation-delay:440ms}
+    .hero .meta{animation-delay:540ms}
+    @keyframes heroIn{
+      from{opacity:0;transform:translateY(14px)}
+      to  {opacity:1;transform:none}
+    }
+  }
+
+  /* ── 카드 detail 링크 — 화살표 mini-interaction ── */
+  .proj-links a.detail{
+    display:inline-flex;align-items:center;gap:6px;position:relative;
+  }
+  .proj-links a.detail::after{
+    content:"→";display:inline-block;
+    transition:transform var(--transition-xx) var(--ease-out-expo);
+  }
+  .proj-links a.detail:hover::after{transform:translateX(4px)}
+  .proj-links a:not(.detail)::after{
+    content:"↗";display:inline-block;margin-left:4px;
+    transition:transform var(--transition-xx) var(--ease-out-expo);
+  }
+  .proj-links a:not(.detail):hover::after{transform:translate(2px,-2px)}
+
+  /* ── CTA 버튼 — 호버 시 transform −1px + 그림자 강화 ── */
+  .hero .ctas a.primary{box-shadow:var(--ds-shadow-small)}
+  .hero .ctas a.primary:hover{
+    transform:translateY(-1px);
+    box-shadow:var(--ds-shadow-medium);
+    background:var(--ink);
+  }
+  .hero .ctas a.ghost:hover{transform:translateY(-1px)}
+
+  /* ── 칩 — 호버 시 미세 lift ── */
+  .hero .role-chips li{
+    transition:transform var(--transition-fast) var(--ease-out-cubic),
+               background var(--transition-fast) var(--ease-out-cubic);
+  }
+  .hero .role-chips li:hover{
+    transform:translateY(-1px);
+    background:color-mix(in oklab, var(--accent) 18%, transparent);
+  }
+
+  /* ── nav backdrop-filter 다층 (Paco brightness 곱하기) ── */
+  .nav{
+    backdrop-filter:saturate(180%) blur(14px);
+    -webkit-backdrop-filter:saturate(180%) blur(14px);
+    background:color-mix(in oklab, var(--bg) 86%, transparent);
+  }
+  @supports not (backdrop-filter: blur(1px)){
+    .nav{background:var(--bg)}
+  }
+
+  /* ── 본문 폭 제한 (Paco 640 기준 readability) ── */
+  .about-grid p,
+  .section-sub{max-width:65ch}
+
+  /* ── 인쇄 스타일 (시니어 디테일) ── */
+  @media print{
+    .nav,.scroll-progress,.ctas,.skip-link,.body-grain{display:none !important}
+    body{background:#fff;color:#000}
+    .hero{padding:0}
+    section{padding:24px 0;page-break-inside:avoid}
+    a{color:#000;text-decoration:underline}
+    .proj-card{break-inside:avoid;page-break-inside:avoid}
+  }
+
+  /* ── 본문 그레인 텍스처 (rauno 시그니처) ──
+       SVG noise를 인라인 url로, fixed 포지션, blend, 매우 미세 */
+  .body-grain{
+    position:fixed;inset:0;z-index:1;pointer-events:none;
+    opacity:.045;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .8 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size:200px 200px;
+  }
+  @media (prefers-color-scheme: dark){
+    .body-grain{opacity:.06;mix-blend-mode:screen}
+  }
+  @media (prefers-reduced-data:reduce){
+    .body-grain{display:none}
+  }
+
+  /* ── 스마트 네비 (CSS는 unlayered로 — layer 우선순위 이슈 회피) ── */
+
+  /* ── Container queries — 카드 컴포넌트 단위 반응형 (2025 표준) ── */
+  .proj-featured,.proj-grid{container-type:inline-size;container-name:projgrid}
+  @container projgrid (max-width: 540px){
+    .proj-card .proj-meta{font-size:10.5px}
+    .proj-card .proj-title{font-size:16px}
+    .proj-card .proj-desc{font-size:13px}
+  }
+
+  /* ── Hero 사진 placeholder 폴리시 — 라디얼 그라데이션 + 스켈레톤 shimmer ── */
+  .hero .hero-photo-ph{
+    background:
+      radial-gradient(120% 100% at 30% 20%,
+        color-mix(in oklab, var(--accent) 6%, var(--bg-soft)),
+        var(--bg-soft) 70%);
+    overflow:hidden;
+  }
+  .hero .hero-photo-ph::before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(115deg,
+      transparent 0%,
+      transparent 35%,
+      color-mix(in oklab, var(--ink) 4%, transparent) 50%,
+      transparent 65%,
+      transparent 100%);
+    background-size:200% 100%;
+    background-position:100% 0;
+  }
+  @media (prefers-reduced-motion: no-preference){
+    .hero .hero-photo-ph::before{animation:shimmer 3.2s var(--ease-in-out-quart) infinite}
+  }
+  @keyframes shimmer{
+    0%{background-position:100% 0}
+    50%{background-position:-100% 0}
+    100%{background-position:-100% 0}
+  }
+  .hero .hero-photo-ph svg{
+    color:color-mix(in oklab, var(--ink) 30%, transparent);
+    opacity:.55;
+  }
+  .hero .hero-photo-ph .ph-label{
+    color:color-mix(in oklab, var(--ink) 60%, transparent);
+  }
+  .hero .hero-photo-ph .ph-path{
+    color:color-mix(in oklab, var(--ink) 35%, transparent);
+  }
+
+  /* ── prefers-reduced-data — 폰트 단순화, 효과 OFF ── */
+  @media (prefers-reduced-data:reduce){
+    .hero::before{display:none}
+    .scroll-progress{display:none}
+    .proj-thumb{background:var(--bg-soft) !important;color:var(--ink-3) !important}
+  }
+
+  /* ── 액센트 캐럿 색 (입력 필드 / 텍스트 영역) ── */
+  :root{accent-color:var(--accent);caret-color:var(--accent)}
+
+  /* ── 다크 모드 톤다운 — 채도/밝기 낮춰서 차분하게 ── */
+  @media (prefers-color-scheme: dark){
+    /* 카드 썸네일 — 밝은 그라데이션이 다크에서 튐 */
+    .proj-thumb{filter:brightness(.62) saturate(.7)}
+
+    /* 그레인 — 더 옅게 */
+    .body-grain{opacity:.035}
+
+    /* Hero 마우스 글로우 — 다크엔 거의 안 보이게 */
+    .hero::before{opacity:0 !important}
+
+    /* Now 패널 펄스 — 다크에선 정적으로 (시각 노이즈 ↓) */
+    .now-panel .now-dot{
+      animation:none !important;
+      box-shadow:0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent);
+    }
+
+    /* 액션 primary 버튼 — 화이트 강조 X, Sand 700 톤 */
+    .action.primary{
+      background:var(--color-gray-700);
+      color:var(--color-gray-1200);
+      border-color:var(--color-gray-700);
+    }
+    .action.primary:hover{
+      background:var(--accent);
+      border-color:var(--accent);
+      color:#0f1115;
+    }
+
+    /* 메타 태그 — 액센트 농도 낮춤 */
+    .proj-meta .tag{
+      background:color-mix(in oklab, var(--accent) 14%, transparent);
+      color:var(--color-gray-1100);
+    }
+
+    /* CTA primary 버튼 (Hero) — 너무 튀지 않게 */
+    .hero .ctas a.primary{
+      background:var(--color-gray-700);
+      color:var(--color-gray-1200);
+    }
+    .hero .ctas a.primary:hover{background:var(--accent);color:#0f1115}
+  }
+}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--font-sans);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:"ss01";
+}
+a{color:inherit;text-decoration:none}
+.container{max-width:var(--max);margin:0 auto;padding:0 32px}
+
+/* ---------- Top nav (스마트 네비 — top 변동으로 hide/show) ---------- */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:saturate(140%) blur(12px);
+  border-bottom:1px solid var(--line);
+  transition:top var(--transition-xx,.24s) var(--ease-out-expo,cubic-bezier(.19,1,.22,1));
+  will-change:top;
+}
+.nav.is-hidden{top:-80px !important}
+.nav-inner{
+  max-width:var(--max);margin:0 auto;padding:16px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-brand{font-family:var(--font-sans);font-weight:800;font-size:16px;letter-spacing:-0.02em}
+.nav-brand .dot{color:var(--accent)}
+.nav-links{display:flex;gap:28px;font-family:var(--font-display);font-size:13px;color:var(--ink-2);font-weight:500;letter-spacing:.02em}
+.nav-links a{padding:6px 0;transition:color .2s}
+.nav-links a:hover{color:var(--accent)}
+@media (max-width:680px){
+  .nav-links{gap:14px;font-size:11.5px;letter-spacing:0}
+  /* 매우 좁은 화면: 소개/기술 숨기고 핵심만 (프로젝트/연락) */
+  .nav-links a:nth-child(1),.nav-links a:nth-child(2){display:none}
+}
+@media (max-width:420px){
+  .nav-brand{font-size:14px}
+}
+
+/* ---------- Section ---------- */
+section{padding:120px 0 96px;scroll-margin-top:80px}
+.section-head{margin-bottom:56px}
+.section-num{
+  font-family:var(--font-display);font-size:12px;color:var(--accent);font-weight:700;
+  letter-spacing:.18em;margin-bottom:14px;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.section-num::after{content:"";width:32px;height:1.5px;background:var(--accent)}
+.section-title{font-family:var(--font-display);font-size:38px;letter-spacing:-0.025em;font-weight:800;margin:0 0 12px;line-height:1.15}
+.section-sub{font-size:15px;color:var(--ink-3);max-width:580px;margin:0;line-height:1.65}
+@media (max-width:680px){.section-title{font-size:26px}section{padding:80px 0 64px}}
+
+/* ---------- Hero ---------- */
+.hero{padding:160px 0 96px}
+
+/* Hero 2열 그리드 — 좌측 텍스트 / 우측 사진 */
+.hero .hero-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 360px;
+  gap:80px;
+  align-items:start;
+}
+.hero .hero-text{min-width:0}
+.hero .hero-photo{
+  position:relative;
+  aspect-ratio:4/5;
+  border-radius:var(--radius-lg);
+  background:var(--bg-soft);
+  overflow:hidden;
+  box-shadow:var(--ds-shadow-border-small);
+}
+.hero .hero-photo img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  display:block;
+}
+.hero .hero-photo-ph{
+  position:absolute;inset:0;
+  display:grid;place-items:center;gap:10px;
+  color:var(--ink-3);
+  border:1.5px dashed var(--line);
+  border-radius:var(--radius-lg);
+  background:var(--bg-soft);
+  text-align:center;
+  padding:24px;
+}
+.hero .hero-photo-ph[hidden]{display:none}
+.hero .hero-photo-ph .ph-label{
+  font-family:var(--font-display);font-size:13px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-2);
+}
+.hero .hero-photo-ph .ph-path{
+  font-family:var(--font-mono);font-size:11px;
+  letter-spacing:.04em;color:var(--ink-3);
+}
+
+@media (max-width:920px){
+  .hero .hero-grid{grid-template-columns:minmax(0,1fr) 280px;gap:48px}
+}
+@media (max-width:780px){
+  .hero .hero-grid{grid-template-columns:1fr;gap:40px}
+  .hero .hero-photo{max-width:280px;margin:0;aspect-ratio:1/1}
+}
+
+.hero .eyebrow{
+  font-family:var(--font-display);font-size:12px;letter-spacing:.18em;
+  color:var(--accent);margin-bottom:24px;text-transform:uppercase;font-weight:700;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.hero .eyebrow::before{content:"";width:24px;height:1.5px;background:var(--accent)}
+.hero .hero-h1{
+  font-family:var(--font-sans);
+  margin:0 0 28px;color:var(--ink);
+  line-height:1.1;letter-spacing:-0.03em;font-weight:800;
+  display:flex;flex-direction:column;gap:10px;
+}
+.hero .hero-pre{
+  font-size:36px;color:var(--ink-3);font-weight:600;
+  letter-spacing:-0.02em;
+}
+.hero .hero-name{
+  font-size:60px;color:var(--ink);font-weight:800;
+  letter-spacing:-0.035em;
+}
+.hero .lede{font-size:18px;color:var(--ink-2);max-width:660px;line-height:1.75;margin:0 0 36px}
+.hero .lede strong{color:var(--ink);font-weight:700}
+.hero .role-chips{
+  display:flex;flex-wrap:wrap;gap:6px;margin:0 0 36px;
+  padding:0;list-style:none;
+}
+.hero .role-chips li{
+  font-family:var(--font-sans);font-size:13px;font-weight:600;
+  padding:6px 12px;background:var(--accent-soft);color:var(--accent);
+  border-radius:99px;letter-spacing:-0.005em;
+}
+.hero .ctas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:48px}
+.hero .ctas a{
+  font-family:var(--font-display);font-size:14px;font-weight:600;
+  padding:13px 22px;border-radius:99px;letter-spacing:.01em;
+  transition:transform .15s,background .15s,color .15s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.hero .ctas a.primary{background:var(--accent);color:#fff}
+.hero .ctas a.primary:hover{background:var(--ink);transform:translateY(-1px)}
+.hero .ctas a.ghost{background:transparent;border:1.5px solid var(--ink);color:var(--ink)}
+.hero .ctas a.ghost:hover{background:var(--ink);color:#fff}
+.hero .meta{
+  display:flex;gap:0;flex-wrap:wrap;padding:18px 0;margin:0;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  font-family:var(--font-sans);font-size:13.5px;color:var(--ink-3);letter-spacing:-0.005em;
+  max-width:760px;
+}
+.hero .meta > div{padding:0 22px;border-right:1px solid var(--line);display:flex;gap:8px;align-items:baseline}
+.hero .meta > div:first-child{padding-left:0}
+.hero .meta > div:last-child{border-right:0}
+.hero .meta dt{color:var(--ink);font-weight:700;margin:0}
+.hero .meta dd{margin:0;color:var(--ink-2)}
+.hero .meta dt::after{content:"·";color:var(--ink-4);margin-left:6px;font-weight:400}
+@media (max-width:680px){
+  .hero{padding:120px 0 64px}
+  .hero .hero-pre{font-size:22px}
+  .hero .hero-name{font-size:36px}
+  .hero .lede{font-size:16px}
+}
+
+/* ---------- About ---------- */
+.about-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(220px,1fr);gap:64px;align-items:start}
+@media (max-width:780px){.about-grid{grid-template-columns:1fr;gap:36px}}
+.about p{font-size:16px;color:var(--ink-2);line-height:1.85;margin:0 0 18px;max-width:60ch}
+.about p strong{color:var(--ink);font-weight:700}
+
+/* Now 패널 — paco/derek sivers 'now' 무브 (지금 하는 것) */
+.now-panel{
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px 24px;background:var(--bg-card);
+  box-shadow:var(--ds-shadow-border-small);
+}
+.now-panel .now-head{
+  font-family:var(--font-display);font-size:11.5px;font-weight:700;
+  letter-spacing:.18em;color:var(--accent);text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;margin-bottom:18px;
+}
+.now-panel .now-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent);
+}
+@media (prefers-reduced-motion: no-preference){
+  .now-panel .now-dot{animation:nowPulse 2.2s var(--ease-in-out-quart) infinite}
+}
+@keyframes nowPulse{
+  0%,100%{box-shadow:0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent)}
+  50%{box-shadow:0 0 0 7px color-mix(in oklab, var(--accent) 8%, transparent)}
+}
+.now-panel ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.now-panel li{
+  font-size:14px;color:var(--ink-2);line-height:1.55;
+  padding-left:14px;position:relative;
+}
+.now-panel li::before{
+  content:"";position:absolute;left:0;top:9px;width:5px;height:5px;
+  background:var(--ink-4);border-radius:50%;
+}
+.now-panel li strong{color:var(--ink);font-weight:700}
+.now-panel .now-footer{
+  margin-top:18px;padding-top:14px;border-top:1px dashed var(--line);
+  font-family:var(--font-mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em;
+}
+.about-side{
+  background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius);
+  padding:28px;
+}
+.about-side h3{
+  font-family:var(--font-display);font-size:13px;letter-spacing:.14em;
+  color:var(--ink-3);text-transform:uppercase;font-weight:700;margin:0 0 18px;
+}
+.about-side ul{margin:0;padding:0;list-style:none;display:grid;gap:14px}
+.about-side li{font-size:14.5px;color:var(--ink-2);line-height:1.65;display:grid;grid-template-columns:14px 1fr;gap:10px;align-items:start}
+.about-side li::before{content:"";width:6px;height:6px;background:var(--accent);border-radius:50%;margin-top:9px;justify-self:center}
+.about-side li strong{color:var(--ink);font-weight:700;display:block;margin-bottom:2px}
+
+/* ---------- Skills ---------- */
+.skills{display:grid;grid-template-columns:200px 1fr;gap:18px 36px}
+@media (max-width:680px){.skills{grid-template-columns:1fr;gap:8px 0}}
+.skills .cat{
+  font-family:var(--font-display);font-size:13px;font-weight:700;
+  color:var(--ink);letter-spacing:.02em;padding-top:4px;
+}
+.skills .list{
+  display:flex;flex-wrap:wrap;gap:6px 16px;
+  padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:20px;
+  font-size:14.5px;color:var(--ink-2);font-weight:500;
+}
+.skills .row:last-child .list{border-bottom:0;margin-bottom:0;padding-bottom:0}
+.skills .list span::after{content:"·";margin-left:16px;color:var(--ink-4)}
+.skills .list span:last-child::after{content:""}
+
+/* ---------- Projects ---------- */
+.proj-toggle{display:flex;gap:0;margin-bottom:32px;border:1px solid var(--line);border-radius:99px;width:fit-content;background:var(--bg-soft);padding:3px}
+.proj-toggle button{
+  font-family:var(--font-display);font-size:13px;font-weight:600;
+  padding:8px 18px;border-radius:99px;border:0;background:transparent;
+  color:var(--ink-3);cursor:pointer;letter-spacing:.02em;transition:all .15s;
+}
+.proj-toggle button.active{background:var(--ink);color:#fff}
+
+.proj-section-title{
+  font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--ink);
+  letter-spacing:.04em;text-transform:uppercase;margin:0 0 18px;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+.proj-section-title::before{content:"";width:18px;height:1.5px;background:var(--accent)}
+.proj-section-meta{
+  font-family:var(--font-display);font-size:11.5px;font-weight:500;
+  color:var(--ink-3);letter-spacing:.06em;text-transform:none;
+}
+
+.proj-featured{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:80px}
+@media (max-width:780px){.proj-featured{grid-template-columns:1fr;gap:18px}}
+
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media (max-width:900px){.proj-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.proj-grid{grid-template-columns:1fr}}
+
+/* ── 사이드 프로젝트 텍스트 리스트 (paco · brittany 패턴) ── */
+.side-projects{list-style:none;padding:0;margin:0;border-top:1px solid var(--line)}
+.side-projects li{border-bottom:1px solid var(--line)}
+.side-row{
+  display:grid;
+  grid-template-columns:64px minmax(160px,200px) 1fr minmax(180px,220px) 20px;
+  gap:24px;align-items:baseline;
+  padding:18px 8px;
+  color:var(--ink);text-decoration:none;
+  border-radius:6px;
+  margin-inline:-8px;
+}
+.side-row:hover,.side-row:focus-visible{background:color-mix(in oklab, var(--accent) 4%, transparent)}
+.side-row .s-year{
+  font-family:var(--font-mono);font-size:12px;color:var(--ink-3);
+  letter-spacing:.04em;font-weight:500;
+}
+.side-row .s-title{
+  font-family:var(--font-display);font-weight:700;font-size:16px;
+  letter-spacing:-0.015em;color:var(--ink);
+}
+.side-row:hover .s-title,.side-row:focus-visible .s-title{color:var(--accent)}
+.side-row .s-desc{
+  font-size:14px;color:var(--ink-2);line-height:1.55;
+}
+.side-row .s-stack{
+  font-family:var(--font-mono);font-size:11.5px;color:var(--ink-3);
+  letter-spacing:.02em;text-align:right;
+}
+.side-row .s-arrow{
+  color:var(--ink-3);justify-self:end;font-size:14px;
+  transition:transform var(--transition-xx) var(--ease-out-expo),
+             color var(--transition-xx) var(--ease-out-expo);
+}
+.side-row:hover .s-arrow,.side-row:focus-visible .s-arrow{
+  transform:translate(2px,-2px);color:var(--accent);
+}
+@media (max-width:900px){
+  .side-row{grid-template-columns:56px 1fr 20px;gap:14px;padding:16px 8px}
+  .side-row .s-title{grid-column:2 / 3}
+  .side-row .s-desc{grid-column:2 / 3;margin-top:4px}
+  .side-row .s-stack{grid-column:2 / 3;text-align:left;margin-top:6px}
+  .side-row .s-arrow{grid-row:1 / 4;align-self:center}
+  .side-row .s-year{align-self:start}
+}
+
+.proj-card{
+  background:var(--bg-card);border-radius:var(--radius);overflow:hidden;
+  display:flex;flex-direction:column;
+  border:1px solid transparent;
+  box-shadow:var(--ds-shadow-border-small);
+}
+.proj-card:hover{
+  transform:translateY(-1px);
+  box-shadow:var(--ds-shadow-border-medium);
+}
+.proj-thumb{
+  aspect-ratio:16/9;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:20px;font-weight:800;letter-spacing:-0.02em;
+  border-bottom:1px solid var(--line);
+  background-size:cover;background-position:center;background-repeat:no-repeat;
+  position:relative;
+}
+.proj-thumb .ph-note{
+  position:absolute;bottom:8px;left:8px;
+  font-family:var(--font-display);font-size:10px;font-weight:500;letter-spacing:.06em;
+  color:rgba(255,255,255,.85);background:rgba(0,0,0,.45);
+  padding:3px 8px;border-radius:4px;text-transform:uppercase;
+}
+.proj-body{padding:18px 20px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.proj-meta{
+  font-family:var(--font-display);font-size:11px;color:var(--ink-3);
+  letter-spacing:.14em;text-transform:uppercase;font-weight:600;
+  display:flex;gap:14px;flex-wrap:wrap;
+}
+.proj-meta .tag{padding:2px 8px;background:var(--accent-soft);color:var(--accent);border-radius:99px;letter-spacing:.02em}
+.proj-title{
+  font-family:var(--font-display);font-size:17px;font-weight:800;
+  letter-spacing:-0.02em;margin:0;color:var(--ink);line-height:1.3;
+}
+.proj-desc{font-size:13.5px;color:var(--ink-2);line-height:1.6;margin:0;flex:1}
+
+/* 프로젝트 요약 — 왜 / 어떻게 / 결과 3줄 라벨 */
+.proj-summary{display:grid;gap:8px;margin:0;padding:0;flex:1}
+.proj-summary > div{
+  display:grid;
+  grid-template-columns:48px 1fr;
+  gap:12px;align-items:baseline;
+}
+.proj-summary dt{
+  font-family:var(--font-display);
+  font-size:10.5px;font-weight:700;
+  color:var(--accent);
+  letter-spacing:.12em;text-transform:uppercase;
+  margin:0;
+}
+.proj-summary dd{
+  font-size:13.5px;color:var(--ink-2);
+  line-height:1.55;margin:0;
+}
+.proj-summary dd strong{color:var(--ink);font-weight:700}
+
+/* 프로젝트 카드 — 액션 버튼 row (cdg 패턴: README · 이미지 · 영상) */
+.proj-actions{
+  display:flex;gap:6px;flex-wrap:wrap;
+  padding-top:14px;border-top:1px solid var(--line);margin-top:auto;
+}
+.action{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-display);font-size:12px;font-weight:600;
+  padding:7px 12px;border:1px solid var(--line);border-radius:8px;
+  color:var(--ink-2);background:var(--bg);
+  text-decoration:none;letter-spacing:-0.005em;
+}
+.action:hover{
+  border-color:var(--accent);color:var(--accent);
+  background:color-mix(in oklab, var(--accent) 4%, transparent);
+}
+.action svg{width:14px;height:14px;flex-shrink:0}
+.action.primary{
+  background:var(--ink);color:#fff;border-color:var(--ink);
+}
+.action.primary:hover{
+  background:var(--accent);border-color:var(--accent);color:#fff;
+  transform:translateY(-1px);
+}
+
+/* 컴팩트 인라인 메트릭 — 카드 안에서 한 줄로 */
+.proj-metrics-inline{
+  display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:4px;
+  font-family:var(--font-display);font-size:12px;color:var(--ink-2);font-weight:600;
+}
+.proj-metrics-inline .m{display:inline-flex;align-items:baseline;gap:4px}
+.proj-metrics-inline .m .k{color:var(--ink-3);font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.proj-metrics-inline .m .v{color:var(--accent);font-weight:800;letter-spacing:-0.01em}
+.proj-metrics-inline .m::after{content:"·";margin-left:14px;color:var(--ink-4);font-weight:400}
+.proj-metrics-inline .m:last-child::after{content:""}
+
+.proj-stack{
+  display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px;
+  font-family:var(--font-display);font-size:11.5px;color:var(--ink-3);font-weight:500;
+}
+.proj-stack span::after{content:"·";margin-left:12px;color:var(--ink-4)}
+.proj-stack span:last-child::after{content:""}
+
+.proj-links{
+  display:flex;gap:14px;font-family:var(--font-display);font-size:12.5px;font-weight:600;
+  padding-top:12px;border-top:1px solid var(--line);margin-top:6px;
+}
+.proj-links a{color:var(--ink-2);transition:color .2s}
+.proj-links a:hover{color:var(--accent)}
+.proj-links a.detail{color:var(--accent);font-weight:700}
+.proj-links a.detail::after{content:" →"}
+.proj-links a:not(.detail)::after{content:" ↗"}
+
+/* ---------- Approach ---------- */
+.approach-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--bg-card)}
+@media (max-width:900px){.approach-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.approach-grid{grid-template-columns:1fr}}
+.step{padding:28px 24px;border-right:1px solid var(--line);position:relative}
+.step:last-child{border-right:0}
+@media (max-width:900px){
+  .step:nth-child(2){border-right:0}
+  .step:nth-child(-n+2){border-bottom:1px solid var(--line)}
+}
+@media (max-width:520px){
+  .step{border-right:0;border-bottom:1px solid var(--line)}
+  .step:last-child{border-bottom:0}
+}
+.step .n{
+  font-family:var(--font-display);font-size:11.5px;color:var(--accent);font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.step .n::before{content:"";width:14px;height:1.5px;background:var(--accent)}
+.step h3{font-family:var(--font-display);font-size:18px;font-weight:800;margin:0 0 10px;letter-spacing:-0.015em;color:var(--ink)}
+.step p{font-size:14px;color:var(--ink-2);line-height:1.7;margin:0}
+
+/* ---------- Contact ---------- */
+.contact .line{
+  font-family:var(--font-display);font-size:42px;letter-spacing:-0.025em;font-weight:800;
+  line-height:1.2;margin:0 0 24px;max-width:780px;color:var(--ink);
+}
+.contact .line strong{color:var(--accent)}
+.contact .sub{font-size:16px;color:var(--ink-2);max-width:620px;margin:0 0 36px;line-height:1.75}
+.contact .links{display:flex;gap:10px;flex-wrap:wrap}
+.contact .links a{
+  font-family:var(--font-display);font-size:14px;font-weight:600;
+  padding:13px 22px;border-radius:99px;letter-spacing:.01em;transition:all .15s;
+}
+.contact .links a.primary{background:var(--accent);color:#fff}
+.contact .links a.primary:hover{background:var(--ink)}
+.contact .links a.ghost{background:transparent;border:1.5px solid var(--ink);color:var(--ink)}
+.contact .links a.ghost:hover{background:var(--ink);color:#fff}
+@media (max-width:680px){.contact .line{font-size:26px}}
+
+/* ---------- Footer ---------- */
+footer{
+  border-top:1px solid var(--line);padding:32px 0;
+  font-family:var(--font-display);font-size:12px;color:var(--ink-3);
+  letter-spacing:.04em;font-weight:500;
+}
+footer .row{
+  max-width:var(--max);margin:0 auto;padding:0 32px;
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+}
+
+/* placeholder marker */
+.ph{color:var(--ink-3);font-size:12px;font-family:var(--font-display);font-style:italic;background:#fff7e6;border:1px dashed #e0c896;padding:2px 8px;border-radius:4px;display:inline-block;margin-top:6px}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+<div class="scroll-progress" aria-hidden="true"></div>
+<div class="body-grain" aria-hidden="true"></div>
+
+<!-- 아이콘 심볼 라이브러리 (lucide 스타일, 한 번 정의·재사용) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></symbol>
+    <symbol id="i-video" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.39c.6.11.82-.26.82-.58v-2.04C5.67 21.4 5 19.42 5 19.42c-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.08 1.85 1.24 1.85 1.24 1.08 1.84 2.83 1.31 3.52 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 016 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============ 상단 네비게이션 ============ -->
+<nav class="nav" aria-label="주요 메뉴">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#home" aria-label="홈으로">김희태<span class="dot">.</span>포트폴리오</a>
+    <div class="nav-links" role="list">
+      <a href="#about" role="listitem">소개</a>
+      <a href="#skills" role="listitem">기술</a>
+      <a href="#projects" role="listitem">프로젝트</a>
+      <a href="#contact" role="listitem">연락</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- ============ 히어로 ============ -->
+<header id="home" class="hero" aria-labelledby="hero-title">
+  <div class="container hero-grid">
+    <div class="hero-text">
+      <p class="eyebrow">포트폴리오 2026 · AX 엔지니어</p>
+      <h1 id="hero-title" class="hero-h1">
+        <span class="hero-pre">추진력으로 승부하는</span>
+        <span class="hero-name">AX 엔지니어 김희태입니다.</span>
+      </h1>
+      <p class="lede">
+        아이디어가 있다면 <strong>LLM과 에이전트로 빠르게 프로토타입</strong>을
+        만들어 테스트하고 검증합니다.
+      </p>
+      <div class="ctas">
+        <a class="primary" href="#projects">프로젝트 →</a>
+        <a class="ghost" href="#contact">연락</a>
+      </div>
+    </div>
+
+    <aside class="hero-photo" aria-label="프로필 사진">
+      <img src="images/heetae.jpg" alt="김희태 프로필 사진"
+           loading="eager" decoding="async"
+           onerror="this.style.display='none';this.nextElementSibling.removeAttribute('hidden')">
+      <div class="hero-photo-ph" hidden>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/>
+        </svg>
+        <div class="ph-label">사진 준비 중</div>
+      </div>
+    </aside>
+  </div>
+</header>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">01 · 소개</span>
+      <h2 class="section-title">코드로 만드는 AX.</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about">
+        <p>
+          LLM과 에이전트로 기업의 반복 업무를 자동화하는 <strong>AX 엔지니어</strong>입니다.
+          모델 정확도보다 <strong>현장에서 어떤 일이 어떻게 바뀌었는지</strong>를 본질로 봅니다.
+        </p>
+        <p>
+          <strong>문제 정의 → 구조 설계 → 프로토타입 → 검증·운영</strong>까지 한 사이클로 끌고 갑니다.
+          아이디어가 떠오르면 <strong>코딩 에이전트(Claude Code · Cursor)로 곧장 프로토타입</strong>에 옮기고,
+          막히면 가설을 바꿔가며 빠르게 여러 번 시도합니다. <strong>풀릴 때까지 멈추지 않습니다.</strong>
+        </p>
+      </div>
+
+      <aside class="now-panel" aria-label="지금 하고 있는 것">
+        <div class="now-head"><span class="now-dot" aria-hidden="true"></span>지금 · Now</div>
+        <ul>
+          <li><strong>INKK</strong> 얼리 액세스 사용자 모집 중</li>
+          <li><strong>Blog Agent</strong> 운영 + v2 설계</li>
+          <li>AX 직무 채용 라운드 진행</li>
+          <li>코딩 에이전트(Claude Code · Cursor) 워크플로우 정착 중</li>
+        </ul>
+        <div class="now-footer">갱신 · <time datetime="2026-05-30">2026.05.30</time></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SKILLS ============ -->
+<section id="skills" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">02 · 기술</span>
+      <h2 class="section-title">자주 쓰는 도구들.</h2>
+    </div>
+    <div class="skills">
+      <div class="row" style="display:contents">
+        <div class="cat">LLM · 에이전트</div>
+        <div class="list"><span>OpenAI</span><span>Anthropic</span><span>Groq</span><span>LangGraph</span><span>LangChain</span><span>RAG</span><span>ChromaDB</span><span>Ollama</span><span>MCP</span></div>
+      </div>
+      <div class="row" style="display:contents">
+        <div class="cat">머신러닝 · 데이터</div>
+        <div class="list"><span>scikit-learn</span><span>XGBoost</span><span>LightGBM</span><span>Ridge</span><span>SHAP</span><span>시계열</span><span>pandas</span><span>NumPy</span><span>SQL</span></div>
+      </div>
+      <div class="row" style="display:contents">
+        <div class="cat">개발</div>
+        <div class="list"><span>Python</span><span>TypeScript</span><span>Swift</span><span>Next.js</span><span>React</span><span>FastAPI</span><span>SwiftUI</span><span>CoreML</span><span>Xcode</span><span>Vercel</span><span>Cloudflare</span><span>Supabase</span><span>Firebase</span><span>Docker</span></div>
+      </div>
+      <div class="row" style="display:contents">
+        <div class="cat">AI-Native 개발</div>
+        <div class="list"><span>Claude Code</span><span>Codex</span><span>Cursor</span><span>Antigravity</span><span>Git</span><span>Notion</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section id="projects">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">03 · 프로젝트</span>
+      <h2 class="section-title">만든 것들.</h2>
+    </div>
+
+    <!-- 주요 프로젝트 4 -->
+    <h3 class="proj-section-title">주요 프로젝트</h3>
+    <div class="proj-featured">
+
+      <article class="proj-card">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#92400e,#c2761c);color:#fef3c7">
+          NOxO
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta">
+            <span>2026.05</span>
+            <span class="tag">제조·산업 AX</span>
+            <span class="tag">실시간 조기경보</span>
+            <span class="tag">시계열 예측</span>
+          </div>
+          <h3 class="proj-title">NOxO</h3>
+          <dl class="proj-summary">
+            <div><dt>왜</dt><dd>발전소 NOx 임계 초과를 <strong>사전에 잡아내는 시스템</strong>이 필요했다.</dd></div>
+            <div><dt>어떻게</dt><dd>운전 데이터에 Ridge + LightGBM 시계열 앙상블, <strong>5분 후 조기경보 모델</strong>을 설계.</dd></div>
+            <div><dt>결과</dt><dd>운영 시뮬레이션 작동. <strong>센서 누수·라벨 오염 발견</strong>해 검증 기준을 다시 설계함 (SeSAC 최종 프로젝트).</dd></div>
+          </dl>
+          <div class="proj-stack"><span>Python</span><span>Ridge · LightGBM 앙상블</span><span>시계열</span><span>피처 엔지니어링</span></div>
+          <div class="proj-actions">
+            <a class="action primary" href="NOxO.html"><svg><use href="#i-arrow"/></svg>자세히</a>
+            <a class="action" href="noxo/sim.png" target="_blank" rel="noopener"><svg><use href="#i-image"/></svg>이미지</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#9d174d,#d4357c);color:#fce7f3">
+          JANN
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta">
+            <span>2026</span>
+            <span class="tag">AI 서비스 AX</span>
+            <span class="tag">온디바이스 AI</span>
+            <span class="tag">추천 시스템</span>
+            <span class="tag">저작권등록</span>
+          </div>
+          <h3 class="proj-title">JANN</h3>
+          <dl class="proj-summary">
+            <div><dt>왜</dt><dd>향미 화합물 데이터를 <strong>일반 사용자가 활용할 수 있는 형태</strong>로 만들고 싶었다.</dd></div>
+            <div><dt>어떻게</dt><dd>Python 모델 → <strong>CoreML 변환</strong> → SwiftUI iOS 앱, t-SNE 클러스터링으로 추천.</dd></div>
+            <div><dt>결과</dt><dd><strong>온디바이스 추론</strong>으로 네트워크 비용 0 · 프라이버시 보장. <strong>저작권 등록 완료</strong>.</dd></div>
+          </dl>
+          <div class="proj-stack"><span>SwiftUI</span><span>Python</span><span>CoreML</span><span>t-SNE 클러스터링</span><span>온디바이스 추론</span></div>
+          <div class="proj-actions">
+            <a class="action primary" href="JANN.html"><svg><use href="#i-arrow"/></svg>자세히</a>
+            <a class="action" href="jann/img/tsne-clustering.png" target="_blank" rel="noopener"><svg><use href="#i-image"/></svg>이미지</a>
+            <a class="action" href="jann/demo.mp4" target="_blank" rel="noopener"><svg><use href="#i-video"/></svg>영상</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#1a3a6e,#3858a3);color:#fff">
+          INKK
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta">
+            <span>2026</span>
+            <span class="tag">AI 서비스 AX</span>
+            <span class="tag">Multi-Agent</span>
+            <span class="tag">Production · 얼리 액세스</span>
+          </div>
+          <h3 class="proj-title">INKK</h3>
+          <dl class="proj-summary">
+            <div><dt>왜</dt><dd>1인 콘텐츠 운영자가 카드뉴스 1편에 <strong>2~3시간</strong> 쓰는 비효율을 풀고 싶었다.</dd></div>
+            <div><dt>어떻게</dt><dd>LangGraph <strong>멀티 에이전트(Planner·Writer·Critic·Designer)</strong> + Next.js + Stripe 결제까지 한 사이클.</dd></div>
+            <div><dt>결과</dt><dd>주제 한 줄 → 카드뉴스 6장 + 카피 자동 생성. <strong>얼리 액세스 운영 중</strong>.</dd></div>
+          </dl>
+          <div class="proj-stack"><span>Next.js 16</span><span>LangGraph · 멀티 에이전트</span><span>Claude · Groq</span><span>Supabase · Stripe</span></div>
+          <div class="proj-actions">
+            <a class="action primary" href="INKK.html"><svg><use href="#i-arrow"/></svg>자세히</a>
+            <a class="action" href="inkk/landing.png" target="_blank" rel="noopener"><svg><use href="#i-image"/></svg>이미지</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#03c75a,#02a84b);color:#fff">
+          Blog Agent
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta">
+            <span>2026.05</span>
+            <span class="tag">업무 자동화 AX</span>
+            <span class="tag">로컬 LLM · RAG</span>
+            <span class="tag">에이전트</span>
+          </div>
+          <h3 class="proj-title">Blog Agent</h3>
+          <dl class="proj-summary">
+            <div><dt>왜</dt><dd>직접 운영하는 경제 블로그의 <strong>글 작성·사실 검증·발행 자동화</strong>가 필요했다.</dd></div>
+            <div><dt>어떻게</dt><dd><strong>Ollama 로컬 LLM</strong> + RAG + DART 공시 검증 + 발행까지 LangGraph 파이프라인.</dd></div>
+            <div><dt>결과</dt><dd>한 사이클 자동화 완료. <strong>다른 작업 비서로 재사용 가능</strong>한 에이전트 인프라로 분리 설계.</dd></div>
+          </dl>
+          <div class="proj-stack"><span>Python</span><span>Ollama</span><span>LangGraph</span><span>RAG · ChromaDB</span><span>MCP · 도구 호출</span><span>DART API</span></div>
+          <div class="proj-actions">
+            <a class="action primary" href="BlogAgentRAG.html"><svg><use href="#i-arrow"/></svg>자세히</a>
+            <a class="action" href="blog-agent-rag/img/sheets-result.png" target="_blank" rel="noopener"><svg><use href="#i-image"/></svg>이미지</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- 사이드 프로젝트 (텍스트 리스트 — paco/brittany 패턴) -->
+    <h3 class="proj-section-title">사이드 프로젝트</h3>
+    <ul class="side-projects">
+      <li>
+        <a class="side-row" href="LHV.html" aria-label="LHV 자세히 보기">
+          <span class="s-year">2026.03</span>
+          <span class="s-title">LHV</span>
+          <span class="s-desc">제철 열풍로 발열량 5분 시계열 예측. 피처 12회 재구성 + SHAP 해석으로 RMSE 11.99.</span>
+          <span class="s-stack">Python · Ridge · XGBoost · SHAP · 시계열</span>
+          <span class="s-arrow" aria-hidden="true">↗</span>
+        </a>
+      </li>
+      <li>
+        <a class="side-row" href="Skinpass.html" aria-label="Skinpass 자세히 보기">
+          <span class="s-year">2024</span>
+          <span class="s-title">Skinpass</span>
+          <span class="s-desc">제철 공정 이상 탐지 (Anomaly Detection). 불균형 데이터 핸들링 + SMOTE 실험.</span>
+          <span class="s-stack">Python · LightGBM · SMOTE · 불균형 학습</span>
+          <span class="s-arrow" aria-hidden="true">↗</span>
+        </a>
+      </li>
+      <li>
+        <a class="side-row" href="BinanceBot.html" aria-label="Quant ML 자세히 보기">
+          <span class="s-year">2023</span>
+          <span class="s-title">Quant ML</span>
+          <span class="s-desc">암호화폐 USDT 페어 시계열 신호 탐지 실험. ML 앙상블 + 백테스트·리스크 관리 파이프라인.</span>
+          <span class="s-stack">Python · XGBoost · LightGBM · 시계열 · 백테스트</span>
+          <span class="s-arrow" aria-hidden="true">↗</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="contact">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">04 · 연락</span>
+      <h2 class="section-title">함께 일해요.</h2>
+    </div>
+    <div class="links">
+      <a class="primary" href="mailto:heetae104@gmail.com">heetae104@gmail.com ↗</a>
+      <a class="ghost" href="https://github.com/kimheetae0104" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="row">
+    <span>© 2026 김희태</span>
+    <span>마지막 업데이트 · <time datetime="2026-05-30">2026.05.30</time></span>
+  </div>
+</footer>
+
+<!-- Vercel Analytics (배포 후 자동 활성) + Speed Insights -->
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+
+<script type="module">
+/* ──────────────────────────────────────────────────────────
+   김희태.포트폴리오 — 클라이언트 인터랙션
+   - 스크롤 reveal (IntersectionObserver)
+   - 스크롤 progress bar (rAF + scroll)
+   - 네비 스크롤 스파이 + aria-current
+   - Hero 마우스 글로우 (CSS --mx, --my)
+   - prefetch on intent (hover/focus → 디테일 페이지 prefetch)
+   - 모션 줄이기 선호 존중
+   ────────────────────────────────────────────────────────── */
+(() => {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* 1) 스크롤 reveal */
+  {
+    const targets = document.querySelectorAll('section, .proj-card, .step, .about-side');
+    targets.forEach(el => el.classList.add('reveal'));
+    if (reduceMotion) {
+      targets.forEach(el => el.classList.add('is-in'));
+    } else {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-in');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      targets.forEach(el => io.observe(el));
+    }
+  }
+
+  /* 2) 스크롤 progress bar + 스마트 네비 (down 시 숨김, up 시 출현)
+     CSS cascade 회피 — 인라인 스타일 직접 적용 */
+  {
+    const bar = document.querySelector('.scroll-progress');
+    const nav = document.querySelector('.nav');
+    let lastY = window.scrollY;
+    let hidden = false;
+    let ticking = false;
+    const HIDE_THRESHOLD = 8;
+    const TOP_GUARD = 120;
+    if (nav) {
+      nav.style.transition = 'transform .24s cubic-bezier(.19,1,.22,1), opacity .24s cubic-bezier(.19,1,.22,1)';
+      nav.style.willChange = 'transform, opacity';
+    }
+    const setHidden = (h) => {
+      if (!nav || hidden === h) return;
+      hidden = h;
+      // transform: 실제 위치 이동 (정상 브라우저)
+      // opacity + pointer-events: 보조 신호 (프리뷰 환경 폴백)
+      nav.style.transform = h ? 'translateY(-110%)' : 'translateY(0)';
+      nav.style.opacity = h ? '0' : '1';
+      nav.style.pointerEvents = h ? 'none' : '';
+      nav.setAttribute('data-hidden', h ? 'true' : 'false');
+    };
+    const update = () => {
+      const html = document.documentElement;
+      const y = html.scrollTop;
+      if (bar) {
+        const max = html.scrollHeight - html.clientHeight;
+        const pct = max > 0 ? (y / max) * 100 : 0;
+        bar.style.setProperty('--progress', pct.toFixed(2) + '%');
+      }
+      const delta = y - lastY;
+      if (y < TOP_GUARD) setHidden(false);
+      else if (delta > HIDE_THRESHOLD) setHidden(true);
+      else if (delta < -HIDE_THRESHOLD) setHidden(false);
+      lastY = y;
+      ticking = false;
+    };
+    const onScroll = () => {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    update();
+  }
+
+  /* 3) 네비 스크롤 스파이 — aria-current로 표시 (CSS가 색·underline 처리) */
+  {
+    const links = document.querySelectorAll('.nav-links a[href^="#"]');
+    const linkMap = new Map();
+    links.forEach(a => {
+      const id = a.getAttribute('href').slice(1);
+      const sec = document.getElementById(id);
+      if (sec) linkMap.set(sec, a);
+    });
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        const a = linkMap.get(e.target);
+        if (!a) return;
+        if (e.isIntersecting) {
+          links.forEach(l => l.removeAttribute('aria-current'));
+          a.setAttribute('aria-current', 'page');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    linkMap.forEach((a, sec) => spy.observe(sec));
+  }
+
+  /* 4) Hero 마우스 글로우 — --mx, --my CSS 변수 업데이트 */
+  if (!reduceMotion && window.matchMedia('(hover: hover)').matches) {
+    const hero = document.querySelector('.hero');
+    if (hero) {
+      let raf = 0;
+      const onMove = (e) => {
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          const r = hero.getBoundingClientRect();
+          hero.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+          hero.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+          raf = 0;
+        });
+      };
+      hero.addEventListener('mousemove', onMove);
+    }
+  }
+
+  /* 5) prefetch on intent — 디테일 링크 hover/focus 시 미리 가져오기 */
+  {
+    const prefetched = new Set();
+    const prefetch = (href) => {
+      if (prefetched.has(href)) return;
+      if (!href || href === '#' || href.startsWith('mailto:')) return;
+      const l = document.createElement('link');
+      l.rel = 'prefetch';
+      l.href = href;
+      l.as = 'document';
+      document.head.appendChild(l);
+      prefetched.add(href);
+    };
+    const trigger = (e) => {
+      const a = e.target.closest('a[href]');
+      if (a) prefetch(a.getAttribute('href'));
+    };
+    document.querySelectorAll('.proj-links a').forEach(a => {
+      a.addEventListener('pointerenter', trigger, { once: false });
+      a.addEventListener('focusin', trigger, { once: false });
+    });
+  }
+
+  /* 6) View Transitions API — 같은 페이지 anchor 이동 시 부드러운 페이드 */
+  if (document.startViewTransition && !reduceMotion) {
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href').slice(1);
+        const target = document.getElementById(id);
+        if (!target) return;
+        e.preventDefault();
+        document.startViewTransition(() => {
+          target.scrollIntoView({ behavior: 'instant', block: 'start' });
+        });
+      });
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
