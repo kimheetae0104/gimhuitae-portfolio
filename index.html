@@ -17,6 +17,9 @@
 
 <link rel="canonical" href="https://gimhuitae-portfolio.vercel.app/">
 
+<!-- 인라인 SVG 파비콘 — 김 모노그램 (Sand 1200 / Navy 액센트, 다크모드 대응) -->
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="%23fdfdfc"/><text x="32" y="44" font-family="-apple-system,system-ui,sans-serif" font-size="38" font-weight="800" text-anchor="middle" fill="%2321201c">김</text><circle cx="50" cy="14" r="4" fill="%231a3a6e"/></svg>'>
+
 <!-- Variable 폰트 self-load (CLS=0) — Pretendard Variable + Inter Variable -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
@@ -329,13 +332,86 @@
 
   /* ── 인쇄 스타일 (시니어 디테일) ── */
   @media print{
-    .nav,.scroll-progress,.ctas,.skip-link{display:none !important}
+    .nav,.scroll-progress,.ctas,.skip-link,.body-grain{display:none !important}
     body{background:#fff;color:#000}
     .hero{padding:0}
     section{padding:24px 0;page-break-inside:avoid}
     a{color:#000;text-decoration:underline}
     .proj-card{break-inside:avoid;page-break-inside:avoid}
   }
+
+  /* ── 본문 그레인 텍스처 (rauno 시그니처) ──
+       SVG noise를 인라인 url로, fixed 포지션, blend, 매우 미세 */
+  .body-grain{
+    position:fixed;inset:0;z-index:1;pointer-events:none;
+    opacity:.045;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .8 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size:200px 200px;
+  }
+  @media (prefers-color-scheme: dark){
+    .body-grain{opacity:.06;mix-blend-mode:screen}
+  }
+  @media (prefers-reduced-data:reduce){
+    .body-grain{display:none}
+  }
+
+  /* ── 스마트 네비 (CSS는 unlayered로 — layer 우선순위 이슈 회피) ── */
+
+  /* ── Container queries — 카드 컴포넌트 단위 반응형 (2025 표준) ── */
+  .proj-featured,.proj-grid{container-type:inline-size;container-name:projgrid}
+  @container projgrid (max-width: 540px){
+    .proj-card .proj-meta{font-size:10.5px}
+    .proj-card .proj-title{font-size:16px}
+    .proj-card .proj-desc{font-size:13px}
+  }
+
+  /* ── Hero 사진 placeholder 폴리시 — 라디얼 그라데이션 + 스켈레톤 shimmer ── */
+  .hero .hero-photo-ph{
+    background:
+      radial-gradient(120% 100% at 30% 20%,
+        color-mix(in oklab, var(--accent) 6%, var(--bg-soft)),
+        var(--bg-soft) 70%);
+    overflow:hidden;
+  }
+  .hero .hero-photo-ph::before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(115deg,
+      transparent 0%,
+      transparent 35%,
+      color-mix(in oklab, var(--ink) 4%, transparent) 50%,
+      transparent 65%,
+      transparent 100%);
+    background-size:200% 100%;
+    background-position:100% 0;
+  }
+  @media (prefers-reduced-motion: no-preference){
+    .hero .hero-photo-ph::before{animation:shimmer 3.2s var(--ease-in-out-quart) infinite}
+  }
+  @keyframes shimmer{
+    0%{background-position:100% 0}
+    50%{background-position:-100% 0}
+    100%{background-position:-100% 0}
+  }
+  .hero .hero-photo-ph svg{
+    color:color-mix(in oklab, var(--ink) 30%, transparent);
+    opacity:.55;
+  }
+  .hero .hero-photo-ph .ph-label{
+    color:color-mix(in oklab, var(--ink) 60%, transparent);
+  }
+  .hero .hero-photo-ph .ph-path{
+    color:color-mix(in oklab, var(--ink) 35%, transparent);
+  }
+
+  /* ── prefers-reduced-data — 폰트 단순화, 효과 OFF ── */
+  @media (prefers-reduced-data:reduce){
+    .hero::before{display:none}
+    .scroll-progress{display:none}
+    .proj-thumb{background:var(--bg-soft) !important;color:var(--ink-3) !important}
+  }
+
+  /* ── 액센트 캐럿 색 (입력 필드 / 텍스트 영역) ── */
+  :root{accent-color:var(--accent);caret-color:var(--accent)}
 }
 body{
   background:var(--bg);color:var(--ink);
@@ -347,13 +423,16 @@ body{
 a{color:inherit;text-decoration:none}
 .container{max-width:var(--max);margin:0 auto;padding:0 32px}
 
-/* ---------- Top nav ---------- */
+/* ---------- Top nav (스마트 네비 — top 변동으로 hide/show) ---------- */
 .nav{
   position:fixed;top:0;left:0;right:0;z-index:50;
   background:rgba(255,255,255,.92);
   backdrop-filter:saturate(140%) blur(12px);
   border-bottom:1px solid var(--line);
+  transition:top var(--transition-xx,.24s) var(--ease-out-expo,cubic-bezier(.19,1,.22,1));
+  will-change:top;
 }
+.nav.is-hidden{top:-80px !important}
 .nav-inner{
   max-width:var(--max);margin:0 auto;padding:16px 32px;
   display:flex;align-items:center;justify-content:space-between;
@@ -719,6 +798,7 @@ footer .row{
 
 <a class="skip-link" href="#main">본문으로 건너뛰기</a>
 <div class="scroll-progress" aria-hidden="true"></div>
+<div class="body-grain" aria-hidden="true"></div>
 
 <!-- ============ 상단 네비게이션 ============ -->
 <nav class="nav" aria-label="주요 메뉴">
@@ -1080,27 +1160,50 @@ footer .row{
     }
   }
 
-  /* 2) 스크롤 progress bar — rAF로 throttle */
+  /* 2) 스크롤 progress bar + 스마트 네비 (down 시 숨김, up 시 출현)
+     CSS cascade 회피 — 인라인 스타일 직접 적용 */
   {
     const bar = document.querySelector('.scroll-progress');
-    if (bar) {
-      let ticking = false;
-      const update = () => {
-        const h = document.documentElement;
-        const max = h.scrollHeight - h.clientHeight;
-        const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
-        bar.style.setProperty('--progress', pct.toFixed(2) + '%');
-        ticking = false;
-      };
-      const onScroll = () => {
-        if (!ticking) {
-          requestAnimationFrame(update);
-          ticking = true;
-        }
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      update();
+    const nav = document.querySelector('.nav');
+    let lastY = window.scrollY;
+    let hidden = false;
+    let ticking = false;
+    const HIDE_THRESHOLD = 8;
+    const TOP_GUARD = 120;
+    if (nav) {
+      nav.style.transition = 'transform .24s cubic-bezier(.19,1,.22,1), opacity .24s cubic-bezier(.19,1,.22,1)';
+      nav.style.willChange = 'transform, opacity';
     }
+    const setHidden = (h) => {
+      if (!nav || hidden === h) return;
+      hidden = h;
+      // transform: 실제 위치 이동 (정상 브라우저)
+      // opacity + pointer-events: 보조 신호 (프리뷰 환경 폴백)
+      nav.style.transform = h ? 'translateY(-110%)' : 'translateY(0)';
+      nav.style.opacity = h ? '0' : '1';
+      nav.style.pointerEvents = h ? 'none' : '';
+      nav.setAttribute('data-hidden', h ? 'true' : 'false');
+    };
+    const update = () => {
+      const html = document.documentElement;
+      const y = html.scrollTop;
+      if (bar) {
+        const max = html.scrollHeight - html.clientHeight;
+        const pct = max > 0 ? (y / max) * 100 : 0;
+        bar.style.setProperty('--progress', pct.toFixed(2) + '%');
+      }
+      const delta = y - lastY;
+      if (y < TOP_GUARD) setHidden(false);
+      else if (delta > HIDE_THRESHOLD) setHidden(true);
+      else if (delta < -HIDE_THRESHOLD) setHidden(false);
+      lastY = y;
+      ticking = false;
+    };
+    const onScroll = () => {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    update();
   }
 
   /* 3) 네비 스크롤 스파이 — aria-current로 표시 (CSS가 색·underline 처리) */
