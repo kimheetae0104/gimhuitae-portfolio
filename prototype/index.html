@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<title>김희태.포트폴리오 — AI Application Engineer</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="현장의 비효율을 코드로 풀어내는 사람. AI 엔지니어 / AX 김희태 포트폴리오."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+:root{
+  --bg:#ffffff;
+  --bg-soft:#f7f7f5;
+  --bg-card:#ffffff;
+  --ink:#15171a;
+  --ink-2:#3d4148;
+  --ink-3:#6b6f76;
+  --ink-4:#a8acb3;
+  --line:#e8eaed;
+  --line-soft:#f1f2f4;
+  --accent:#1a3a6e;          /* deep navy */
+  --accent-2:#3858a3;
+  --accent-soft:#eaf0fa;
+  --positive:#0f7d4d;
+  --warn:#a14c1e;
+  --radius:10px;
+  --max:1080px;
+  --font-sans:"Pretendard","Inter",system-ui,-apple-system,sans-serif;
+  --font-display:"Inter","Pretendard",system-ui,sans-serif;
+  --font-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--font-sans);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:"ss01";
+}
+a{color:inherit;text-decoration:none}
+.container{max-width:var(--max);margin:0 auto;padding:0 32px}
+
+/* ---------- Top nav ---------- */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:saturate(140%) blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  max-width:var(--max);margin:0 auto;padding:16px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-brand{font-family:var(--font-sans);font-weight:800;font-size:16px;letter-spacing:-0.02em}
+.nav-brand .dot{color:var(--accent)}
+.nav-links{display:flex;gap:28px;font-family:var(--font-display);font-size:13px;color:var(--ink-2);font-weight:500;letter-spacing:.02em}
+.nav-links a{padding:6px 0;transition:color .2s}
+.nav-links a:hover{color:var(--accent)}
+@media (max-width:680px){.nav-links{gap:16px;font-size:11.5px}}
+
+/* ---------- Section ---------- */
+section{padding:120px 0 96px;scroll-margin-top:80px}
+.section-head{margin-bottom:56px}
+.section-num{
+  font-family:var(--font-display);font-size:12px;color:var(--accent);font-weight:700;
+  letter-spacing:.18em;margin-bottom:14px;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.section-num::after{content:"";width:32px;height:1.5px;background:var(--accent)}
+.section-title{font-family:var(--font-display);font-size:38px;letter-spacing:-0.025em;font-weight:800;margin:0 0 12px;line-height:1.15}
+.section-sub{font-size:15px;color:var(--ink-3);max-width:580px;margin:0;line-height:1.65}
+@media (max-width:680px){.section-title{font-size:26px}section{padding:80px 0 64px}}
+
+/* ---------- Hero ---------- */
+.hero{padding:160px 0 96px}
+.hero .eyebrow{
+  font-family:var(--font-display);font-size:12px;letter-spacing:.18em;
+  color:var(--accent);margin-bottom:24px;text-transform:uppercase;font-weight:700;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.hero .eyebrow::before{content:"";width:24px;height:1.5px;background:var(--accent)}
+.hero h1{
+  font-family:var(--font-display);
+  font-size:64px;line-height:1.05;letter-spacing:-0.035em;font-weight:800;
+  margin:0 0 28px;color:var(--ink);
+}
+.hero h1 .ln2{display:block;color:var(--ink-2);font-weight:700}
+.hero .lede{font-size:18px;color:var(--ink-2);max-width:640px;line-height:1.7;margin:0 0 40px}
+.hero .lede strong{color:var(--ink);font-weight:700}
+.hero .role-chips{
+  display:flex;flex-wrap:wrap;gap:6px;margin:0 0 40px;
+}
+.hero .role-chips span{
+  font-family:var(--font-display);font-size:12px;font-weight:600;
+  padding:6px 12px;background:var(--accent-soft);color:var(--accent);
+  border-radius:99px;letter-spacing:.02em;
+}
+.hero .ctas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:48px}
+.hero .ctas a{
+  font-family:var(--font-display);font-size:14px;font-weight:600;
+  padding:13px 22px;border-radius:99px;letter-spacing:.01em;
+  transition:transform .15s,background .15s,color .15s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.hero .ctas a.primary{background:var(--accent);color:#fff}
+.hero .ctas a.primary:hover{background:var(--ink);transform:translateY(-1px)}
+.hero .ctas a.ghost{background:transparent;border:1.5px solid var(--ink);color:var(--ink)}
+.hero .ctas a.ghost:hover{background:var(--ink);color:#fff}
+.hero .meta{
+  display:flex;gap:0;flex-wrap:wrap;padding:18px 0;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  font-family:var(--font-display);font-size:13px;color:var(--ink-3);letter-spacing:.02em;
+  max-width:760px;
+}
+.hero .meta span{padding:0 20px;border-right:1px solid var(--line)}
+.hero .meta span:first-child{padding-left:0}.hero .meta span:last-child{border-right:0}
+.hero .meta strong{color:var(--ink);font-weight:600}
+@media (max-width:680px){
+  .hero{padding:120px 0 64px}
+  .hero h1{font-size:42px}
+  .hero .lede{font-size:16px}
+}
+
+/* ---------- About ---------- */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+@media (max-width:780px){.about-grid{grid-template-columns:1fr;gap:32px}}
+.about p{font-size:16px;color:var(--ink-2);line-height:1.85;margin:0 0 18px}
+.about p strong{color:var(--ink);font-weight:700}
+.about-side{
+  background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius);
+  padding:28px;
+}
+.about-side h3{
+  font-family:var(--font-display);font-size:13px;letter-spacing:.14em;
+  color:var(--ink-3);text-transform:uppercase;font-weight:700;margin:0 0 18px;
+}
+.about-side ul{margin:0;padding:0;list-style:none;display:grid;gap:14px}
+.about-side li{font-size:14.5px;color:var(--ink-2);line-height:1.65;display:grid;grid-template-columns:14px 1fr;gap:10px;align-items:start}
+.about-side li::before{content:"";width:6px;height:6px;background:var(--accent);border-radius:50%;margin-top:9px;justify-self:center}
+.about-side li strong{color:var(--ink);font-weight:700;display:block;margin-bottom:2px}
+
+/* ---------- Skills ---------- */
+.skills{display:grid;grid-template-columns:200px 1fr;gap:18px 36px}
+@media (max-width:680px){.skills{grid-template-columns:1fr;gap:8px 0}}
+.skills .cat{
+  font-family:var(--font-display);font-size:13px;font-weight:700;
+  color:var(--ink);letter-spacing:.02em;padding-top:4px;
+}
+.skills .list{
+  display:flex;flex-wrap:wrap;gap:6px 16px;
+  padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:20px;
+  font-size:14.5px;color:var(--ink-2);font-weight:500;
+}
+.skills .row:last-child .list{border-bottom:0;margin-bottom:0;padding-bottom:0}
+.skills .list span::after{content:"·";margin-left:16px;color:var(--ink-4)}
+.skills .list span:last-child::after{content:""}
+
+/* ---------- Projects ---------- */
+.proj-toggle{display:flex;gap:0;margin-bottom:32px;border:1px solid var(--line);border-radius:99px;width:fit-content;background:var(--bg-soft);padding:3px}
+.proj-toggle button{
+  font-family:var(--font-display);font-size:13px;font-weight:600;
+  padding:8px 18px;border-radius:99px;border:0;background:transparent;
+  color:var(--ink-3);cursor:pointer;letter-spacing:.02em;transition:all .15s;
+}
+.proj-toggle button.active{background:var(--ink);color:#fff}
+
+.proj-section-title{
+  font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--ink);
+  letter-spacing:.04em;text-transform:uppercase;margin:0 0 18px;
+  display:flex;align-items:center;gap:10px;
+}
+.proj-section-title::before{content:"";width:18px;height:1.5px;background:var(--accent)}
+
+.proj-featured{display:grid;grid-template-columns:1fr;gap:18px;margin-bottom:64px}
+.proj-featured .proj-card{display:grid;grid-template-columns:280px 1fr;gap:0}
+@media (max-width:780px){.proj-featured .proj-card{grid-template-columns:1fr}}
+
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media (max-width:900px){.proj-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.proj-grid{grid-template-columns:1fr}}
+
+.proj-card{
+  background:var(--bg-card);border:1px solid var(--line);
+  border-radius:var(--radius);overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.proj-card:hover{transform:translateY(-2px);box-shadow:0 12px 24px -18px rgba(0,0,0,.25);border-color:#cfd2d6}
+.proj-thumb{
+  aspect-ratio:16/10;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:22px;font-weight:800;letter-spacing:-0.02em;
+  border-bottom:1px solid var(--line);
+}
+.proj-featured .proj-thumb{aspect-ratio:auto;border-bottom:0;border-right:1px solid var(--line);min-height:200px}
+@media (max-width:780px){.proj-featured .proj-thumb{border-right:0;border-bottom:1px solid var(--line);aspect-ratio:16/10}}
+.proj-body{padding:20px 22px 22px;display:flex;flex-direction:column;gap:10px;flex:1}
+.proj-meta{
+  font-family:var(--font-display);font-size:11px;color:var(--ink-3);
+  letter-spacing:.14em;text-transform:uppercase;font-weight:600;
+  display:flex;gap:14px;flex-wrap:wrap;
+}
+.proj-meta .tag{padding:2px 8px;background:var(--accent-soft);color:var(--accent);border-radius:99px;letter-spacing:.02em}
+.proj-title{
+  font-family:var(--font-display);font-size:20px;font-weight:800;
+  letter-spacing:-0.02em;margin:0;color:var(--ink);
+}
+.proj-desc{font-size:14.5px;color:var(--ink-2);line-height:1.65;margin:0;flex:1}
+
+.proj-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;margin-bottom:4px}
+.proj-featured .proj-metrics{margin-top:14px}
+.proj-metric{padding:12px 14px;background:var(--bg-soft);border-radius:8px;border:1px solid var(--line-soft)}
+.proj-metric .k{font-family:var(--font-display);font-size:10.5px;font-weight:600;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.proj-metric .v{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--accent);letter-spacing:-0.02em;line-height:1.2}
+.proj-metric .v small{font-size:12px;font-weight:600;color:var(--ink-3);margin-left:2px}
+
+.proj-stack{
+  display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:8px;
+  font-family:var(--font-display);font-size:12px;color:var(--ink-3);font-weight:500;
+}
+.proj-stack span::after{content:"·";margin-left:12px;color:var(--ink-4)}
+.proj-stack span:last-child::after{content:""}
+
+.proj-links{
+  display:flex;gap:14px;font-family:var(--font-display);font-size:13px;font-weight:600;
+  padding-top:14px;border-top:1px solid var(--line);margin-top:8px;
+}
+.proj-links a{color:var(--ink-2);transition:color .2s}
+.proj-links a:hover{color:var(--accent)}
+.proj-links a.detail{color:var(--accent);font-weight:700}
+.proj-links a.detail::after{content:" →"}
+.proj-links a:not(.detail)::after{content:" ↗"}
+
+/* ---------- Approach ---------- */
+.approach-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--bg-card)}
+@media (max-width:900px){.approach-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.approach-grid{grid-template-columns:1fr}}
+.step{padding:28px 24px;border-right:1px solid var(--line);position:relative}
+.step:last-child{border-right:0}
+@media (max-width:900px){
+  .step:nth-child(2){border-right:0}
+  .step:nth-child(-n+2){border-bottom:1px solid var(--line)}
+}
+@media (max-width:520px){
+  .step{border-right:0;border-bottom:1px solid var(--line)}
+  .step:last-child{border-bottom:0}
+}
+.step .n{
+  font-family:var(--font-display);font-size:11.5px;color:var(--accent);font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.step .n::before{content:"";width:14px;height:1.5px;background:var(--accent)}
+.step h3{font-family:var(--font-display);font-size:18px;font-weight:800;margin:0 0 10px;letter-spacing:-0.015em;color:var(--ink)}
+.step p{font-size:14px;color:var(--ink-2);line-height:1.7;margin:0}
+
+/* ---------- Contact ---------- */
+.contact .line{
+  font-family:var(--font-display);font-size:42px;letter-spacing:-0.025em;font-weight:800;
+  line-height:1.2;margin:0 0 24px;max-width:780px;color:var(--ink);
+}
+.contact .line strong{color:var(--accent)}
+.contact .sub{font-size:16px;color:var(--ink-2);max-width:620px;margin:0 0 36px;line-height:1.75}
+.contact .links{display:flex;gap:10px;flex-wrap:wrap}
+.contact .links a{
+  font-family:var(--font-display);font-size:14px;font-weight:600;
+  padding:13px 22px;border-radius:99px;letter-spacing:.01em;transition:all .15s;
+}
+.contact .links a.primary{background:var(--accent);color:#fff}
+.contact .links a.primary:hover{background:var(--ink)}
+.contact .links a.ghost{background:transparent;border:1.5px solid var(--ink);color:var(--ink)}
+.contact .links a.ghost:hover{background:var(--ink);color:#fff}
+@media (max-width:680px){.contact .line{font-size:26px}}
+
+/* ---------- Footer ---------- */
+footer{
+  border-top:1px solid var(--line);padding:32px 0;
+  font-family:var(--font-display);font-size:12px;color:var(--ink-3);
+  letter-spacing:.04em;font-weight:500;
+}
+footer .row{
+  max-width:var(--max);margin:0 auto;padding:0 32px;
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+}
+
+/* placeholder marker */
+.ph{color:var(--ink-3);font-size:12px;font-family:var(--font-display);font-style:italic;background:#fff7e6;border:1px dashed #e0c896;padding:2px 8px;border-radius:4px;display:inline-block;margin-top:6px}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">김희태<span class="dot">.</span>포트폴리오</div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#approach">Approach</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header id="home" class="hero">
+  <div class="container">
+    <div class="eyebrow">PORTFOLIO 2026</div>
+    <h1>
+      현장의 비효율을<br/>
+      <span class="ln2">코드로 풀어냅니다.</span>
+    </h1>
+    <p class="lede">
+      <strong>AI 엔지니어 김희태</strong>입니다. 사회복지 현장에서 봤던 반복 업무를
+      LLM·RAG·AI 에이전트로 옮겨, <strong>현장 사람이 더 중요한 일에 시간을 쓰게</strong> 만듭니다.
+      PPT보다 <strong>작동하는 결과물</strong>로 증명하는 걸 선호합니다.
+    </p>
+    <div class="role-chips">
+      <span>AI Application</span>
+      <span>AX / 디지털 전환</span>
+      <span>LLM · RAG · Agent</span>
+      <span>PoC → 운영</span>
+    </div>
+    <div class="ctas">
+      <a class="primary" href="#projects">프로젝트 보기 →</a>
+      <a class="ghost" href="#contact">연락하기</a>
+    </div>
+    <div class="meta">
+      <span><strong>현재</strong> · Open to work</span>
+      <span><strong>관심</strong> · AX / AI Application</span>
+      <span><strong>위치</strong> · Seoul, KR</span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">01 · About</span>
+      <h2 class="section-title">엔지니어가 AX를 한다는 것.</h2>
+      <p class="section-sub">컨설팅 보고서가 아니라 작동하는 코드로 AI 전환을 증명하는 사람.</p>
+    </div>
+    <div class="about-grid">
+      <div class="about">
+        <p>
+          사회복지 현장에서 일하면서 *"이건 사람이 할 일이 아닌데"* 라고 느낀 반복 업무가 많았습니다.
+          문서 작성, 흩어진 자료 검색, 정해진 답을 찾는 상담 — 이것들을
+          <strong>AI로 옮기면 현장 사람이 더 중요한 일을 할 수 있겠다</strong>는 생각으로
+          데이터·LLM 쪽으로 옮겨왔습니다.
+        </p>
+        <p>
+          저는 <strong>아이디어를 일주일 안에 동작하는 프로토타입</strong>으로 옮기는 걸 좋아합니다.
+          코드를 짜기 전에 문제를 정의하고 시스템을 먼저 설계하고,
+          그 설계가 맞는지 <strong>자료 조사와 반복 검증</strong>으로 다듬어 나갑니다.
+        </p>
+        <p>
+          좋은 동료는 결국 <strong>"같이 일하면 일이 되게 만드는 사람"</strong>이라고 생각합니다.
+          저도 그런 동료가 되고 싶습니다.
+        </p>
+      </div>
+      <aside class="about-side">
+        <h3>일하는 방식</h3>
+        <ul>
+          <li><strong>실행이 빠릅니다</strong>아이디어 → 동작하는 프로토 사이클을 4주 안에 끝냅니다.</li>
+          <li><strong>구조부터 그립니다</strong>코드 전에 데이터·모듈·흐름을 먼저 설계합니다.</li>
+          <li><strong>집요하게 검증합니다</strong>결과가 안 나오면 가설을 바꿔가며 빠르게 여러 번 시도합니다.</li>
+          <li><strong>도메인부터 봅니다</strong>모델보다 "왜 이 일이 비효율인가"를 먼저 정의합니다.</li>
+          <li><strong>AI-Native로 짭니다</strong>Claude Code · Codex · Cursor로 4주 PoC를 돌립니다.</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SKILLS ============ -->
+<section id="skills" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">02 · Skills</span>
+      <h2 class="section-title">자주 쓰는 도구들.</h2>
+    </div>
+    <div class="skills">
+      <div class="row" style="display:contents">
+        <div class="cat">Language</div>
+        <div class="list"><span>Python</span><span>TypeScript</span><span>JavaScript</span><span>Swift</span><span>SQL</span></div>
+      </div>
+      <div class="row" style="display:contents">
+        <div class="cat">LLM / Agent</div>
+        <div class="list"><span>OpenAI / Anthropic API</span><span>LangChain</span><span>LangGraph</span><span>CrewAI</span><span>RAG</span><span>Prompt Engineering</span></div>
+      </div>
+      <div class="row" style="display:contents">
+        <div class="cat">ML / Data</div>
+        <div class="list"><span>PyTorch</span><span>scikit-learn</span><span>XGBoost</span><span>pandas</span><span>NumPy</span><span>PostgreSQL</span><span>Airflow</span></div>
+      </div>
+      <div class="row" style="display:contents">
+        <div class="cat">App / Web</div>
+        <div class="list"><span>Next.js</span><span>React</span><span>Vue</span><span>FastAPI</span><span>SwiftUI</span><span>Vercel</span></div>
+      </div>
+      <div class="row" style="display:contents">
+        <div class="cat">Cloud / Automation</div>
+        <div class="list"><span>AWS</span><span>Azure</span><span>GCP</span><span>Docker</span><span>n8n</span><span>Dify</span></div>
+      </div>
+      <div class="row" style="display:contents">
+        <div class="cat">AI-Native Dev</div>
+        <div class="list"><span>Claude Code</span><span>Codex</span><span>Cursor</span><span>MCP</span><span>Git</span><span>Notion</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section id="projects">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">03 · Projects</span>
+      <h2 class="section-title">만든 것들.</h2>
+      <p class="section-sub">현장의 문제를 코드로 옮긴 결과물. 상단 3개가 가장 강한 케이스, 그 아래는 더 보기.</p>
+    </div>
+
+    <!-- Featured 3 -->
+    <h3 class="proj-section-title">Featured</h3>
+    <div class="proj-featured">
+
+      <article class="proj-card">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#1a3a6e,#3858a3);color:#fff">INKK</div>
+        <div class="proj-body">
+          <div class="proj-meta">
+            <span>2025</span>
+            <span class="tag">LLM Agent</span>
+            <span class="tag">PoC → 운영</span>
+          </div>
+          <h3 class="proj-title">INKK — AI 카드뉴스 생성 에이전트</h3>
+          <p class="proj-desc">
+            주제 한 줄을 넣으면 LangGraph 기반 멀티 에이전트(Planner·Writer·Critic·Designer)가
+            6장 카드뉴스를 자동 생성. 카드뉴스 1편 제작에 2~3시간 걸리던 작업을 분 단위로 단축.
+          </p>
+          <div class="proj-metrics">
+            <div class="proj-metric"><div class="k">제작 시간</div><div class="v">2h → 4m</div></div>
+            <div class="proj-metric"><div class="k">검증 점수</div><div class="v">2.4 → 4.1<small>/5</small></div></div>
+            <div class="proj-metric"><div class="k">호출 비용</div><div class="v">−30<small>%</small></div></div>
+          </div>
+          <div class="proj-stack"><span>Next.js</span><span>LangGraph</span><span>Claude API</span><span>Vercel</span></div>
+          <span class="ph">수치는 자리만 잡은 가데이터 — 실제 값으로 교체 필요</span>
+          <div class="proj-links">
+            <a class="detail" href="../INKK.html">Detail</a>
+            <a href="#">Demo</a>
+            <a href="#">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb" style="background:#e0e7ff;color:#1a3a6e">Blog Agent</div>
+        <div class="proj-body">
+          <div class="proj-meta">
+            <span>2025</span>
+            <span class="tag">RAG · Agent</span>
+            <span class="tag">PoC</span>
+          </div>
+          <h3 class="proj-title">Blog Agent RAG — 자료 기반 블로그 작성 파이프라인</h3>
+          <p class="proj-desc">
+            LangGraph + RAG로 자료 수집 → 초안 → 사실 검증 → 톤 검수까지 한 사이클을 자동화.
+            글 1편 작성에 4~5시간 걸리던 작업을 30분으로 단축.
+          </p>
+          <div class="proj-metrics">
+            <div class="proj-metric"><div class="k">작성 시간</div><div class="v">5h → 30m</div></div>
+            <div class="proj-metric"><div class="k">사실 검증률</div><div class="v">~92<small>%</small></div></div>
+            <div class="proj-metric"><div class="k">PoC 기간</div><div class="v">3주</div></div>
+          </div>
+          <div class="proj-stack"><span>LangGraph</span><span>RAG</span><span>Claude API</span><span>FastAPI</span></div>
+          <span class="ph">수치는 자리만 잡은 가데이터</span>
+          <div class="proj-links">
+            <a class="detail" href="../BlogAgentRAG.html">Detail</a>
+            <a href="#">Demo</a>
+            <a href="#">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb" style="background:#0f172a;color:#22c55e;font-family:var(--font-mono);font-size:18px">$ local-ai</div>
+        <div class="proj-body">
+          <div class="proj-meta">
+            <span>2025</span>
+            <span class="tag">Local LLM Agent</span>
+            <span class="tag">Tool Use</span>
+          </div>
+          <h3 class="proj-title">Local AI Agent — 로컬 LLM 기반 작업 비서</h3>
+          <p class="proj-desc">
+            Ollama 기반 로컬 LLM + LangGraph로 파일·웹·캘린더 도구를 호출하는 개인 작업 비서.
+            외부 API 의존 없이 보안이 중요한 도메인에서 사용 가능한 형태로 설계.
+          </p>
+          <div class="proj-metrics">
+            <div class="proj-metric"><div class="k">로컬 추론</div><div class="v">~800<small>ms</small></div></div>
+            <div class="proj-metric"><div class="k">도구 수</div><div class="v">12<small>개</small></div></div>
+            <div class="proj-metric"><div class="k">월 비용</div><div class="v">$0</div></div>
+          </div>
+          <div class="proj-stack"><span>Python</span><span>Ollama</span><span>LangGraph</span><span>MCP</span></div>
+          <span class="ph">수치는 자리만 잡은 가데이터</span>
+          <div class="proj-links">
+            <a class="detail" href="../LocalAI.html">Detail</a>
+            <a href="#">Demo</a>
+            <a href="#">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- More 6 -->
+    <h3 class="proj-section-title">More</h3>
+    <div class="proj-grid">
+
+      <article class="proj-card">
+        <div class="proj-thumb" style="background:#fef3c7;color:#92400e">NOxO</div>
+        <div class="proj-body">
+          <div class="proj-meta"><span>2024</span><span class="tag">Simulation</span></div>
+          <h3 class="proj-title">NOxO</h3>
+          <p class="proj-desc">IGCC 발전소 NOx 배출 시뮬레이션. 변수 관계 도식화 → 모델 설계.</p>
+          <div class="proj-stack"><span>Python</span><span>scikit-learn</span></div>
+          <div class="proj-links">
+            <a class="detail" href="../NOxO.html">Detail</a>
+            <a href="#">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb" style="background:#1f2937;color:#a5b4fc">LHV</div>
+        <div class="proj-body">
+          <div class="proj-meta"><span>2024</span><span class="tag">ML</span></div>
+          <h3 class="proj-title">LHV</h3>
+          <p class="proj-desc">제철 열풍로 발열량 예측 모델. 피처 12회 재구성으로 RMSE 감소.</p>
+          <div class="proj-stack"><span>Python</span><span>XGBoost</span></div>
+          <div class="proj-links">
+            <a class="detail" href="../LHV.html">Detail</a>
+            <a href="#">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb" style="background:#fce7f3;color:#9d174d">JANN</div>
+        <div class="proj-body">
+          <div class="proj-meta"><span>2025</span><span class="tag">iOS</span></div>
+          <h3 class="proj-title">JANN</h3>
+          <p class="proj-desc">분자 미식학 기반 iOS 레시피 추천 앱. 향 분자 그래프로 페어링 제안.</p>
+          <div class="proj-stack"><span>SwiftUI</span><span>CoreData</span></div>
+          <div class="proj-links">
+            <a class="detail" href="../JANN.html">Detail</a>
+            <a href="#">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb" style="background:#ecfdf5;color:#065f46">Skinpass</div>
+        <div class="proj-body">
+          <div class="proj-meta"><span>2024</span><span class="tag">ML</span></div>
+          <h3 class="proj-title">Skinpass</h3>
+          <p class="proj-desc">제철 공정 비계획 발생 예측. 불균형 데이터 핸들링이 핵심.</p>
+          <div class="proj-stack"><span>Python</span><span>LightGBM</span></div>
+          <div class="proj-links">
+            <a class="detail" href="../Skinpass.html">Detail</a>
+            <a href="#">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb" style="background:#ecfeff;color:#0e7490">DACON</div>
+        <div class="proj-body">
+          <div class="proj-meta"><span>2024</span><span class="tag">Competition</span></div>
+          <h3 class="proj-title">DACON</h3>
+          <p class="proj-desc">스마트 창고 출고 지연 예측 대회. 피처 엔지니어링과 앙상블.</p>
+          <div class="proj-stack"><span>Python</span><span>XGBoost</span></div>
+          <div class="proj-links">
+            <a class="detail" href="../DACON.html">Detail</a>
+            <a href="#">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb" style="background:#fef9c3;color:#854d0e">Binance Bot</div>
+        <div class="proj-body">
+          <div class="proj-meta"><span>2024</span><span class="tag">Trading</span></div>
+          <h3 class="proj-title">Binance ML Bot</h3>
+          <p class="proj-desc">ML 신호 기반 암호화폐 자동매매 봇. 백테스트와 리스크 관리.</p>
+          <div class="proj-stack"><span>Python</span><span>Binance API</span></div>
+          <div class="proj-links">
+            <a class="detail" href="../BinanceBot.html">Detail</a>
+            <a href="#">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ APPROACH ============ -->
+<section id="approach" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">04 · Approach</span>
+      <h2 class="section-title">어떻게 일하나요.</h2>
+      <p class="section-sub">아이디어부터 운영 전환까지 4단계로 가져갑니다.</p>
+    </div>
+    <div class="approach-grid">
+      <div class="step">
+        <div class="n">01 · Discover</div>
+        <h3>문제 정의</h3>
+        <p>현업 인터뷰로 페인포인트를 1~3개로 좁히고, AI로 풀 가치가 있는지 ROI를 추정합니다.</p>
+      </div>
+      <div class="step">
+        <div class="n">02 · Build</div>
+        <h3>4주 프로토</h3>
+        <p>LLM · RAG · 에이전트 · 코딩 에이전트(Claude Code 등)로 4주 안에 동작하는 형태를 만듭니다.</p>
+      </div>
+      <div class="step">
+        <div class="n">03 · Validate</div>
+        <h3>반복 검증</h3>
+        <p>평가셋·로그·만족도로 어떤 가설이 맞는지 빠르게 확인합니다. 가설을 바꿔가며 여러 번 시도합니다.</p>
+      </div>
+      <div class="step">
+        <div class="n">04 · Ship</div>
+        <h3>운영 전환</h3>
+        <p>Guardrail·로그·모니터링을 붙여 안정적인 운영으로 넘기고, 사용 데이터로 다음 반복을 정합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="contact">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">05 · Contact</span>
+    </div>
+    <p class="line">
+      가장 힘든 업무 1건, <strong>4주 안에 동작하는 도구</strong>로 만들어 보냅니다.
+    </p>
+    <p class="sub">
+      반복되는 문서 작성, 흩어진 자료 검색, 정해진 답을 찾는 상담 — 현업의 페인포인트 1건만
+      알려주시면 4주 안에 동작하는 프로토타입으로 답장드리겠습니다.
+    </p>
+    <div class="links">
+      <a class="primary" href="mailto:heetae104@gmail.com">heetae104@gmail.com ↗</a>
+      <a class="ghost" href="https://github.com/kimheetae0104" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="row">
+    <span>© 2026 KIM HEETAE · PORTFOLIO 2026</span>
+    <span>HTML · No framework · AI-Native built</span>
+  </div>
+</footer>
+
+</body>
+</html>
