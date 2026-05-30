@@ -148,7 +148,15 @@
   footer.foot a.back{ display:inline-flex; align-items:center; gap:10px; font-weight:500; color:var(--ink); }
   footer.foot a.back svg{ stroke:var(--accent); }
 
-  @media print{ .nav,footer.foot{ display:none; } body{ background:#fff; color:#111; } section{ padding:32px 0; break-inside:avoid; } *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
+  @media print{
+    .nav,footer.foot{ display:none; }
+    body{ background:#fff; color:#111; }
+    section{ padding:32px 0; break-inside:avoid; }
+    .thi{ break-before:page; page-break-before:always; }
+    .thi .c{ break-inside:avoid; }
+    h1,h2,h3{ break-after:avoid; page-break-after:avoid; }
+    *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  }
 </style>
 </head>
 <body>

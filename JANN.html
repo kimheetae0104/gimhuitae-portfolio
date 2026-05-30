@@ -189,8 +189,15 @@
   footer.foot .back{ display:inline-flex; align-items:center; gap:10px; font-weight:500; color:#F5F5F7; }
   footer.foot .back svg{ stroke:var(--accent); }
 
-  @media print{ .nav, footer.foot{ display:none; } section{ padding:36px 0; break-inside:avoid; }
-    *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; } section.dark{ background:#fff; color:#000; } }
+  @media print{
+    .nav, footer.foot{ display:none; }
+    section{ padding:36px 0; break-inside:avoid; }
+    .thi{ break-before:page; page-break-before:always; }
+    .thi .c{ break-inside:avoid; }
+    h1,h2,h3{ break-after:avoid; page-break-after:avoid; }
+    section.dark{ background:#fff; color:#000; }
+    *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  }
 </style>
 </head>
 <body>

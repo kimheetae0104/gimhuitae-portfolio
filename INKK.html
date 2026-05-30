@@ -134,7 +134,14 @@
   footer.foot .live{ font-family:var(--mono); font-size:13px; color:#9C9489; margin-top:18px; }
   footer.foot .live a{ color:var(--accent-2); }
 
-  @media print{ .nav,footer.foot{ display:none; } section{ padding:32px 0; break-inside:avoid; } *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
+  @media print{
+    .nav,footer.foot{ display:none; }
+    section{ padding:32px 0; break-inside:avoid; }
+    .thi{ break-before:page; page-break-before:always; }
+    .thi .c{ break-inside:avoid; }
+    h1,h2,h3{ break-after:avoid; page-break-after:avoid; }
+    *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  }
 </style>
 </head>
 <body>
