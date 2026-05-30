@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fbfbfa"/>
+      <stop offset="1" stop-color="#f0efec"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#fafaf9"/>
+    </linearGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+      <feOffset dx="0" dy="6" result="o"/>
+      <feFlood flood-color="#000" flood-opacity="0.08"/>
+      <feComposite in2="o" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#bcbab6"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Pretendard Variable', 'Apple SD Gothic Neo', 'Helvetica Neue', Arial, sans-serif" text-anchor="middle">
+    <text x="800" y="180" font-size="42" font-weight="800" fill="#21201c" letter-spacing="-1.2">Blog Agent · 발행 파이프라인</text>
+    <text x="800" y="226" font-size="18" font-weight="500" fill="#6b6b66" letter-spacing="-0.3">로컬 LLM → RAG → 공시 검증 → 오케스트레이션 → 발행</text>
+  </g>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Pretendard Variable', 'Apple SD Gothic Neo', sans-serif" filter="url(#sh)">
+    <rect x="80"   y="350" width="240" height="200" rx="16" fill="url(#card)" stroke="#e2e1de"/>
+    <text x="200"  y="402" text-anchor="middle" font-size="12" font-weight="700" fill="#82827c" letter-spacing="2.5">01 · LLM</text>
+    <text x="200"  y="452" text-anchor="middle" font-size="28" font-weight="800" fill="#21201c" letter-spacing="-0.8">Ollama</text>
+    <text x="200"  y="490" text-anchor="middle" font-size="14" fill="#3a3a36">로컬 추론</text>
+    <text x="200"  y="514" text-anchor="middle" font-size="12.5" fill="#6b6b66">네트워크 없이 실행</text>
+
+    <rect x="380"  y="350" width="240" height="200" rx="16" fill="url(#card)" stroke="#e2e1de"/>
+    <text x="500"  y="402" text-anchor="middle" font-size="12" font-weight="700" fill="#82827c" letter-spacing="2.5">02 · 지식</text>
+    <text x="500"  y="452" text-anchor="middle" font-size="28" font-weight="800" fill="#21201c" letter-spacing="-0.8">RAG</text>
+    <text x="500"  y="490" text-anchor="middle" font-size="14" fill="#3a3a36">ChromaDB</text>
+    <text x="500"  y="514" text-anchor="middle" font-size="12.5" fill="#6b6b66">문맥 기반 생성</text>
+
+    <rect x="680"  y="350" width="240" height="200" rx="16" fill="url(#card)" stroke="#e2e1de"/>
+    <text x="800"  y="402" text-anchor="middle" font-size="12" font-weight="700" fill="#82827c" letter-spacing="2.5">03 · 검증</text>
+    <text x="800"  y="452" text-anchor="middle" font-size="28" font-weight="800" fill="#21201c" letter-spacing="-0.8">DART</text>
+    <text x="800"  y="490" text-anchor="middle" font-size="14" fill="#3a3a36">공시 사실 확인</text>
+    <text x="800"  y="514" text-anchor="middle" font-size="12.5" fill="#6b6b66">할루시네이션 차단</text>
+
+    <rect x="980"  y="350" width="240" height="200" rx="16" fill="#1e3a8a" stroke="#1e3a8a"/>
+    <text x="1100" y="402" text-anchor="middle" font-size="12" font-weight="700" fill="#aabbe1" letter-spacing="2.5">04 · 오케스트레이션</text>
+    <text x="1100" y="452" text-anchor="middle" font-size="28" font-weight="800" fill="#ffffff" letter-spacing="-0.8">LangGraph</text>
+    <text x="1100" y="490" text-anchor="middle" font-size="14" fill="#dde4f3">파이프라인</text>
+    <text x="1100" y="514" text-anchor="middle" font-size="12.5" fill="#aabbe1">노드 그래프</text>
+
+    <rect x="1280" y="350" width="240" height="200" rx="16" fill="url(#card)" stroke="#e2e1de"/>
+    <text x="1400" y="402" text-anchor="middle" font-size="12" font-weight="700" fill="#82827c" letter-spacing="2.5">05 · 발행</text>
+    <text x="1400" y="452" text-anchor="middle" font-size="28" font-weight="800" fill="#21201c" letter-spacing="-0.8">Sheets</text>
+    <text x="1400" y="490" text-anchor="middle" font-size="14" fill="#3a3a36">자동 업로드</text>
+    <text x="1400" y="514" text-anchor="middle" font-size="12.5" fill="#6b6b66">발행 기록 누적</text>
+  </g>
+
+  <g fill="none" stroke="#bcbab6" stroke-width="2" stroke-linecap="round">
+    <path d="M320 450 L380 450" marker-end="url(#arr)"/>
+    <path d="M620 450 L680 450" marker-end="url(#arr)"/>
+    <path d="M920 450 L980 450" marker-end="url(#arr)"/>
+    <path d="M1220 450 L1280 450" marker-end="url(#arr)"/>
+  </g>
+
+  <g font-family="ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace" font-size="11" letter-spacing="2.5" fill="#9a9a93" text-anchor="middle">
+    <text x="800" y="720">ONE CYCLE · 재사용 가능한 에이전트 인프라</text>
+  </g>
+</svg>
