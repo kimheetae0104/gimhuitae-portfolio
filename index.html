@@ -791,6 +791,42 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 }
 .proj-summary dd strong{color:var(--ink);font-weight:700}
 
+/* 프로젝트 카드 — 미디어 미리보기 row (이미지·비디오 2~3개) */
+.proj-media{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(100px,1fr));
+  gap:6px;margin:6px 0 4px;
+}
+.proj-media a{
+  display:block;aspect-ratio:4/3;
+  background:var(--bg-soft);
+  border:1px solid var(--line);border-radius:6px;
+  overflow:hidden;position:relative;
+  transition:transform var(--transition-xx) var(--ease-out-expo),
+             border-color var(--transition-xx) var(--ease-out-expo);
+}
+.proj-media a:hover{transform:translateY(-1px);border-color:var(--accent)}
+.proj-media img,.proj-media video{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform var(--transition-long) var(--ease-out-expo);
+}
+.proj-media a:hover img{transform:scale(1.04)}
+.proj-media a .media-cap{
+  position:absolute;left:0;right:0;bottom:0;
+  padding:4px 8px;
+  font-family:var(--font-display);font-size:9.5px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;
+  color:#fff;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);
+  text-align:left;
+}
+.proj-media a.is-video::after{
+  content:"▶";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(0,0,0,.55);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;backdrop-filter:blur(4px);
+}
+
 /* 컴팩트 인라인 메트릭 — 카드 안에서 한 줄로 */
 .proj-metrics-inline{
   display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:4px;
@@ -974,7 +1010,7 @@ footer .row{
     <div class="skills">
       <div class="row" style="display:contents">
         <div class="cat">LLM · 에이전트</div>
-        <div class="list"><span>OpenAI</span><span>Anthropic</span><span>LangGraph</span><span>LangChain</span><span>RAG</span><span>ChromaDB</span><span>Ollama</span><span>MCP</span></div>
+        <div class="list"><span>OpenAI</span><span>Anthropic</span><span>Groq</span><span>LangGraph</span><span>LangChain</span><span>RAG</span><span>ChromaDB</span><span>Ollama</span><span>MCP</span></div>
       </div>
       <div class="row" style="display:contents">
         <div class="cat">머신러닝 · 데이터</div>
@@ -1022,6 +1058,10 @@ footer .row{
             <div><dt>어떻게</dt><dd>운전 데이터에 Ridge + LightGBM 시계열 앙상블, <strong>5분 후 조기경보 모델</strong>을 설계.</dd></div>
             <div><dt>결과</dt><dd>운영 시뮬레이션 작동. <strong>센서 누수·라벨 오염 발견</strong>해 검증 기준을 다시 설계함 (SeSAC 최종 프로젝트).</dd></div>
           </dl>
+          <div class="proj-media" aria-label="NOxO 미리보기">
+            <a href="noxo/sim.png" target="_blank" rel="noopener"><img src="noxo/sim.png" alt="NOxO 시뮬레이션 대시보드" loading="lazy"><span class="media-cap">시뮬레이션</span></a>
+            <a href="noxo/predict.png" target="_blank" rel="noopener"><img src="noxo/predict.png" alt="NOxO 예측 결과" loading="lazy"><span class="media-cap">예측 결과</span></a>
+          </div>
           <div class="proj-stack"><span>Python</span><span>Ridge · LightGBM 앙상블</span><span>시계열</span><span>피처 엔지니어링</span></div>
           <div class="proj-links">
             <a class="detail" aria-label="NOxO 자세히 보기" href="NOxO.html">자세히 →</a>
@@ -1049,6 +1089,11 @@ footer .row{
             <div><dt>어떻게</dt><dd>Python 모델 → <strong>CoreML 변환</strong> → SwiftUI iOS 앱, t-SNE 클러스터링으로 추천.</dd></div>
             <div><dt>결과</dt><dd><strong>온디바이스 추론</strong>으로 네트워크 비용 0 · 프라이버시 보장. <strong>저작권 등록 완료</strong>.</dd></div>
           </dl>
+          <div class="proj-media" aria-label="JANN 미리보기">
+            <a href="jann/img/tsne-clustering.png" target="_blank" rel="noopener"><img src="jann/img/tsne-clustering.png" alt="JANN t-SNE 클러스터링" loading="lazy"><span class="media-cap">t-SNE EDA</span></a>
+            <a href="jann/img/recipe.jpg" target="_blank" rel="noopener"><img src="jann/img/recipe.jpg" alt="JANN 레시피 화면" loading="lazy"><span class="media-cap">iOS UI</span></a>
+            <a href="jann/demo.mp4" target="_blank" rel="noopener" class="is-video"><img src="jann/demo-poster.jpg" alt="JANN 데모 영상" loading="lazy"><span class="media-cap">데모</span></a>
+          </div>
           <div class="proj-stack"><span>SwiftUI</span><span>Python</span><span>CoreML</span><span>t-SNE 클러스터링</span><span>온디바이스 추론</span></div>
           <div class="proj-links">
             <a class="detail" aria-label="JANN 자세히 보기" href="JANN.html">자세히 →</a>
@@ -1076,6 +1121,10 @@ footer .row{
             <div><dt>어떻게</dt><dd>LangGraph <strong>멀티 에이전트(Planner·Writer·Critic·Designer)</strong> + Next.js + Stripe 결제까지 한 사이클.</dd></div>
             <div><dt>결과</dt><dd>주제 한 줄 → 카드뉴스 6장 + 카피 자동 생성. <strong>얼리 액세스 운영 중</strong>.</dd></div>
           </dl>
+          <div class="proj-media" aria-label="INKK 미리보기">
+            <a href="inkk/landing.png" target="_blank" rel="noopener"><img src="inkk/landing.png" alt="INKK 랜딩 페이지" loading="lazy"><span class="media-cap">랜딩</span></a>
+            <a href="inkk/thumb.png" target="_blank" rel="noopener"><img src="inkk/thumb.png" alt="INKK 서비스 화면" loading="lazy"><span class="media-cap">서비스 UI</span></a>
+          </div>
           <div class="proj-stack"><span>Next.js 16</span><span>LangGraph · 멀티 에이전트</span><span>Claude · Groq</span><span>Supabase · Stripe</span></div>
           <div class="proj-links">
             <a class="detail" aria-label="INKK 자세히 보기" href="INKK.html">자세히 →</a>
@@ -1103,6 +1152,9 @@ footer .row{
             <div><dt>어떻게</dt><dd><strong>Ollama 로컬 LLM</strong> + RAG + DART 공시 검증 + 발행까지 LangGraph 파이프라인.</dd></div>
             <div><dt>결과</dt><dd>한 사이클 자동화 완료. <strong>다른 작업 비서로 재사용 가능</strong>한 에이전트 인프라로 분리 설계.</dd></div>
           </dl>
+          <div class="proj-media" aria-label="Blog Agent 미리보기">
+            <a href="blog-agent-rag/img/sheets-result.png" target="_blank" rel="noopener"><img src="blog-agent-rag/img/sheets-result.png" alt="Blog Agent 발행 결과" loading="lazy"><span class="media-cap">발행 결과</span></a>
+          </div>
           <div class="proj-stack"><span>Python</span><span>Ollama</span><span>LangGraph</span><span>RAG · ChromaDB</span><span>MCP · 도구 호출</span><span>DART API</span></div>
           <div class="proj-links">
             <a class="detail" aria-label="Blog Agent 자세히 보기" href="BlogAgentRAG.html">자세히 →</a>
