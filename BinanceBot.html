@@ -40,6 +40,16 @@
   footer{ margin-top:clamp(56px,8vh,90px); border-top:1px solid var(--line-soft); padding:40px 0; }
   footer a{ display:inline-flex; align-items:center; gap:9px; font-weight:600; }
   footer a svg{ stroke:var(--accent); }
+
+@media print{
+  .nav,footer,nav,header{ display:none; }
+  body{ background:#fff !important; color:#111; }
+  section,.panel,.feature,article{ break-inside:avoid; }
+  .thi{ break-before:page; page-break-before:always; }
+  .thi>*{ break-inside:avoid; }
+  h1,h2,h3{ break-after:avoid; page-break-after:avoid; }
+  *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
 </style>
 </head>
 <body>

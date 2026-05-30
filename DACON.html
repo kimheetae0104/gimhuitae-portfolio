@@ -84,6 +84,16 @@
   .cn-fig img { height: auto; max-height: 78vh; }
   .pageno, .pageno-mark { display: none; }
 }
+
+@media print{
+  .nav,footer,nav,header{ display:none; }
+  body{ background:#fff !important; color:#111; }
+  section,.panel,.feature,article{ break-inside:avoid; }
+  .thi{ break-before:page; page-break-before:always; }
+  .thi>*{ break-inside:avoid; }
+  h1,h2,h3{ break-after:avoid; page-break-after:avoid; }
+  *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
 </style>
 </head>
 <body>
