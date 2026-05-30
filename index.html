@@ -1139,8 +1139,8 @@ footer .row{
           지표만 좋은 모델이 아니라, <strong>실제로 일이 바뀌는 시스템</strong>을 만듭니다.
         </p>
         <p>
-          문제 정의 → 구조 설계 → 프로토타입 → 검증·운영까지 한 사이클로 끌고 갑니다.
-          아이디어가 떠오르면 코딩 에이전트로 곧장 프로토타입에 옮기고, 가설을 바꿔가며 빠르게 시도합니다.
+          문제를 정의하고, 구조를 잡고, 프로토타입까지 빠르게 가져갑니다.
+          아이디어가 떠오르면 코딩 에이전트로 곧장 옮기고, 가설을 바꿔가며 검증과 운영까지 한 흐름으로 끌고 갑니다.
         </p>
       </div>
 
@@ -1268,9 +1268,9 @@ footer .row{
           </div>
           <h3 class="proj-title">NOxO</h3>
           <dl class="proj-summary">
-            <div><dt>왜</dt><dd>사람이 NOx 추이를 매번 눈으로 살피는 비효율을 해소해야 했습니다.</dd></div>
-            <div><dt>어떻게</dt><dd>운전 데이터 → 시계열 앙상블(Ridge·LightGBM) → 5분 후 조기경보까지 파이프라인 구성</dd></div>
-            <div><dt>결과</dt><dd>운영 시뮬레이션 작동 + <strong>센서 누수·라벨 오염을 발견</strong>해 검증 기준을 다시 설계했습니다.</dd></div>
+            <div><dt>왜</dt><dd>발전소 NOx는 운전원이 매번 추이를 살피며 운영합니다.</dd></div>
+            <div><dt>어떻게</dt><dd>1초 시세를 1분 평균으로 묶고, Ridge·LightGBM 시계열 앙상블로 5분 뒤 NOx를 예측했습니다.</dd></div>
+            <div><dt>결과</dt><dd>시뮬레이션은 작동했지만, R² 0.99가 <strong>CEMS 라벨 누수에서 온 점수</strong>라는 걸 찾아내 검증 기준을 다시 설계했습니다.</dd></div>
           </dl>
           <div class="proj-stack"><span>Python</span><span>Ridge·LightGBM</span><span>시계열</span></div>
           <div class="proj-actions">
@@ -1293,9 +1293,9 @@ footer .row{
           </div>
           <h3 class="proj-title">JANN</h3>
           <dl class="proj-summary">
-            <div><dt>왜</dt><dd>전문가만 다루던 향미 화합물 데이터를 일반 사용자가 못 쓰는 비효율을 풀고 싶었습니다.</dd></div>
-            <div><dt>어떻게</dt><dd>Python 모델 → CoreML 변환 → SwiftUI iOS 앱 + t-SNE 클러스터링 추천까지 파이프라인 구성</dd></div>
-            <div><dt>결과</dt><dd><strong>온디바이스 추론으로 네트워크 비용 0·프라이버시 보장</strong>. 저작권 등록을 완료했습니다.</dd></div>
+            <div><dt>왜</dt><dd>향미 화합물 1,107개 데이터는 식품학자들이 쓰던 자료라 일반 사용자는 접근하기 어려웠습니다.</dd></div>
+            <div><dt>어떻게</dt><dd>Python 추천 모델을 CoreML로 변환해 SwiftUI iOS 앱에 넣었고, t-SNE 클러스터링으로 비슷한 재료를 묶었습니다.</dd></div>
+            <div><dt>결과</dt><dd><strong>네트워크 호출 없이 기기 안에서 추론합니다</strong>. 컴퓨터프로그램 저작권 등록(C-2026-023193) 완료.</dd></div>
           </dl>
           <div class="proj-stack"><span>SwiftUI</span><span>CoreML</span><span>t-SNE</span></div>
           <div class="proj-actions">
@@ -1322,9 +1322,9 @@ footer .row{
           </div>
           <h3 class="proj-title">INKK</h3>
           <dl class="proj-summary">
-            <div><dt>왜</dt><dd>1인 콘텐츠 운영자가 카드뉴스 1편에 2~3시간 쓰는 비효율을 풀고 싶었습니다.</dd></div>
-            <div><dt>어떻게</dt><dd>LangGraph 멀티 에이전트(Planner·Writer·Critic·Designer) + Next.js·Stripe까지 한 사이클 파이프라인 구성</dd></div>
-            <div><dt>결과</dt><dd>주제 한 줄 → <strong>카드뉴스 6장 + 카피 자동 생성</strong>까지 한 사이클로 완성합니다.</dd></div>
+            <div><dt>왜</dt><dd>1인 콘텐츠 운영자는 카드뉴스 1편에 보통 2~3시간을 씁니다.</dd></div>
+            <div><dt>어떻게</dt><dd>LangGraph 멀티 에이전트 4개(Planner·Writer·Critic·Designer)로 글을 나누고, Next.js 프런트와 Stripe 결제까지 붙였습니다.</dd></div>
+            <div><dt>결과</dt><dd>주제 한 줄을 넣으면 <strong>카드뉴스 6장 + 본문 카피가 자동 생성</strong>됩니다.</dd></div>
           </dl>
           <div class="proj-stack"><span>Next.js</span><span>LangGraph</span><span>Supabase·Stripe</span></div>
           <div class="proj-actions">
@@ -1348,9 +1348,9 @@ footer .row{
           </div>
           <h3 class="proj-title">Blog Agent</h3>
           <dl class="proj-summary">
-            <div><dt>왜</dt><dd>경제 블로그 글 작성·검증·발행을 매번 수동으로 하는 비효율을 풀어야 했습니다.</dd></div>
-            <div><dt>어떻게</dt><dd>Ollama 로컬 LLM → RAG → DART 공시 검증 → 발행까지 LangGraph 파이프라인 구성</dd></div>
-            <div><dt>결과</dt><dd>한 사이클 자동화 완료. <strong>재사용 가능한 에이전트 인프라</strong>로 분리 설계했습니다.</dd></div>
+            <div><dt>왜</dt><dd>경제 블로그를 직접 운영하면서 글 쓰기·사실 확인·발행을 매번 손으로 했습니다.</dd></div>
+            <div><dt>어떻게</dt><dd>Ollama 로컬 LLM으로 초안을 쓰고, RAG로 사내 노트를 참조하고, DART 공시로 수치를 검증한 뒤 시트에 발행합니다. 노드는 LangGraph로 묶었습니다.</dd></div>
+            <div><dt>결과</dt><dd>한 편이 작성·검증·발행까지 한 흐름으로 처리됩니다. <strong>에이전트 인프라를 분리해 다른 작업에도 재사용</strong>합니다.</dd></div>
           </dl>
           <div class="proj-stack"><span>Ollama</span><span>LangGraph</span><span>RAG·ChromaDB</span></div>
           <div class="proj-actions">
@@ -1370,7 +1370,7 @@ footer .row{
         <a class="side-row" href="LHV.html" aria-label="LHV 자세히 보기">
           <span class="s-year">2026.03</span>
           <span class="s-title">LHV</span>
-          <span class="s-desc">제철 열풍로 발열량 5분 시계열 예측. 피처 12회 재구성 + SHAP 해석으로 RMSE 11.99.</span>
+          <span class="s-desc">제철 열풍로의 5분 뒤 발열량(LHV)을 예측했습니다. 피처를 12회 다시 설계하고 SHAP로 변수 중요도를 해석해 <strong>RMSE 11.99 kcal/Nm³</strong>까지 줄였습니다.</span>
           <span class="s-stack">Python · Ridge · XGBoost · SHAP · 시계열</span>
           <span class="s-arrow" aria-hidden="true">↗</span>
         </a>
@@ -1379,7 +1379,7 @@ footer .row{
         <a class="side-row" href="Skinpass.html" aria-label="Skinpass 자세히 보기">
           <span class="s-year">2024</span>
           <span class="s-title">Skinpass</span>
-          <span class="s-desc">제철 공정 이상 탐지 (Anomaly Detection). 불균형 데이터 핸들링 + SMOTE 실험.</span>
+          <span class="s-desc">냉연 코일 4,000건의 비계획 Skinpass(발생률 40.8%)를 예측했습니다. 2단계 게이트 + SMOTE + 로지스틱 회귀로 <strong>Recall 0.595</strong>까지 올렸습니다.</span>
           <span class="s-stack">Python · LightGBM · SMOTE · 불균형 학습</span>
           <span class="s-arrow" aria-hidden="true">↗</span>
         </a>
@@ -1388,7 +1388,7 @@ footer .row{
         <a class="side-row" href="BinanceBot.html" aria-label="Quant ML 자세히 보기">
           <span class="s-year">2023</span>
           <span class="s-title">Quant ML</span>
-          <span class="s-desc">암호화폐 시장의 급등 시그널을 정량적으로 포착하는 ML 트레이딩 파이프라인. 기술 지표 1차 필터 → XGB·LGB 앙상블(SMOTE) → P(SURGE)≥0.83 임계 → 손실 가드·walk-forward 백테스트까지 한 사이클. 단기 수익보다 <strong>살아남는 시스템</strong>에 집중.</span>
+          <span class="s-desc">수백 개 USDT 페어를 1분봉으로 스캔해 급등 신호만 추렸습니다. 규칙 필터 + XGB·LGB 앙상블(SMOTE) + 임계 0.83에서 알림, 손절·walk-forward 백테스트까지 페이퍼로 돌렸습니다.</span>
           <span class="s-stack">Python · XGB·LGB 앙상블 · SMOTE · 리스크 관리 · 백테스트</span>
           <span class="s-arrow" aria-hidden="true">↗</span>
         </a>
