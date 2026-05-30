@@ -997,14 +997,19 @@ footer .row{
           <div class="proj-meta">
             <span>2026.05</span>
             <span class="tag">업무 자동화 AX</span>
-            <span class="tag">RAG · 에이전트</span>
+            <span class="tag">로컬 LLM · RAG</span>
+            <span class="tag">에이전트</span>
           </div>
-          <h3 class="proj-title">Blog Agent — 상한가 분석 글 자동화</h3>
+          <h3 class="proj-title">Blog Agent — 로컬 LLM 기반 검증형 자동화 파이프라인</h3>
           <p class="proj-desc">
             직접 운영하는 경제 블로그를 위해 만든 검증형 LLM 도구.
-            크롤링, RAG 검색, DART 검증, 발행 흐름을 자동화했다.
+            <strong>클라우드 LLM에 의존하지 않고 Ollama 기반 로컬 LLM과 도구 호출(MCP)</strong> 위에
+            설계해 비용·보안 양쪽을 모두 잡았다.
+            크롤링, RAG 검색, DART 공시 검증, 발행 흐름까지 한 사이클로 자동화.
+            같은 에이전트 인프라(LangGraph + 도구 호출 + 메모리)를
+            <strong>다른 작업 비서 도구로 재사용</strong>할 수 있게 분리 설계했다.
           </p>
-          <div class="proj-stack"><span>Python</span><span>Ollama</span><span>RAG · ChromaDB</span><span>DART API</span></div>
+          <div class="proj-stack"><span>Python</span><span>Ollama</span><span>LangGraph</span><span>RAG · ChromaDB</span><span>MCP · 도구 호출</span><span>DART API</span></div>
           <div class="proj-links">
             <a class="detail" aria-label="Blog Agent 자세히 보기" href="BlogAgentRAG.html">자세히 →</a>
             <a href="#">GitHub</a>
@@ -1017,15 +1022,6 @@ footer .row{
     <!-- 사이드 프로젝트 5 (텍스트 리스트 — paco/brittany 패턴) -->
     <h3 class="proj-section-title">사이드 프로젝트</h3>
     <ul class="side-projects">
-      <li>
-        <a class="side-row" href="LocalAI.html" aria-label="Local AI Agent 자세히 보기">
-          <span class="s-year">2025</span>
-          <span class="s-title">Local AI Agent</span>
-          <span class="s-desc">로컬 LLM 기반 작업 비서. 외부 API 의존 없이 도구 호출과 메모리 설계.</span>
-          <span class="s-stack">Ollama · LangGraph · MCP</span>
-          <span class="s-arrow" aria-hidden="true">↗</span>
-        </a>
-      </li>
       <li>
         <a class="side-row" href="LHV.html" aria-label="LHV 자세히 보기">
           <span class="s-year">2026.03</span>
@@ -1041,15 +1037,6 @@ footer .row{
           <span class="s-title">Skinpass</span>
           <span class="s-desc">제철 공정 비계획 발생 예측. 불균형 데이터 핸들링이 핵심.</span>
           <span class="s-stack">Python · LightGBM</span>
-          <span class="s-arrow" aria-hidden="true">↗</span>
-        </a>
-      </li>
-      <li>
-        <a class="side-row" href="DACON.html" aria-label="DACON 자세히 보기">
-          <span class="s-year">2024</span>
-          <span class="s-title">DACON</span>
-          <span class="s-desc">스마트 창고 출고 지연 예측 대회. 피처 엔지니어링과 앙상블.</span>
-          <span class="s-stack">Python · XGBoost</span>
           <span class="s-arrow" aria-hidden="true">↗</span>
         </a>
       </li>
