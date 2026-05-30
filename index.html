@@ -715,7 +715,7 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 
 .proj-section-title{
   font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--ink);
-  letter-spacing:.04em;text-transform:uppercase;margin:0 0 18px;
+  letter-spacing:.04em;text-transform:uppercase;margin:0 0 20px;
   display:flex;align-items:center;gap:10px;flex-wrap:wrap;
 }
 .proj-section-title::before{content:"";width:18px;height:1.5px;background:var(--accent)}
@@ -725,7 +725,7 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 }
 
 .proj-featured{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:80px}
-@media (max-width:780px){.proj-featured{grid-template-columns:1fr;gap:18px}}
+@media (max-width:780px){.proj-featured{grid-template-columns:1fr;gap:16px}}
 
 .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 @media (max-width:900px){.proj-grid{grid-template-columns:repeat(2,1fr)}}
@@ -738,7 +738,7 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
   display:grid;
   grid-template-columns:64px minmax(160px,200px) 1fr minmax(180px,220px) 20px;
   gap:24px;align-items:baseline;
-  padding:18px 8px;
+  padding:20px 8px;
   color:var(--ink);text-decoration:none;
   border-radius:6px;
   margin-inline:-8px;
@@ -801,25 +801,34 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 .proj-card .proj-thumb a{
   position:relative;z-index:2;
 }
+/* 썸네일 — 모든 카드 동일 비율 (16:9), 이미지 cover 채움 */
 .proj-thumb{
   aspect-ratio:16/9;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-display);font-size:20px;font-weight:800;letter-spacing:-0.02em;
+  overflow:hidden;
   border-bottom:1px solid var(--line);
-  background-size:cover;background-position:center;background-repeat:no-repeat;
+  background:var(--bg-soft);
   position:relative;
+  display:block;
 }
+.proj-thumb img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  display:block;
+}
+.proj-thumb img.thumb-top{object-position:top}
 .proj-thumb .ph-note{
   position:absolute;bottom:8px;left:8px;
   font-family:var(--font-display);font-size:10px;font-weight:500;letter-spacing:.06em;
   color:rgba(255,255,255,.85);background:rgba(0,0,0,.45);
   padding:3px 8px;border-radius:4px;text-transform:uppercase;
 }
-.proj-body{padding:18px 20px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+
+/* 카드 본문 — 4·8·12·16·20 픽셀 스케일로 통일 */
+.proj-body{padding:20px;display:flex;flex-direction:column;gap:12px;flex:1}
 .proj-meta{
   font-family:var(--font-display);font-size:11px;color:var(--ink-3);
   letter-spacing:.14em;text-transform:uppercase;font-weight:600;
-  display:flex;gap:14px;flex-wrap:wrap;
+  display:flex;gap:8px 12px;flex-wrap:wrap;align-items:center;
 }
 .proj-meta .tag{padding:2px 8px;background:var(--accent-soft);color:var(--accent);border-radius:99px;letter-spacing:.02em}
 .proj-title{
@@ -829,10 +838,10 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 .proj-desc{font-size:13.5px;color:var(--ink-2);line-height:1.6;margin:0;flex:1}
 
 /* 프로젝트 요약 — 왜 / 어떻게 / 결과 3줄 라벨 */
-.proj-summary{display:grid;gap:8px;margin:0;padding:0;flex:1}
+.proj-summary{display:grid;gap:10px;margin:0;padding:0;flex:1}
 .proj-summary > div{
   display:grid;
-  grid-template-columns:48px 1fr;
+  grid-template-columns:44px 1fr;
   gap:12px;align-items:baseline;
 }
 .proj-summary dt{
@@ -850,13 +859,13 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 
 /* 프로젝트 카드 — 액션 버튼 row (cdg 패턴: README · 이미지 · 영상) */
 .proj-actions{
-  display:flex;gap:6px;flex-wrap:wrap;
-  padding-top:14px;border-top:1px solid var(--line);margin-top:auto;
+  display:flex;gap:8px;flex-wrap:wrap;
+  padding-top:16px;border-top:1px solid var(--line);margin-top:auto;
 }
 .action{
   display:inline-flex;align-items:center;gap:6px;
   font-family:var(--font-display);font-size:12px;font-weight:600;
-  padding:7px 12px;border:1px solid var(--line);border-radius:8px;
+  padding:8px 12px;border:1px solid var(--line);border-radius:8px;
   color:var(--ink-2);background:var(--bg);
   text-decoration:none;letter-spacing:-0.005em;
 }
@@ -875,7 +884,7 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 
 /* 컴팩트 인라인 메트릭 — 카드 안에서 한 줄로 */
 .proj-metrics-inline{
-  display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:4px;
+  display:flex;flex-wrap:wrap;gap:4px 12px;
   font-family:var(--font-display);font-size:12px;color:var(--ink-2);font-weight:600;
 }
 .proj-metrics-inline .m{display:inline-flex;align-items:baseline;gap:4px}
@@ -885,7 +894,7 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 .proj-metrics-inline .m:last-child::after{content:""}
 
 .proj-stack{
-  display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px;
+  display:flex;flex-wrap:wrap;gap:4px 12px;
   font-family:var(--font-display);font-size:11.5px;color:var(--ink-3);font-weight:500;
 }
 .proj-stack span::after{content:"·";margin-left:12px;color:var(--ink-4)}
@@ -1098,8 +1107,8 @@ footer .row{
     <div class="proj-featured">
 
       <article class="proj-card">
-        <div class="proj-thumb" style="padding:0">
-          <img src="noxo/sim.png" alt="NOxO 시뮬레이션 대시보드" loading="lazy" style="width:100%;height:100%;object-fit:cover">
+        <div class="proj-thumb">
+          <img src="noxo/sim.png" alt="NOxO 시뮬레이션 대시보드" loading="lazy">
         </div>
         <div class="proj-body">
           <div class="proj-meta">
@@ -1124,8 +1133,8 @@ footer .row{
       </article>
 
       <article class="proj-card">
-        <div class="proj-thumb" style="padding:0">
-          <img src="jann/img/tsne-clustering.png" alt="JANN t-SNE 클러스터링" loading="lazy" style="width:100%;height:100%;object-fit:cover">
+        <div class="proj-thumb">
+          <img src="jann/img/tsne-clustering.png" alt="JANN t-SNE 클러스터링" loading="lazy">
         </div>
         <div class="proj-body">
           <div class="proj-meta">
@@ -1152,8 +1161,8 @@ footer .row{
       </article>
 
       <article class="proj-card">
-        <div class="proj-thumb" style="padding:0">
-          <img src="inkk/landing.webp" alt="INKK 서비스 화면" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top" onerror="this.src='inkk/landing.png'">
+        <div class="proj-thumb">
+          <img src="inkk/landing.webp" alt="INKK 서비스 화면" loading="lazy" class="thumb-top" onerror="this.src='inkk/landing.png'">
         </div>
         <div class="proj-body">
           <div class="proj-meta">
@@ -1178,8 +1187,8 @@ footer .row{
       </article>
 
       <article class="proj-card">
-        <div class="proj-thumb" style="padding:0">
-          <img src="blog-agent-rag/img/sheets-result.png" alt="Blog Agent 발행 결과" loading="lazy" style="width:100%;height:100%;object-fit:cover">
+        <div class="proj-thumb">
+          <img src="blog-agent-rag/img/sheets-result.png" alt="Blog Agent 발행 결과" loading="lazy">
         </div>
         <div class="proj-body">
           <div class="proj-meta">
