@@ -887,16 +887,15 @@ section{padding:96px 0;scroll-margin-top:80px}
 
 /* 프로젝트 카드 — 액션 버튼 row (cdg 패턴: README · 이미지 · 영상) */
 .proj-actions{
-  display:flex;gap:8px;flex-wrap:wrap;
+  display:flex;gap:6px;flex-wrap:wrap;
   padding-top:20px;border-top:1px solid var(--line);margin-top:auto;
 }
 .action{
   display:inline-flex;align-items:center;gap:6px;
-  font-family:var(--font-display);font-size:12.5px;font-weight:600;
-  padding:10px 14px;border:1px solid var(--line);border-radius:8px;
+  font-family:var(--font-display);font-size:12px;font-weight:600;
+  padding:8px 12px;border:1px solid var(--line);border-radius:8px;
   color:var(--ink-2);background:var(--bg);
   text-decoration:none;letter-spacing:-0.005em;
-  min-height:36px;
 }
 .action:hover{
   border-color:var(--accent);color:var(--accent);
@@ -1159,14 +1158,13 @@ footer .row{
 
       <article class="proj-card">
         <div class="proj-thumb">
-          <img src="jann/img/tsne-clustering.png" alt="JANN t-SNE 클러스터링" loading="lazy">
+          <img src="jann/img/tsne-clustering.png" alt="JANN t-SNE 클러스터링" loading="lazy" class="thumb-top">
         </div>
         <div class="proj-body">
           <div class="proj-meta">
             <span>2026</span>
             <span class="tag">AI 서비스 AX</span>
             <span class="tag">온디바이스 AI</span>
-            <span class="tag">저작권 등록</span>
           </div>
           <h3 class="proj-title">JANN</h3>
           <dl class="proj-summary">
@@ -1199,7 +1197,7 @@ footer .row{
           <dl class="proj-summary">
             <div><dt>왜</dt><dd>1인 콘텐츠 운영자가 카드뉴스 1편에 2~3시간 쓰는 비효율을 풀고 싶었습니다.</dd></div>
             <div><dt>어떻게</dt><dd>LangGraph 멀티 에이전트(Planner·Writer·Critic·Designer)와 Next.js·Stripe까지 한 사이클로 만들었습니다.</dd></div>
-            <div><dt>결과</dt><dd>주제 한 줄 → <strong>카드뉴스 6장 + 카피 자동 생성</strong>. 얼리 액세스를 운영 중입니다.</dd></div>
+            <div><dt>결과</dt><dd>주제 한 줄 → <strong>카드뉴스 6장 + 카피 자동 생성</strong>까지 한 사이클로 완성합니다.</dd></div>
           </dl>
           <div class="proj-stack"><span>Next.js</span><span>LangGraph</span><span>Supabase·Stripe</span></div>
           <div class="proj-actions">
@@ -1225,7 +1223,7 @@ footer .row{
           <dl class="proj-summary">
             <div><dt>왜</dt><dd>직접 운영하는 경제 블로그의 글 작성·검증·발행을 자동화해야 했습니다.</dd></div>
             <div><dt>어떻게</dt><dd>Ollama 로컬 LLM·RAG·DART 공시 검증·발행까지 LangGraph 파이프라인으로 묶었습니다.</dd></div>
-            <div><dt>결과</dt><dd>한 사이클 자동화 완료. <strong>다른 작업 비서로 재사용 가능한 에이전트 인프라</strong>로 분리 설계했습니다.</dd></div>
+            <div><dt>결과</dt><dd>한 사이클 자동화 완료. <strong>재사용 가능한 에이전트 인프라</strong>로 분리 설계했습니다.</dd></div>
           </dl>
           <div class="proj-stack"><span>Ollama</span><span>LangGraph</span><span>RAG·ChromaDB</span></div>
           <div class="proj-actions">
