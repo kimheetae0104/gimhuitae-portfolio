@@ -771,6 +771,26 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
 }
 .proj-desc{font-size:13.5px;color:var(--ink-2);line-height:1.6;margin:0;flex:1}
 
+/* 프로젝트 요약 — 왜 / 어떻게 / 결과 3줄 라벨 */
+.proj-summary{display:grid;gap:8px;margin:0;padding:0;flex:1}
+.proj-summary > div{
+  display:grid;
+  grid-template-columns:48px 1fr;
+  gap:12px;align-items:baseline;
+}
+.proj-summary dt{
+  font-family:var(--font-display);
+  font-size:10.5px;font-weight:700;
+  color:var(--accent);
+  letter-spacing:.12em;text-transform:uppercase;
+  margin:0;
+}
+.proj-summary dd{
+  font-size:13.5px;color:var(--ink-2);
+  line-height:1.55;margin:0;
+}
+.proj-summary dd strong{color:var(--ink);font-weight:700}
+
 /* 컴팩트 인라인 메트릭 — 카드 안에서 한 줄로 */
 .proj-metrics-inline{
   display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:4px;
@@ -997,11 +1017,11 @@ footer .row{
             <span class="tag">시계열 예측</span>
           </div>
           <h3 class="proj-title">NOxO</h3>
-          <p class="proj-desc">
-            IGCC 발전소 운전 데이터로 NOx 배출을 실시간 예측하고 <strong>5분 후 임계치 초과</strong>를
-            조기경보하는 산업 ML 시스템. SeSAC 최종 프로젝트.
-            <strong>센서 누수와 라벨 오염을 발견</strong>해 검증 기준을 다시 설계한 게 핵심 학습.
-          </p>
+          <dl class="proj-summary">
+            <div><dt>왜</dt><dd>발전소 NOx 임계 초과를 <strong>사전에 잡아내는 시스템</strong>이 필요했다.</dd></div>
+            <div><dt>어떻게</dt><dd>운전 데이터에 Ridge + LightGBM 시계열 앙상블, <strong>5분 후 조기경보 모델</strong>을 설계.</dd></div>
+            <div><dt>결과</dt><dd>운영 시뮬레이션 작동. <strong>센서 누수·라벨 오염 발견</strong>해 검증 기준을 다시 설계함 (SeSAC 최종 프로젝트).</dd></div>
+          </dl>
           <div class="proj-stack"><span>Python</span><span>Ridge · LightGBM 앙상블</span><span>시계열</span><span>피처 엔지니어링</span></div>
           <div class="proj-links">
             <a class="detail" aria-label="NOxO 자세히 보기" href="NOxO.html">자세히 →</a>
@@ -1024,11 +1044,11 @@ footer .row{
             <span class="tag">저작권등록</span>
           </div>
           <h3 class="proj-title">JANN</h3>
-          <p class="proj-desc">
-            향미 화합물 데이터에서 <strong>재료 조합을 t-SNE 클러스터링으로 추천</strong>하는 iOS 앱.
-            Python 학습 모델을 <strong>CoreML로 변환해 온디바이스 추론</strong>으로 연결해
-            네트워크 비용 0 · 프라이버시 보장. 저작권 등록 완료.
-          </p>
+          <dl class="proj-summary">
+            <div><dt>왜</dt><dd>향미 화합물 데이터를 <strong>일반 사용자가 활용할 수 있는 형태</strong>로 만들고 싶었다.</dd></div>
+            <div><dt>어떻게</dt><dd>Python 모델 → <strong>CoreML 변환</strong> → SwiftUI iOS 앱, t-SNE 클러스터링으로 추천.</dd></div>
+            <div><dt>결과</dt><dd><strong>온디바이스 추론</strong>으로 네트워크 비용 0 · 프라이버시 보장. <strong>저작권 등록 완료</strong>.</dd></div>
+          </dl>
           <div class="proj-stack"><span>SwiftUI</span><span>Python</span><span>CoreML</span><span>t-SNE 클러스터링</span><span>온디바이스 추론</span></div>
           <div class="proj-links">
             <a class="detail" aria-label="JANN 자세히 보기" href="JANN.html">자세히 →</a>
@@ -1051,11 +1071,11 @@ footer .row{
             <span class="tag">Production · 얼리 액세스</span>
           </div>
           <h3 class="proj-title">INKK</h3>
-          <p class="proj-desc">
-            주제 한 줄에서 <strong>LangGraph 멀티 에이전트(Planner·Writer·Critic·Designer)</strong>가
-            카드뉴스 6장과 카피를 자동 생성. <strong>콘텐츠 입력부터 결제·배포까지</strong> 한 사이클로 묶은
-            Production SaaS — 얼리 액세스 운영 중.
-          </p>
+          <dl class="proj-summary">
+            <div><dt>왜</dt><dd>1인 콘텐츠 운영자가 카드뉴스 1편에 <strong>2~3시간</strong> 쓰는 비효율을 풀고 싶었다.</dd></div>
+            <div><dt>어떻게</dt><dd>LangGraph <strong>멀티 에이전트(Planner·Writer·Critic·Designer)</strong> + Next.js + Stripe 결제까지 한 사이클.</dd></div>
+            <div><dt>결과</dt><dd>주제 한 줄 → 카드뉴스 6장 + 카피 자동 생성. <strong>얼리 액세스 운영 중</strong>.</dd></div>
+          </dl>
           <div class="proj-stack"><span>Next.js 16</span><span>LangGraph · 멀티 에이전트</span><span>Claude · Groq</span><span>Supabase · Stripe</span></div>
           <div class="proj-links">
             <a class="detail" aria-label="INKK 자세히 보기" href="INKK.html">자세히 →</a>
@@ -1078,14 +1098,11 @@ footer .row{
             <span class="tag">에이전트</span>
           </div>
           <h3 class="proj-title">Blog Agent</h3>
-          <p class="proj-desc">
-            직접 운영하는 경제 블로그를 위해 만든 검증형 LLM 도구.
-            <strong>클라우드 LLM에 의존하지 않고 Ollama 기반 로컬 LLM과 도구 호출(MCP)</strong> 위에
-            설계해 비용·보안 양쪽을 모두 잡았다.
-            크롤링, RAG 검색, DART 공시 검증, 발행 흐름까지 한 사이클로 자동화.
-            같은 에이전트 인프라(LangGraph + 도구 호출 + 메모리)를
-            <strong>다른 작업 비서 도구로 재사용</strong>할 수 있게 분리 설계했다.
-          </p>
+          <dl class="proj-summary">
+            <div><dt>왜</dt><dd>직접 운영하는 경제 블로그의 <strong>글 작성·사실 검증·발행 자동화</strong>가 필요했다.</dd></div>
+            <div><dt>어떻게</dt><dd><strong>Ollama 로컬 LLM</strong> + RAG + DART 공시 검증 + 발행까지 LangGraph 파이프라인.</dd></div>
+            <div><dt>결과</dt><dd>한 사이클 자동화 완료. <strong>다른 작업 비서로 재사용 가능</strong>한 에이전트 인프라로 분리 설계.</dd></div>
+          </dl>
           <div class="proj-stack"><span>Python</span><span>Ollama</span><span>LangGraph</span><span>RAG · ChromaDB</span><span>MCP · 도구 호출</span><span>DART API</span></div>
           <div class="proj-links">
             <a class="detail" aria-label="Blog Agent 자세히 보기" href="BlogAgentRAG.html">자세히 →</a>
