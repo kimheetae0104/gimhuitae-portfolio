@@ -782,10 +782,24 @@ section{padding:120px 0 96px;scroll-margin-top:80px}
   display:flex;flex-direction:column;
   border:1px solid transparent;
   box-shadow:var(--ds-shadow-border-small);
+  position:relative; /* primary link 클릭 영역 확장용 */
+  cursor:pointer;
 }
 .proj-card:hover{
   transform:translateY(-1px);
   box-shadow:var(--ds-shadow-border-medium);
+}
+
+/* 카드 전체를 primary 링크로 — '자세히' 버튼이 카드 전체 클릭 영역 커버 */
+.proj-card .action.primary::after{
+  content:"";
+  position:absolute;inset:0;
+  z-index:1;
+}
+/* 나머지 버튼·이미지 링크는 위에 떠서 개별 작동 */
+.proj-card .proj-actions a:not(.primary),
+.proj-card .proj-thumb a{
+  position:relative;z-index:2;
 }
 .proj-thumb{
   aspect-ratio:16/9;
