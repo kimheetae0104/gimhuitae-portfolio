@@ -171,13 +171,14 @@
   .enote ul.espec li::before{ content:"▸"; position:absolute; left:0; top:0; color:var(--accent); font-weight:700; }
   .enote ul.espec li b{ color:var(--ink); font-weight:600; }
 
-  /* arrow divider */
-  .arrow-down{ text-align:center; font-size:38px; line-height:1; color:var(--ink-3); margin:64px 0 24px; user-select:none; }
+  /* arrow divider — 위 섹션과의 큰 공백을 줄이고 분리감만 남김 */
+  #next{ padding-top:clamp(40px,6vh,72px); }
+  .arrow-down{ text-align:center; font-size:34px; line-height:1; color:var(--ink-3); margin:0 0 32px; user-select:none; opacity:.55; }
 
-  /* next steps — 개선 방향 · 수익화 */
-  .nextgrid{ display:grid; grid-template-columns:repeat(2,1fr); gap:18px; max-width:880px; margin:0 auto; }
+  /* next steps — LEARNING과 동일한 grid 토큰 */
+  .nextgrid{ display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
   @media(max-width:720px){ .nextgrid{ grid-template-columns:1fr; } }
-  .ncard{ background:#fff; border:1px solid var(--line); border-radius:16px; padding:28px 28px; border-top:3px solid var(--ink-3); }
+  .ncard{ background:#fff; border:1px solid var(--line); border-radius:16px; padding:26px 26px; border-top:3px solid var(--ink-3); }
   .ncard.product{ border-top-color:#3E8E5C; }
   .ncard.biz{ border-top-color:#B5701F; }
   .ncard .lt{ font-size:12px; font-weight:600; letter-spacing:.02em; color:var(--ink-3); }
@@ -187,7 +188,7 @@
   .ncard ul li::before{ content:"·"; position:absolute; left:2px; top:-3px; color:var(--accent); font-size:20px; font-weight:800; }
 
   /* learning */
-  .learn{ display:grid; grid-template-columns:repeat(2,1fr); gap:18px; max-width:880px; margin:0 auto; }
+  .learn{ display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
   @media(max-width:720px){ .learn{ grid-template-columns:1fr; } }
   .lcard{ background:#fff; border:1px solid var(--line); border-top:3px solid var(--ink-3); border-radius:16px; padding:26px 26px; }
   .lcard.learned{ border-top-color:var(--accent); }
@@ -440,7 +441,7 @@
 
 <!-- LEARNING -->
 <section id="learning">
-  <div class="wide-wrap">
+  <div class="wrap">
     <div class="sec-head">
       <p class="eyebrow">배운 것 · 한계</p>
       <h2 class="h2">추천의 신뢰는 <span class="grad">근거에서 나온다</span></h2>
