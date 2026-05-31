@@ -286,14 +286,14 @@
 <section class="hero">
   <div class="topo" aria-hidden="true">
     <svg viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg">
-      <text class="lane-lbl"     x="10"  y="48">ON-DEVICE · LIVE</text>
-      <text class="lane-lbl dim" x="420" y="48">CLOUD · VERIFY ONLY</text>
+      <text class="lane-lbl"     x="10"  y="48">로컬 머신</text>
+      <text class="lane-lbl dim" x="420" y="48">클라우드 검증</text>
       <line class="tick" x1="10"  y1="54" x2="140" y2="54"/>
       <line class="tick" x1="420" y1="54" x2="550" y2="54"/>
 
       <path class="box" d="M10,70 L138,70 L138,106 L10,106 L10,76 L16,70 Z"/>
       <text class="nodename" x="22" y="89">CRON</text>
-      <text class="nodesub"  x="22" y="101">SCHEDULER</text>
+      <text class="nodesub"  x="22" y="101">매일 06:00 트리거</text>
       <path class="box" d="M10,140 L138,140 L138,176 L10,176 L10,146 L16,140 Z"/>
       <text class="nodename" x="22" y="159">DATA APIs</text>
       <text class="nodesub"  x="22" y="171">DART·NAVER·NEWS</text>
@@ -306,8 +306,7 @@
 
       <path class="box center" d="M200,160 L380,160 L380,260 L200,260 L200,168 L208,160 Z"/>
       <text class="center-name" x="290" y="200" text-anchor="middle">BLOG AGENT</text>
-      <text class="center-sub"  x="290" y="220" text-anchor="middle">v13 · ORCHESTRATOR</text>
-      <text class="center-sub"  x="290" y="240" text-anchor="middle" style="fill:rgba(77,163,255,.7);">● RUNNING</text>
+      <text class="center-sub"  x="290" y="222" text-anchor="middle">v13 오케스트레이터</text>
 
       <path class="box cloud" d="M420,70 L548,70 L548,106 L420,106 L420,76 L426,70 Z"/>
       <text class="nodename dim" x="432" y="89">GEMINI FLASH-LITE</text>
@@ -317,7 +316,7 @@
       <text class="nodesub"      x="432" y="211">429 폴백</text>
       <path class="box cloud" d="M420,290 L548,290 L548,326 L420,326 L420,296 L426,290 Z"/>
       <text class="nodename dim" x="432" y="309">CLAUDE API</text>
-      <text class="nodesub"      x="432" y="321">SECONDARY</text>
+      <text class="nodesub"      x="432" y="321">보조 검증</text>
 
       <path class="wire live" d="M138,88  C 170,88  180,170 200,180"/>
       <path class="wire live" d="M138,158 C 170,158 180,195 200,200"/>
@@ -335,25 +334,24 @@
       <circle class="dot dim" cx="420" cy="198" r="2.5"/>
       <circle class="dot dim" cx="420" cy="308" r="2.5"/>
 
-      <text class="lane-lbl" x="200" y="148">01 ORCHESTRATION</text>
     </svg>
   </div>
   <div class="wrap">
     <p class="eyebrow">블로그 자동화 · 로컬 LLM</p>
     <h1 class="title">Blog Agent</h1>
-    <p class="lead">개인 데이터를 외부로 전송하지 않고, <span class="accent-word">검증 가능한</span> 블로그 자동화 파이프라인을 설계·구현했다.</p>
-    <p class="url">Ollama exaone3.5 7.8B 로컬 추론 + Gemini·Claude 7단 검증 파이프라인</p>
+    <p class="lead">개인 데이터를 밖으로 보내지 않으면서 <span class="accent-word">검증까지 자동으로 도는</span> 블로그 파이프라인을 직접 만들었다.</p>
+    <p class="url">Ollama 위에 exaone3.5 7.8B를 로컬로 돌리고, Gemini와 Claude로 7단 검증.</p>
 
     <div class="thi">
-      <div class="c"><div class="k">핵심 기술 01</div><h3>RAG 역할 분리</h3><p>사실·수치는 <strong>DART API와 정규식</strong>으로 추출한다. RAG는 직접 발행한 <strong>220개 글의 톤·구성 참고</strong>로만 사용한다.<br/><br/>벡터 유사도가 약한 영역(구조화 문서)과 강한 영역(스타일 매칭)을 각각 다른 도구에 할당한 설계.</p></div>
-      <div class="c"><div class="k">핵심 기술 02</div><h3>Gemini · Claude 다단 검증</h3><p>로컬 LLM(exaone3.5)이 쓴 초안을 <strong>Gemini 2.5 flash-lite</strong>가 5가지 기준(종목 혼동·수치 환각·사실 창작 등)으로 자동 평가한다.<br/><br/>쿼터 소진(429) 시 <strong>4단 폴백 큐 + Claude</strong>로 우회. critical 판정 시 배포 자동 차단.</p></div>
+      <div class="c"><div class="k">핵심 기술 01</div><h3>RAG 역할 분리</h3><p>사실·수치는 <strong>DART API와 정규식</strong>으로 뽑는다. RAG는 직접 발행한 <strong>220개 글의 톤·구성</strong>을 참고할 때만 쓴다.<br/><br/>벡터 검색이 약한 곳(구조화 문서)과 강한 곳(스타일 매칭)을 각각 다른 도구로 처리했다.</p></div>
+      <div class="c"><div class="k">핵심 기술 02</div><h3>Gemini · Claude 다단 검증</h3><p>로컬 LLM(exaone3.5)이 쓴 초안을 <strong>Gemini 2.5 flash-lite</strong>가 5가지 기준(종목 혼동, 수치 환각, 사실 창작 등)으로 자동 평가한다.<br/><br/>쿼터가 막히면(429) <strong>4단 폴백 큐와 Claude</strong>로 돌린다. critical 판정이 나오면 배포가 자동으로 멈춘다.</p></div>
     </div>
 
     <div class="meta-top">
-      <div class="m"><div class="k">Role</div>   <div class="v">개인 프로젝트 · 설계·구현 전부</div></div>
-      <div class="m"><div class="k">Period</div> <div class="v">2026 · v1 → v13</div></div>
-      <div class="m"><div class="k">Stack</div>  <div class="v">cron · Ollama exaone3.5 · ChromaDB · nomic-embed · Gemini·Claude</div></div>
-      <div class="m"><div class="k">Blog</div>   <div class="v"><a href="https://blog.naver.com/wishsun1411" target="_blank" rel="noopener">코복의 경제블로그 ↗</a></div></div>
+      <div class="m"><div class="k">역할</div>   <div class="v">개인 프로젝트, 설계와 구현 전부</div></div>
+      <div class="m"><div class="k">기간</div>   <div class="v">2026 · v1 → v13</div></div>
+      <div class="m"><div class="k">스택</div>   <div class="v">cron, Ollama exaone3.5, ChromaDB, nomic-embed, Gemini, Claude</div></div>
+      <div class="m"><div class="k">블로그</div> <div class="v"><a href="https://blog.naver.com/wishsun1411" target="_blank" rel="noopener">코복의 경제블로그 ↗</a></div></div>
     </div>
   </div>
 </section>
@@ -363,13 +361,13 @@
   <div class="wrap">
     <div class="col">
       <p class="eyebrow">왜 로컬을 선택했나</p>
-      <h2 class="h2">비용 · 의존성 · 보안 제약</h2>
-      <p class="prose sec-foot">클라우드 LLM 운영 시 세 가지 제약이 있었다.<br/><br/>① 호출량 비례 <strong>토큰 과금</strong> 누적<br/>② 외부 API 장애·정책 변경 시 <strong>파이프라인 중단</strong><br/>③ 개인 노트·투자 메모의 <strong>외부 서버 전송</strong><br/><br/>로컬 LLM이 이 셋을 동시에 해소할 수 있는지를 실제 도구 2종으로 검증했다.</p>
+      <h2 class="h2">비용과 의존성, 보안이 걸렸다</h2>
+      <p class="prose sec-foot">클라우드 LLM을 계속 쓰다 보니 세 가지가 걸렸다.<br/><br/>① 쓸수록 늘어나는 <strong>토큰 비용</strong><br/>② 외부 API가 흔들리면 같이 멈추는 <strong>의존성</strong><br/>③ 개인 노트나 투자 메모를 <strong>남의 서버에 보내야 한다는 점</strong><br/><br/>로컬 LLM으로 이 셋을 한 번에 풀 수 있는지를 직접 만든 도구 두 개로 확인해 봤다.</p>
     </div>
     <div class="thi cols3" style="margin-top:clamp(36px,5vh,56px);">
-      <div class="c"><div class="k">01 · 비용</div><h3>종량 과금 제거</h3><p>호출량에 비례하는 토큰 단위 과금이 누적되는 구조 회피. 로컬 모델은 초기 다운로드 외 추가 비용 없음.</p></div>
-      <div class="c"><div class="k">02 · 의존성</div><h3>외부 API 격리</h3><p>핵심 추론을 온디바이스로 분리해 외부 API 장애·정책 변경이 파이프라인 전체를 중단시키지 않는 구조.</p></div>
-      <div class="c"><div class="k">03 · 보안</div><h3>외부 전송 차단</h3><p>개인 노트·투자 메모 등 민감 데이터를 외부 서버로 전송하지 않고 LLM 응답을 받는 경로를 확보.</p></div>
+      <div class="c"><div class="k">01 · 비용</div><h3>종량 과금에서 벗어나기</h3><p>호출량이 늘수록 토큰 단위로 과금이 쌓이는 구조를 피했다. 로컬 모델은 처음 받아두면 그 뒤로 비용이 들지 않는다.</p></div>
+      <div class="c"><div class="k">02 · 의존성</div><h3>외부 API와 분리</h3><p>핵심 추론을 내 머신에서 돌리니, 외부 API가 멈추거나 정책이 바뀌어도 파이프라인 전체가 멈추지 않는다.</p></div>
+      <div class="c"><div class="k">03 · 보안</div><h3>외부 전송 차단</h3><p>개인 노트나 투자 메모처럼 민감한 데이터를 밖으로 보내지 않고도 LLM 응답을 받게 만들었다.</p></div>
     </div>
   </div>
 </section>
@@ -380,8 +378,8 @@
     <p class="toolcap"><b>도구 1</b> · Obsidian 로컬 AI 작업 환경</p>
     <div class="two sec-foot">
       <div>
-        <h2 class="h2">컨텍스트 주입 경로가 응답 정확도를 좌우</h2>
-        <p class="prose" style="margin-top:20px;">Obsidian의 현재 활성 노트가 <strong>AntiGravity 플러그인</strong>을 통해 프롬프트에 자동 주입된다. <strong>Ollama가 Gemma 4</strong>를 로컬에서 실행해 응답을 같은 노트에 다시 삽입한다.<br/><br/>별도 복붙 없이 현재 작업 컨텍스트 위에서 응답이 생성되는 구조. 동일 질문이라도 작업 컨텍스트가 함께 주입될 때 <strong>응답 정확도가 측정 가능하게 향상</strong>됐다.</p>
+        <h2 class="h2">모델보다 컨텍스트 주입 경로가 더 중요했다</h2>
+        <p class="prose" style="margin-top:20px;">지금 열려있는 Obsidian 노트가 <strong>AntiGravity 플러그인</strong>을 통해 프롬프트로 자동으로 들어간다. <strong>Ollama가 Gemma 4</strong>를 로컬에서 돌려 답을 같은 노트에 다시 적어 넣는다.<br/><br/>복붙 없이 지금 보고 있는 작업 위에서 바로 답이 나온다. 같은 질문이라도 작업 맥락이 같이 들어갈 때 응답이 분명히 좋아졌다.</p>
         <div class="ministats">
           <span class="ms"><b>2.1s</b> 평균 응답 (M2 Air)</span>
           <span class="ms"><b>$0</b> 운용 비용</span>
@@ -390,22 +388,22 @@
       </div>
       <figure class="rag-flow" aria-label="Obsidian 로컬 AI 작업 환경 다이어그램" style="margin:0;">
         <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg">
-          <text class="lbl" x="10" y="18">01 · CONTEXT FLOW</text>
+          <text class="lbl" x="10" y="18">컨텍스트 흐름</text>
           <line class="tick" x1="10" y1="22" x2="160" y2="22"/>
 
           <!-- Obsidian Note -->
           <path class="box" d="M10,45 L260,45 L260,115 L10,115 L10,51 L16,45 Z"/>
-          <text class="sub"  x="22" y="68">INPUT · OBSIDIAN</text>
+          <text class="sub"  x="22" y="68">입력 · Obsidian</text>
           <text class="name" x="22" y="90">현재 열린 노트</text>
           <text class="sub"  x="22" y="106">마크다운이 컨텍스트로 주입</text>
 
-          <!-- arrow down + AntiGravity bridge label -->
+          <!-- arrow down + AntiGravity 플러그인 label -->
           <path class="wire solid live" d="M135,115 L135,150"/>
-          <text class="sub" style="fill:#46D39A;" x="145" y="138">AntiGravity bridge</text>
+          <text class="sub" style="fill:#46D39A;" x="145" y="138">AntiGravity 플러그인</text>
 
           <!-- Ollama (center glow) -->
           <path class="box center" d="M10,150 L260,150 L260,220 L10,220 L10,156 L16,150 Z"/>
-          <text class="sub"         x="22" y="173" style="fill:#4DA3FF;">PROCESS · OLLAMA</text>
+          <text class="sub"         x="22" y="173" style="fill:#4DA3FF;">처리 · Ollama</text>
           <text class="name center" x="135" y="195" text-anchor="middle">OLLAMA · GEMMA 4</text>
           <text class="sub"         x="135" y="212" text-anchor="middle">네트워크 요청 0 · M2 Air</text>
 
@@ -414,18 +412,18 @@
 
           <!-- Output -->
           <path class="box" d="M10,255 L260,255 L260,310 L10,310 L10,261 L16,255 Z"/>
-          <text class="sub"  x="22" y="278">OUTPUT · INSERT</text>
+          <text class="sub"  x="22" y="278">출력 · 노트 삽입</text>
           <text class="name" x="22" y="298">노트에 답 직접 삽입</text>
 
           <!-- side annotation -->
-          <text class="lbl" x="290" y="100" style="fill:#46D39A;">100% LOCAL</text>
+          <text class="lbl" x="290" y="100" style="fill:#46D39A;">완전 로컬</text>
           <text class="sub" x="290" y="118">데이터 외부 전송 0</text>
-          <text class="lbl" x="290" y="200" style="fill:#4DA3FF;">2.1s AVG</text>
+          <text class="lbl" x="290" y="200" style="fill:#4DA3FF;">평균 2.1초</text>
           <text class="sub" x="290" y="218">로컬 추론 응답</text>
-          <text class="lbl" x="290" y="298" style="fill:var(--ink-3);">PERSISTED</text>
-          <text class="sub" x="290" y="316">대화가 노트로 남음</text>
+          <text class="lbl" x="290" y="298" style="fill:var(--ink-3);">노트에 영구 보존</text>
+          <text class="sub" x="290" y="316">대화가 그대로 남음</text>
         </svg>
-        <figcaption>Obsidian 노트 → AntiGravity → Ollama Gemma 4 → 노트에 답 직접 삽입</figcaption>
+        <figcaption>Obsidian 노트 → AntiGravity 플러그인 → Ollama Gemma 4 → 같은 노트에 답이 삽입된다.</figcaption>
       </figure>
     </div>
   </div>
@@ -436,12 +434,12 @@
   <div class="wrap">
     <p class="toolcap"><b>도구 2</b> · 상한가 분석 블로그 자동화 · 오케스트레이션</p>
     <div class="col sec-foot">
-      <h2 class="h2">자율 에이전트 대신 결정론적 오케스트레이션</h2>
-      <p class="prose" style="margin-top:20px;">LLM이 다음 단계를 판단하는 <strong>비결정적 라우팅</strong> 대신, 단계와 검증 게이트가 고정된 <strong>결정론적 파이프라인</strong>으로 설계했다.<br/><br/>매번 같은 순서로 재현되고, 어디서 멈췄는지 추적할 수 있다. 전체 흐름은 아래 다이어그램에 정리.</p>
+      <h2 class="h2">자율 에이전트 대신 정해진 순서로 도는 파이프라인</h2>
+      <p class="prose" style="margin-top:20px;">LLM이 다음 할 일을 스스로 정하는 방식 대신, 단계와 검증 게이트를 미리 고정해 뒀다.<br/><br/>매번 같은 순서로 돌고, 어디서 멈췄는지 바로 찾을 수 있다. 전체 흐름은 아래 다이어그램에 풀어 놓았다.</p>
     </div>
     <figure class="rag-flow sec-foot" aria-label="블로그 자동화 파이프라인 다이어그램">
       <svg viewBox="0 0 1110 230" xmlns="http://www.w3.org/2000/svg">
-        <text class="lbl" x="10" y="18">DAILY · CRON-DRIVEN PIPELINE</text>
+        <text class="lbl" x="10" y="18">매일 자동 실행 파이프라인</text>
         <line class="tick" x1="10" y1="22" x2="260" y2="22"/>
 
         <!-- 00 CRON -->
@@ -497,7 +495,7 @@
         <text class="sub"         x="822" y="130">5기준 자동</text>
 
         <path class="wire dotted" d="M940,100 L970,100"/>
-        <text class="sub" x="945" y="92">gate</text>
+        <text class="sub" x="945" y="92">게이트</text>
 
         <!-- 06 PUBLISH -->
         <path class="box" d="M970,45 L1100,45 L1100,155 L970,155 L970,51 L976,45 Z"/>
@@ -507,20 +505,20 @@
         <text class="sub"  x="982" y="130">배포·기록</text>
 
         <!-- 하단 그룹 라벨 -->
-        <text class="lbl" x="490" y="195" style="fill:#46D39A;">RAG = QUALITY ONLY</text>
-        <text class="lbl" x="810" y="195" style="fill:#4DA3FF;">GEMINI · CLAUDE 5기준 검증</text>
+        <text class="lbl" x="490" y="195" style="fill:#46D39A;">RAG는 톤 참고만</text>
+        <text class="lbl" x="810" y="195" style="fill:#4DA3FF;">Gemini · Claude 5기준 검증</text>
       </svg>
-      <figcaption>매일 cron이 깨우는 고정 파이프라인 · <span class="mt">RAG는 품질 참고</span>, <span class="cy">검증 게이트</span> 통과한 글만 배포</figcaption>
+      <figcaption>매일 cron이 깨우는 고정된 흐름. <span class="mt">RAG는 톤 참고</span>로만 쓰고, <span class="cy">검증 게이트</span>를 통과한 글만 발행된다.</figcaption>
     </figure>
     <div class="ministats">
-      <span class="ms"><b>4~6분</b> 자동 실행 (수동 2시간 대비)</span>
-      <span class="ms"><b>MAX_RETRIES=2</b> · critical 차단 시 0건 배포</span>
+      <span class="ms">한 글당 <b>4~6분</b>에 끝난다 (직접 쓸 땐 2시간 걸리던 작업)</span>
+      <span class="ms">재시도는 최대 <b>2회</b>까지, critical 판정 나면 그 글은 발행하지 않는다</span>
     </div>
 
     <div class="techstack">
       <div class="techstack-head">
-        <span class="t">TECH STACK · 4 그룹</span>
-        <span class="d">Production · v13</span>
+        <span class="t">기술 스택</span>
+        <span class="d">v13 운영 중</span>
       </div>
       <table>
         <thead>
@@ -528,24 +526,24 @@
         </thead>
         <tbody>
           <tr>
-            <td>모델 · 추론</td>
+            <td>모델과 추론</td>
             <td>cron · Ollama exaone3.5 7.8B</td>
-            <td>매일 정시 트리거 → 로컬 LLM이 초안 생성. AI_MODE=local 기본으로 API 비용·외부 전송 0.</td>
+            <td>cron이 매일 정시에 깨우고 로컬 LLM이 초안을 쓴다. 기본은 로컬 모드라 API 비용이 들지 않고 데이터도 밖으로 나가지 않는다.</td>
           </tr>
           <tr>
-            <td>RAG · 데이터</td>
-            <td>nomic-embed-text 768d · ChromaDB · DART/Naver/News RSS 6소스</td>
-            <td>직접 발행한 220개 글 벡터화 (Ollama 재활용). 섹터 메타 필터 2단계 top_k=2. 18개 언론사 화이트리스트로 본문 노이즈 차단.</td>
+            <td>RAG와 데이터</td>
+            <td>nomic-embed-text 768d · ChromaDB · DART, 네이버 금융, Google News RSS 6소스</td>
+            <td>직접 발행한 220개 글을 벡터로 만들어 ChromaDB에 넣어뒀다. 섹터 필터로 한 번 좁히고 가장 가까운 글 2개만 가져다 쓴다. 뉴스는 18개 언론사만 화이트리스트로 받아 본문 노이즈를 줄였다.</td>
           </tr>
           <tr>
-            <td>검증 7단</td>
-            <td>형식 → 팩트(DART 50%+ gap) → 구조 모순 13룰 → 자동 교정 → Gemini 5기준 → 4단 폴백 → Claude 보조</td>
-            <td>critical=True 시 배포 차단. MAX_RETRIES=2. Gemini 무료 한도(15 RPM · 1M tok/day)는 4단 폴백 큐로 우회. 모든 단계가 score·issues 객체로 로깅.</td>
+            <td>7단 검증</td>
+            <td>형식 → 팩트(DART 50%+ 차이) → 구조 모순 13룰 → 자동 교정 → Gemini 5가지 기준 → 4단 폴백 → Claude 보조</td>
+            <td>critical 판정이 나오면 배포가 멈춘다. 재시도는 최대 2번. Gemini 무료 한도(분당 15회, 하루 100만 토큰)는 폴백 큐로 우회한다. 모든 단계가 점수와 이슈를 객체로 남긴다.</td>
           </tr>
           <tr>
-            <td>배포 · 알림</td>
-            <td>네이버 블로그 (Selenium) · Google Sheets · Obsidian · Telegram</td>
-            <td>undetected-chromedriver 자동 로그인 · gspread 서비스 계정 · 마크다운+프론트매터 백업 · critical 알림에 score 포함.</td>
+            <td>배포와 알림</td>
+            <td>네이버 블로그(Selenium), Google Sheets, Obsidian, Telegram</td>
+            <td>undetected-chromedriver로 자동 로그인하고, gspread 서비스 계정으로 시트에 기록한다. 마크다운과 프론트매터로 백업도 같이 쌓는다. critical 알림에는 검증 점수가 따라온다.</td>
           </tr>
         </tbody>
       </table>
@@ -553,11 +551,11 @@
 
     <figure class="resultshot">
       <div class="resultshot-head">
-        <span class="t">RESULT · 실제 운영 결과</span>
-        <span class="d">Google Sheets · daily auto-log</span>
+        <span class="t">실제 운영 결과</span>
+        <span class="d">Google Sheets 자동 기록</span>
       </div>
       <div class="shot" style="margin-top:0; border-top-left-radius:0; border-top-right-radius:0; border-top:none;"><img src="localai/img/sheets-result.webp" alt="실제 자동 업로드 결과 · Google Sheets에 기록된 생성 글 목록"/></div>
-      <figcaption class="shotcap" style="margin-top:14px;">검증 점수·종목명·버전이 자동 기록 · 사람이 마지막 판단을 빠르게 한다.</figcaption>
+      <figcaption class="shotcap" style="margin-top:14px;">검증 점수와 종목명, 버전이 시트에 자동으로 쌓인다. 마지막 판단을 내가 빠르게 내릴 수 있게 만들어둔 흐름이다.</figcaption>
     </figure>
 
   </div>
@@ -568,24 +566,24 @@
   <div class="wrap">
     <div class="col">
       <p class="eyebrow">믿을 수 있는 자동화 설계</p>
-      <h2 class="h2">자동 생성을 믿으려면 모델이 아니라 검증 설계</h2>
-      <p class="prose sec-foot">투자 글에서 틀린 수치 하나는 치명적이다. 그래서 "한 번에 잘 쓰는 모델"을 찾는 대신, <strong>검색 전략과 검증 구조</strong>에 시간을 썼다. 두 가지가 핵심이었다.</p>
+      <h2 class="h2">자동 생성을 믿으려면 모델보다 검증을 만들어야 했다</h2>
+      <p class="prose sec-foot">투자 글에서 틀린 수치 하나는 치명적이다. 그래서 "한 번에 잘 쓰는 모델"을 찾기보다, <strong>검색 전략과 검증 구조</strong>에 시간을 더 썼다. 두 가지가 핵심이었다.</p>
     </div>
 
     <div class="insight sec-foot">
       <div class="il">발견 · v4~6</div>
-      <h3>RAG는 톤·구성 참고에 한정. 사실 검증은 API·정규식</h3>
-      <p>초기에는 사실 검색까지 벡터 유사도로 처리하려 했다. 그러나 <strong>DART 사업보고서처럼 표·항목 구조가 고정된 문서</strong>에서는 정규식·API 기반 구조 추출이 의미 유사도 검색보다 정확도가 높았다. 따라서 역할을 분리했다. <strong>수치·항목 등 사실은 API·정규식</strong>으로 추출하고, <strong>RAG는 직접 발행한 220개 글의 톤·구성 참고</strong>에만 한정했다. 벡터 검색의 약점이 명확한 영역과 강점이 명확한 영역을 각각 다른 도구에 할당한 설계.</p>
+      <h3>RAG는 톤만, 사실 검증은 API와 정규식</h3>
+      <p>처음에는 사실 검색까지 벡터 유사도로 처리하려 했다. 그런데 <strong>DART 사업보고서처럼 표와 항목 구조가 고정된 문서</strong>에서는 정규식과 API로 직접 뽑는 게 의미 유사도 검색보다 정확했다.<br/><br/>그래서 역할을 갈랐다. <strong>수치와 항목 같은 사실은 API와 정규식</strong>으로 뽑고, <strong>RAG는 직접 발행한 220개 글의 톤과 구성</strong>을 참고할 때만 썼다. 벡터 검색이 약한 곳과 강한 곳을 다른 도구로 처리한 셈이다.</p>
 
       <figure class="rag-flow" aria-label="RAG 역할 분리 다이어그램">
         <svg viewBox="0 0 1000 420" xmlns="http://www.w3.org/2000/svg">
           <!-- ── 01 INGESTION row (offline) ── -->
-          <text class="lbl" x="30" y="18">01 INGESTION · OFFLINE</text>
+          <text class="lbl" x="30" y="18">사전 인덱싱 (오프라인)</text>
           <line class="tick" x1="30" y1="22" x2="200" y2="22"/>
 
           <path class="box" d="M30,32 L200,32 L200,90 L30,90 L30,38 L36,32 Z"/>
           <text class="name" x="42" y="58">220 ARTICLES</text>
-          <text class="sub"  x="42" y="74">CORPUS · 발행 글</text>
+          <text class="sub"  x="42" y="74">직접 발행한 글</text>
 
           <path class="wire solid live" d="M200,61 L240,61"/>
 
@@ -597,10 +595,10 @@
 
           <path class="box center" d="M470,32 L640,32 L640,90 L470,90 L470,38 L476,32 Z"/>
           <text class="name center" x="555" y="58" text-anchor="middle">CHROMADB</text>
-          <text class="sub" x="555" y="76" text-anchor="middle">VECTOR STORE</text>
+          <text class="sub" x="555" y="76" text-anchor="middle">벡터 저장소</text>
 
           <!-- ── 02 QUERY row (live) ── -->
-          <text class="lbl" x="30" y="135">02 QUERY · LIVE</text>
+          <text class="lbl" x="30" y="135">실행 시점</text>
           <line class="tick" x1="30" y1="139" x2="200" y2="139"/>
 
           <!-- USER QUERY -->
@@ -612,19 +610,19 @@
           <path class="wire solid live" d="M200,222 C 215,222 220,180 240,180"/>
 
           <path class="box solid" d="M240,150 L460,150 L460,210 L240,210 L240,156 L246,150 Z"/>
-          <text class="name" x="252" y="176">FACTS LANE</text>
-          <text class="sub"  x="252" y="194">API · 정규식 (DART) · solid</text>
+          <text class="name" x="252" y="176">사실 트랙</text>
+          <text class="sub"  x="252" y="194">API와 정규식 (DART)</text>
 
           <!-- split DOWN to QUALITY lane -->
           <path class="wire mint live" d="M200,238 C 215,238 220,310 240,310"/>
 
           <path class="box mint" d="M240,280 L460,280 L460,340 L240,340 L240,286 L246,280 Z"/>
-          <text class="name mint" x="252" y="306">QUALITY LANE</text>
-          <text class="sub"  x="252" y="324">RAG · ChromaDB · dotted</text>
+          <text class="name mint" x="252" y="306">품질 트랙</text>
+          <text class="sub"  x="252" y="324">RAG · ChromaDB</text>
 
           <!-- CHROMADB → QUALITY (mint reference) -->
           <path class="wire mint" d="M555,90 C 555,160 460,250 350,280"/>
-          <text class="sub" style="fill:#46D39A;" x="478" y="172">reference</text>
+          <text class="sub" style="fill:#46D39A;" x="478" y="172">참고</text>
 
           <!-- FACTS → OLLAMA (solid merge) -->
           <path class="wire solid live" d="M460,180 C 480,180 480,238 510,238"/>
@@ -633,15 +631,14 @@
 
           <!-- OLLAMA (center, glow) -->
           <path class="box center" d="M510,210 L680,210 L680,290 L510,290 L510,216 L516,210 Z"/>
-          <text class="name center" x="595" y="240" text-anchor="middle">OLLAMA LLM</text>
-          <text class="sub" x="595" y="258" text-anchor="middle">exaone3.5 · 7.8B · MERGE</text>
-          <text class="sub" x="595" y="276" text-anchor="middle" style="fill:rgba(77,163,255,.75);">● RUNNING</text>
+          <text class="name center" x="595" y="240" text-anchor="middle">Ollama LLM</text>
+          <text class="sub" x="595" y="262" text-anchor="middle">exaone3.5 · 7.8B 합성</text>
 
           <!-- OLLAMA → VERIFY (dotted cloud) -->
           <path class="wire dotted" d="M680,232 C 695,232 705,182 730,182"/>
 
           <path class="box cloud" d="M730,150 L900,150 L900,210 L730,210 L730,156 L736,150 Z"/>
-          <text class="name dim" x="742" y="176">7단 VERIFY</text>
+          <text class="name dim" x="742" y="176">7단 검증</text>
           <text class="sub"      x="742" y="194">Gemini · Claude · 5기준</text>
 
           <!-- OLLAMA → PUBLISH (solid live) -->
@@ -649,16 +646,16 @@
 
           <path class="box" d="M730,290 L900,290 L900,350 L730,350 L730,296 L736,290 Z"/>
           <text class="name" x="742" y="316">PUBLISH</text>
-          <text class="sub"  x="742" y="334">TISTORY · MEDIUM</text>
+          <text class="sub"  x="742" y="334">네이버 블로그</text>
 
           <!-- VERIFY → PUBLISH (dotted gate) -->
           <path class="wire dotted" d="M815,210 L815,290"/>
-          <text class="sub" x="820" y="252">gate</text>
+          <text class="sub" x="820" y="252">게이트</text>
         </svg>
         <figcaption>
-          <span class="cy">FACTS</span> · 사실·수치 = API + 정규식
+          <span class="cy">사실 트랙</span> 수치는 API와 정규식으로
           &nbsp;&nbsp;·&nbsp;&nbsp;
-          <span class="mt">QUALITY</span> · 톤·구성 = RAG 코퍼스 (top_k=2)
+          <span class="mt">품질 트랙</span> 톤은 RAG 코퍼스 (가장 가까운 글 2개)
         </figcaption>
       </figure>
 
@@ -668,27 +665,27 @@
       <div class="il" style="font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);">방어 · 5중 검증</div>
       <h3 style="font-size:clamp(22px,2.8vw,30px);font-weight:600;letter-spacing:-.02em;margin:12px 0 18px;">틀린 글은 통과 차단</h3>
       <div class="vgrid">
-        <div class="vc"><div class="vn">01</div><div class="vname">형식</div><div class="vd">스키마 불일치 시 자동 재생성 트리거</div></div>
-        <div class="vc"><div class="vn">02</div><div class="vname">팩트</div><div class="vd">생성 수치를 원본 데이터와 대조, 불일치 플래그</div></div>
-        <div class="vc"><div class="vn">03</div><div class="vname">모순</div><div class="vd">"실적 개선"·"매출 감소" 동시 언급 등 탐지</div></div>
-        <div class="vc"><div class="vn">04</div><div class="vname">자동 교정</div><div class="vd">LLM 재시도로 안 되는 건 규칙 기반 후처리로 강제</div></div>
-        <div class="vc hl"><div class="vn">05</div><div class="vname">최종 검증</div><div class="vd">Gemini 2.5 flash-lite 5기준 자동 평가 + Claude 보조, critical=True 시 배포 차단</div></div>
+        <div class="vc"><div class="vn">01</div><div class="vname">형식</div><div class="vd">스키마가 맞지 않으면 자동으로 다시 쓰게 한다.</div></div>
+        <div class="vc"><div class="vn">02</div><div class="vname">팩트</div><div class="vd">생성된 수치를 원본 데이터와 대조해서 안 맞으면 표시한다.</div></div>
+        <div class="vc"><div class="vn">03</div><div class="vname">모순</div><div class="vd">"실적 개선"과 "매출 감소"가 같이 나오는 경우 같은 모순을 찾아낸다.</div></div>
+        <div class="vc"><div class="vn">04</div><div class="vname">자동 교정</div><div class="vd">LLM 재시도로도 안 되는 부분은 규칙 기반 후처리로 강제로 고친다.</div></div>
+        <div class="vc hl"><div class="vn">05</div><div class="vname">최종 검증</div><div class="vd">Gemini 2.5 flash-lite가 5가지 기준으로 평가하고 Claude가 보조한다. critical 판정이면 배포가 멈춘다.</div></div>
       </div>
       <div class="zero">
         <div class="z">5단계</div>
-        <p>고성능 단일 모델 탐색 대신 <b>틀린 글이 통과하지 못하는 구조</b>를 먼저 설계했다. 환각 0%에는 도달하지 못해 검증 룰셋은 지속 보강 중.</p>
+        <p>좋은 모델 하나를 찾기보다 <b>틀린 글이 통과하지 못하는 구조</b>를 먼저 만들었다. 환각 0%까지는 못 가서 검증 룰은 지금도 계속 다듬는 중이다.</p>
       </div>
     </div>
 
     <div class="sec-foot">
       <div class="il" style="font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);">과정 · v1 → v13</div>
-      <h3 style="font-size:clamp(22px,2.8vw,30px);font-weight:600;letter-spacing:-.02em;margin:12px 0 4px;">정답 도출 전 실패 원인을 먼저 식별</h3>
+      <h3 style="font-size:clamp(22px,2.8vw,30px);font-weight:600;letter-spacing:-.02em;margin:12px 0 4px;">정답을 찾기 전에 왜 실패하는지부터 봤다</h3>
       <div class="iter">
-        <div class="it"><div class="v">v1~3</div><div><div class="t">기본 파이프라인</div><div class="d">DART API 연결과 단순 프롬프트 구성. 구조화 부재로 글마다 품질 편차가 컸다.</div></div></div>
-        <div class="it"><div class="v">v4~6</div><div><div class="t">벡터 검색 시도 → 한계 식별</div><div class="d">구조 고정 문서에는 정규식이 더 정확. RAG가 모든 상황의 정답이 아님을 측정으로 확인.</div></div></div>
-        <div class="it"><div class="v">v7~9</div><div><div class="t">검증 레이어 추가</div><div class="d">생성 품질 향상보다 오류 차단이 우선. 형식·팩트·모순 검증 단계를 추가.</div></div></div>
-        <div class="it"><div class="v">v10~12</div><div><div class="t">반자동화로 전환</div><div class="d">완전 자동화 대신 최종 판단을 사람이 수행하는 반자동 구조 채택. 검수 단계는 자동화 범위에서 제외.</div></div></div>
-        <div class="it last"><div class="v">v13</div><div><div class="t">RAG + 7단 검증 + 다채널 배포</div><div class="d">ChromaDB에 직접 발행한 220개 글을 색인해 톤 참고에 사용. Gemini·Claude 다단 검증을 추가해 "수집→생성→검증→배포" 루프를 완성. 수치 환각을 배포 전 단계에서 차단하는 구조 확보.</div></div></div>
+        <div class="it"><div class="v">v1~3</div><div><div class="t">기본 파이프라인</div><div class="d">DART API를 붙이고 단순한 프롬프트로 돌렸다. 구조가 없으니 글마다 품질 차이가 컸다.</div></div></div>
+        <div class="it"><div class="v">v4~6</div><div><div class="t">벡터 검색을 써보다 한계 발견</div><div class="d">구조가 고정된 문서에는 정규식이 더 정확했다. RAG가 모든 상황의 답이 아니라는 걸 여기서 확인했다.</div></div></div>
+        <div class="it"><div class="v">v7~9</div><div><div class="t">검증 단계 추가</div><div class="d">잘 쓰게 만드는 것보다 틀린 글을 걸러내는 게 더 급했다. 형식, 팩트, 모순 검증을 붙였다.</div></div></div>
+        <div class="it"><div class="v">v10~12</div><div><div class="t">반자동화로 전환</div><div class="d">전 과정을 자동으로 두지 않고, 마지막 판단만 내가 직접 하는 구조로 바꿨다. 검수는 자동화에서 빼뒀다.</div></div></div>
+        <div class="it last"><div class="v">v13</div><div><div class="t">RAG와 7단 검증, 다채널 배포</div><div class="d">ChromaDB에 직접 발행한 220개 글을 넣어 톤 참고에 썼다. Gemini와 Claude 다단 검증까지 붙여 수집부터 배포까지 루프가 닫혔다. 수치 환각을 배포 전에 잡을 수 있게 됐다.</div></div></div>
       </div>
     </div>
   </div>
@@ -699,13 +696,13 @@
   <div class="wrap">
     <div class="col">
       <p class="eyebrow">로컬 모델의 한계</p>
-      <h2 class="h2">로컬 LLM의 한계 · 측정 후 분리</h2>
-      <p class="prose sec-foot">로컬 모델로 모든 작업을 처리할 수는 없었다. 어디까지 로컬로 충분하고 어디부터 클라우드가 필요한지를 측정해, '로컬 초안 + 클라우드 검증' 분리 설계로 수렴했다.</p>
+      <h2 class="h2">로컬 모델로 다 되지는 않았다</h2>
+      <p class="prose sec-foot">어디까지 로컬로 충분하고 어디부터 클라우드가 필요한지를 직접 돌려보며 측정했다. 그 결과 '초안은 로컬, 검증은 클라우드'로 나누는 방식이 자리잡았다.</p>
     </div>
     <div class="thi cols3 sec-foot">
-      <div class="c"><div class="k">한계 01</div><h3>긴 컨텍스트 처리 저하</h3><p>2,000 토큰을 초과하는 입력에서 응답 품질이 급격히 저하됐다. 긴 문서는 청킹·전처리 단계가 필수.</p></div>
-      <div class="c"><div class="k">한계 02</div><h3>한국어 응답 품질 격차</h3><p>동일 입력에서 영어 대비 한국어 응답 품질이 낮음. 모델 선택 기준에 "사용 언어에서의 출력 품질"을 명시 항목으로 포함.</p></div>
-      <div class="c"><div class="k">결과</div><h3>역할 분리 설계로 수렴</h3><p>로컬: 초안 생성 + 민감 데이터 처리. 클라우드: 검증 + 고난도 평가. 완전 대체가 아닌 영역별 적합 도구 할당.</p></div>
+      <div class="c"><div class="k">한계 01</div><h3>긴 컨텍스트에 약함</h3><p>2,000 토큰을 넘는 입력은 응답 품질이 눈에 띄게 떨어졌다. 긴 문서는 결국 청킹과 전처리가 필요했다.</p></div>
+      <div class="c"><div class="k">한계 02</div><h3>한국어 응답 품질 격차</h3><p>같은 입력이라도 영어보다 한국어 응답이 약했다. 그 뒤로 모델을 고를 때 "한국어에서 쓸 만한가"를 먼저 본다.</p></div>
+      <div class="c"><div class="k">결론</div><h3>역할을 갈라서 썼다</h3><p>로컬은 초안 생성과 민감 데이터 처리에, 클라우드는 검증과 까다로운 평가에 맡겼다. 한쪽이 다른 한쪽을 완전히 대신한다기보다, 각자 잘하는 일을 분담시켰다.</p></div>
     </div>
   </div>
 </section>
@@ -717,8 +714,8 @@
       <img src="localai/img/connect-ai-lab.webp" alt="connect-ai-lab YouTube EP.3 두뇌 복제 무료 AI 직원 육성 썸네일"/>
     </a>
     <div class="body">
-      <span class="lbl">Inspired by</span>
-      <span class="ref">YouTube · <a href="https://youtube.com/@connect-ai-lab" target="_blank" rel="noopener">@connect-ai-lab</a> · "두뇌 복제! 무료 AI 직원 육성" (EP.3)</span>
+      <span class="lbl">참고한 영상</span>
+      <span class="ref">유튜브 채널 <a href="https://youtube.com/@connect-ai-lab" target="_blank" rel="noopener">@connect-ai-lab</a> · "두뇌 복제! 무료 AI 직원 육성" (EP.3)</span>
     </div>
   </div>
 </section>
