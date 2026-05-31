@@ -62,6 +62,10 @@
   .mer-wrap .mermaid{ font-family:var(--font-apple); text-align:center; min-height:80px; }
   .mer-wrap .mermaid svg{ max-width:100%; height:auto; }
 
+  /* SVG 아키텍처 다이어그램 컨테이너 */
+  .arch-svg{ max-width:980px; margin:0 auto; }
+  .arch-svg svg{ width:100%; height:auto; display:block; border-radius:14px; }
+
   /* readable body block */
   .prose{ font-size:clamp(17px,1.9vw,20px); line-height:1.72; color:var(--ink-2); max-width:42em; text-wrap:pretty; }
   .prose + .prose{ margin-top:16px; }
@@ -351,7 +355,120 @@
       <p class="eyebrow">파이프라인 설계</p>
       <h2 class="h2">네트워크가 끊겨도 향미 분석은 계속</h2>
     </div>
-    <div class="pipe sec-foot">
+    <div class="arch-svg sec-foot">
+      <svg viewBox="0 0 960 720" role="img" aria-label="JANN 시스템 아키텍처 다이어그램" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#1D1D1F"/>
+          </marker>
+          <marker id="arrow-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#F24E29"/>
+          </marker>
+          <filter id="soft" x="-10%" y="-10%" width="120%" height="120%">
+            <feGaussianBlur stdDeviation="6" in="SourceAlpha"/>
+            <feOffset dy="4"/>
+            <feComponentTransfer><feFuncA type="linear" slope="0.08"/></feComponentTransfer>
+            <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Lane backgrounds -->
+        <rect x="40" y="60" width="430" height="620" rx="20" fill="#F5F5F7"/>
+        <rect x="490" y="60" width="430" height="620" rx="20" fill="rgba(242,78,41,0.06)"/>
+
+        <!-- Lane labels -->
+        <text x="60" y="92" font-family="-apple-system,SF Pro Display,sans-serif" font-size="13" font-weight="700" letter-spacing="2" fill="#86868B">ON-DEVICE · OFFLINE</text>
+        <text x="510" y="92" font-family="-apple-system,SF Pro Display,sans-serif" font-size="13" font-weight="700" letter-spacing="2" fill="#F24E29">CLOUD · NETWORK</text>
+
+        <!-- 01 INPUT: iPhone camera (spans, anchored left lane) -->
+        <g filter="url(#soft)">
+          <rect x="170" y="120" width="170" height="64" rx="14" fill="#1D1D1F"/>
+          <text x="255" y="148" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" fill="#F24E29">01 · INPUT</text>
+          <text x="255" y="170" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" fill="#fff">iPhone Camera · 1536px</text>
+        </g>
+
+        <!-- branch arrows from camera -->
+        <path d="M255 184 L255 215 L155 215 L155 240" stroke="#1D1D1F" stroke-width="1.8" fill="none" marker-end="url(#arrow)"/>
+        <path d="M255 184 L255 215 L355 215 L355 240" stroke="#1D1D1F" stroke-width="1.8" fill="none" marker-end="url(#arrow)"/>
+        <path d="M255 184 L255 215 L640 215 L640 240" stroke="#F24E29" stroke-width="1.8" fill="none" stroke-dasharray="5 4" marker-end="url(#arrow-accent)"/>
+
+        <!-- 02 RECOGNITION row -->
+        <!-- YOLOv8n -->
+        <g filter="url(#soft)">
+          <rect x="70" y="240" width="170" height="92" rx="14" fill="#fff" stroke="#1D1D1F" stroke-width="1.5"/>
+          <text x="85" y="263" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" letter-spacing="1" fill="#F24E29">02 · RECOGNITION</text>
+          <text x="85" y="285" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1D1D1F">YOLOv8n</text>
+          <text x="85" y="304" font-family="ui-monospace,SF Mono,monospace" font-size="11" fill="#515154">CoreML · 18 MB</text>
+          <text x="85" y="320" font-family="-apple-system,sans-serif" font-size="11" fill="#86868B">실시간 온디바이스 추론</text>
+        </g>
+        <!-- Apple Vision fallback -->
+        <g filter="url(#soft)">
+          <rect x="270" y="240" width="170" height="92" rx="14" fill="#fff" stroke="#86868B" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <text x="285" y="263" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" letter-spacing="1" fill="#86868B">FALLBACK</text>
+          <text x="285" y="285" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1D1D1F">Apple Vision</text>
+          <text x="285" y="304" font-family="ui-monospace,SF Mono,monospace" font-size="11" fill="#515154">Framework</text>
+          <text x="285" y="320" font-family="-apple-system,sans-serif" font-size="11" fill="#86868B">최후 안전망</text>
+        </g>
+        <!-- GPT-4o Vision (cloud) -->
+        <g filter="url(#soft)">
+          <rect x="555" y="240" width="170" height="92" rx="14" fill="#fff" stroke="#F24E29" stroke-width="1.5"/>
+          <text x="570" y="263" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" letter-spacing="1" fill="#F24E29">02 · RECOGNITION</text>
+          <text x="570" y="285" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1D1D1F">GPT-4o Vision</text>
+          <text x="570" y="304" font-family="ui-monospace,SF Mono,monospace" font-size="11" fill="#515154">한국 재료 · 라벨 OCR</text>
+          <text x="570" y="320" font-family="-apple-system,sans-serif" font-size="11" fill="#86868B">YOLO 미인식 보완</text>
+        </g>
+
+        <!-- Parallel indicator between YOLO and GPT -->
+        <text x="480" y="290" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="600" fill="#F24E29">PARALLEL</text>
+        <path d="M240 286 L555 286" stroke="#F24E29" stroke-width="1.2" stroke-dasharray="2 3" fill="none" opacity="0.6"/>
+
+        <!-- Merge node -->
+        <g filter="url(#soft)">
+          <rect x="370" y="370" width="220" height="54" rx="27" fill="#1D1D1F"/>
+          <text x="480" y="395" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="12" font-weight="600" letter-spacing="1.5" fill="#FF8A3D">MERGE + DEDUP</text>
+          <text x="480" y="412" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#A1A1A6">두 인식 결과를 합치고 중복 제거</text>
+        </g>
+        <!-- arrows into merge -->
+        <path d="M155 332 L155 350 L420 350 L420 370" stroke="#1D1D1F" stroke-width="1.8" fill="none" marker-end="url(#arrow)"/>
+        <path d="M355 332 L355 358 L460 358 L460 370" stroke="#1D1D1F" stroke-width="1.8" fill="none" marker-end="url(#arrow)"/>
+        <path d="M640 332 L640 350 L540 350 L540 370" stroke="#F24E29" stroke-width="1.8" stroke-dasharray="5 4" fill="none" marker-end="url(#arrow-accent)"/>
+
+        <!-- arrow merge -> analysis -->
+        <path d="M480 424 L480 460" stroke="#1D1D1F" stroke-width="1.8" fill="none" marker-end="url(#arrow)"/>
+
+        <!-- 03 ANALYSIS — SQLite Flavor Network DB -->
+        <g filter="url(#soft)">
+          <rect x="100" y="460" width="340" height="100" rx="14" fill="#fff" stroke="#1D1D1F" stroke-width="1.5"/>
+          <text x="120" y="484" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" letter-spacing="1" fill="#F24E29">03 · ANALYSIS</text>
+          <text x="120" y="508" font-family="-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1D1D1F">SQLite Flavor Network DB</text>
+          <text x="120" y="528" font-family="ui-monospace,SF Mono,monospace" font-size="11" fill="#515154">1,530 ingredients × 1,107 compounds</text>
+          <text x="120" y="546" font-family="-apple-system,sans-serif" font-size="11" fill="#86868B">Jaccard 유사도 · 앱 번들 내장 · 완전 오프라인</text>
+        </g>
+        <!-- horizontal arrow ANALYSIS -> GENERATION -->
+        <path d="M440 510 L640 510 L640 580" stroke="#F24E29" stroke-width="1.8" stroke-dasharray="5 4" fill="none" marker-end="url(#arrow-accent)"/>
+
+        <!-- 04 GENERATION — GPT-4o-mini -->
+        <g filter="url(#soft)">
+          <rect x="555" y="460" width="170" height="100" rx="14" fill="#fff" stroke="#F24E29" stroke-width="1.5"/>
+          <text x="570" y="484" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" letter-spacing="1" fill="#F24E29">04 · GENERATION</text>
+          <text x="570" y="508" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1D1D1F">GPT-4o-mini</text>
+          <text x="570" y="528" font-family="ui-monospace,SF Mono,monospace" font-size="11" fill="#515154">Structured Prompt</text>
+          <text x="570" y="546" font-family="-apple-system,sans-serif" font-size="11" fill="#86868B">재료 + 화합물 근거 주입</text>
+        </g>
+
+        <!-- arrows down to output -->
+        <path d="M270 560 L270 600 L380 600" stroke="#1D1D1F" stroke-width="1.8" fill="none" marker-end="url(#arrow)"/>
+        <path d="M640 560 L640 600 L580 600" stroke="#F24E29" stroke-width="1.8" stroke-dasharray="5 4" fill="none" marker-end="url(#arrow-accent)"/>
+
+        <!-- OUTPUT -->
+        <g filter="url(#soft)">
+          <rect x="370" y="595" width="220" height="64" rx="14" fill="#F24E29"/>
+          <text x="480" y="620" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="12" font-weight="700" letter-spacing="1.5" fill="#FFE5DC">OUTPUT</text>
+          <text x="480" y="641" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" fill="#fff">Recipe · 분자 시너지 해설</text>
+        </g>
+      </svg>
+    </div>
+        <div class="pipe sec-foot">
       <div class="pcard">
         <div class="ps">01 · 인식</div>
         <h3>YOLOv8n + GPT-4o Vision</h3>
