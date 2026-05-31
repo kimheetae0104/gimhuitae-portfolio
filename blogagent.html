@@ -50,7 +50,7 @@
   code{ font-family:var(--mono); font-size:.86em; background:rgba(255,255,255,.07); color:var(--accent-2); padding:.1em .4em; border-radius:5px; }
 
   .hero{ padding:clamp(62px,9vh,104px) 0 clamp(48px,7vh,88px); position:relative; overflow:hidden; }
-  .hero .wrap{ position:relative; }
+  .hero .wrap{ position:relative; z-index:1; }
 
   /* ── meta-top: 상단 메타 그리드 (사이버 대시보드 톤) ─────── */
   .meta-top{ display:grid; grid-template-columns:repeat(3,1fr); gap:0;
@@ -61,6 +61,30 @@
   .meta-top .m .v{ font-size:14.5px; color:var(--ink); line-height:1.55; letter-spacing:-.005em; }
   @media(max-width:740px){ .meta-top{ grid-template-columns:1fr 1fr; } }
 
+
+  /* ── topology: BLOG AGENT 시스템 토폴로지 (hero 우측) ─── */
+  .topo{ position:absolute; right:24px; top:140px; width:clamp(360px,36vw,480px); aspect-ratio:560/420; pointer-events:none; z-index:0; opacity:.95; }
+  .topo svg{ width:100%; height:100%; overflow:visible; }
+  .topo .box{ fill:rgba(22,22,28,.55); stroke:rgba(77,163,255,.65); stroke-width:1; }
+  .topo .box.center{ fill:rgba(22,22,28,.85); stroke:var(--accent); stroke-width:1.4; filter:drop-shadow(0 0 12px rgba(77,163,255,.4)); }
+  .topo .box.cloud{ fill:rgba(15,15,19,.5); stroke:rgba(154,154,164,.35); stroke-dasharray:3 3; }
+  .topo .lane-lbl{ font-family:var(--mono); font-size:10px; letter-spacing:.18em; text-transform:uppercase; fill:var(--accent); }
+  .topo .lane-lbl.dim{ fill:var(--ink-3); }
+  .topo .nodename{ font-family:var(--mono); font-size:11px; font-weight:700; fill:var(--ink); letter-spacing:.06em; }
+  .topo .nodename.dim{ fill:var(--ink-2); }
+  .topo .nodesub{ font-family:var(--mono); font-size:9px; letter-spacing:.1em; fill:var(--ink-3); }
+  .topo .center-name{ font-family:var(--mono); font-size:13px; font-weight:700; fill:var(--accent); letter-spacing:.1em; }
+  .topo .center-sub{ font-family:var(--mono); font-size:9.5px; letter-spacing:.18em; fill:var(--ink-3); }
+  .topo .wire{ stroke:rgba(77,163,255,.55); stroke-width:1; fill:none; }
+  .topo .wire.live{ stroke:rgba(77,163,255,.95); stroke-width:1.2; stroke-dasharray:3 50; animation:flow 3.2s linear infinite; }
+  .topo .wire.dotted{ stroke:rgba(154,154,164,.4); stroke-dasharray:3 4; stroke-width:.8; }
+  .topo .dot{ fill:var(--accent); filter:drop-shadow(0 0 4px rgba(77,163,255,.8)); }
+  .topo .dot.pulse{ animation:pulse 2.4s ease-in-out infinite; transform-origin:center; transform-box:fill-box; }
+  .topo .dot.dim{ fill:var(--ink-3); filter:none; }
+  .topo .tick{ stroke:var(--ink-3); stroke-width:.6; }
+  @keyframes pulse{ 0%,100%{ opacity:.5; transform:scale(1);} 50%{ opacity:1; transform:scale(1.4);} }
+  @keyframes flow{ to { stroke-dashoffset:-200; } }
+  @media(max-width:900px){ .topo{ display:none; } }
 
   /* ── RAG flow: 본인 RAG의 역할 분리 다이어그램 ─────────── */
   .rag-flow{ background:rgba(15,15,19,.55); border:1px solid var(--line-soft); border-radius:var(--rad); padding:28px 28px 22px; margin:clamp(24px,4vh,40px) 0 0; }
@@ -218,6 +242,55 @@
 
 <!-- HERO -->
 <section class="hero">
+  <div class="topo" aria-hidden="true">
+    <svg viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg">
+      <text class="lane-lbl"     x="10"  y="48">ON-DEVICE · LIVE</text>
+      <text class="lane-lbl dim" x="420" y="48">CLOUD · VERIFY ONLY</text>
+      <line class="tick" x1="10"  y1="54" x2="140" y2="54"/>
+      <line class="tick" x1="420" y1="54" x2="550" y2="54"/>
+
+      <path class="box" d="M10,70 L138,70 L138,106 L10,106 L10,76 L16,70 Z"/>
+      <text class="nodename" x="22" y="89">CRON</text>
+      <text class="nodesub"  x="22" y="101">SCHEDULER</text>
+      <path class="box" d="M10,180 L138,180 L138,216 L10,216 L10,186 L16,180 Z"/>
+      <text class="nodename" x="22" y="199">OLLAMA</text>
+      <text class="nodesub"  x="22" y="211">LLAMA3 · 8B</text>
+      <path class="box" d="M10,290 L138,290 L138,326 L10,326 L10,296 L16,290 Z"/>
+      <text class="nodename" x="22" y="309">CHROMADB</text>
+      <text class="nodesub"  x="22" y="321">220 ARTICLES</text>
+
+      <path class="box center" d="M200,160 L380,160 L380,260 L200,260 L200,168 L208,160 Z"/>
+      <text class="center-name" x="290" y="200" text-anchor="middle">BLOG AGENT</text>
+      <text class="center-sub"  x="290" y="220" text-anchor="middle">v13 · ORCHESTRATOR</text>
+      <text class="center-sub"  x="290" y="240" text-anchor="middle" style="fill:rgba(77,163,255,.7);">● RUNNING</text>
+
+      <path class="box cloud" d="M420,70 L548,70 L548,106 L420,106 L420,76 L426,70 Z"/>
+      <text class="nodename dim" x="432" y="89">GPT-4o-mini</text>
+      <text class="nodesub"      x="432" y="101">CROSS-VERIFY</text>
+      <path class="box cloud" d="M420,180 L548,180 L548,216 L420,216 L420,186 L426,180 Z"/>
+      <text class="nodename dim" x="432" y="199">CLAUDE 3.5</text>
+      <text class="nodesub"      x="432" y="211">CROSS-VERIFY</text>
+      <path class="box cloud" d="M420,290 L548,290 L548,326 L420,326 L420,296 L426,290 Z"/>
+      <text class="nodename dim" x="432" y="309">GEMINI 1.5</text>
+      <text class="nodesub"      x="432" y="321">CROSS-VERIFY</text>
+
+      <path class="wire live" d="M138,88  C 170,88  180,180 200,200"/>
+      <path class="wire live" d="M138,198 L 200,210"/>
+      <path class="wire live" d="M138,308 C 170,308 180,240 200,225"/>
+      <circle class="dot pulse" cx="200" cy="200" r="3" style="animation-delay:0s"/>
+      <circle class="dot pulse" cx="200" cy="210" r="3" style="animation-delay:.7s"/>
+      <circle class="dot pulse" cx="200" cy="225" r="3" style="animation-delay:1.4s"/>
+
+      <path class="wire dotted" d="M380,200 C 400,200 405,90  420,88"/>
+      <path class="wire dotted" d="M380,210 L 420,198"/>
+      <path class="wire dotted" d="M380,225 C 400,225 405,308 420,308"/>
+      <circle class="dot dim" cx="420" cy="88"  r="2.5"/>
+      <circle class="dot dim" cx="420" cy="198" r="2.5"/>
+      <circle class="dot dim" cx="420" cy="308" r="2.5"/>
+
+      <text class="lane-lbl" x="200" y="148">01 ORCHESTRATION</text>
+    </svg>
+  </div>
   <div class="wrap">
     <div class="meta-top">
       <div class="m"><div class="k">Role</div>            <div class="v">개인 프로젝트 · 설계·구현 전부</div></div>
