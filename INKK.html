@@ -35,6 +35,20 @@
     --line-soft:rgba(20,17,13,.08);
     --rule:1px solid var(--line);   /* 매거진 1.5px ink rule → 가벼운 line */
     --rad:8px; --rad-lg:22px; --rad-xl:32px;
+
+    /* spacing scale — 4px 그리드 (모든 padding/margin은 이 토큰만 사용) */
+    --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:20px;
+    --s-6:24px; --s-7:32px; --s-8:48px; --s-9:64px; --s-10:96px;
+    --space-card:var(--s-6);          /* 모든 카드 padding 24 */
+    --space-card-lg:var(--s-7);       /* 큰 카드 32 */
+    --space-gap-sm:var(--s-3);        /* grid gap 작은 */
+    --space-gap-md:var(--s-4);        /* grid gap 중간 16 */
+    --space-gap-lg:var(--s-5);        /* grid gap 큰 20 */
+    --space-stack-sm:var(--s-3);      /* 본문 내부 간격 12 */
+    --space-stack-md:var(--s-4);      /* 16 */
+    --space-stack-lg:var(--s-6);      /* 24 */
+    --space-sec-foot:clamp(40px,6vh,64px);   /* sec-head 와 본문 사이 */
+    --space-block:clamp(48px,7vh,80px);      /* 블록 사이 큰 호흡 */
     /* shadows — cool neutral (이전 warm brown 톤 제거) */
     --shadow-sm:0 1px 2px rgba(0,0,0,.04);
     --shadow-md:0 2px 8px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.03);
@@ -100,7 +114,7 @@
   .chapter{ display:none; }   /* 챕터 넘버 노이즈 제거 */
   .eyebrow{ font-family:var(--font-mono); font-size:11px; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
     color:var(--ink-3);
-    margin:0 0 18px; display:inline-block; }
+    margin:0 0 var(--s-4); display:inline-block; }
 
   h1.title{
     font-family:var(--font-sans); font-weight:800;
@@ -128,7 +142,7 @@
   .lead{
     font-family:var(--font-sans); font-weight:500;
     font-size:clamp(19px,2.2vw,26px); line-height:1.45;
-    color:var(--ink); margin:20px 0 0; max-width:24ch;
+    color:var(--ink); margin:var(--s-5) 0 0; max-width:24ch;
     letter-spacing:-.022em;
   }
   /* .lead .red 는 위 그룹 셀렉터에서 처리됨 */
@@ -136,6 +150,8 @@
   .prose + .prose{ margin-top:12px; }
   .prose strong{ color:var(--ink); font-weight:600; }
   code{ font-family:var(--font-mono); font-size:.86em; background:var(--paper-2); color:var(--ink); padding:.12em .42em; border-radius:4px; font-weight:500; }
+
+  .sec-foot{ margin-top:var(--space-sec-foot); }
 
   /* ──── HERO ──── */
   .hero{ padding-top:clamp(56px,8vh,96px); padding-bottom:clamp(56px,8vh,96px); }
@@ -256,7 +272,7 @@
 
   .pmeta{ display:grid; grid-template-columns:repeat(4,1fr); margin-top:clamp(56px,8vh,90px);
     border-top:1px solid var(--line); text-align:left; }
-  .pmeta .col{ padding:22px 20px 4px; border-right:1px solid var(--line-soft); }
+  .pmeta .col{ padding:var(--s-5) var(--s-5) var(--s-1); border-right:1px solid var(--line-soft); }
   .pmeta .col:last-child{ border-right:none; }
   .pmeta .k{ font-family:var(--font-mono); font-size:11px; font-weight:600; letter-spacing:.04em; color:var(--ink-3); text-transform:uppercase; }
   .pmeta .v{ font-size:15px; font-weight:500; color:var(--ink); margin-top:9px; line-height:1.55; }
@@ -266,12 +282,12 @@
 
 
   /* ──── KEY TECH (.thi) — 깔끔한 라인 카드 ──── */
-  .thi{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:30px; }
+  .thi{ display:grid; grid-template-columns:repeat(2,1fr); gap:var(--space-gap-md); margin-top:var(--space-sec-foot); }
   .thi .c{
     position:relative; background:var(--paper);
     border:1px solid var(--line);
     border-radius:12px;
-    padding:24px 26px;
+    padding:var(--space-card);
     transition:border-color .2s, transform .2s;
   }
   .thi .c:hover{ border-color:var(--ink); transform:translateY(-1px); }
@@ -281,11 +297,11 @@
   @media(max-width:720px){ .thi{ grid-template-columns:1fr; } }
 
   /* ──── PROBLEM CARDS ──── */
-  .three{ display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+  .three{ display:grid; grid-template-columns:repeat(2,1fr); gap:var(--space-gap-md); }
   .pcard{
     background:var(--paper);
     border:1px solid var(--line);
-    border-radius:12px; padding:26px 24px;
+    border-radius:12px; padding:var(--space-card);
     transition:border-color .2s, transform .2s;
   }
   .pcard:hover{ border-color:var(--ink); transform:translateY(-1px); }
@@ -294,14 +310,14 @@
   .pcard p{ font-size:15px; color:var(--ink-2); line-height:1.72; margin:0; letter-spacing:-.012em; }
   @media(max-width:720px){ .three{ grid-template-columns:1fr; } .pcard{ padding:24px 22px; } }
 
-  .thesis{ margin-top:32px; padding:24px 28px; background:var(--paper-2); border-left:3px solid var(--ink); border-radius:0 8px 8px 0; max-width:64ch; }
+  .thesis{ margin-top:var(--space-stack-lg); padding:var(--s-6) var(--s-7); background:var(--paper-2); border-left:3px solid var(--ink); border-radius:0 var(--rad) var(--rad) 0; max-width:64ch; }
   .thesis .tl{ font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); font-weight:700; }
   .thesis p{ margin:10px 0 0; font-size:17.5px; line-height:1.65; color:var(--ink); font-family:var(--font-serif); font-weight:500; }
   .thesis p strong{ color:var(--ink); font-weight:700; }
 
   /* ──── DECISIONS LIST ──── */
-  .decisions{ display:grid; grid-template-columns:repeat(2,1fr); gap:0 36px; margin-top:24px; }
-  .dec{ display:flex; gap:18px; padding:20px 0; border-bottom:1px solid var(--line-soft); align-items:flex-start; }
+  .decisions{ display:grid; grid-template-columns:repeat(2,1fr); gap:0 var(--s-7); margin-top:var(--space-stack-lg); }
+  .dec{ display:flex; gap:var(--s-4); padding:var(--s-5) 0; border-bottom:1px solid var(--line-soft); align-items:flex-start; }
   .dec .dn{ font-family:var(--font-mono); font-size:12px; color:var(--ink-3); flex:none; font-weight:700; letter-spacing:.05em; min-width:32px; padding-top:2px; }
   .dec .dt{ font-size:15px; line-height:1.7; color:var(--ink-2); letter-spacing:-.012em; }
   .dec .dt b{ color:var(--ink); font-weight:700; }
@@ -325,7 +341,7 @@
   }
 
   /* ──── 흐름 다이어그램 — 단순 박스 + 화살표 ──── */
-  .flow{ display:flex; align-items:stretch; gap:6px; margin:28px 0 0; flex-wrap:wrap; justify-content:center; }
+  .flow{ display:flex; align-items:stretch; gap:var(--s-2); margin:var(--space-stack-lg) 0 0; flex-wrap:wrap; justify-content:center; }
   .flow-step{ flex:1 1 110px; min-width:110px; padding:14px 14px 16px;
     background:var(--paper); border:1px solid var(--ink); border-radius:8px;
     display:flex; flex-direction:column; gap:8px; }
@@ -395,8 +411,8 @@
   .chip{ font-family:var(--font-mono); font-size:12px; color:var(--ink); background:var(--paper-3); border:1px solid var(--line); border-radius:4px; padding:6px 10px; letter-spacing:.01em; font-weight:500; }
 
   /* ──── LEARNING LIST ──── */
-  .llist{ border-top:var(--rule); margin-top:24px; }
-  .li{ padding:24px 0; border-bottom:1px solid var(--line-soft); display:grid; grid-template-columns:200px 1fr; gap:32px; align-items:baseline; }
+  .llist{ border-top:var(--rule); margin-top:var(--space-stack-lg); }
+  .li{ padding:var(--s-6) 0; border-bottom:1px solid var(--line-soft); display:grid; grid-template-columns:200px 1fr; gap:var(--s-7); align-items:baseline; }
   .li .lh{ font-family:var(--font-sans); font-size:18px; font-weight:700; letter-spacing:-.022em; color:var(--ink); line-height:1.35; }
   .li p{ font-size:15px; line-height:1.72; color:var(--ink-2); margin:0; max-width:60ch; letter-spacing:-.012em; }
   .li p b{ color:var(--ink); font-weight:700; }
@@ -505,7 +521,7 @@
       <h2 class="h2">결과는 나온다. <span class="red">발행할 수준까지 다듬기가 어렵다.</span></h2>
       <p class="prose sec-foot">ChatGPT로 카드뉴스를 직접 만들어 봤다. 글은 그럴듯하게 나오지만 5장 흐름·폰트 크기·강조 위치가 매번 다르게 나와서, 그대로 인스타에 올리기엔 어색했다. 결국 캔바를 열어 손으로 다듬었다. INKK는 그 과정을 서비스가 대신 처리하게 만든 도구다.</p>
     </div>
-    <div class="three sec-foot" style="margin-top:32px;">
+    <div class="three sec-foot">
       <div class="pcard">
         <div class="pn">문제 01</div>
         <h3>같은 주제도 매번 다르게 나온다</h3>
