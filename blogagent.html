@@ -53,8 +53,10 @@
   .hero .wrap{ position:relative; z-index:1; }
 
   /* ── meta-top: 상단 메타 그리드 (사이버 대시보드 톤) ─────── */
-  .meta-top{ display:grid; grid-template-columns:repeat(3,1fr); gap:0;
+  .meta-top{ display:grid; grid-template-columns:repeat(4,1fr); gap:0;
     border-top:1px solid var(--line-soft); margin:clamp(28px,4vh,48px) 0 clamp(40px,6vh,72px); position:relative; }
+  .meta-top .m a{ color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(77,163,255,.3); transition:border-color .15s; }
+  .meta-top .m a:hover{ border-bottom-color:var(--accent); }
   .meta-top::before{ content:""; position:absolute; left:0; top:-1px; width:60px; height:2px; background:var(--accent); }
   .meta-top .m{ padding:16px 24px 0 0; }
   .meta-top .m .k{ font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); margin-bottom:6px; }
@@ -124,9 +126,9 @@
   .thi .c p{ font-size:14.5px; color:var(--ink-2); line-height:1.62; margin:0; }
   .thi.cols3{ grid-template-columns:repeat(3,1fr); }
   @media(max-width:740px){ .thi, .thi.cols3{ grid-template-columns:1fr; } }
-  .shot{ margin-top:clamp(40px,6vh,72px); border-radius:var(--rad); overflow:hidden; border:1px solid var(--line); box-shadow:0 40px 90px rgba(0,0,0,.5); }
+  .shot{ margin:clamp(40px,6vh,72px) auto 0; max-width:760px; border-radius:var(--rad); overflow:hidden; border:1px solid var(--line); box-shadow:0 24px 60px rgba(0,0,0,.4); }
   .shot img{ width:100%; display:block; }
-  .shotcap{ font-family:var(--mono); font-size:12.5px; color:var(--ink-3); margin-top:13px; text-align:center; line-height:1.5; }
+  .shotcap{ font-family:var(--mono); font-size:12.5px; color:var(--ink-3); margin-top:13px; text-align:center; line-height:1.5; max-width:760px; margin-left:auto; margin-right:auto; }
 
   .kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; margin-top:clamp(40px,6vh,64px); background:var(--line-soft); border:1px solid var(--line-soft); border-radius:var(--rad); overflow:hidden; }
   .kpi{ background:var(--bg-2); padding:26px 22px; }
@@ -169,10 +171,9 @@
   .techstack table{ width:100%; border-collapse:collapse; }
   .techstack th{ text-align:left; padding:12px 22px; font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); font-weight:500; border-bottom:1px solid var(--line-soft); background:rgba(22,22,28,.4); }
   .techstack td{ padding:14px 22px; border-bottom:1px solid var(--line-soft); vertical-align:top; line-height:1.55; }
-  .techstack td:nth-child(1){ font-family:var(--mono); font-size:12px; color:var(--accent); font-weight:600; letter-spacing:.04em; width:120px; white-space:nowrap; }
-  .techstack td:nth-child(2){ font-family:var(--mono); font-size:12.5px; color:var(--ink); width:230px; }
-  .techstack td:nth-child(3){ color:var(--ink-2); font-size:13.5px; width:200px; }
-  .techstack td:nth-child(4){ color:var(--ink-3); font-size:13px; }
+  .techstack td:nth-child(1){ font-family:var(--mono); font-size:12px; color:var(--accent); font-weight:700; letter-spacing:.06em; text-transform:uppercase; width:130px; white-space:nowrap; }
+  .techstack td:nth-child(2){ font-family:var(--mono); font-size:12.5px; color:var(--ink); width:320px; line-height:1.7; }
+  .techstack td:nth-child(3){ color:var(--ink-2); font-size:13.5px; line-height:1.7; }
   .techstack tr:last-child td{ border-bottom:none; }
   @media(max-width:840px){
     .techstack th{ display:none; }
@@ -323,9 +324,10 @@
     </div>
 
     <div class="meta-top">
-      <div class="m"><div class="k">Role</div>            <div class="v">개인 프로젝트 · 설계·구현 전부</div></div>
-      <div class="m"><div class="k">Period</div>          <div class="v">2026 · v1 → v13</div></div>
-      <div class="m"><div class="k">Stack</div>           <div class="v">cron · Ollama exaone3.5 · ChromaDB · nomic-embed · Gemini·Claude</div></div>
+      <div class="m"><div class="k">Role</div>   <div class="v">개인 프로젝트 · 설계·구현 전부</div></div>
+      <div class="m"><div class="k">Period</div> <div class="v">2026 · v1 → v13</div></div>
+      <div class="m"><div class="k">Stack</div>  <div class="v">cron · Ollama exaone3.5 · ChromaDB · nomic-embed · Gemini·Claude</div></div>
+      <div class="m"><div class="k">Blog</div>   <div class="v"><a href="https://blog.naver.com/wishsun1411" target="_blank" rel="noopener">blog.naver.com/wishsun1411</a></div></div>
     </div>
   </div>
 </section>
@@ -400,7 +402,6 @@
         <figcaption>Obsidian 노트 → AntiGravity → Ollama Gemma 4 → 노트에 답 직접 삽입</figcaption>
       </figure>
     </div>
-    <div class="shot"><img src="localai/img/connect-ai-lab.webp" alt="로컬 AI 작업 환경 — Obsidian·Ollama 연결"/></div>
   </div>
 </section>
 
@@ -493,110 +494,38 @@
 
     <div class="techstack">
       <div class="techstack-head">
-        <span class="t">TECH STACK · 결정 근거</span>
+        <span class="t">TECH STACK · 4 그룹</span>
         <span class="d">Production · v13</span>
       </div>
       <table>
         <thead>
-          <tr><th>컴포넌트</th><th>도구·버전</th><th>역할</th><th>선택 이유</th></tr>
+          <tr><th>그룹</th><th>구성</th><th>핵심 결정</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>스케줄러</td>
-            <td>cron</td>
-            <td>매일 정시 트리거</td>
-            <td>외부 의존 0 · 결정론적 — "스스로 판단" 대신 정해진 순서 반복</td>
+            <td>모델 · 추론</td>
+            <td>cron · Ollama exaone3.5 7.8B</td>
+            <td>매일 정시 트리거 → 로컬 LLM이 초안 생성. AI_MODE=local 기본으로 API 비용·외부 전송 0.</td>
           </tr>
           <tr>
-            <td>로컬 LLM</td>
-            <td>Ollama · exaone3.5 7.8B</td>
-            <td>블로그 초안 생성</td>
-            <td>한국어 강함 · API 비용 0 · 데이터 외부 전송 없음 (AI_MODE=local 기본)</td>
+            <td>RAG · 데이터</td>
+            <td>nomic-embed-text 768d · ChromaDB · DART/Naver/News RSS 6소스</td>
+            <td>직접 발행한 220개 글 벡터화 (Ollama 재활용). 섹터 메타 필터 2단계 top_k=2. 18개 언론사 화이트리스트로 본문 노이즈 차단.</td>
           </tr>
           <tr>
-            <td>임베딩</td>
-            <td>nomic-embed-text · 768d</td>
-            <td>과거 220개 글 벡터화</td>
-            <td>Ollama 재활용 — <code>ollama pull</code> 한 줄로 활성화 · 한국어 OK · Google-genai 폴백 병행</td>
+            <td>검증 7단</td>
+            <td>형식 → 팩트(DART 50%+ gap) → 구조 모순 13룰 → 자동 교정 → Gemini 5기준 → 4단 폴백 → Claude 보조</td>
+            <td>critical=True 시 배포 차단. MAX_RETRIES=2. Gemini 무료 한도(15 RPM · 1M tok/day)는 4단 폴백 큐로 우회. 모든 단계가 score·issues 객체로 로깅.</td>
           </tr>
           <tr>
-            <td>벡터 DB</td>
-            <td>ChromaDB · 영속 모드</td>
-            <td>RAG 코퍼스 · 유사 검색 top_k=2</td>
-            <td>로컬 설치 · 섹터 메타 필터 2단계 (같은 섹터 우선 → 전체 폴백)</td>
-          </tr>
-          <tr>
-            <td>크롤링</td>
-            <td>DART API · Naver 금융 · Google News RSS</td>
-            <td>종목·재무·뉴스 6소스 병렬</td>
-            <td>18개 언론사 화이트리스트로 본문 노이즈 차단 · 6자리 종목코드 파라미터로 동명이종 차단</td>
-          </tr>
-          <tr>
-            <td>이슈 점수</td>
-            <td>거래량 30% + 뉴스 40% + 검색량 30%</td>
-            <td>generic 콘텐츠 자동 스킵</td>
-            <td>IssueScore ≥ 30 AND 직접 뉴스 ≥ 1건만 통과 · 최대 3개 선정</td>
-          </tr>
-          <tr>
-            <td>형식 검증</td>
-            <td>_validate_blog_quality</td>
-            <td>헤딩·분량·태그·종목명</td>
-            <td>## 헤딩 4개 · 한글 800자+ (목표 1500자) · 해시태그 10개+ · 플레이스홀더 감지</td>
-          </tr>
-          <tr>
-            <td>팩트체크</td>
-            <td>DART 수치 대조</td>
-            <td>매출/영업이익/순이익 검증</td>
-            <td>글 수치 vs 원본 <b>50%+ 차이 → 환각</b> 판정 → 재시도 (MAX_RETRIES=2)</td>
-          </tr>
-          <tr>
-            <td>구조 모순 룰</td>
-            <td>13+ 규칙</td>
-            <td>밸류·재무·공시 모순 자동 감지</td>
-            <td>PBR 5+ ↔ "저평가" / PER 100+ ↔ "저평가" / EPS 음수 ↔ "PER 저평가" / 부채 100%+ ↔ "안정적" / 유상증자 ↔ "재무 안정성" / 등</td>
-          </tr>
-          <tr>
-            <td>자동 교정</td>
-            <td>_auto_fix_contradictions</td>
-            <td>재시도 한도 후 강제 보정</td>
-            <td>"+15.3% 상한가" → "+15.3% 급등" 같은 표현 코드 레벨 치환</td>
-          </tr>
-          <tr>
-            <td>최종 검증</td>
-            <td>Gemini 2.5 flash-lite</td>
-            <td>5기준 자동 평가 → score 0~100</td>
-            <td>① 종목 혼동 ② 수치 환각 30%+ ③ 종목코드 ④ 사실 창작 ⑤ 밸류에이션 모순 · critical=배포 차단 + Telegram 긴급 알림</td>
-          </tr>
-          <tr>
-            <td>폴백 큐</td>
-            <td>4단 Gemini pool</td>
-            <td>429 쿼터 시 자동 전환</td>
-            <td>gemini-2.5-flash-lite → 3.1-flash-lite → flash-lite-latest → 2.5-flash (무료 한도 15 RPM · 1M tok/day, 모델별 독립)</td>
-          </tr>
-          <tr>
-            <td>보조 검증</td>
-            <td>Claude API</td>
-            <td>secondary verify</td>
-            <td>Gemini 4단 모두 소진 시 보조 — 입력에 사실이 충분하면 모델 교체로 환각이 줄지 않음을 검증 후 추가</td>
-          </tr>
-          <tr>
-            <td>발행</td>
-            <td>네이버 블로그 (Selenium) · Google Sheets · Obsidian</td>
-            <td>다채널 자동 업로드</td>
-            <td>undetected-chromedriver 자동 로그인 · gspread 서비스 계정 · 마크다운+프론트매터 백업</td>
-          </tr>
-          <tr>
-            <td>알림</td>
-            <td>Telegram Bot</td>
-            <td>완료·오류·critical 차단 알림</td>
-            <td>score 포함 — 사람이 마지막 판단을 빠르게</td>
+            <td>배포 · 알림</td>
+            <td>네이버 블로그 (Selenium) · Google Sheets · Obsidian · Telegram</td>
+            <td>undetected-chromedriver 자동 로그인 · gspread 서비스 계정 · 마크다운+프론트매터 백업 · critical 알림에 score 포함.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="shot" style="margin-top:clamp(36px,5vh,56px);"><img src="localai/img/sheets-result.webp" alt="실제 자동 업로드 결과 — Google Sheets에 기록된 생성 글 목록"/></div>
-    <p class="shotcap">실제 자동 업로드 결과 — 검증 점수·종목명·버전이 Google Sheets에 자동 기록돼, 사람이 마지막 판단을 빠르게 한다.</p>
   </div>
 </section>
 
