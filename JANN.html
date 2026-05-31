@@ -56,12 +56,6 @@
   section.dark .sec-lead{ color:#A1A1A6; }
   .sec-foot{ margin-top:clamp(30px,4vh,50px); }
 
-  /* ──── Mermaid 다이어그램 (GitHub README와 동일) ──── */
-  .mer-wrap{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px 24px 16px; margin-bottom:14px; overflow-x:auto; }
-  .mer-cap{ font-family:"Space Mono",monospace; font-size:11px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); margin-bottom:12px; }
-  .mer-wrap .mermaid{ font-family:var(--font-apple); text-align:center; min-height:80px; }
-  .mer-wrap .mermaid svg{ max-width:100%; height:auto; }
-
   /* SVG 아키텍처 다이어그램 컨테이너 */
   .arch-svg{ max-width:980px; margin:0 auto; }
   .arch-svg svg{ width:100%; height:auto; display:block; border-radius:14px; }
@@ -256,7 +250,6 @@
       <a href="#how">동작</a>
       <a href="#science">근거</a>
       <a href="#pipeline">파이프라인</a>
-      <a href="#architecture">아키텍처</a>
       <a href="#engineering">엔지니어링</a>
       <a href="#next">다음 단계</a>
       <a href="#demo">시연</a>
@@ -510,93 +503,6 @@
   </div>
 </section>
 
-<!-- ARCHITECTURE — GitHub README와 동일 Mermaid 3개 -->
-<section id="architecture">
-  <div class="wide-wrap">
-    <div class="sec-head">
-      <p class="eyebrow">시스템 아키텍처</p>
-      <h2 class="h2">인식부터 추천까지, 한눈에</h2>
-      <p class="sec-lead">온디바이스 추론과 클라우드 LLM이 병렬로 도는 하이브리드 구조. GitHub repo README와 동일한 다이어그램.</p>
-    </div>
-
-    <div class="mer-wrap sec-foot">
-      <div class="mer-cap">시스템 구성 — 카메라부터 레시피까지</div>
-      <div class="mermaid">
-flowchart LR
-  U([👤 사용자]) -->|카메라| CAM[📷 식재료 스캔]
-
-  subgraph DEVICE["📱 iOS 온디바이스"]
-    CAM --> YOLO["YOLOv8n (CoreML)<br/>33 classes · 18MB<br/>Float16 양자화"]
-    YOLO --> MERGE{{인식 결과 병합}}
-    APPLE["Apple Vision<br/>(폴백)"] --> MERGE
-  end
-
-  CAM -.병렬.-> GPTV[["☁️ GPT-4o Vision API"]]
-  GPTV --> MERGE
-  MERGE -. 실패 .-> APPLE
-
-  subgraph LOCAL["📦 Local SQLite — 오프라인 보장"]
-    DB[("Flavor Network DB<br/>1,530 ingredients<br/>1,107 compounds")]
-  end
-
-  MERGE --> JAC["자카드 유사도<br/>화합물 매칭"]
-  JAC <--> DB
-
-  JAC --> PROMPT["구조화 프롬프트<br/>(인식 결과 + 화합물 근거)"]
-  PROMPT --> GPTR[["☁️ GPT-4o<br/>레시피 생성"]]
-  GPTR --> UI["SwiftUI 레시피 화면<br/>+ 왜 어울리는지 근거"]
-  UI --> U
-</div>
-    </div>
-
-    <div class="mer-wrap">
-      <div class="mer-cap">데이터 · 모델 파이프라인 (학습)</div>
-      <div class="mermaid">
-flowchart LR
-  RF["Roboflow<br/>fooddetection-essdj/fridge-objects v10<br/>증강 포함 2,342장"] --> TRAIN
-  PRE["yolov8n.pt<br/>(사전학습 가중치)"] --> TRAIN["YOLOv8n 전이학습<br/>epochs=80 · imgsz=640 · batch=16<br/>HSV/rotate/mosaic/mixup/copy_paste"]
-  TRAIN --> BEST["best.pt"]
-  BEST --> EXPORT["model.export(coreml,<br/>nms=True, conf=0.2, iou=0.45)"]
-  EXPORT --> MLPKG[".mlpackage<br/>Float16 양자화"]
-
-  MON["monitor_and_deploy.sh<br/>(PID 폴링)"] -.감지.-> EXPORT
-  MLPKG --> DEPLOY["Xcode Resources/<br/>자동 백업·교체"]
-  DEPLOY --> SYNC["VisionService.swift<br/>foodModelClasses 동기화"]
-</div>
-    </div>
-
-    <div class="mer-wrap">
-      <div class="mer-cap">Request Flow — 인식부터 추천까지</div>
-      <div class="mermaid">
-sequenceDiagram
-  participant U as 사용자
-  participant V as VisionService
-  participant Y as YOLOv8n (CoreML)
-  participant G as GPT-4o Vision
-  participant DB as Flavor DB (SQLite)
-  participant R as RecipeService
-  participant L as GPT-4o (LLM)
-
-  U->>V: 카메라 프레임
-  par 온디바이스
-    V->>Y: 추론
-    Y-->>V: 박스 + 클래스
-  and 클라우드
-    V->>G: 이미지 + 프롬프트
-    G-->>V: 인식 라벨
-  end
-  V->>V: 결과 병합 · 비식료품 필터
-  V->>DB: 재료 → 화합물 조회
-  DB-->>V: 화합물 셋
-  V->>R: 재료 + 화합물 + 자카드 점수
-  R->>L: 구조화 프롬프트
-  L-->>R: 레시피 + 근거
-  R-->>U: 화면 렌더 (왜 어울리는지 포함)
-</div>
-    </div>
-  </div>
-</section>
-
 <!-- ENGINEERING DEEP-DIVE -->
 <section class="alt" id="engineering">
   <div class="wrap">
@@ -736,24 +642,6 @@ sequenceDiagram
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-<script>
-  mermaid.initialize({
-    startOnLoad: true,
-    theme: "neutral",
-    themeVariables: {
-      fontFamily: "-apple-system, 'Apple SD Gothic Neo', 'Pretendard', sans-serif",
-      fontSize: "13px",
-      primaryColor: "#FFFFFF",
-      primaryTextColor: "#1D1D1F",
-      primaryBorderColor: "#1D1D1F",
-      lineColor: "#86868B",
-      secondaryColor: "#F5F5F7",
-      tertiaryColor: "#FFFFFF"
-    },
-    securityLevel: "loose"
-  });
-</script>
 <script>
 (function(){
   if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
