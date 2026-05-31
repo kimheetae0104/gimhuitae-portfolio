@@ -267,11 +267,45 @@
           <span class="ms"><b>100%</b> 오프라인</span>
         </div>
       </div>
-      <div class="flow">
-        <div class="fstep"><div class="s">Step 01 · Input</div><div class="t">Obsidian Note</div><div class="d">현재 열린 노트의 마크다운이 컨텍스트</div></div>
-        <div class="fstep"><div class="s">Step 02 · Process</div><div class="t">Ollama · Gemma 4</div><div class="d">네트워크 요청 없이 완전 로컬 추론</div></div>
-        <div class="fstep on"><div class="s">Step 03 · Output</div><div class="t">노트에 직접 삽입</div><div class="d">대화가 흩어지지 않고 로컬에 남는다</div></div>
-      </div>
+      <figure class="rag-flow" aria-label="Obsidian 로컬 AI 작업 환경 다이어그램" style="margin:0;">
+        <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg">
+          <text class="lbl" x="10" y="18">01 · CONTEXT FLOW</text>
+          <line class="tick" x1="10" y1="22" x2="160" y2="22"/>
+
+          <!-- Obsidian Note -->
+          <path class="box" d="M10,45 L260,45 L260,115 L10,115 L10,51 L16,45 Z"/>
+          <text class="sub"  x="22" y="68">INPUT · OBSIDIAN</text>
+          <text class="name" x="22" y="90">현재 열린 노트</text>
+          <text class="sub"  x="22" y="106">마크다운이 컨텍스트로 주입</text>
+
+          <!-- arrow down + AntiGravity bridge label -->
+          <path class="wire solid live" d="M135,115 L135,150"/>
+          <text class="sub" style="fill:#46D39A;" x="145" y="138">AntiGravity bridge</text>
+
+          <!-- Ollama (center glow) -->
+          <path class="box center" d="M10,150 L260,150 L260,220 L10,220 L10,156 L16,150 Z"/>
+          <text class="sub"         x="22" y="173" style="fill:#4DA3FF;">PROCESS · OLLAMA</text>
+          <text class="name center" x="135" y="195" text-anchor="middle">GEMMA 4 · LOCAL</text>
+          <text class="sub"         x="135" y="212" text-anchor="middle">네트워크 요청 0 · M2 Air</text>
+
+          <!-- arrow down -->
+          <path class="wire solid live" d="M135,220 L135,255"/>
+
+          <!-- Output -->
+          <path class="box" d="M10,255 L260,255 L260,310 L10,310 L10,261 L16,255 Z"/>
+          <text class="sub"  x="22" y="278">OUTPUT · INSERT</text>
+          <text class="name" x="22" y="298">노트에 답 직접 삽입</text>
+
+          <!-- side annotation -->
+          <text class="lbl" x="290" y="100" style="fill:#46D39A;">100% LOCAL</text>
+          <text class="sub" x="290" y="118">데이터 외부 전송 0</text>
+          <text class="lbl" x="290" y="200" style="fill:#4DA3FF;">2.1s AVG</text>
+          <text class="sub" x="290" y="218">로컬 추론 응답</text>
+          <text class="lbl" x="290" y="298" style="fill:var(--ink-3);">PERSISTED</text>
+          <text class="sub" x="290" y="316">대화가 노트로 남음</text>
+        </svg>
+        <figcaption>Obsidian 노트 → AntiGravity → Ollama Gemma 4 → 노트에 답 직접 삽입</figcaption>
+      </figure>
     </div>
     <div class="shot"><img src="localai/img/connect-ai-lab.webp" alt="로컬 AI 작업 환경 — Obsidian·Ollama 연결"/></div>
   </div>
