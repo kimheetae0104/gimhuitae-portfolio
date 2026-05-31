@@ -98,6 +98,7 @@
   .arch-layer.l2 .lbl::before{ background:#22B8CF; }
   .arch-layer.l3 .lbl::before{ background:#F59E0B; }
   .arch-nodes{ display:grid; gap:10px; }
+  .arch-nodes.cols-2{ grid-template-columns:repeat(2,1fr); }
   .arch-nodes.cols-3{ grid-template-columns:repeat(3,1fr); }
   .arch-nodes.cols-4{ grid-template-columns:repeat(4,1fr); }
   .arch-node{ background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:14px 16px; transition:border-color .2s, transform .2s; }
@@ -113,7 +114,7 @@
   .arch-arrow .ln{ stroke:var(--ink-3); stroke-width:2; }
   .arch-arrow .hd{ fill:var(--ink-3); }
   @media(max-width:740px){
-    .arch-nodes.cols-3, .arch-nodes.cols-4{ grid-template-columns:1fr; }
+    .arch-nodes.cols-2, .arch-nodes.cols-3, .arch-nodes.cols-4{ grid-template-columns:1fr; }
   }
 
   /* readable body block */
@@ -410,7 +411,7 @@
     </div>
     <div class="thi">
       <div class="c"><div class="k">핵심 기술 01</div><h3>LLM 출력 일관성 보장 파이프라인</h3><p>같은 입력에도 LLM 출력이 매번 달라지는 문제를 4단 평가 시스템으로 해결했다. 장별 역할 분리 프롬프트 → 휴리스틱 점수 평가(임계값 미달 시 자동 재생성) → 후처리 sanitize → 글 길이 기반 레이아웃 자동 매핑. 프롬프트 엔지니어링과 후처리 검증을 분리해 한 단계 실패가 전체 품질로 번지지 않게 설계했다.</p></div>
-      <div class="c"><div class="k">핵심 기술 02</div><h3>결제·잔액 동시성·멱등성 보장</h3><p>크레딧이 곧 현금이라 동시 요청·재시도에도 잔액·결제가 어긋나지 않게 설계했다. 잔액 차감은 DB row-level lock 트랜잭션으로 원자화하고, Stripe 웹훅은 이벤트 ID 기반 멱등 처리(처리 상태 머신 + 90초 stale 복구)로 중복 적립을 차단. LLM 호출 실패 시 자동 환불까지 한 흐름으로 묶었다.</p></div>
+      <div class="c"><div class="k">핵심 기술 02</div><h3>LLM 평가·재생성 자동화 시스템</h3><p>LLM 출력을 그대로 사용자에게 보내지 않고 휴리스틱 점수 평가를 통과해야 발행. 임계값 미달이면 사유와 함께 자동 재호출(max retry 캡)하고, 통과 후엔 후처리 sanitize와 글 길이 기반 레이아웃 자동 매핑까지 한 흐름으로 처리한다. 프롬프트 한 방 의존을 제거해 결과 품질의 분산을 줄인 설계.</p></div>
     </div>
 
     <div class="pmeta">
@@ -550,15 +551,6 @@ flowchart LR
 
   API -->|배경 이미지| IMG
 
-  subgraph PAY["Stripe"]
-    PRICE["Standard / Pro Price"]
-    WH["/api/stripe/webhook"]
-  end
-
-  FE --> PRICE
-  PRICE --> WH
-  WH --> PG
-
   LLM --> API
   IMG --> API
   API --> FE
@@ -594,25 +586,6 @@ sequenceDiagram
       </pre>
     </div>
 
-    <div class="mer-wrap">
-      <div class="mer-cap">결제 · 사용량 흐름</div>
-      <pre class="mermaid">
-sequenceDiagram
-  participant U as 사용자
-  participant FE as Frontend
-  participant ST as Stripe Checkout
-  participant WH as /api/stripe/webhook
-  participant SUP as Supabase
-
-  U->>FE: 플랜 업그레이드 클릭
-  FE->>ST: Checkout Session
-  U->>ST: 결제
-  ST-->>WH: customer.subscription.* 이벤트
-  WH->>SUP: plans 테이블 업데이트
-  Note over WH,SUP: 다음 요청부터 카드 수 한도 확장
-      </pre>
-    </div>
-
     <details class="mer-fallback">
       <summary>다이어그램이 보이지 않으면 텍스트 버전 펼치기</summary>
       <div class="arch" style="margin-top:18px;">
@@ -641,21 +614,11 @@ sequenceDiagram
 
       <div class="arch-layer alt l2">
         <div class="lbl">API Routes · 서버리스 함수 (icn1)</div>
-        <div class="arch-nodes cols-4">
+        <div class="arch-nodes cols-2">
           <div class="arch-node">
             <div class="nh">/api/generate</div>
             <div class="nd">잔액 차감 → LLM 호출 → 점수 평가 → 후처리 → 결과 반환</div>
             <div class="tg">POST</div>
-          </div>
-          <div class="arch-node">
-            <div class="nh">/api/credits</div>
-            <div class="nd">잔액 조회 · 충전 · 보상 트랜잭션 (RPC)</div>
-            <div class="tg">GET/POST</div>
-          </div>
-          <div class="arch-node">
-            <div class="nh">/api/stripe/webhook</div>
-            <div class="nd">이벤트 ID 멱등 처리 + 90초 stale 복구</div>
-            <div class="tg">Webhook</div>
           </div>
           <div class="arch-node">
             <div class="nh">/api/proxy-image</div>
@@ -669,7 +632,7 @@ sequenceDiagram
 
       <div class="arch-layer l3">
         <div class="lbl">Data · External Services</div>
-        <div class="arch-nodes cols-4">
+        <div class="arch-nodes cols-3">
           <div class="arch-node">
             <div class="nh">Supabase Postgres</div>
             <div class="nd">users · credits · generations · events · RPC 함수 (row-level lock)</div>
@@ -679,11 +642,6 @@ sequenceDiagram
             <div class="nh">LLM 프로바이더</div>
             <div class="nd">Claude · Groq · 로컬 모델을 단일 인터페이스로 추상화 → 런타임 라우팅</div>
             <div class="tg">Mock 폴백</div>
-          </div>
-          <div class="arch-node">
-            <div class="nh">Stripe</div>
-            <div class="nd">크레딧 충전 결제 · 웹훅 멱등 (이벤트 ID 기준)</div>
-            <div class="tg">Checkout</div>
           </div>
           <div class="arch-node">
             <div class="nh">이미지 소스</div>
@@ -702,33 +660,11 @@ sequenceDiagram
   <div class="wrap">
     <div class="sec-head">
       <p class="eyebrow">엔지니어링 디테일</p>
-      <h2 class="h2">AI 제품의 신뢰성 · 비용 · 보안 시스템 설계</h2>
-      <p class="sec-lead">LLM 비결정성, 결제 동시성, 외부 API 의존성을 다루는 AX 시스템에서 내린 네 가지 설계 결정.</p>
+      <h2 class="h2">LLM 시스템의 품질 · 비용 · 보안 설계</h2>
+      <p class="sec-lead">LLM의 비결정성·비용·외부 의존성을 다루면서 내린 세 가지 시스템 설계 결정.</p>
     </div>
     <div class="enotes sec-foot">
-      <div class="enote">
-        <div class="el">결제 · 잔액 동시성</div>
-        <h3>DB row-level lock + 멱등 키로 정합성 보장</h3>
-        <p class="esum">크레딧이 곧 현금이라, 동시 요청·재시도·웹훅 중복에도 잔액·결제가 절대 어긋나지 않게 설계했다.</p>
-        <ul class="espec">
-          <li><b>원자 차감</b> · 잔액 행을 lock한 뒤 단일 트랜잭션 내에서 확인·차감 → 동시 요청에 race condition 없음</li>
-          <li><b>웹훅 멱등 처리</b> · 이벤트 ID 기반 처리 상태 머신 (pending/done/fail) + 90초 stale 복구로 중복 적립 차단</li>
-          <li><b>보상 트랜잭션</b> · LLM 호출 실패 시 자동 환불, 구매 이력은 유지 (감사 추적성)</li>
-        </ul>
-        <div class="seq" aria-label="결제 동시성 시퀀스">
-          <div class="nd"><span class="s">REQ</span><span class="h">결제 요청</span></div>
-          <div class="ar">→</div>
-          <div class="nd"><span class="s">LOCK</span><span class="h">잔액 행 lock</span></div>
-          <div class="ar">→</div>
-          <div class="nd hl"><span class="s">ATOMIC</span><span class="h">검증 · 차감</span></div>
-          <div class="ar">→</div>
-          <div class="br">
-            <div class="nd"><span class="s">OK</span><span class="h">완료</span></div>
-            <div class="nd dim"><span class="s">FAIL</span><span class="h">자동 환불</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="enote">
+<div class="enote">
         <div class="el">LLM 품질 시스템</div>
         <h3>프롬프트 한 방 의존 제거 → 4단 평가 파이프라인</h3>
         <p class="esum">LLM 출력의 비결정성을 점수 기반 평가 + 자동 재생성 + 후처리 검증으로 흡수.</p>
