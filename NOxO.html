@@ -238,9 +238,10 @@
 
 <section class="panel" id="problem">
   <p class="sec-kicker">01 — 문제 정의</p>
-  <h2 class="h2">시뮬레이션과 5분 예측은 같은 데이터라도 다른 문제</h2>
+  <h2 class="h2">발전 효율 ↑ + NOx 배출 ↓, 두 다른 결정 도구가 필요</h2>
   <p class="lead">발전소는 효율을 극대화하면서도 NOx 배출은 환경 규제 한도 안에 묶어야 한다. 운전 변수(온도·압력·유량 등) 사이의 비선형 관계를 모델이 학습해야 가능한 일이다.</p>
-  <p class="lead">같은 운전 데이터라도 시뮬레이션과 5분 예측은 입력·갱신 주기·평가 기준이 모두 다르다. 한 모델로 묶지 않고 처음부터 두 개로 나눠 만들었다.</p>
+  <p class="lead">이 프로젝트가 풀어야 했던 두 질문은 형태가 달랐다.<br><strong>① 제어값을 바꾸면 NOx가 어떻게 변할까?</strong> 운전 시뮬레이션.<br><strong>② 지금처럼 두면 5분 뒤 NOx는 얼마가 될까?</strong> 실시간 예측.</p>
+  <p class="lead">같은 데이터지만 입력·갱신 주기·평가 기준이 다르므로, 한 모델로 묶지 않고 두 개로 나눠 설계했다.</p>
   <div class="two">
     <div class="mcard">
       <span class="tag">모델 1</span>
