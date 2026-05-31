@@ -31,7 +31,7 @@
     --inkk-grad-soft: linear-gradient(180deg, rgba(124,92,255,.06) 0%, rgba(255,77,148,.04) 100%);
     --line:rgba(20,17,13,.14);
     --line-soft:rgba(20,17,13,.08);
-    --rule:1.5px solid var(--ink);
+    --rule:1px solid var(--line);   /* 매거진 1.5px ink rule → 가벼운 line */
     --rad:8px; --rad-lg:22px; --rad-xl:32px;
     /* clay shadows — 다층 soft + 윗쪽 highlight 살짝 + 아래 깊은 그림자 */
     --shadow-sm:0 1px 2px rgba(20,17,13,.05);
@@ -79,7 +79,7 @@
   /* ──── NAV ──── */
   .nav{ position:sticky; top:0; z-index:30; background:rgba(253,252,249,.88); backdrop-filter:blur(14px) saturate(180%); border-bottom:1px solid var(--line-soft); }
   .nav .in{ max-width:1100px; margin:0 auto; padding:0 28px; height:64px; display:flex; align-items:center; justify-content:space-between; }
-  .nav .left{ font-family:var(--font-serif); font-weight:900; font-size:22px; letter-spacing:-.03em; }
+  .nav .left{ font-family:var(--font-sans); font-weight:800; font-size:20px; letter-spacing:-.03em; }
   .nav .left .dot{ color:var(--accent); }
   .nav .links{ display:flex; gap:28px; align-items:center; }
   .nav .links a{ font-family:var(--font-mono); font-size:12px; font-weight:500; color:var(--ink-2); letter-spacing:.04em; text-transform:uppercase; }
@@ -97,24 +97,24 @@
   section.tint{ background:var(--paper-2); }
   @media(max-width:560px){ section{ padding:56px 0; } }
 
-  /* ──── HEAD / TYPE ──── */
-  .chapter{ display:flex; align-items:baseline; gap:14px; margin-bottom:18px; }
-  .chapter .num{ font-family:var(--font-serif); font-weight:900; font-size:clamp(34px,5vw,52px); color:var(--accent); line-height:1; letter-spacing:-.03em; }
-  .chapter .label{ font-family:var(--font-mono); font-size:12px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3); border-top:1.5px solid var(--ink); padding-top:6px; min-width:120px; }
-  .eyebrow{ font-family:var(--font-mono); font-size:12px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin:0 0 16px; }
+  /* ──── HEAD / TYPE — sans 일관 (inkk.online 톤) ──── */
+  .chapter{ display:none; }   /* 챕터 넘버 노이즈 제거 */
+  .eyebrow{ font-family:var(--font-mono); font-size:12px; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+    background:var(--inkk-grad-text); -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent;
+    margin:0 0 14px; display:inline-block; }
 
   h1.title{
-    font-family:var(--font-serif); font-weight:900;
-    font-size:clamp(54px,11vw,140px); line-height:.92; letter-spacing:-.045em;
+    font-family:var(--font-sans); font-weight:800;
+    font-size:clamp(54px,11vw,140px); line-height:.92; letter-spacing:-.05em;
     margin:0; color:var(--ink);
   }
   @media(max-width:560px){
     h1.title{ font-size:64px; line-height:.9; }
-    h2.h2{ font-size:30px; line-height:1.15; }
+    h2.h2{ font-size:28px !important; line-height:1.2; }
   }
   h2.h2{
-    font-family:var(--font-serif); font-weight:700;
-    font-size:clamp(30px,4.6vw,52px); line-height:1.12; letter-spacing:-.025em;
+    font-family:var(--font-sans); font-weight:700;
+    font-size:clamp(28px,4.4vw,46px); line-height:1.15; letter-spacing:-.03em;
     margin:0; text-wrap:balance;
   }
   h2 .red, .lead .red{
@@ -122,13 +122,13 @@
     -webkit-background-clip:text; background-clip:text;
     color:transparent; -webkit-text-fill-color:transparent;
   }
-  h3{ font-family:var(--font-serif); font-weight:700; font-size:22px; letter-spacing:-.015em; margin:0; line-height:1.3; }
+  h3{ font-family:var(--font-sans); font-weight:700; font-size:20px; letter-spacing:-.02em; margin:0; line-height:1.3; }
   .kicker{ font-family:var(--font-mono); font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3); }
   .lead{
-    font-family:var(--font-serif); font-weight:500;
-    font-size:clamp(20px,2.4vw,28px); line-height:1.45;
+    font-family:var(--font-sans); font-weight:500;
+    font-size:clamp(20px,2.4vw,28px); line-height:1.4;
     color:var(--ink); margin:24px 0 0; max-width:24ch;
-    letter-spacing:-.015em;
+    letter-spacing:-.025em;
   }
   /* .lead .red 는 위 그룹 셀렉터에서 처리됨 */
   .prose{ font-size:clamp(16px,1.7vw,18.5px); line-height:1.75; color:var(--ink-2); max-width:64ch; text-wrap:pretty; }
@@ -332,7 +332,6 @@
     <div class="links">
       <a href="#problem">문제</a>
       <a href="#how">제품</a>
-      <a href="#gallery">화면</a>
       <a href="#quality">품질 엔진</a>
       <a href="#arch">아키텍처</a>
       <a href="#learning">운영</a>
@@ -394,7 +393,7 @@
 <section class="tint" id="problem">
   <div class="wrap">
     <div class="col">
-      <div class="chapter"><div class="num">01</div><div class="label">문제 정의</div></div>
+      <p class="eyebrow">01 — 문제 정의</p>
       <h2 class="h2">결과물은 나온다. <span class="red">"내가 원하는 톤"은 안 나온다.</span></h2>
       <p class="prose sec-foot">ChatGPT도 이제 캐러셀 카드뉴스를 만든다. 하지만 폰트·여백·강조·흐름이 일관되게 잡힌 <strong>"발행 가능한 결과"</strong>를 받으려면 결국 디자인 지식이 필요하다.</p>
     </div>
@@ -421,7 +420,7 @@
 <section id="how">
   <div class="wrap">
     <div class="col">
-      <div class="chapter"><div class="num">02</div><div class="label">제품 결정</div></div>
+      <p class="eyebrow">02 — 제품 결정</p>
       <h2 class="h2">발행 속도를 판다. <span class="red">고민할 거리부터 제거.</span></h2>
       <p class="prose sec-foot">경쟁 상대는 캔바가 아니라 <strong>"오늘 그냥 안 올리는 선택"</strong>이다. 그래서 예쁜 편집 자유도 대신 발행 속도에 모든 결정을 걸었다.</p>
     </div>
@@ -434,38 +433,11 @@
   </div>
 </section>
 
-<!-- GALLERY — 실제 서비스 화면들 -->
-<section class="tint" id="gallery">
-  <div class="wrap">
-    <div class="col">
-      <p class="eyebrow">Live · inkk.online</p>
-      <h2 class="h2">실제로 <span class="red">이렇게 동작한다.</span></h2>
-      <p class="prose sec-foot">랜딩에서 보여주는 것과 완성된 결과물 사이의 차이를 좁히는 게 INKK의 일이다.</p>
-    </div>
-    <div class="gal sec-foot">
-      <div class="gcell">
-        <span class="gcap">Showcase · 결과 유형</span>
-        <img src="inkk/g-showcase.webp" alt="INKK 결과 유형 — Shock · Editorial · Proof" loading="lazy"/>
-      </div>
-      <div class="col-right">
-        <div class="gcell">
-          <span class="gcap">Structure · Before / After</span>
-          <img src="inkk/g-structure.webp" alt="INKK Before/After 구조 비교" loading="lazy"/>
-        </div>
-        <div class="gcell">
-          <span class="gcap">Mobile · 390px</span>
-          <img src="inkk/g-mobile.webp" alt="INKK 모바일 화면" loading="lazy"/>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- QUALITY DEEP DIVE -->
 <section class="tint" id="quality">
   <div class="wrap">
     <div class="col">
-      <div class="chapter"><div class="num">03</div><div class="label">기술 딥다이브 · 품질 엔진</div></div>
+      <p class="eyebrow">03 — 기술 딥다이브 · 품질 엔진</p>
       <h2 class="h2">품질을 <span class="red">운에 맡기지 않는</span> 4층 방어.</h2>
       <p class="prose sec-foot">AI 카드뉴스의 흔한 실패는 <strong>'틀린 결과'가 아니라 '맞지만 밋밋한 결과'</strong>다. 문법은 멀쩡한데 아무도 저장하지 않는 카드. 그래서 품질을 4개 층에서 강제했다.</p>
     </div>
@@ -531,7 +503,7 @@
 <section id="arch">
   <div class="wrap">
     <div class="col">
-      <div class="chapter"><div class="num">04</div><div class="label">아키텍처 · 보안</div></div>
+      <p class="eyebrow">04 — 아키텍처 · 보안</p>
       <h2 class="h2">돈이 걸린 서비스, <span class="red">동시성·멱등성부터.</span></h2>
       <p class="prose sec-foot">크레딧이 곧 현금이라, 기능보다 <strong>"동시 요청·재시도에도 잔액이 안 깨지는가"</strong>가 먼저였다. 보안 감사 라운드에서 <strong>권한 회수 결함</strong>까지 찾아 정리했다.</p>
     </div>
@@ -577,29 +549,18 @@
         </div>
       </div>
 
-      <div class="layer">
-        <div class="ln">속도</div>
-        <div>
-          <h3>Rate Limit 3-tier 폴백 + 비용 차단 가드</h3>
-          <ul class="spec">
-            <li><b>3-tier</b> · Upstash Redis → Supabase 공유 카운터 RPC → in-memory. 서버리스 분산에서도 카운트 정확</li>
-            <li><b>IP 소스</b> · <code>x-vercel-forwarded-for</code>(스푸핑 불가) 우선</li>
-            <li><b>비용 가드</b> · 게스트 LLM 호출 1회/시간, prod에서 LLM 키 부재 시 자동 <code>mock</code> fallback으로 무한 비용 차단</li>
-            <li><b>실패 시 차단 안 함</b> · 카운터 조회 실패는 통과 (정상 사용자가 막히는 것보다 나음)</li>
-          </ul>
-        </div>
-      </div>
     </div>
 
     <div class="chips">
-      <span class="chip">Next.js 16.2 · App Router · RSC</span>
-      <span class="chip">React 19.2</span>
-      <span class="chip">Supabase Postgres · RLS</span>
-      <span class="chip">Stripe (멱등 처리)</span>
-      <span class="chip">Anthropic Claude · Groq Llama 3.3</span>
-      <span class="chip">Upstash Ratelimit</span>
+      <span class="chip">Next.js 16 · App Router · RSC</span>
+      <span class="chip">React 19</span>
+      <span class="chip">Supabase · Postgres · RLS</span>
+      <span class="chip">Stripe</span>
+      <span class="chip">Claude · Groq</span>
+      <span class="chip">Upstash Ratelimit (3-tier 폴백)</span>
+      <span class="chip">CSRF · SSRF · CSP 가드</span>
       <span class="chip">Vitest · Playwright</span>
-      <span class="chip">PostHog · Sentry-style 자체 로깅</span>
+      <span class="chip">PostHog</span>
     </div>
   </div>
 </section>
@@ -608,7 +569,7 @@
 <section class="tint" id="learning">
   <div class="wrap">
     <div class="col">
-      <div class="chapter"><div class="num">05</div><div class="label">출시 이후 · 운영</div></div>
+      <p class="eyebrow">05 — 출시 이후 · 운영</p>
       <h2 class="h2">고치기 전에 <span class="red">측정한다.</span></h2>
       <p class="prose sec-foot">제품이 도는 것과 사업이 되는 것은 다르다. 출시 후엔 기능을 더 쌓는 대신 <strong>"왜 안 쓰는지 보이게" 만드는 일</strong>에 집중했다.</p>
     </div>
@@ -624,10 +585,6 @@
       <div class="li">
         <div class="lh">API 응답 약 6배 개선</div>
         <p>"느리다"를 측정부터. 원인은 DB 지역이 아니라 <b>Vercel 함수가 미국(iad1)</b>이라 태평양을 왕복한 것. <code>vercel.json</code>에 <code>regions:["icn1"]</code> 한 줄로 <code>/api/credits</code> <b>0.4s → 0.06s</b>. 비싼 마이그레이션 전에 가설을 데이터로 교정했다.</p>
-      </div>
-      <div class="li">
-        <div class="lh">빌드 게이트 추가</div>
-        <p><b>빌드 실패가 가려져 직전 버전이 서빙되던 사건</b> 직후 <code>build = lint && next build</code>로 묶고, CI에 <code>lint + typecheck + test + build:next</code>를 게이트로 추가했다. 같은 실패가 두 번 다시 운영에 새지 않게.</p>
       </div>
       <div class="li">
         <div class="lh">안 만들기로 한 결정</div>
