@@ -148,35 +148,86 @@
   .pill.beta{ background:var(--paper-3); color:var(--ink); border-color:var(--ink); }
   .hero .url{ font-family:var(--font-mono); font-size:14px; margin:24px 0 0; color:var(--ink-3); letter-spacing:.02em; }
   .hero .url a{ color:var(--accent); border-bottom:1px solid var(--accent); padding-bottom:1px; }
-  /* ──── INKK 시그니처 — 카드뉴스 mockup deck (JANN .devices 패턴) ──── */
-  .cards{ display:flex; justify-content:center; align-items:center; gap:14px; padding:30px 0 20px; perspective:1200px; }
+  /* ──── INKK 시그니처 — 4 레이아웃 카드 mockup deck ──── */
+  .cards{ display:flex; justify-content:center; align-items:center; gap:10px; padding:36px 0 24px; flex-wrap:nowrap; }
   .icard{
-    width:160px; flex:none; aspect-ratio:4/5; border-radius:20px; overflow:hidden;
-    position:relative; box-shadow:0 24px 60px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.04);
-    background:#0F1115; color:#fff; display:flex; flex-direction:column; padding:18px 16px;
-    transform:rotate(-8deg) translateY(8px); transition:transform .35s cubic-bezier(.16,.84,.32,1), box-shadow .35s;
+    width:170px; flex:none; aspect-ratio:4/5; border-radius:18px; overflow:hidden;
+    position:relative; box-shadow:0 24px 60px rgba(0,0,0,.16), 0 0 0 1px rgba(0,0,0,.05);
+    background:#FFF; color:#fff;
+    transition:transform .35s cubic-bezier(.16,.84,.32,1), box-shadow .35s;
   }
-  .icard.lg{ width:230px; transform:rotate(0deg) scale(1); z-index:3;
-    box-shadow:0 40px 90px rgba(0,0,0,.28), 0 0 0 1px rgba(0,0,0,.04); }
-  .icard:nth-child(3){ transform:rotate(8deg) translateY(8px); }
-  .icard:hover{ transform:rotate(0deg) translateY(-4px) scale(1.02); z-index:4; }
-  .icard.editorial{ background:linear-gradient(160deg,#2A1F3D 0%, #1A1230 100%); }
-  .icard.shock{ background:linear-gradient(160deg,#0F1115 0%, #1F1A2C 60%, #2D1A3D 100%); }
-  .icard.proof{ background:linear-gradient(160deg,#1B2233 0%, #0E1421 100%); }
-  .icard .ilabel{ font-family:var(--font-mono); font-size:10px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; padding:5px 10px; border-radius:999px;
-    background:rgba(255,255,255,.10); color:rgba(255,255,255,.78); align-self:flex-start; backdrop-filter:blur(8px); }
-  .icard .ihead{ margin-top:auto; font-family:var(--font-sans); font-weight:700; letter-spacing:-.02em; line-height:1.28;
-    font-size:16px; color:#fff; word-break:keep-all; }
-  .icard.lg .ihead{ font-size:22px; }
-  .icard .ihead em{ font-style:normal; background:var(--inkk-grad-text); -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent; font-weight:800; }
-  .icard .imark{ position:absolute; bottom:14px; right:16px; font-family:var(--font-mono); font-size:9px; letter-spacing:.18em; color:rgba(255,255,255,.36); }
-  .icard .ipage{ position:absolute; top:14px; right:16px; font-family:var(--font-mono); font-size:9px; letter-spacing:.12em; color:rgba(255,255,255,.5); }
-  @media(max-width:560px){
-    .cards{ gap:8px; padding:20px 0 12px; }
-    .icard{ width:108px; padding:14px 12px; }
-    .icard.lg{ width:148px; }
-    .icard .ihead{ font-size:12px; }
-    .icard.lg .ihead{ font-size:16px; }
+  .icard.lg{ width:230px; z-index:3;
+    box-shadow:0 40px 100px rgba(0,0,0,.28), 0 0 0 1px rgba(0,0,0,.05); }
+  /* fan stack 회전 */
+  .cards .icard:nth-child(1){ transform:rotate(-10deg) translateY(20px); }
+  .cards .icard:nth-child(2){ transform:rotate(-5deg) translateY(8px); }
+  .cards .icard:nth-child(3){ transform:rotate(0); z-index:4; }
+  .cards .icard:nth-child(4){ transform:rotate(5deg) translateY(8px); }
+  .cards .icard:nth-child(5){ transform:rotate(10deg) translateY(20px); }
+  .icard:hover{ transform:rotate(0) translateY(-6px) scale(1.04); z-index:5; box-shadow:0 50px 110px rgba(0,0,0,.32); }
+  .icard .ipage{ position:absolute; top:14px; right:14px; font-family:var(--font-mono); font-size:9px; letter-spacing:.12em; color:rgba(255,255,255,.85); z-index:5; text-shadow:0 1px 2px rgba(0,0,0,.4); }
+  .icard .imark{ position:absolute; bottom:12px; left:50%; transform:translateX(-50%); font-family:var(--font-mono); font-size:8px; letter-spacing:.2em; padding:3px 8px; border-radius:999px; background:rgba(255,255,255,.85); color:#1D1D1F; z-index:5; }
+
+  /* 레이아웃 A: overlay-caption (풀블리드 + 하단 큰 제목) */
+  .icard.overlay{ background:#0F1115 url("inkk/cards/mountain-1.webp") center/cover; }
+  .icard.overlay::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.78) 100%); }
+  .icard.overlay .head{ position:absolute; bottom:36px; left:14px; right:14px; z-index:2; font-family:var(--font-sans); font-weight:800; font-size:14px; line-height:1.25; letter-spacing:-.02em; color:#fff; word-break:keep-all; }
+  .icard.lg.overlay .head{ font-size:20px; bottom:42px; }
+  .icard.overlay .head em{ font-style:normal; color:#FBBF24; }
+
+  /* 레이아웃 B: split-h-2 (상하 2중 이미지) */
+  .icard.splith{ display:grid; grid-template-rows:1fr 1fr; background:#0F1115; }
+  .icard.splith > div{ position:relative; padding:10px 12px; display:flex; flex-direction:column; justify-content:space-between; color:#fff; }
+  .icard.splith > div:first-child{ background:#0F1115 url("inkk/cards/car-1.webp") center/cover; }
+  .icard.splith > div:last-child{ background:#0F1115 url("inkk/cards/leaf-1.webp") center/cover; }
+  .icard.splith > div::before{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.2) 50%, rgba(0,0,0,.65) 100%); }
+  .icard.splith h4{ position:relative; z-index:2; margin:0; font-size:11px; font-weight:700; letter-spacing:-.01em; line-height:1.25; text-align:center; align-self:center; flex:1; display:flex; align-items:center; justify-content:center; padding:6px; word-break:keep-all; }
+  .icard.lg.splith h4{ font-size:14px; }
+
+  /* 레이아웃 C: split-2 (좌우 2중 이미지) */
+  .icard.splitv{ display:grid; grid-template-columns:1fr 1fr; background:#0F1115; }
+  .icard.splitv > div{ position:relative; padding:10px 8px; display:flex; flex-direction:column; justify-content:flex-end; color:#fff; }
+  .icard.splitv > div:first-child{ background:#0F1115 url("inkk/cards/lake-1.webp") center/cover; }
+  .icard.splitv > div:last-child{ background:#0F1115 url("inkk/cards/leaf-1.webp") center/cover; }
+  .icard.splitv > div::before{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.15) 50%, rgba(0,0,0,.75) 100%); }
+  .icard.splitv h4{ position:relative; z-index:2; margin:0; font-size:10px; font-weight:700; line-height:1.25; word-break:keep-all; }
+  .icard.lg.splitv h4{ font-size:12px; }
+
+  /* 레이아웃 D: grid-2x2 (4중 그리드) */
+  .icard.grid4{ display:grid; grid-template:1fr 1fr / 1fr 1fr; background:#0F1115; gap:1px; }
+  .icard.grid4 > div{ position:relative; padding:8px 6px; color:#fff; display:flex; align-items:flex-end; }
+  .icard.grid4 > div:nth-child(1){ background:#0F1115 url("inkk/cards/grid-a.webp") center/cover; }
+  .icard.grid4 > div:nth-child(2){ background:#0F1115 url("inkk/cards/grid-b.webp") center/cover; }
+  .icard.grid4 > div:nth-child(3){ background:#0F1115 url("inkk/cards/grid-c.webp") center/cover; }
+  .icard.grid4 > div:nth-child(4){ background:#0F1115 url("inkk/cards/grid-d.webp") center/cover; }
+  .icard.grid4 > div::before{ content:""; position:absolute; inset:0; background:linear-gradient(0deg, rgba(0,0,0,.6) 0%, transparent 60%); }
+  .icard.grid4 h4{ position:relative; z-index:2; margin:0; font-size:9px; font-weight:700; line-height:1.2; word-break:keep-all; }
+  .icard.lg.grid4 h4{ font-size:11px; }
+
+  /* 레이아웃 E: outro (마무리 — 풀블리드 + 좌측 큰 제목) */
+  .icard.outro{ background:#0F1115 url("inkk/cards/mountain-1.webp") center/cover; }
+  .icard.outro::after{ content:""; position:absolute; inset:0; background:linear-gradient(45deg, rgba(0,0,0,.75) 0%, rgba(0,0,0,.2) 60%); }
+  .icard.outro .end-label{ position:absolute; top:36px; left:14px; z-index:2; font-family:var(--font-mono); font-size:9px; font-weight:600; letter-spacing:.16em; color:#FBBF24; text-transform:uppercase; }
+  .icard.outro .head{ position:absolute; bottom:42px; left:14px; right:14px; z-index:2; font-family:var(--font-sans); font-weight:800; font-size:14px; line-height:1.25; letter-spacing:-.02em; color:#fff; word-break:keep-all; }
+  .icard.lg.outro .head{ font-size:20px; bottom:48px; }
+  .icard.outro .head em{ font-style:normal; color:#FBBF24; }
+
+  @media(max-width:880px){
+    .cards{ gap:6px; padding:24px 0 16px; }
+    .icard{ width:120px; }
+    .icard.lg{ width:160px; }
+    .icard.overlay .head, .icard.outro .head{ font-size:11px; bottom:28px; }
+    .icard.lg.overlay .head, .icard.lg.outro .head{ font-size:14px; }
+    .icard.splith h4, .icard.lg.splith h4{ font-size:9px; }
+    .icard.splitv h4, .icard.lg.splitv h4{ font-size:8px; }
+    .icard.grid4 h4, .icard.lg.grid4 h4{ font-size:7px; }
+    .icard .ipage{ font-size:8px; }
+    .icard .imark{ font-size:7px; }
+  }
+  @media(max-width:520px){
+    .cards .icard:nth-child(1), .cards .icard:nth-child(5){ display:none; }
+    .icard{ width:100px; }
+    .icard.lg{ width:140px; }
   }
 
   /* Hero / 결과 이미지 — Clay 입체 컨테이너 */
@@ -386,23 +437,36 @@
         <p class="lead">긴 글을 1분 만에, <span class="red">인스타 카드뉴스</span>로.</p>
         <p class="url">Live · <a href="https://inkk.online" target="_blank" rel="noopener">inkk.online</a></p>
       </div>
-      <div class="cards" aria-label="INKK 카드뉴스 결과 예시">
-        <div class="icard editorial">
-          <span class="ilabel">Editorial</span>
+      <div class="cards" aria-label="INKK 카드뉴스 5장 — 레이아웃 종류">
+        <div class="icard overlay" aria-label="풀블리드 오버레이">
           <span class="ipage">1 / 5</span>
-          <p class="ihead">감성 큐레이션처럼 보이는 <em>정보 카드</em></p>
+          <h4 class="head"><em>90%</em>가 놓치는 자외선</h4>
           <span class="imark">INKK</span>
         </div>
-        <div class="icard lg shock">
-          <span class="ilabel">Shock</span>
-          <span class="ipage">1 / 5</span>
-          <p class="ihead">원장이 <em>숨기는</em> 1가지</p>
+        <div class="icard splith" aria-label="상하 2중">
+          <div><h4>세안 후<br>3분 안 도포</h4></div>
+          <div><h4>토너·로션 직후<br>바로 레이어링</h4></div>
+          <span class="ipage">2 / 5</span>
           <span class="imark">INKK</span>
         </div>
-        <div class="icard proof">
-          <span class="ilabel">Proof</span>
-          <span class="ipage">1 / 5</span>
-          <p class="ihead">통계·리뷰·전문가 인용 <em>강조</em></p>
+        <div class="icard lg splitv" aria-label="좌우 2중 (메인)">
+          <div><h4>얼굴 기준<br>500원 동전 크기</h4></div>
+          <div><h4>귀·목·광대까지<br>같이 도포</h4></div>
+          <span class="ipage">3 / 5</span>
+          <span class="imark">INKK</span>
+        </div>
+        <div class="icard grid4" aria-label="4중 그리드">
+          <div><h4>아침 세안</h4></div>
+          <div><h4>책상 위</h4></div>
+          <div><h4>운동 직전</h4></div>
+          <div><h4>가방 속</h4></div>
+          <span class="ipage">4 / 5</span>
+          <span class="imark">INKK</span>
+        </div>
+        <div class="icard outro" aria-label="마무리">
+          <span class="ipage">5 / 5</span>
+          <span class="end-label">마무리</span>
+          <h4 class="head"><em>저장</em>해두면<br>바로 쓴다</h4>
           <span class="imark">INKK</span>
         </div>
       </div>
