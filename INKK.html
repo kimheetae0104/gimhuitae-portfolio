@@ -241,6 +241,16 @@
   }
 
   /* ──── PROJECT META (4 col → 2 → 1) ──── */
+  /* meta row — pmeta 4col 그리드 대신 한 줄 가벼운 메타 텍스트 */
+  .meta-row{ margin:clamp(36px,5vh,56px) 0 0; padding:14px 0 0; border-top:1px solid var(--line);
+    font-family:var(--font-mono); font-size:12px; color:var(--ink-3); letter-spacing:.02em;
+    display:flex; flex-wrap:wrap; align-items:center; gap:0 10px; line-height:1.8; }
+  .meta-row .dot{ color:var(--line); }
+  .meta-row span:not(.dot){ color:var(--ink-2); }
+  @media(max-width:560px){
+    .meta-row{ font-size:11px; gap:0 8px; }
+  }
+
   .pmeta{ display:grid; grid-template-columns:repeat(4,1fr); margin-top:clamp(48px,7vh,72px); border-top:var(--rule); border-bottom:1px solid var(--line); }
   .pmeta .m{ padding:18px 20px 18px 0; border-right:1px solid var(--line-soft); }
   .pmeta .m:last-child{ border-right:none; }
@@ -487,12 +497,13 @@
       </div>
     </div>
 
-    <div class="pmeta">
-      <div class="m"><div class="k">역할</div><div class="v">개인 프로젝트 · 풀스택</div></div>
-      <div class="m"><div class="k">기간</div><div class="v">2026.05 — 개발 중</div></div>
-      <div class="m"><div class="k">스택</div><div class="v">Next.js · Supabase · Stripe · Claude</div></div>
-      <div class="m"><div class="k">상태</div><div class="v">베타 운영 · inkk.online</div></div>
-    </div>
+    <p class="meta-row">
+      <span>개인 프로젝트 · 풀스택</span>
+      <span class="dot">·</span>
+      <span>2026.05 — 개발 중</span>
+      <span class="dot">·</span>
+      <span>Next.js · Supabase · Stripe · Claude</span>
+    </p>
   </div>
 </section>
 
@@ -603,7 +614,7 @@
 (function(){
   if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if(!('IntersectionObserver' in window)) return;
-  var els=[].slice.call(document.querySelectorAll('.col,.thi .c,.three .pcard,.thesis,.decisions .dec,.layers .layer,.cards,.icard,.pmeta,.chips,.llist .li'));
+  var els=[].slice.call(document.querySelectorAll('.col,.thi .c,.three .pcard,.thesis,.decisions .dec,.layers .layer,.cards,.icard,.pmeta,.meta-row,.chips,.llist .li'));
   els.forEach(function(el){ el.style.opacity=0; el.style.transform='translateY(20px)'; el.style.transition='opacity .7s cubic-bezier(.16,.84,.32,1), transform .7s cubic-bezier(.16,.84,.32,1)'; });
   var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.style.opacity=1; e.target.style.transform='none'; io.unobserve(e.target);} }); },{threshold:.08, rootMargin:'0px 0px -6% 0px'});
   els.forEach(function(el){ io.observe(el); });
