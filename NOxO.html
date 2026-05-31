@@ -121,8 +121,9 @@
   .feature h2{ font-size:clamp(22px,3.2vw,34px); font-weight:800; margin:12px 0 0; }
   .feature .flead{ font-size:17px; line-height:1.75; color:rgba(255,255,255,.9); max-width:64ch; margin:16px 0 0; }
   .feature .flead strong{ color:#fff; }
-  .feature .code{ display:inline-block; font-family:var(--font-mono); font-size:15px; background:rgba(0,0,0,.3); border-radius:10px; padding:10px 16px; margin-top:8px; }
-  .feature .formula-cap{ display:block; margin-top:18px; font-size:13px; font-weight:600; letter-spacing:.04em; color:rgba(255,255,255,.7); text-transform:uppercase; }
+  .feature .code{ display:inline-block; font-family:var(--font-mono); font-size:15px; background:rgba(0,0,0,.3); border-radius:10px; padding:10px 16px; }
+  .feature .formula-cap{ display:block; font-size:13px; font-weight:600; letter-spacing:.04em; color:rgba(255,255,255,.7); text-transform:uppercase; margin-bottom:10px; }
+  .feature .formula-box{ margin-top:22px; padding:18px 22px; border:1px solid rgba(255,255,255,.18); border-radius:14px; background:rgba(0,0,0,.12); }
   .gcards{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:30px; }
   .gcard{ background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:18px; padding:24px 26px; backdrop-filter:blur(6px); }
   .gcard .gt{ font-size:12px; font-weight:800; background:rgba(255,255,255,.2); border-radius:999px; padding:6px 12px; display:inline-block; margin-bottom:12px; }
@@ -267,9 +268,11 @@
   <div class="feature">
     <p class="fk">04 — 핵심 난관 · 데이터 누수</p>
     <h2>R² 0.99는 모델 성능이 아니라 데이터 누수</h2>
-    <p class="flead">O₂ 센서를 넣자 R² 값이 0.99로 측정됐다.<br>CEMS는 측정 NOx를 O₂ 농도로 보정해서 라벨을 만드는데,<br>그 O₂를 다시 입력에 쓴다는 것을 알게 되었다. 모델이 잘 푼 게 아니라 <strong>답을 일부 미리 보고 푼 셈</strong>이었다.</p>
-    <span class="formula-cap">CEMS O₂ 보정식 — 측정 NOx를 기준 O₂(ref=15%)로 환산</span>
-    <span class="code">NOx = NOx_raw × (21 − ref) / (21 − O₂)</span>
+    <p class="flead">O₂ 센서를 넣자 R² 값이 0.99로 측정됐다.<br>CEMS는 측정 NOx를 O₂ 농도로 보정해서 라벨을 만드는데, 그 O₂를 다시 입력에 쓴다는 것을 알게 되었다.<br>모델이 잘 푼 게 아니라 <strong>답을 일부 미리 보고 푼 셈</strong>이었다.</p>
+    <div class="formula-box">
+      <span class="formula-cap">CEMS O₂ 보정식 — 측정 NOx를 기준 O₂(ref=15%)로 환산</span>
+      <span class="code">NOx = NOx_raw × (21 − ref) / (21 − O₂)</span>
+    </div>
     <div class="gcards">
       <div class="gcard">
         <span class="gt">모델 1 처리</span>
