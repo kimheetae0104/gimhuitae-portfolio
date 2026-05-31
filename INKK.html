@@ -56,6 +56,24 @@
   section.dark .sec-lead{ color:#A1A1A6; }
   .sec-foot{ margin-top:clamp(30px,4vh,50px); }
 
+  /* ──── ARCHITECTURE 다이어그램 ──── */
+  .arch{ max-width:920px; margin:clamp(36px,5vh,56px) auto 0; display:grid; gap:14px; }
+  .arch-layer{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:18px 20px; position:relative; }
+  .arch-layer.alt{ background:var(--alt); }
+  .arch-layer .lbl{ font-family:"Space Mono",monospace; font-size:11px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  .arch-nodes{ display:grid; gap:10px; }
+  .arch-nodes.cols-3{ grid-template-columns:repeat(3,1fr); }
+  .arch-nodes.cols-4{ grid-template-columns:repeat(4,1fr); }
+  .arch-node{ background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
+  .arch-layer.alt .arch-node{ background:#fff; }
+  .arch-node .nh{ font-size:14px; font-weight:700; color:var(--ink); letter-spacing:-.02em; }
+  .arch-node .nd{ font-size:12px; color:var(--ink-2); margin-top:6px; line-height:1.5; }
+  .arch-node .tg{ display:inline-block; margin-top:8px; font-family:"Space Mono",monospace; font-size:10px; color:var(--ink-3); letter-spacing:.04em; }
+  .arch-arrow{ text-align:center; color:var(--ink-3); font-size:18px; line-height:1; margin:-4px 0; user-select:none; }
+  @media(max-width:740px){
+    .arch-nodes.cols-3, .arch-nodes.cols-4{ grid-template-columns:1fr; }
+  }
+
   /* readable body block */
   .prose{ font-size:clamp(17px,1.9vw,20px); line-height:1.72; color:var(--ink-2); max-width:42em; text-wrap:pretty; }
   .prose + .prose{ margin-top:16px; }
@@ -304,6 +322,7 @@
       <a href="#how">동작</a>
       <a href="#science">품질</a>
       <a href="#pipeline">파이프라인</a>
+      <a href="#architecture">아키텍처</a>
       <a href="#engineering">엔지니어링</a>
       <a href="#next">다음 단계</a>
       <a href="#demo">바로 가기</a>
@@ -464,6 +483,96 @@
   </div>
 </section>
 
+<!-- ARCHITECTURE — 시스템 구조도 -->
+<section id="architecture">
+  <div class="wide-wrap">
+    <div class="sec-head">
+      <p class="eyebrow">시스템 아키텍처</p>
+      <h2 class="h2">3-레이어 서버리스 구조</h2>
+      <p class="sec-lead">클라이언트 · API 라우트 · 데이터/외부 서비스를 분리해, 각 레이어가 독립적으로 교체·확장 가능하도록 설계했다.</p>
+    </div>
+
+    <div class="arch">
+      <div class="arch-layer">
+        <div class="lbl">Client · Vercel Edge (icn1)</div>
+        <div class="arch-nodes cols-3">
+          <div class="arch-node">
+            <div class="nh">Next.js 16</div>
+            <div class="nd">App Router · React Server Components · 인스타 카드 미리보기 SSR</div>
+            <div class="tg">React 19</div>
+          </div>
+          <div class="arch-node">
+            <div class="nh">카드 렌더링</div>
+            <div class="nd">레이아웃 자동 매핑 → 5종 템플릿으로 4:5 캐러셀 렌더</div>
+            <div class="tg">CSS Grid · Canvas</div>
+          </div>
+          <div class="arch-node">
+            <div class="nh">CDN 캐싱</div>
+            <div class="nd">정적 리소스·생성 결과 메타데이터 edge 캐시</div>
+            <div class="tg">Vercel CDN</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-arrow">↓</div>
+
+      <div class="arch-layer alt">
+        <div class="lbl">API Routes · 서버리스 함수 (icn1)</div>
+        <div class="arch-nodes cols-4">
+          <div class="arch-node">
+            <div class="nh">/api/generate</div>
+            <div class="nd">잔액 차감 → LLM 호출 → 점수 평가 → 후처리 → 결과 반환</div>
+            <div class="tg">POST</div>
+          </div>
+          <div class="arch-node">
+            <div class="nh">/api/credits</div>
+            <div class="nd">잔액 조회 · 충전 · 보상 트랜잭션 (RPC)</div>
+            <div class="tg">GET/POST</div>
+          </div>
+          <div class="arch-node">
+            <div class="nh">/api/stripe/webhook</div>
+            <div class="nd">이벤트 ID 멱등 처리 + 90초 stale 복구</div>
+            <div class="tg">Webhook</div>
+          </div>
+          <div class="arch-node">
+            <div class="nh">/api/proxy-image</div>
+            <div class="nd">SSRF 가드 (호스트 화이트리스트 + 내부망 IP 차단)</div>
+            <div class="tg">GET</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-arrow">↓</div>
+
+      <div class="arch-layer">
+        <div class="lbl">Data · External Services</div>
+        <div class="arch-nodes cols-4">
+          <div class="arch-node">
+            <div class="nh">Supabase Postgres</div>
+            <div class="nd">users · credits · generations · events · RPC 함수 (row-level lock)</div>
+            <div class="tg">RLS 적용</div>
+          </div>
+          <div class="arch-node">
+            <div class="nh">LLM 프로바이더</div>
+            <div class="nd">Claude · Groq · 로컬 모델을 단일 인터페이스로 추상화 → 런타임 라우팅</div>
+            <div class="tg">Mock 폴백</div>
+          </div>
+          <div class="arch-node">
+            <div class="nh">Stripe</div>
+            <div class="nd">크레딧 충전 결제 · 웹훅 멱등 (이벤트 ID 기준)</div>
+            <div class="tg">Checkout</div>
+          </div>
+          <div class="arch-node">
+            <div class="nh">이미지 소스</div>
+            <div class="nd">화이트리스트된 외부 호스트 (저작권 무료 이미지 풀)</div>
+            <div class="tg">프록시 경유</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ENGINEERING DEEP-DIVE -->
 <section class="alt" id="engineering">
   <div class="wrap">
@@ -601,7 +710,7 @@
 <script>
 (function(){
   if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var sel='.sec-head,.fig,.devices,.devrow,.step3 .s3,.stats .stat,.pipe .pcard,.enote,.learn .lcard,.nextgrid .ncard,.demo-stage,.pmeta,.thi .c,.narrow';
+  var sel='.sec-head,.fig,.devices,.arch-layer,.devrow,.step3 .s3,.stats .stat,.pipe .pcard,.enote,.learn .lcard,.nextgrid .ncard,.demo-stage,.pmeta,.thi .c,.narrow';
   var els=[].slice.call(document.querySelectorAll(sel));
   if(!('IntersectionObserver' in window)){ return; }
   els.forEach(function(el){ el.classList.add('reveal'); });
