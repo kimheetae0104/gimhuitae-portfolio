@@ -267,7 +267,7 @@
   <div class="feature">
     <p class="fk">04 — 핵심 난관 · 데이터 누수</p>
     <h2>R² 0.99는 모델 성능이 아니라 데이터 누수</h2>
-    <p class="flead">O₂ 센서를 넣자 R²가 0.99까지 올랐다. 알고 보니 CEMS는 측정 NOx를 O₂ 농도로 보정해서 라벨을 만드는데, 그 O₂를 다시 입력에 쓴 거였다. 모델이 잘 푼 게 아니라 <strong>답을 일부 미리 보고 푼 셈</strong>이다.</p>
+    <p class="flead">O₂ 센서를 넣자 R² 값이 0.99로 측정됐다.<br>CEMS는 측정 NOx를 O₂ 농도로 보정해서 라벨을 만드는데,<br>그 O₂를 다시 입력에 쓴다는 것을 알게 되었다. 모델이 잘 푼 게 아니라 <strong>답을 일부 미리 보고 푼 셈</strong>이었다.</p>
     <span class="formula-cap">CEMS O₂ 보정식 — 측정 NOx를 기준 O₂(ref=15%)로 환산</span>
     <span class="code">NOx = NOx_raw × (21 − ref) / (21 − O₂)</span>
     <div class="gcards">
