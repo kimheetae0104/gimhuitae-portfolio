@@ -34,27 +34,13 @@
     --line-soft:rgba(20,17,13,.08);
     --rule:1px solid var(--line);   /* 매거진 1.5px ink rule → 가벼운 line */
     --rad:8px; --rad-lg:22px; --rad-xl:32px;
-    /* clay shadows — 다층 soft + 윗쪽 highlight 살짝 + 아래 깊은 그림자 */
-    --shadow-sm:0 1px 2px rgba(20,17,13,.05);
-    --shadow-md:0 4px 14px rgba(20,17,13,.07), 0 1px 3px rgba(20,17,13,.04);
-    --shadow-lg:0 24px 60px rgba(60,40,20,.12), 0 4px 14px rgba(20,17,13,.06);
-    --clay-card:
-      0 1px 0 rgba(255,255,255,.85) inset,
-      0 -1px 2px rgba(120,100,70,.06) inset,
-      0 2px 6px rgba(60,40,20,.06),
-      0 12px 28px rgba(60,40,20,.10),
-      0 36px 80px -16px rgba(80,60,30,.18);
-    --clay-shot:
-      0 1px 0 rgba(255,255,255,.95) inset,
-      0 -2px 4px rgba(120,90,60,.05) inset,
-      0 6px 18px rgba(60,40,20,.08),
-      0 30px 60px -10px rgba(80,55,20,.18),
-      0 60px 120px -20px rgba(80,55,20,.16);
-    --clay-pop:
-      0 1px 0 rgba(255,255,255,.9) inset,
-      0 -1px 2px rgba(120,100,70,.05) inset,
-      0 8px 18px rgba(60,40,20,.08),
-      0 22px 44px rgba(60,40,20,.14);
+    /* shadows — cool neutral (이전 warm brown 톤 제거) */
+    --shadow-sm:0 1px 2px rgba(0,0,0,.04);
+    --shadow-md:0 2px 8px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.03);
+    --shadow-lg:0 16px 40px rgba(0,0,0,.08), 0 2px 8px rgba(0,0,0,.04);
+    --clay-card: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --clay-shot: 0 4px 12px rgba(0,0,0,.06), 0 24px 60px rgba(0,0,0,.08);
+    --clay-pop: 0 2px 6px rgba(0,0,0,.04), 0 12px 28px rgba(0,0,0,.06);
 
     --font-serif:"Noto Serif KR","Source Serif 4",ui-serif,Georgia,"Apple SD Gothic Neo",serif;
     --font-sans:"Plus Jakarta Sans",-apple-system,"Apple SD Gothic Neo","Pretendard",sans-serif;
@@ -78,7 +64,7 @@
   .col{ max-width:760px; }
 
   /* ──── NAV ──── */
-  .nav{ position:sticky; top:0; z-index:30; background:rgba(253,252,249,.88); backdrop-filter:blur(14px) saturate(180%); border-bottom:1px solid var(--line-soft); }
+  .nav{ position:sticky; top:0; z-index:30; background:rgba(255,255,255,.88); backdrop-filter:blur(14px) saturate(180%); border-bottom:1px solid var(--line-soft); }
   .nav .in{ max-width:1100px; margin:0 auto; padding:0 28px; height:64px; display:flex; align-items:center; justify-content:space-between; }
   .nav .left{ font-family:var(--font-sans); font-weight:800; font-size:20px; letter-spacing:-.03em; }
   .nav .left .dot{ color:var(--ink); }
@@ -272,33 +258,30 @@
     .pmeta .m:last-child{ border-bottom:none; }
   }
 
-  /* ──── KEY TECH (.thi) ──── */
-  .thi{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:30px; }
+  /* ──── KEY TECH (.thi) — 깔끔한 라인 카드 ──── */
+  .thi{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:30px; }
   .thi .c{
-    position:relative; background:linear-gradient(180deg,#FFFFFF 0%, #FBF8F1 100%);
-    border:1px solid rgba(255,255,255,.7);
-    border-radius:var(--rad-lg);
-    padding:26px 28px;
-    box-shadow:var(--clay-pop);
-    transition:transform .25s cubic-bezier(.16,.84,.32,1), box-shadow .25s;
+    position:relative; background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:24px 26px;
+    transition:border-color .2s, transform .2s;
   }
-  .thi .c::before{ content:""; position:absolute; left:0; top:26px; bottom:26px; width:3px; background:var(--ink); border-radius:0 3px 3px 0; }
-  .thi .c:hover{ transform:translateY(-3px); box-shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 14px 28px rgba(60,40,20,.10), 0 32px 60px rgba(60,40,20,.16); }
-  .thi .c .k{ font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); font-weight:600; }
-  .thi .c h3{ font-size:19px; margin:10px 0 8px; line-height:1.3; }
+  .thi .c:hover{ border-color:var(--ink); transform:translateY(-1px); }
+  .thi .c .k{ font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); font-weight:600; margin-bottom:12px; display:block; }
+  .thi .c h3{ font-size:20px; font-weight:700; margin:0 0 10px; line-height:1.3; color:var(--ink); }
   .thi .c p{ font-size:14.5px; color:var(--ink-2); line-height:1.65; margin:0; }
   @media(max-width:720px){ .thi{ grid-template-columns:1fr; } }
 
   /* ──── PROBLEM CARDS ──── */
   .three{ display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
   .pcard{
-    background:linear-gradient(180deg,#FFFFFF 0%, #FBF8F1 100%);
-    border:1px solid rgba(255,255,255,.6);
-    border-radius:var(--rad-lg); padding:30px 28px;
-    box-shadow:var(--clay-card);
-    transition:transform .25s cubic-bezier(.16,.84,.32,1), box-shadow .25s;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:12px; padding:28px 26px;
+    transition:border-color .2s, transform .2s;
   }
-  .pcard:hover{ transform:translateY(-3px); box-shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 14px 28px rgba(60,40,20,.10), 0 40px 80px -10px rgba(80,55,20,.20); }
+  .pcard:hover{ border-color:var(--ink); transform:translateY(-1px); }
   .pcard .pn{ font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); font-weight:600; }
   .pcard h3{ margin:12px 0 12px; }
   .pcard p{ font-size:15.5px; color:var(--ink-2); line-height:1.65; margin:0; }
@@ -369,7 +352,7 @@
   .gal{ display:grid; grid-template-columns:1.4fr 1fr; gap:20px; margin-top:30px; }
   .gal .gcell{
     position:relative; border-radius:var(--rad-xl); overflow:hidden;
-    background:linear-gradient(180deg, #FFFFFF 0%, #F5F1EA 100%);
+    background:var(--paper);
     border:1px solid rgba(255,255,255,.6);
     box-shadow:var(--clay-shot);
     isolation:isolate;
@@ -505,10 +488,10 @@
     </div>
 
     <div class="pmeta">
-      <div class="m"><div class="k">Role</div><div class="v">개인 프로젝트 (풀스택)</div></div>
-      <div class="m"><div class="k">Period</div><div class="v">2026.05 — 개발 중</div></div>
-      <div class="m"><div class="k">Stack</div><div class="v">Next.js 16 · React 19 · Supabase · Stripe · Claude/Groq</div></div>
-      <div class="m"><div class="k">Status</div><div class="v">Beta · inkk.online</div></div>
+      <div class="m"><div class="k">역할</div><div class="v">개인 프로젝트 · 풀스택</div></div>
+      <div class="m"><div class="k">기간</div><div class="v">2026.05 — 개발 중</div></div>
+      <div class="m"><div class="k">스택</div><div class="v">Next.js · Supabase · Stripe · Claude</div></div>
+      <div class="m"><div class="k">상태</div><div class="v">베타 운영 · inkk.online</div></div>
     </div>
   </div>
 </section>
