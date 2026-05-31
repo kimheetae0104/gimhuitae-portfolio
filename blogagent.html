@@ -67,6 +67,31 @@
   @media(max-width:740px){ .meta-top{ grid-template-columns:1fr 1fr; } }
 
 
+  /* ── RAG flow: 본인 RAG의 역할 분리 다이어그램 ─────────── */
+  .rag-flow{ background:rgba(15,15,19,.55); border:1px solid var(--line-soft); border-radius:var(--rad); padding:28px 28px 22px; margin:clamp(24px,4vh,40px) 0 0; }
+  .rag-flow svg{ width:100%; height:auto; display:block; overflow:visible; }
+  .rag-flow .box{ fill:rgba(22,22,28,.7); stroke:rgba(154,154,164,.35); stroke-width:1; }
+  .rag-flow .box.solid{ stroke:var(--accent); stroke-width:1.3; }
+  .rag-flow .box.mint{ stroke:#46D39A; stroke-width:1.2; stroke-dasharray:4 3; }
+  .rag-flow .box.center{ fill:rgba(22,22,28,.92); stroke:var(--accent); stroke-width:1.6; filter:drop-shadow(0 0 12px rgba(77,163,255,.35)); }
+  .rag-flow .box.cloud{ stroke:rgba(154,154,164,.35); stroke-dasharray:3 3; fill:rgba(15,15,19,.5); }
+  .rag-flow .name{ font-family:var(--mono); font-size:11.5px; font-weight:700; fill:var(--ink); letter-spacing:.06em; }
+  .rag-flow .name.center{ font-size:13px; fill:var(--accent); }
+  .rag-flow .name.mint{ fill:#46D39A; }
+  .rag-flow .name.dim{ fill:var(--ink-2); }
+  .rag-flow .sub{ font-family:var(--mono); font-size:9.5px; letter-spacing:.08em; fill:var(--ink-3); }
+  .rag-flow .lbl{ font-family:var(--mono); font-size:10px; letter-spacing:.18em; text-transform:uppercase; fill:var(--accent); }
+  .rag-flow .lbl.dim{ fill:var(--ink-3); }
+  .rag-flow .wire{ stroke:rgba(154,154,164,.4); stroke-width:1; fill:none; }
+  .rag-flow .wire.solid{ stroke:var(--accent); stroke-width:1.3; }
+  .rag-flow .wire.mint{ stroke:#46D39A; stroke-width:1.3; stroke-dasharray:5 4; }
+  .rag-flow .wire.dotted{ stroke:rgba(154,154,164,.45); stroke-dasharray:3 4; stroke-width:.9; }
+  .rag-flow .wire.live{ stroke-dasharray:3 40; animation:flow 3.4s linear infinite; }
+  .rag-flow .tick{ stroke:rgba(154,154,164,.3); stroke-width:.6; }
+  .rag-flow figcaption{ font-family:var(--mono); font-size:11px; letter-spacing:.08em; color:var(--ink-3); margin-top:14px; text-align:center; }
+  .rag-flow figcaption .cy{ color:var(--accent); }
+  .rag-flow figcaption .mt{ color:#46D39A; }
+
   /* glass cards — 다크 위에서 살짝 떠 보이게 */
   .kpi{ backdrop-filter:blur(12px) saturate(120%); box-shadow:inset 0 1px 0 rgba(255,255,255,.04); }
   .thi .c{ backdrop-filter:blur(14px) saturate(120%); box-shadow:inset 0 1px 0 rgba(255,255,255,.05), 0 1px 2px rgba(0,0,0,.3); }
@@ -301,6 +326,92 @@
       <div class="il">발견 · v4~6</div>
       <h3>RAG는 사실이 아니라 '글 품질'에 사용</h3>
       <p>처음엔 사실 검색까지 벡터로 하려 했다. 그런데 <strong>DART 사업보고서처럼 표·항목 구조가 강한 문서</strong>에선, 의미 유사도로 찾은 청크보다 <strong>정규식·API 기반 구조 추출이 더 정확</strong>했다. 그래서 역할을 갈랐다 — 숫자·항목 같은 <strong>사실은 API·정규식</strong>으로 정확히 뽑고, <strong>RAG는 내가 예전에 발행한 양질의 글 220개를 참고</strong>해 새 글의 톤·구성 품질을 그 수준으로 끌어올리는 데만 썼다. 트렌디해서 RAG를 쓰는 게 아니라, RAG가 잘하는 일(품질 참고)에만 맡긴 것이다.</p>
+
+      <figure class="rag-flow" aria-label="RAG 역할 분리 다이어그램">
+        <svg viewBox="0 0 1000 420" xmlns="http://www.w3.org/2000/svg">
+          <!-- ── 01 INGESTION row (offline) ── -->
+          <text class="lbl" x="30" y="18">01 INGESTION · OFFLINE</text>
+          <line class="tick" x1="30" y1="22" x2="200" y2="22"/>
+
+          <path class="box" d="M30,32 L200,32 L200,90 L30,90 L30,38 L36,32 Z"/>
+          <text class="name" x="42" y="58">220 ARTICLES</text>
+          <text class="sub"  x="42" y="74">CORPUS · 발행 글</text>
+
+          <path class="wire solid live" d="M200,61 L240,61"/>
+
+          <path class="box" d="M240,32 L430,32 L430,90 L240,90 L240,38 L246,32 Z"/>
+          <text class="name" x="252" y="58">CHUNK · EMBED</text>
+          <text class="sub"  x="252" y="74">512 TOK · BGE-M3</text>
+
+          <path class="wire solid live" d="M430,61 L470,61"/>
+
+          <path class="box center" d="M470,32 L640,32 L640,90 L470,90 L470,38 L476,32 Z"/>
+          <text class="name center" x="555" y="58" text-anchor="middle">CHROMADB</text>
+          <text class="sub" x="555" y="76" text-anchor="middle">VECTOR STORE</text>
+
+          <!-- ── 02 QUERY row (live) ── -->
+          <text class="lbl" x="30" y="135">02 QUERY · LIVE</text>
+          <line class="tick" x1="30" y1="139" x2="200" y2="139"/>
+
+          <!-- USER QUERY -->
+          <path class="box" d="M30,200 L200,200 L200,260 L30,260 L30,206 L36,200 Z"/>
+          <text class="name" x="42" y="226">USER QUERY</text>
+          <text class="sub"  x="42" y="244">생성 요청 (주제)</text>
+
+          <!-- split UP to FACTS lane -->
+          <path class="wire solid live" d="M200,222 C 215,222 220,180 240,180"/>
+
+          <path class="box solid" d="M240,150 L460,150 L460,210 L240,210 L240,156 L246,150 Z"/>
+          <text class="name" x="252" y="176">FACTS LANE</text>
+          <text class="sub"  x="252" y="194">API · 정규식 (DART) — solid</text>
+
+          <!-- split DOWN to QUALITY lane -->
+          <path class="wire mint live" d="M200,238 C 215,238 220,310 240,310"/>
+
+          <path class="box mint" d="M240,280 L460,280 L460,340 L240,340 L240,286 L246,280 Z"/>
+          <text class="name mint" x="252" y="306">QUALITY LANE</text>
+          <text class="sub"  x="252" y="324">RAG · ChromaDB — dotted</text>
+
+          <!-- CHROMADB → QUALITY (mint reference) -->
+          <path class="wire mint" d="M555,90 C 555,160 460,250 350,280"/>
+          <text class="sub" style="fill:#46D39A;" x="478" y="172">reference</text>
+
+          <!-- FACTS → OLLAMA (solid merge) -->
+          <path class="wire solid live" d="M460,180 C 480,180 480,238 510,238"/>
+          <!-- QUALITY → OLLAMA (mint merge) -->
+          <path class="wire mint live"  d="M460,310 C 480,310 480,255 510,255"/>
+
+          <!-- OLLAMA (center, glow) -->
+          <path class="box center" d="M510,210 L680,210 L680,290 L510,290 L510,216 L516,210 Z"/>
+          <text class="name center" x="595" y="240" text-anchor="middle">OLLAMA LLM</text>
+          <text class="sub" x="595" y="258" text-anchor="middle">LLAMA3 · 8B · MERGE</text>
+          <text class="sub" x="595" y="276" text-anchor="middle" style="fill:rgba(77,163,255,.75);">● RUNNING</text>
+
+          <!-- OLLAMA → VERIFY (dotted cloud) -->
+          <path class="wire dotted" d="M680,232 C 695,232 705,182 730,182"/>
+
+          <path class="box cloud" d="M730,150 L900,150 L900,210 L730,210 L730,156 L736,150 Z"/>
+          <text class="name dim" x="742" y="176">3-LLM VERIFY</text>
+          <text class="sub"      x="742" y="194">GPT · CLAUDE · GEMINI</text>
+
+          <!-- OLLAMA → PUBLISH (solid live) -->
+          <path class="wire solid live" d="M680,268 C 695,268 705,318 730,318"/>
+
+          <path class="box" d="M730,290 L900,290 L900,350 L730,350 L730,296 L736,290 Z"/>
+          <text class="name" x="742" y="316">PUBLISH</text>
+          <text class="sub"  x="742" y="334">TISTORY · MEDIUM</text>
+
+          <!-- VERIFY → PUBLISH (dotted gate) -->
+          <path class="wire dotted" d="M815,210 L815,290"/>
+          <text class="sub" x="820" y="252">gate</text>
+        </svg>
+        <figcaption>
+          <span class="cy">— FACTS</span> · 사실·수치는 API·정규식 (실선)
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          <span class="mt">- - QUALITY</span> · 톤·구성은 RAG (점선)
+        </figcaption>
+      </figure>
+
       <div class="versus">
         <div class="vs win"><div class="vt">사실 · 수치 → API·정규식 ✓</div><p>DART 표·항목처럼 구조가 고정된 곳에서 수치를 정확히 집어낸다.</p></div>
         <div class="vs win"><div class="vt">글 품질 → RAG ✓</div><p>과거 양질의 글을 참고해 새 글의 톤·구성을 끌어올린다. 각자 잘하는 일에.</p></div>
