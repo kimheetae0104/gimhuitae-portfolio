@@ -294,13 +294,13 @@
       <div class="gcard">
         <span class="gt">모델 1 처리</span>
         <h4>현재 O₂ 제외 → 과거 O₂만</h4>
-        <p>모델 1은 제어값을 가상으로 바꿔 NOx를 시뮬레이션한다. 제어값이 바뀌면 O₂도 함께 변하므로, 현재 O₂는 사실상 미래 정보. 현재 O₂는 빼고 과거 O₂ 값과 물리식 변환으로 대체했다.</p>
+        <p>모델 1은 제어값을 가상으로 바꿔 NOx를 시뮬레이션한다. 제어값이 바뀌면 O₂도 함께 변하므로 현재 O₂는 사실상 미래 정보. 현재 값은 빼고 과거 값과 물리식 변환으로 대체했다.</p>
         <div class="delta"><span class="was">≈0.99</span><span>→ 누수 제거</span><span class="now">≈0.71</span></div>
       </div>
       <div class="gcard">
         <span class="gt">모델 2 처리</span>
         <h4>5분 예측에선 현재 O₂ 재포함</h4>
-        <p>5분 뒤 예측 시점에서 현재 O₂는 <strong>이미 측정된 값</strong>이라 미래 정보가 아니다. 누수 아님 확인 후 재포함, 0.49 → 0.68.</p>
+        <p>5분 뒤 예측 시점에서 현재 O₂는 <strong>이미 측정된 값</strong>이라 미래 정보가 아니다. 누수가 아닌 걸 확인하고 입력에 다시 포함했다.</p>
         <div class="delta"><span class="was">0.49</span><span>→ 재포함</span><span class="now">≈0.68</span></div>
       </div>
     </div>
