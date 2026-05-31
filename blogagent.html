@@ -353,7 +353,7 @@
     <div class="two sec-foot">
       <div>
         <h2 class="h2">컨텍스트 주입 경로가 응답 정확도를 좌우</h2>
-        <p class="prose" style="margin-top:20px;">Obsidian의 현재 활성 노트를 <strong>AntiGravity 플러그인</strong>이 프롬프트에 자동 주입하고, <strong>Ollama 로컬 모델</strong>이 응답을 같은 노트에 삽입한다. 별도 복붙 없이 현재 작업 컨텍스트 위에서 응답이 생성된다. 동일 질문이라도 작업 컨텍스트가 함께 주입될 때 응답 정확도가 측정 가능하게 향상됐다.</p>
+        <p class="prose" style="margin-top:20px;">Obsidian의 현재 활성 노트를 <strong>AntiGravity 플러그인</strong>이 프롬프트에 자동 주입하고, <strong>Ollama가 Gemma 4</strong>를 로컬에서 실행해 응답을 같은 노트에 삽입한다. 별도 복붙 없이 현재 작업 컨텍스트 위에서 응답이 생성된다. 동일 질문이라도 작업 컨텍스트가 함께 주입될 때 응답 정확도가 측정 가능하게 향상됐다.</p>
         <div class="ministats">
           <span class="ms"><b>2.1s</b> 평균 응답 (M2 Air)</span>
           <span class="ms"><b>$0</b> 운용 비용</span>
@@ -378,7 +378,7 @@
           <!-- Ollama (center glow) -->
           <path class="box center" d="M10,150 L260,150 L260,220 L10,220 L10,156 L16,150 Z"/>
           <text class="sub"         x="22" y="173" style="fill:#4DA3FF;">PROCESS · OLLAMA</text>
-          <text class="name center" x="135" y="195" text-anchor="middle">OLLAMA · LOCAL</text>
+          <text class="name center" x="135" y="195" text-anchor="middle">OLLAMA · GEMMA 4</text>
           <text class="sub"         x="135" y="212" text-anchor="middle">네트워크 요청 0 · M2 Air</text>
 
           <!-- arrow down -->
@@ -693,15 +693,15 @@
           <text class="sub" x="820" y="252">gate</text>
         </svg>
         <figcaption>
-          <span class="cy">— FACTS</span> · 사실·수치는 API·정규식 (실선)
-          &nbsp;&nbsp;|&nbsp;&nbsp;
-          <span class="mt">- - QUALITY</span> · 톤·구성은 RAG (점선)
+          <span class="cy">FACTS</span> · 사실·수치 = API + 정규식
+          &nbsp;&nbsp;·&nbsp;&nbsp;
+          <span class="mt">QUALITY</span> · 톤·구성 = RAG 코퍼스 (top_k=2)
         </figcaption>
       </figure>
 
       <div class="versus">
         <div class="vs win"><div class="vt">사실 · 수치 → API·정규식 ✓</div><p>DART 표·항목처럼 구조가 고정된 곳에서 수치를 정확히 집어낸다.</p></div>
-        <div class="vs win"><div class="vt">글 품질 → RAG ✓</div><p>과거 양질의 글을 참고해 새 글의 톤·구성을 끌어올린다. 각자 잘하는 일에.</p></div>
+        <div class="vs win"><div class="vt">톤 · 구성 → RAG ✓</div><p>직접 발행한 220개 글을 참고해 새 글의 톤·구성을 일관되게 유지한다. 각 도구의 강점 영역에 한정.</p></div>
       </div>
     </div>
 
@@ -713,23 +713,23 @@
         <div class="vc"><div class="vn">02</div><div class="vname">팩트</div><div class="vd">생성 수치를 원본 데이터와 대조, 불일치 플래그</div></div>
         <div class="vc"><div class="vn">03</div><div class="vname">모순</div><div class="vd">"실적 개선"·"매출 감소" 동시 언급 등 탐지</div></div>
         <div class="vc"><div class="vn">04</div><div class="vname">자동 교정</div><div class="vd">LLM 재시도로 안 되는 건 규칙 기반 후처리로 강제</div></div>
-        <div class="vc hl"><div class="vn">05</div><div class="vname">교차 검증</div><div class="vd">GPT·Claude·Gemini로 종목 혼동·수치 환각을 다각도 검토, critical이면 배포 차단</div></div>
+        <div class="vc hl"><div class="vn">05</div><div class="vname">최종 검증</div><div class="vd">Gemini 2.5 flash-lite 5기준 자동 평가 + Claude 보조, critical=True 시 배포 차단</div></div>
       </div>
       <div class="zero">
         <div class="z">5단계</div>
-        <p>한 번에 잘 쓰는 모델을 찾기보다 <b>틀린 글이 통과하지 못하는 구조</b>를 먼저 세웠다. GPT·Claude·Gemini 교차 검증이 critical이면 자동 배포를 멈춘다. 수치 환각을 <b>대부분 배포 전에 걸러냈지만</b>, 완전히 없애진 못해 검증 규칙은 계속 손보는 중이다.</p>
+        <p>고성능 단일 모델을 탐색하는 대신 <b>틀린 글이 통과하지 못하는 구조</b>를 먼저 설계했다. Gemini·Claude 검증이 critical 판정을 내리면 자동 배포가 중단된다. 수치 환각 대부분을 배포 전 단계에서 차단하지만 0%까지는 도달하지 못해, 검증 룰셋은 지속 보강 중이다.</p>
       </div>
     </div>
 
     <div class="sec-foot">
       <div class="il" style="font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);">과정 · v1 → v13</div>
-      <h3 style="font-size:clamp(22px,2.8vw,30px);font-weight:600;letter-spacing:-.02em;margin:12px 0 4px;">정답보다 먼저, 실패 이유 확인</h3>
+      <h3 style="font-size:clamp(22px,2.8vw,30px);font-weight:600;letter-spacing:-.02em;margin:12px 0 4px;">정답 도출 전 실패 원인을 먼저 식별</h3>
       <div class="iter">
-        <div class="it"><div class="v">v1~3</div><div><div class="t">기본 파이프라인</div><div class="d">DART 연결 + 단순 프롬프트. 구조화 없이 두니 글마다 품질 편차가 너무 컸다.</div></div></div>
-        <div class="it"><div class="v">v4~6</div><div><div class="t">벡터 검색 시도 → 한계</div><div class="d">구조 강한 문서엔 정규식이 더 정확. "RAG가 항상 정답은 아니다"를 여기서 배웠다.</div></div></div>
-        <div class="it"><div class="v">v7~9</div><div><div class="t">검증 레이어 추가</div><div class="d">잘 쓰게 만들기보다 틀린 글을 거르는 게 급했다. 형식·팩트·모순 검증을 붙였다.</div></div></div>
-        <div class="it"><div class="v">v10~12</div><div><div class="t">반자동화로 전환</div><div class="d">완전 자동화보다 사람이 마지막에 판단하는 반자동화가 현실적이라고 봤다. 검수는 끝까지 남겼다.</div></div></div>
-        <div class="it last"><div class="v">v13</div><div><div class="t">RAG + 5중 검증 + 다중 배포</div><div class="d">ChromaDB에 과거 양질 글 220개를 쌓아 품질 참고로 쓰고, GPT·Claude·Gemini 교차 검증까지 얹어 "수집→생성→검증→배포" 루프를 닫았다. 수치 환각을 배포 전에 잡아내는 구조를 갖췄다.</div></div></div>
+        <div class="it"><div class="v">v1~3</div><div><div class="t">기본 파이프라인</div><div class="d">DART API 연결과 단순 프롬프트 구성. 구조화 부재로 글마다 품질 편차가 컸다.</div></div></div>
+        <div class="it"><div class="v">v4~6</div><div><div class="t">벡터 검색 시도 → 한계 식별</div><div class="d">구조 고정 문서에는 정규식이 더 정확. RAG가 모든 상황의 정답이 아님을 측정으로 확인.</div></div></div>
+        <div class="it"><div class="v">v7~9</div><div><div class="t">검증 레이어 추가</div><div class="d">생성 품질 향상보다 오류 차단이 우선. 형식·팩트·모순 검증 단계를 추가.</div></div></div>
+        <div class="it"><div class="v">v10~12</div><div><div class="t">반자동화로 전환</div><div class="d">완전 자동화 대신 최종 판단을 사람이 수행하는 반자동 구조 채택. 검수 단계는 자동화 범위에서 제외.</div></div></div>
+        <div class="it last"><div class="v">v13</div><div><div class="t">RAG + 7단 검증 + 다채널 배포</div><div class="d">ChromaDB에 직접 발행한 220개 글을 색인해 톤 참고에 사용. Gemini·Claude 다단 검증을 추가해 "수집→생성→검증→배포" 루프를 완성. 수치 환각을 배포 전 단계에서 차단하는 구조 확보.</div></div></div>
       </div>
     </div>
   </div>
