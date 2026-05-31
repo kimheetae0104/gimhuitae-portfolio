@@ -410,8 +410,8 @@
       </div>
     </div>
     <div class="thi">
-      <div class="c"><div class="k">핵심 기술 01</div><h3>LLM 출력 일관성 보장 파이프라인</h3><p>같은 입력에도 LLM 출력이 매번 달라지는 문제를 4단 평가 시스템으로 해결했다. 장별 역할 분리 프롬프트 → 휴리스틱 점수 평가(임계값 미달 시 자동 재생성) → 후처리 sanitize → 글 길이 기반 레이아웃 자동 매핑. 프롬프트 엔지니어링과 후처리 검증을 분리해 한 단계 실패가 전체 품질로 번지지 않게 설계했다.</p></div>
-      <div class="c"><div class="k">핵심 기술 02</div><h3>LLM 평가·재생성 자동화 시스템</h3><p>LLM 출력을 그대로 사용자에게 보내지 않고 휴리스틱 점수 평가를 통과해야 발행. 임계값 미달이면 사유와 함께 자동 재호출(max retry 캡)하고, 통과 후엔 후처리 sanitize와 글 길이 기반 레이아웃 자동 매핑까지 한 흐름으로 처리한다. 프롬프트 한 방 의존을 제거해 결과 품질의 분산을 줄인 설계.</p></div>
+      <div class="c"><div class="k">핵심 기술 01</div><h3>LLM 출력 일관성 보장 파이프라인</h3><p>장별 역할 분리 프롬프트 → 휴리스틱 점수 평가 → 자동 재생성 → 후처리 + 레이아웃 자동 매핑. 4단 파이프라인으로 LLM 출력의 분산을 흡수.</p></div>
+      <div class="c"><div class="k">핵심 기술 02</div><h3>LLM 평가·재생성 자동화 시스템</h3><p>점수 미달이면 사유와 함께 자동 재호출(max retry 캡), 통과 후 후처리·레이아웃 매핑까지 한 흐름. 결정론적 평가로 품질을 사용자에게 보내기 전 한 번 더 거른다.</p></div>
     </div>
 
     <div class="pmeta">
@@ -431,8 +431,7 @@
       <h2 class="h2">ChatGPT로도 카드뉴스는 나온다.<br><span class="grad">발행 가능한 톤</span>까지는 나오지 않을 뿐.</h2>
     </div>
     <div class="narrow center sec-foot">
-      <p class="prose">글은 그럴듯하게 나오지만, 5장 흐름·폰트·강조 위치가 매번 다르다. 결국 캔바를 열어 손으로 다듬어야 한다.</p>
-      <p class="prose">일반 사용자는 그 단계에서 막힌다. <strong>INKK는 그 다듬는 과정을 서비스가 대신 처리한다.</strong></p>
+      <p class="prose">글은 그럴듯하게 나오지만 5장 흐름·폰트·강조가 매번 다르다. 결국 캔바를 열어 손으로 다듬어야 하고, 일반 사용자는 거기서 막힌다. <strong>INKK는 그 다듬는 과정을 서비스가 대신 처리한다.</strong></p>
     </div>
   </div>
 </section>
@@ -446,9 +445,9 @@
       <p class="sec-lead">주제 한 줄 또는 긴 글을 붙여넣으면 카드 수·스타일·레이아웃까지 자동으로 잡힌다.<br>사용자는 무드만 고르고 결과를 다듬는다.</p>
     </div>
     <div class="step3 sec-foot">
-      <div class="s3"><div class="n">01</div><div class="st">입력</div><div class="sd">주제 한 줄 또는 긴 원문 전체를 그대로 붙여넣기</div></div>
-      <div class="s3"><div class="n">02</div><div class="st">생성</div><div class="sd">장별 역할 분리 프롬프트로 5~10장 카드 자동 생성</div></div>
-      <div class="s3"><div class="n">03</div><div class="st">조정</div><div class="sd">글 길이에 맞춰 폰트·여백·레이아웃 자동 매핑</div></div>
+      <div class="s3"><div class="n">01</div><div class="st">입력</div><div class="sd">주제 한 줄 또는 긴 원문 붙여넣기</div></div>
+      <div class="s3"><div class="n">02</div><div class="st">생성</div><div class="sd">장별 역할 분리 + 점수 평가로 5~10장 생성</div></div>
+      <div class="s3"><div class="n">03</div><div class="st">조정</div><div class="sd">글 길이 기반 레이아웃 자동 매핑</div></div>
     </div>
   </div>
 </section>
@@ -459,7 +458,7 @@
     <div class="sec-head">
       <p class="eyebrow">품질 파이프라인</p>
       <h2 class="h2">긴 글 → 4단계 검증 → 5장 카드뉴스</h2>
-      <p class="sec-lead">LLM에 같은 글을 5번 넣으면 5번 다 다른 결과가 나온다. 입력부터 결과까지 4단계 검증을 거치는 파이프라인으로 일관 품질을 강제한다.</p>
+      <p class="sec-lead">같은 입력에 LLM 출력이 매번 달라지는 문제를 4단계 검증으로 흡수한다.</p>
     </div>
     <div class="stats sec-foot">
       <div class="stat"><div class="n">4<span class="u">단계</span></div><div class="l">품질 검증 — 역할 분리 · 반례 · 점수 · 레이아웃</div></div>
@@ -470,40 +469,25 @@
       <div class="pcard">
         <div class="ps">01 · 역할 분리 프롬프트</div>
         <h3>장마다 다른 지시</h3>
-        <ul>
-          <li>커버는 스크롤을 멈추는 훅 카피</li>
-          <li>본문은 핵심 사실 + 수치</li>
-          <li>마지막은 저장·공유 유도</li>
-        </ul>
+        <p>커버는 훅 카피, 본문은 사실·수치, 마지막은 저장 유도. 장마다 다른 system prompt.</p>
         <div class="tags"><span class="tag">프롬프트</span><span class="tag">기승전결</span></div>
       </div>
       <div class="pcard">
         <div class="ps">02 · 반례 차단</div>
         <h3>밋밋한 표현은 미리 제외</h3>
-        <ul>
-          <li>흔히 나오는 추상 표현을 프롬프트에 반례로 박음</li>
-          <li>강한 카피 패턴은 예시로 같이 제시</li>
-        </ul>
+        <p>흔한 추상 표현을 반례로 박고, 강한 카피 패턴은 예시(few-shot)로 제시.</p>
         <div class="tags"><span class="tag">Few-shot</span><span class="tag">반례 학습</span></div>
       </div>
       <div class="pcard">
         <div class="ps">03 · 점수 평가</div>
         <h3>통과 못 하면 자동 재생성</h3>
-        <ul>
-          <li>헤딩 길이·언어 오염·수치 부재 등 형식 검증</li>
-          <li>임팩트 부족·CTA 누락 항목 감점</li>
-          <li>임계값 미만이면 사유와 함께 재생성</li>
-        </ul>
+        <p>형식·언어·수치·CTA 항목 점수 합산. 임계값 미만이면 사유와 함께 자동 재호출.</p>
         <div class="tags"><span class="tag">휴리스틱</span><span class="tag">재생성</span></div>
       </div>
       <div class="pcard">
         <div class="ps">04 · 레이아웃 매핑</div>
         <h3>글 길이에 맞춰 자동 선택</h3>
-        <ul>
-          <li>풀블리드 · 상하 2중 · 좌우 2중 · 4중 그리드 · 오버레이</li>
-          <li>5가지 레이아웃 중 자동 선택</li>
-          <li>카드 비율을 항상 균형 있게 유지</li>
-        </ul>
+        <p>풀블리드·상하 2중·좌우 2중·4중 그리드·오버레이 5종 중 글 길이로 자동 선택.</p>
         <div class="tags"><span class="tag">자동 매핑</span><span class="tag">5종 레이아웃</span></div>
       </div>
     </div>
@@ -660,18 +644,17 @@ sequenceDiagram
   <div class="wrap">
     <div class="sec-head">
       <p class="eyebrow">엔지니어링 디테일</p>
-      <h2 class="h2">LLM 시스템의 품질 · 비용 · 보안 설계</h2>
-      <p class="sec-lead">LLM의 비결정성·비용·외부 의존성을 다루면서 내린 세 가지 시스템 설계 결정.</p>
+      <h2 class="h2">LLM 시스템 설계 결정</h2>
+      <p class="sec-lead">비결정성·비용·보안 — 세 가지 영역의 설계 결정.</p>
     </div>
     <div class="enotes sec-foot">
 <div class="enote">
         <div class="el">LLM 품질 시스템</div>
         <h3>프롬프트 한 방 의존 제거 → 4단 평가 파이프라인</h3>
-        <p class="esum">LLM 출력의 비결정성을 점수 기반 평가 + 자동 재생성 + 후처리 검증으로 흡수.</p>
+        <p class="esum">LLM 출력의 비결정성을 점수 평가 + 재생성 + 후처리로 흡수.</p>
         <ul class="espec">
-          <li><b>역할 분리 프롬프트</b> · 장별 system prompt + few-shot 반례로 평행 슬라이드 차단</li>
-          <li><b>휴리스틱 평가</b> · 형식·임팩트·CTA 항목별 점수 → 임계값 미달 시 사유와 함께 재호출 (max retry 캡)</li>
-          <li><b>결정론적 후처리</b> · sanitize 트렁케이트 + 길이 기반 레이아웃 자동 매핑으로 LLM 출력 길이 편차 흡수</li>
+          <li><b>역할 분리 + 휴리스틱 평가</b> · 장별 system prompt + 항목별 점수 → 미달 시 재호출 (max retry)</li>
+          <li><b>결정론적 후처리</b> · sanitize + 길이 기반 레이아웃 매핑으로 출력 편차 흡수</li>
         </ul>
         <div class="seq" aria-label="LLM 품질 시스템 흐름">
           <div class="nd"><span class="s">INPUT</span><span class="h">긴 글</span></div>
@@ -691,11 +674,10 @@ sequenceDiagram
       <div class="enote">
         <div class="el">LLM 비용 · 라우팅</div>
         <h3>모델 추상화 + 안전 모드 폴백으로 비용 사고 차단</h3>
-        <p class="esum">LLM 비용·외부 의존성을 코드가 아니라 환경 설정으로 통제. 운영 사고 없이 모델 교체 가능.</p>
+        <p class="esum">비용·외부 의존성을 환경 설정으로 통제. 운영 중 모델 교체 가능.</p>
         <ul class="espec">
-          <li><b>프로바이더 추상화</b> · Claude · Groq · 로컬 모델을 단일 인터페이스로 래핑 → 런타임 교체</li>
-          <li><b>자동 폴백</b> · 운영 환경 키 부재·할당량 초과 시 안전 모드(mock)로 즉시 폴백 → 무한 비용 차단</li>
-          <li><b>요청 한도</b> · 사용자별 분당 호출 제한 + 응답 timeout 가드로 단발성 비용 폭주 방어</li>
+          <li><b>프로바이더 추상화 + 폴백</b> · Claude/Groq/로컬 단일 인터페이스, 키 부재·한도 초과 시 mock 폴백</li>
+          <li><b>비용 가드</b> · 사용자별 호출 제한 + 응답 timeout으로 단발 폭주 방어</li>
         </ul>
         <div class="seq" aria-label="LLM 프로바이더 라우팅">
           <div class="nd"><span class="s">REQ</span><span class="h">생성 요청</span></div>
@@ -711,11 +693,10 @@ sequenceDiagram
       <div class="enote">
         <div class="el">보안 · 데이터 격리</div>
         <h3>RLS + SSRF 가드 + 출처 검증 다층 적용</h3>
-        <p class="esum">결제·사용자 데이터를 다루는 만큼 보안 기본기를 다층으로 적용.</p>
+        <p class="esum">사용자 데이터를 다루는 만큼 보안 기본기를 다층으로.</p>
         <ul class="espec">
-          <li><b>Row-Level Security</b> · Supabase RLS 정책으로 사용자별 데이터 행 단위 격리</li>
-          <li><b>이미지 프록시 SSRF 가드</b> · 허용 호스트 화이트리스트 + 내부망 IP 차단</li>
-          <li><b>변경 API 출처 검증</b> · CSRF 토큰·Origin 헤더로 외부 위변조 요청 차단</li>
+          <li><b>RLS + CSRF</b> · Supabase 행 단위 격리 + Origin 검증으로 외부 위변조 차단</li>
+          <li><b>SSRF 가드</b> · 이미지 프록시 호스트 화이트리스트 + 내부망 IP 차단</li>
         </ul>
         <div class="seq" aria-label="보안 다층 게이트">
           <div class="nd"><span class="s">CLIENT</span><span class="h">사용자 요청</span></div>
@@ -736,27 +717,19 @@ sequenceDiagram
   <div class="wrap">
     <div class="sec-head">
       <p class="eyebrow">개발하면서 배운 것</p>
-      <h2 class="h2">감으로 결정하지 않으려고 <span class="grad">측정부터 깔았다</span></h2>
+      <h2 class="h2">감보다 <span class="grad">측정 먼저</span></h2>
       <p class="sec-lead">아직 사용자 데이터가 적은 단계라, 트래픽이 본격적으로 들어오기 전에 측정 인프라부터 준비했다.</p>
     </div>
     <div class="learn sec-foot">
       <div class="lcard learned">
         <div class="lt">의심 말고 측정부터</div>
         <h3>병목은 DB가 아니라 함수 지역이었다</h3>
-        <ul>
-          <li>API 응답이 느려서 처음엔 DB를 의심</li>
-          <li>측정해 보니 서버리스 함수가 미국 지역에 있어 태평양 왕복</li>
-          <li>함수 지역을 서울로 옮기는 한 줄 변경으로 응답 수 배 단축</li>
-        </ul>
+        <p>API가 느려서 DB를 의심했지만 측정 결과 함수 지역(미국) 문제. <b>서울로 한 줄 변경 → 응답 수 배 단축.</b></p>
       </div>
       <div class="lcard warn">
         <div class="lt">만들지 않기로 한 결정</div>
         <h3>'카드 1장만 다시 만들기'는 빼기</h3>
-        <ul>
-          <li>한 장만 재생성해도 LLM 호출 비용이 새 덱과 거의 같음</li>
-          <li>수동 편집으로 같은 결과를 낼 수 있음</li>
-          <li>우선순위를 코드보다 유입 채널에 두기로 결정</li>
-        </ul>
+        <p>한 장 재생성 비용이 새 덱과 거의 같고 수동 편집으로 대체 가능. 우선순위를 코드보다 유입에.</p>
       </div>
     </div>
   </div>
@@ -775,20 +748,12 @@ sequenceDiagram
       <div class="ncard product">
         <div class="lt">개선 방향 · 제품</div>
         <h3>레이아웃 + 카피 패턴 확장</h3>
-        <ul>
-          <li>레이아웃 종류와 카피 패턴(훅·근거·CTA) 라이브러리 확장</li>
-          <li>사용자 카드 결과 데이터로 어떤 패턴이 잘 저장되는지 학습</li>
-          <li>업종별(브랜드·교육·뉴스) 프리셋 추가</li>
-        </ul>
+        <p>레이아웃·카피 패턴 라이브러리 확장. 결과 데이터로 패턴 학습. 업종별 프리셋 추가.</p>
       </div>
       <div class="ncard biz">
         <div class="lt">수익화 · 비즈니스</div>
         <h3>크레딧 충전 모델</h3>
-        <ul>
-          <li>무료 한도 후 크레딧 충전 결제 (개발 적용 완료)</li>
-          <li>팀 플랜 — 여러 명이 같은 톤·프리셋으로 발행</li>
-          <li>API 제공 — 외부 자동화 워크플로우와 연결</li>
-        </ul>
+        <p>크레딧 충전 모델(적용 완료). 팀 플랜 · API 제공으로 확장 예정.</p>
       </div>
     </div>
   </div>
