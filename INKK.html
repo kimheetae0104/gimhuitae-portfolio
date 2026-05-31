@@ -482,17 +482,17 @@
       <div class="c">
         <div class="k">핵심 기술 01</div>
         <h3>품질을 운에 맡기지 않는다</h3>
-        <p>프롬프트 한 방에 맡기지 않고 장별 역할 분리 · 점수 평가 · 후처리 · 레이아웃 자동 매핑까지 여러 층으로 강제했다.</p>
+        <p>AI에게 "잘 만들어줘" 한 번 시키지 않는다. 장마다 다른 역할을 주고, 결과를 점수로 평가해 부족하면 다시 만들고, 글 길이에 맞춰 카드 레이아웃까지 자동으로 골라준다.</p>
       </div>
       <div class="c">
         <div class="k">핵심 기술 02</div>
-        <h3>크레딧이 곧 현금, 깨지지 않게</h3>
-        <p>잔액 차감은 DB 안에서 원자 처리, 결제 웹훅은 같은 이벤트가 여러 번 와도 한 번만 적립되도록 강제했다.</p>
+        <h3>크레딧이 곧 현금, 절대 어긋나지 않게</h3>
+        <p>사용자가 동시에 여러 번 눌러도 잔액이 음수가 되지 않게 만들었다. 결제도 같은 알림이 여러 번 들어와도 충전은 딱 한 번만 되도록 처리했다.</p>
         <div class="mini-flow">
-          <span class="mb">요청</span><span class="ma">→</span>
-          <span class="mb">DB 잠금</span><span class="ma">→</span>
-          <span class="mb">원자 차감</span><span class="ma">→</span>
-          <span class="mb">실패 시 환불</span>
+          <span class="mb">결제 요청</span><span class="ma">→</span>
+          <span class="mb">잔액 잠그기</span><span class="ma">→</span>
+          <span class="mb">안전하게 차감</span><span class="ma">→</span>
+          <span class="mb">실패하면 자동 환불</span>
         </div>
       </div>
     </div>
@@ -561,17 +561,17 @@
     </div>
 
     <div class="flow" aria-label="품질 4층 강제 흐름">
-      <div class="flow-step input"><span class="n">Input</span><span class="t">긴 글</span></div>
+      <div class="flow-step input"><span class="n">입력</span><span class="t">긴 글</span></div>
       <div class="arr">→</div>
-      <div class="flow-step"><span class="n">01</span><span class="t">장별 역할 분리 프롬프트</span></div>
+      <div class="flow-step"><span class="n">01</span><span class="t">장마다 다른 역할 주기</span></div>
       <div class="arr">→</div>
-      <div class="flow-step"><span class="n">02</span><span class="t">반례로 밋밋함 차단</span></div>
+      <div class="flow-step"><span class="n">02</span><span class="t">밋밋한 표현 차단</span></div>
       <div class="arr">→</div>
-      <div class="flow-step"><span class="n">03</span><span class="t">점수 평가 · 재생성</span></div>
+      <div class="flow-step"><span class="n">03</span><span class="t">결과 점수 매기고 재생성</span></div>
       <div class="arr">→</div>
-      <div class="flow-step"><span class="n">04</span><span class="t">레이아웃 자동 매핑</span></div>
+      <div class="flow-step"><span class="n">04</span><span class="t">글 길이에 맞춰 레이아웃 자동 조정</span></div>
       <div class="arr">→</div>
-      <div class="flow-step output"><span class="n">Output</span><span class="t">5장 카드뉴스</span></div>
+      <div class="flow-step output"><span class="n">결과</span><span class="t">5장 카드뉴스</span></div>
     </div>
 
     <div class="thesis" style="margin-top:36px;">
