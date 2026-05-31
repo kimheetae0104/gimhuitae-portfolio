@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
   /* ──────────────────────────────────────────
      INKK — Editorial Magazine Theme (light)
@@ -42,8 +43,9 @@
     --clay-shot: 0 4px 12px rgba(0,0,0,.06), 0 24px 60px rgba(0,0,0,.08);
     --clay-pop: 0 2px 6px rgba(0,0,0,.04), 0 12px 28px rgba(0,0,0,.06);
 
-    --font-serif:"Noto Serif KR","Source Serif 4",ui-serif,Georgia,"Apple SD Gothic Neo",serif;
-    --font-sans:"Plus Jakarta Sans",-apple-system,"Apple SD Gothic Neo","Pretendard",sans-serif;
+    /* 폰트 — 한글 위주라 Pretendard를 영문보다 먼저 */
+    --font-serif:"Noto Serif KR","Source Serif 4",ui-serif,Georgia,serif;
+    --font-sans:"Pretendard Variable","Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Plus Jakarta Sans","Malgun Gothic",sans-serif;
     --font-mono:"JetBrains Mono","Space Mono",ui-monospace,Menlo,monospace;
   }
   *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -51,9 +53,10 @@
   body{
     margin:0; background:var(--paper); color:var(--ink);
     font-family:var(--font-sans);
-    font-size:17px; line-height:1.7; letter-spacing:-.011em;
+    font-size:16px; line-height:1.65; letter-spacing:-.015em;
     word-break:keep-all; overflow-wrap:break-word;
     -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    font-feature-settings:"ss01","cv01";
   }
   a{ color:inherit; text-decoration:none; }
   img,svg,video{ display:block; max-width:100%; }
@@ -95,9 +98,9 @@
 
   /* ──── HEAD / TYPE — sans 일관 (inkk.online 톤) ──── */
   .chapter{ display:none; }   /* 챕터 넘버 노이즈 제거 */
-  .eyebrow{ font-family:var(--font-mono); font-size:12px; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+  .eyebrow{ font-family:var(--font-mono); font-size:11px; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
     color:var(--ink-3);
-    margin:0 0 14px; display:inline-block; }
+    margin:0 0 18px; display:inline-block; }
 
   h1.title{
     font-family:var(--font-sans); font-weight:800;
@@ -110,7 +113,7 @@
   }
   h2.h2{
     font-family:var(--font-sans); font-weight:700;
-    font-size:clamp(28px,4.4vw,46px); line-height:1.15; letter-spacing:-.03em;
+    font-size:clamp(28px,4.2vw,44px); line-height:1.22; letter-spacing:-.028em;
     margin:0; text-wrap:balance;
   }
   /* Hero lead만 그라데이션 1곳 강조, h2 .red는 단색 ink */
@@ -120,18 +123,18 @@
     -webkit-background-clip:text; background-clip:text;
     color:transparent; -webkit-text-fill-color:transparent;
   }
-  h3{ font-family:var(--font-sans); font-weight:700; font-size:20px; letter-spacing:-.02em; margin:0; line-height:1.3; }
-  .kicker{ font-family:var(--font-mono); font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3); }
+  h3{ font-family:var(--font-sans); font-weight:700; font-size:19px; letter-spacing:-.022em; margin:0; line-height:1.35; }
+  .kicker{ font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); }
   .lead{
     font-family:var(--font-sans); font-weight:500;
-    font-size:clamp(20px,2.4vw,28px); line-height:1.4;
-    color:var(--ink); margin:24px 0 0; max-width:24ch;
-    letter-spacing:-.025em;
+    font-size:clamp(19px,2.2vw,26px); line-height:1.45;
+    color:var(--ink); margin:20px 0 0; max-width:24ch;
+    letter-spacing:-.022em;
   }
   /* .lead .red 는 위 그룹 셀렉터에서 처리됨 */
-  .prose{ font-size:clamp(16px,1.7vw,18.5px); line-height:1.75; color:var(--ink-2); max-width:64ch; text-wrap:pretty; }
-  .prose + .prose{ margin-top:14px; }
-  .prose strong{ color:var(--ink); font-weight:700; }
+  .prose{ font-size:clamp(15.5px,1.6vw,17px); line-height:1.75; color:var(--ink-2); max-width:62ch; text-wrap:pretty; letter-spacing:-.015em; }
+  .prose + .prose{ margin-top:12px; }
+  .prose strong{ color:var(--ink); font-weight:600; }
   code{ font-family:var(--font-mono); font-size:.86em; background:var(--paper-2); color:var(--ink); padding:.12em .42em; border-radius:4px; font-weight:500; }
 
   /* ──── HERO ──── */
@@ -272,9 +275,9 @@
     transition:border-color .2s, transform .2s;
   }
   .thi .c:hover{ border-color:var(--ink); transform:translateY(-1px); }
-  .thi .c .k{ font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); font-weight:600; margin-bottom:12px; display:block; }
-  .thi .c h3{ font-size:20px; font-weight:700; margin:0 0 10px; line-height:1.3; color:var(--ink); }
-  .thi .c p{ font-size:14.5px; color:var(--ink-2); line-height:1.65; margin:0; }
+  .thi .c .k{ font-family:var(--font-mono); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); font-weight:600; margin-bottom:14px; display:block; }
+  .thi .c h3{ font-size:19px; font-weight:700; margin:0 0 12px; line-height:1.35; color:var(--ink); letter-spacing:-.022em; }
+  .thi .c p{ font-size:14.5px; color:var(--ink-2); line-height:1.72; margin:0; letter-spacing:-.012em; }
   @media(max-width:720px){ .thi{ grid-template-columns:1fr; } }
 
   /* ──── PROBLEM CARDS ──── */
@@ -282,13 +285,13 @@
   .pcard{
     background:var(--paper);
     border:1px solid var(--line);
-    border-radius:12px; padding:28px 26px;
+    border-radius:12px; padding:26px 24px;
     transition:border-color .2s, transform .2s;
   }
   .pcard:hover{ border-color:var(--ink); transform:translateY(-1px); }
-  .pcard .pn{ font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); font-weight:600; }
-  .pcard h3{ margin:12px 0 12px; }
-  .pcard p{ font-size:15.5px; color:var(--ink-2); line-height:1.65; margin:0; }
+  .pcard .pn{ font-family:var(--font-mono); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); font-weight:600; }
+  .pcard h3{ margin:12px 0 10px; font-size:18px; line-height:1.35; }
+  .pcard p{ font-size:15px; color:var(--ink-2); line-height:1.72; margin:0; letter-spacing:-.012em; }
   @media(max-width:720px){ .three{ grid-template-columns:1fr; } .pcard{ padding:24px 22px; } }
 
   .thesis{ margin-top:32px; padding:24px 28px; background:var(--paper-2); border-left:3px solid var(--ink); border-radius:0 8px 8px 0; max-width:64ch; }
@@ -298,9 +301,9 @@
 
   /* ──── DECISIONS LIST ──── */
   .decisions{ display:grid; grid-template-columns:repeat(2,1fr); gap:0 36px; margin-top:24px; }
-  .dec{ display:flex; gap:14px; padding:22px 0; border-bottom:1px solid var(--line-soft); align-items:flex-start; }
-  .dec .dn{ font-family:var(--font-mono); font-size:13px; color:var(--ink-3); flex:none; font-weight:700; letter-spacing:.05em; min-width:36px; }
-  .dec .dt{ font-size:15.5px; line-height:1.65; color:var(--ink-2); }
+  .dec{ display:flex; gap:18px; padding:20px 0; border-bottom:1px solid var(--line-soft); align-items:flex-start; }
+  .dec .dn{ font-family:var(--font-mono); font-size:12px; color:var(--ink-3); flex:none; font-weight:700; letter-spacing:.05em; min-width:32px; padding-top:2px; }
+  .dec .dt{ font-size:15px; line-height:1.7; color:var(--ink-2); letter-spacing:-.012em; }
   .dec .dt b{ color:var(--ink); font-weight:700; }
   @media(max-width:720px){ .decisions{ grid-template-columns:1fr; gap:0; } }
 
@@ -323,14 +326,14 @@
 
   /* ──── 흐름 다이어그램 — 단순 박스 + 화살표 ──── */
   .flow{ display:flex; align-items:stretch; gap:6px; margin:28px 0 0; flex-wrap:wrap; justify-content:center; }
-  .flow-step{ flex:1 1 110px; min-width:110px; padding:14px 12px;
+  .flow-step{ flex:1 1 110px; min-width:110px; padding:14px 14px 16px;
     background:var(--paper); border:1px solid var(--ink); border-radius:8px;
-    display:flex; flex-direction:column; gap:6px; }
+    display:flex; flex-direction:column; gap:8px; }
   .flow-step.input{ background:var(--paper-2); border-color:var(--ink-3); border-style:dashed; }
   .flow-step.output{ background:var(--ink); color:#fff; border-color:var(--ink); }
   .flow-step .n{ font-family:var(--font-mono); font-size:10px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3); }
   .flow-step.output .n{ color:rgba(255,255,255,.6); }
-  .flow-step .t{ font-size:14px; font-weight:700; line-height:1.3; color:var(--ink); }
+  .flow-step .t{ font-size:13.5px; font-weight:700; line-height:1.35; color:var(--ink); letter-spacing:-.018em; }
   .flow-step.output .t{ color:#fff; }
   .flow-step.input .t{ color:var(--ink-2); font-weight:600; }
   .flow .arr{ display:flex; align-items:center; color:var(--ink-3); font-size:18px; font-weight:300; padding:0 2px; }
@@ -393,9 +396,9 @@
 
   /* ──── LEARNING LIST ──── */
   .llist{ border-top:var(--rule); margin-top:24px; }
-  .li{ padding:28px 0; border-bottom:1px solid var(--line-soft); display:grid; grid-template-columns:220px 1fr; gap:32px; align-items:baseline; }
-  .li .lh{ font-family:var(--font-serif); font-size:20px; font-weight:700; letter-spacing:-.015em; color:var(--ink); }
-  .li p{ font-size:16px; line-height:1.7; color:var(--ink-2); margin:0; max-width:60ch; }
+  .li{ padding:24px 0; border-bottom:1px solid var(--line-soft); display:grid; grid-template-columns:200px 1fr; gap:32px; align-items:baseline; }
+  .li .lh{ font-family:var(--font-sans); font-size:18px; font-weight:700; letter-spacing:-.022em; color:var(--ink); line-height:1.35; }
+  .li p{ font-size:15px; line-height:1.72; color:var(--ink-2); margin:0; max-width:60ch; letter-spacing:-.012em; }
   .li p b{ color:var(--ink); font-weight:700; }
   @media(max-width:740px){
     .li{ grid-template-columns:1fr; gap:8px; padding:22px 0; }
