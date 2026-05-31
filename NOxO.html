@@ -97,6 +97,11 @@
   h2.h2{ font-size:clamp(24px,3.6vw,40px); font-weight:800; letter-spacing:-.02em; line-height:1.14; color:var(--ink); margin:0; }
   .lead{ font-size:17px; line-height:1.8; color:#46506A; max-width:66ch; margin:20px 0 0; }
   .sub-h{ font-size:clamp(20px,2.4vw,26px); font-weight:800; letter-spacing:-.015em; color:var(--ink); margin:32px 0 14px; }
+  .q-list{ list-style:none; padding:0; margin:20px 0 0; display:grid; gap:12px; }
+  .q-list li{ background:var(--sky-soft); border-left:4px solid var(--blue); padding:16px 20px; border-radius:0 12px 12px 0; font-size:16px; line-height:1.6; color:var(--ink); display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:baseline; }
+  .q-list li .num{ color:var(--blue); font-weight:800; font-size:18px; }
+  .q-list li .label{ color:var(--blue-deep); font-weight:700; font-size:14px; white-space:nowrap; }
+  @media(max-width:760px){ .q-list li{ grid-template-columns:auto 1fr; } .q-list li .label{ grid-column:2; margin-top:2px; } }
   .lead strong{ color:var(--ink); font-weight:700; }
   .lead+.lead{ margin-top:14px; }
 
@@ -240,9 +245,10 @@
 <section class="panel" id="problem">
   <p class="sec-kicker">01 — 문제 정의</p>
   <h2 class="h2">발전 효율 ↑ + NOx 배출 ↓, 두 가지 모델이 필요</h2>
-  <p class="lead">발전소는 효율을 극대화하면서 NOx 배출은 환경 규제 한도 안에 묶어야 한다. 운전 변수(온도·압력·유량 등) 사이의 비선형 관계를 학습하는 모델이 필요했다.</p>
-  <p class="lead">이 프로젝트가 풀어야 했던 두 질문은 형태가 달랐다.<br><strong>① 제어값을 바꾸면 NOx가 어떻게 변할까?</strong> 운전 시뮬레이션.<br><strong>② 지금처럼 두면 5분 뒤 NOx는 얼마가 될까?</strong> 실시간 예측.</p>
-  <p class="lead">같은 데이터지만 입력·갱신 주기·평가 기준이 다르므로, 한 모델로 묶지 않고 두 개로 나눠 설계했다.</p>
+  <ul class="q-list">
+    <li><span class="num">①</span><span>제어값을 바꾸면 NOx가 어떻게 변할까?</span><span class="label">운전 시뮬레이션</span></li>
+    <li><span class="num">②</span><span>지금처럼 두면 5분 뒤 NOx는 얼마가 될까?</span><span class="label">실시간 예측</span></li>
+  </ul>
   <div class="two">
     <div class="mcard">
       <span class="tag">모델 1</span>
