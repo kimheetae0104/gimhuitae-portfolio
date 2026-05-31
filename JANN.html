@@ -236,8 +236,8 @@
     </div>
 
     <div class="thi">
-      <div class="c"><div class="k">핵심 기술 01</div><h3>느린 학습, GPU 탓이 아니었다</h3><p>에폭당 161분의 원인은 PyTorch MPS의 NMS 버그와 RAM 스왑 과부하였다. 파라미터·메모리를 다듬어 17분으로 줄였다(약 90%↓).</p></div>
-      <div class="c"><div class="k">핵심 기술 02</div><h3>모델보다 데이터가 먼저였다</h3><p>독립 식재료 사진으로 학습한 모델은 냉장고 안 치즈를 24%밖에 못 잡았다. Roboflow 실제 냉장고 1,920장으로 교체하자 실사용 수준이 됐다.</p></div>
+      <div class="c"><div class="k">핵심 기술 01</div><h3>느린 학습, GPU 탓이 아님</h3><p>에폭당 161분의 원인은 PyTorch MPS의 NMS 버그와 RAM 스왑 과부하였다. 파라미터·메모리를 다듬어 17분으로 줄였다(약 90%↓).</p></div>
+      <div class="c"><div class="k">핵심 기술 02</div><h3>모델보다 데이터가 우선</h3><p>독립 식재료 사진으로 학습한 모델은 냉장고 안 치즈를 24%밖에 못 잡았다. Roboflow 실제 냉장고 1,920장으로 교체하자 실사용 수준이 됐다.</p></div>
     </div>
   </div>
 </section>
@@ -266,7 +266,7 @@
   <div class="wrap">
     <div class="sec-head">
       <p class="eyebrow">어떻게 동작하나</p>
-      <h2 class="h2">비추면 인식하고, 분석하고, 이유까지 답한다.</h2>
+      <h2 class="h2">비추면 인식·분석·이유까지 답하는 흐름</h2>
       <p class="sec-lead">카메라로 식재료를 비추면 YOLOv8n이 인식하고, 향미 DB가 화합물 유사도를 계산해 레시피를 만든다. 결과에는 항상 "왜 어울리는지"가 함께 붙는다.</p>
     </div>
     <div class="devrow sec-foot">
@@ -286,7 +286,7 @@
   <div class="wrap">
     <div class="sec-head">
       <p class="eyebrow">추천의 근거</p>
-      <h2 class="h2">유사도는 자카드로 계산했다.</h2>
+      <h2 class="h2">유사도는 자카드로 계산</h2>
       <p class="sec-lead">인기순이 아니라, 두 재료가 분자 단위에서 얼마나 겹치는지로 본다.</p>
     </div>
     <div class="fig sec-foot">
@@ -305,7 +305,7 @@
   <div class="wide-wrap">
     <div class="sec-head">
       <p class="eyebrow">파이프라인 설계</p>
-      <h2 class="h2">네트워크가 끊겨도 향미 분석은 멈추지 않는다.</h2>
+      <h2 class="h2">네트워크가 끊겨도 향미 분석은 계속</h2>
       <p class="sec-lead">인식 경로는 유연하게, 추천의 핵심인 향미 DB는 오프라인으로 고정했다. YOLO가 못 보면 GPT-4o Vision, 그다음 Apple Vision으로 넘어가는 3단계 폴백이다.</p>
     </div>
     <div class="stats sec-foot">
@@ -353,17 +353,17 @@
     <div class="enotes sec-foot">
       <div class="enote">
         <div class="el">데이터 · 도메인 일치</div>
-        <h3>모델을 바꾸기 전에, 데이터를 바꿨다.</h3>
+        <h3>모델을 바꾸기 전에 데이터부터</h3>
         <p>독립 식재료 사진으로 학습한 모델은 냉장고 안 치즈를 <strong>24%</strong>밖에 못 잡았다. Roboflow의 '실제 냉장고 내부' <strong>1,920장 · 10클래스</strong>(달걀·치즈·버터·토마토 등)로 교체하자 실사용 수준이 됐다. 같은 YOLOv8n이어도 <strong>데이터 도메인이 아키텍처보다 먼저</strong>였다.</p>
       </div>
       <div class="enote">
         <div class="el">학습 최적화 · 에폭당 161분 → 17분</div>
-        <h3>느린 게 GPU 탓이 아니었다.</h3>
+        <h3>느린 원인은 GPU가 아님</h3>
         <p>Mac(M4 Pro)에서 에폭당 <strong>161분</strong>씩 걸렸다. 원인은 <strong>PyTorch MPS의 NMS 버그와 RAM 스왑 과부하</strong>였다. <code>val=False</code>·<code>patience=0</code> 등 학습 파라미터와 메모리 사용을 다듬어 <strong>17분</strong>으로 줄였다(약 90%↓). box_loss는 57에폭에서 1.376→0.963으로 30% 개선됐다.</p>
       </div>
       <div class="enote">
         <div class="el">MLOps · 학습 → CoreML → 배포</div>
-        <h3>반복 빌드를 셸 스크립트가 대신한다.</h3>
+        <h3>반복 빌드는 셸 스크립트로 자동화</h3>
         <p><code>monitor_and_deploy.sh</code>가 5분마다 학습 완료를 감지해 <strong>PyTorch→CoreML 변환</strong>과 <code>xcodebuild</code>·<code>xcrun devicectl</code>로 iPhone 빌드·설치까지 자동 실행한다. 51클래스 모델은 <strong>Colab T4</strong>로 학습해 Mac으로 받아 변환했다. 1인 개발에서도 DevOps가 생산성을 갈랐다.</p>
       </div>
       <div class="enote">
