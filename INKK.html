@@ -251,22 +251,16 @@
     .meta-row{ font-size:11px; gap:0 8px; }
   }
 
-  .pmeta{ display:grid; grid-template-columns:repeat(4,1fr); margin-top:clamp(48px,7vh,72px); border-top:var(--rule); border-bottom:1px solid var(--line); }
-  .pmeta .m{ padding:18px 20px 18px 0; border-right:1px solid var(--line-soft); }
-  .pmeta .m:last-child{ border-right:none; }
-  .pmeta .k{ font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3); }
-  .pmeta .v{ font-size:15px; font-weight:600; margin-top:8px; line-height:1.5; color:var(--ink); }
-  @media(max-width:760px){
-    .pmeta{ grid-template-columns:repeat(2,1fr); }
-    .pmeta .m{ padding:16px 16px 16px 0; border-right:1px solid var(--line-soft); }
-    .pmeta .m:nth-child(2n){ border-right:none; }
-    .pmeta .m:nth-child(-n+2){ border-bottom:1px solid var(--line-soft); }
-  }
-  @media(max-width:460px){
-    .pmeta{ grid-template-columns:1fr; }
-    .pmeta .m{ border-right:none; border-bottom:1px solid var(--line-soft); padding:14px 0; }
-    .pmeta .m:last-child{ border-bottom:none; }
-  }
+  .pmeta{ display:grid; grid-template-columns:repeat(4,1fr); margin-top:clamp(56px,8vh,90px);
+    border-top:1px solid var(--line); text-align:left; }
+  .pmeta .col{ padding:22px 20px 4px; border-right:1px solid var(--line-soft); }
+  .pmeta .col:last-child{ border-right:none; }
+  .pmeta .k{ font-family:var(--font-mono); font-size:11px; font-weight:600; letter-spacing:.04em; color:var(--ink-3); text-transform:uppercase; }
+  .pmeta .v{ font-size:15px; font-weight:500; color:var(--ink); margin-top:9px; line-height:1.55; }
+  @media(max-width:740px){ .pmeta{ grid-template-columns:1fr 1fr; } }
+  @media(max-width:460px){ .pmeta{ grid-template-columns:1fr; } .pmeta .col{ border-right:none; border-bottom:1px solid var(--line-soft); padding:14px 0 14px 0; } }
+
+
 
   /* ──── KEY TECH (.thi) — 깔끔한 라인 카드 ──── */
   .thi{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:30px; }
@@ -481,8 +475,8 @@
     <div class="thi">
       <div class="c">
         <div class="k">핵심 기술 01</div>
-        <h3>품질을 운에 맡기지 않는다</h3>
-        <p>AI에게 "잘 만들어줘" 한 번 시키지 않는다. 장마다 다른 역할을 주고, 결과를 점수로 평가해 부족하면 다시 만들고, 글 길이에 맞춰 카드 레이아웃까지 자동으로 골라준다.</p>
+        <h3>AI 결과의 품질을 항상 일정하게</h3>
+        <p>AI에게 "잘 만들어줘" 한 번 시키면 매번 결과가 다르게 나온다. 장마다 다른 역할을 주고, 결과를 점수로 평가해 부족하면 다시 만들고, 글 길이에 맞춰 카드 레이아웃까지 자동으로 골라준다.</p>
       </div>
       <div class="c">
         <div class="k">핵심 기술 02</div>
@@ -497,13 +491,12 @@
       </div>
     </div>
 
-    <p class="meta-row">
-      <span>개인 프로젝트 · 풀스택</span>
-      <span class="dot">·</span>
-      <span>2026.05 — 개발 중</span>
-      <span class="dot">·</span>
-      <span>Next.js · Supabase · Stripe · Claude</span>
-    </p>
+    <div class="pmeta">
+      <div class="col"><div class="k">역할</div><div class="v">개인 프로젝트 · 풀스택</div></div>
+      <div class="col"><div class="k">기간</div><div class="v">2026.05 — 서비스 개발 중</div></div>
+      <div class="col"><div class="k">스택</div><div class="v">Next.js · Supabase · Stripe · Claude</div></div>
+      <div class="col"><div class="k">상태</div><div class="v">베타 운영 · inkk.online</div></div>
+    </div>
   </div>
 </section>
 
@@ -512,19 +505,19 @@
   <div class="wrap">
     <div class="col">
       <div class="eyebrow-row"><p class="eyebrow">왜 INKK인가</p><div class="swipe-dots" aria-label="섹션 1/4"><span class="swipe-dot on"></span><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot"></span></div></div>
-      <h2 class="h2">결과물은 나온다. <span class="red">"내가 원하는 톤"은 안 나온다.</span></h2>
-      <p class="prose sec-foot">ChatGPT도 이제 캐러셀 카드뉴스를 만든다. 하지만 <strong>발행 가능한 톤·구성</strong>까지 잡으려면 결국 디자인 지식이 필요하다.</p>
+      <h2 class="h2">결과는 나온다. <span class="red">수정하기가 쉽지 않을 뿐.</span></h2>
+      <p class="prose sec-foot">ChatGPT도 이제 캐러셀 카드뉴스를 만든다. 하지만 받은 결과를 <strong>그대로 올릴 만한 수준</strong>으로 다듬으려면 결국 디자인 지식이 필요하다.</p>
     </div>
     <div class="three sec-foot" style="margin-top:32px;">
       <div class="pcard">
-        <div class="pn">Problem 01</div>
-        <h3>결과의 일관성이 들쭉날쭉</h3>
-        <p>같은 주제라도 매번 톤·구성이 달라져, 마음에 들 때까지 다시 돌리거나 손으로 다듬어야 한다.</p>
+        <div class="pn">문제 01</div>
+        <h3>매번 결과가 달라진다</h3>
+        <p>같은 주제로 돌려도 톤·구성이 매번 달라져, 마음에 들 때까지 다시 만들거나 직접 손봐야 한다.</p>
       </div>
       <div class="pcard">
-        <div class="pn">Problem 02</div>
-        <h3>일관성을 잡으려면 디자인 지식 필요</h3>
-        <p>폰트·강조·줄바꿈·카드 간 흐름까지 보려면 결국 디자인을 아는 사람만 결과를 발행 수준으로 끌어올린다.</p>
+        <div class="pn">문제 02</div>
+        <h3>다듬으려면 디자인 지식이 필요하다</h3>
+        <p>폰트·강조·줄바꿈·카드 흐름까지 정리하려면 결국 디자인을 아는 사람만 결과를 끌어올린다.</p>
       </div>
     </div>
     <div class="thesis">
@@ -556,7 +549,7 @@
   <div class="wrap">
     <div class="col">
       <div class="eyebrow-row"><p class="eyebrow">품질을 어떻게 강제했나</p><div class="swipe-dots" aria-label="섹션 3/4"><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot on"></span><span class="swipe-dot"></span></div></div>
-      <h2 class="h2">품질을 <span class="red">운에 맡기지 않는</span> 4층 방어.</h2>
+      <h2 class="h2">AI 결과의 들쭉날쭉함을 <span class="red">4단계로 잡는다.</span></h2>
       <p class="prose sec-foot">AI 카드뉴스의 흔한 실패는 <strong>'틀린 결과'가 아니라 '밋밋한 결과'</strong>다. 문법은 멀쩡한데 아무도 저장하지 않는 카드.</p>
     </div>
 
@@ -576,7 +569,7 @@
 
     <div class="thesis" style="margin-top:36px;">
       <div class="tl">핵심 철학</div>
-      <p>품질은 "좋은 프롬프트 한 방"이 아니라 <strong>여러 층의 강제 장치가 누적된 결과</strong>다. 한 층이 놓치면 다음 층이 거른다.</p>
+      <p>결과 품질은 좋은 프롬프트 하나로 보장되지 않는다. <strong>여러 단계 검증이 쌓여야 일정해진다</strong>. 한 단계가 놓치면 다음 단계가 거른다.</p>
     </div>
   </div>
 </section>
