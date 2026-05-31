@@ -56,18 +56,38 @@
     background:radial-gradient(closest-side, rgba(70,211,154,.10), transparent 70%); filter:blur(20px); pointer-events:none; z-index:0; }
   .hero .wrap{ position:relative; z-index:1; }
 
-  /* ── neural mesh (제 2의 뇌 컨셉) ───────────────────────── */
-  .neural{ position:absolute; right:-60px; top:80px; width:560px; height:380px; pointer-events:none;
-    z-index:0; opacity:.78; mix-blend-mode:screen; }
-  .neural svg{ width:100%; height:100%; overflow:visible; }
-  .neural .edge{ stroke:rgba(134,194,255,.28); stroke-width:.6; fill:none; }
-  .neural .edge.live{ stroke:rgba(134,194,255,.85); stroke-width:1; stroke-dasharray:4 60; animation:flow 3.4s linear infinite; }
-  .neural .node{ fill:#86C2FF; filter:drop-shadow(0 0 4px rgba(77,163,255,.9)); }
-  .neural .node.pulse{ animation:pulse 2.8s ease-in-out infinite; transform-origin:center; transform-box:fill-box; }
-  .neural .node.green{ fill:#46D39A; filter:drop-shadow(0 0 5px rgba(70,211,154,.85)); }
-  @keyframes pulse{ 0%,100%{ opacity:.55; transform:scale(1);} 50%{ opacity:1; transform:scale(1.45);} }
+  /* ── meta-top: 상단 메타 그리드 (사이버 대시보드 톤) ─────── */
+  .meta-top{ display:grid; grid-template-columns:repeat(3,1fr); gap:0;
+    border-top:1px solid var(--line-soft); margin:clamp(28px,4vh,48px) 0 clamp(40px,6vh,72px); position:relative; }
+  .meta-top::before{ content:""; position:absolute; left:0; top:-1px; width:60px; height:2px; background:var(--accent); }
+  .meta-top .m{ padding:16px 24px 0 0; }
+  .meta-top .m .k{ font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); margin-bottom:6px; }
+  .meta-top .m .v{ font-size:14.5px; color:var(--ink); line-height:1.55; letter-spacing:-.005em; }
+  @media(max-width:740px){ .meta-top{ grid-template-columns:1fr 1fr; } }
+
+  /* ── topology: BLOG AGENT 시스템 토폴로지 (사이버 대시보드 톤) ── */
+  .topo{ position:absolute; right:-30px; top:200px; width:560px; height:420px; pointer-events:none; z-index:0; opacity:.95; }
+  .topo svg{ width:100%; height:100%; overflow:visible; }
+  .topo .box{ fill:rgba(22,22,28,.55); stroke:rgba(77,163,255,.65); stroke-width:1; }
+  .topo .box.center{ fill:rgba(22,22,28,.85); stroke:var(--accent); stroke-width:1.4; filter:drop-shadow(0 0 12px rgba(77,163,255,.4)); }
+  .topo .box.cloud{ fill:rgba(15,15,19,.5); stroke:rgba(154,154,164,.35); stroke-dasharray:3 3; }
+  .topo .lane-lbl{ font-family:var(--mono); font-size:10px; letter-spacing:.18em; text-transform:uppercase; fill:var(--accent); }
+  .topo .lane-lbl.dim{ fill:var(--ink-3); }
+  .topo .nodename{ font-family:var(--mono); font-size:11px; font-weight:700; fill:var(--ink); letter-spacing:.06em; }
+  .topo .nodename.dim{ fill:var(--ink-2); }
+  .topo .nodesub{ font-family:var(--mono); font-size:9px; letter-spacing:.1em; fill:var(--ink-3); }
+  .topo .center-name{ font-family:var(--mono); font-size:13px; font-weight:700; fill:var(--accent); letter-spacing:.1em; }
+  .topo .center-sub{ font-family:var(--mono); font-size:9.5px; letter-spacing:.18em; fill:var(--ink-3); }
+  .topo .wire{ stroke:rgba(77,163,255,.55); stroke-width:1; fill:none; }
+  .topo .wire.live{ stroke:rgba(77,163,255,.95); stroke-width:1.2; stroke-dasharray:3 50; animation:flow 3.2s linear infinite; }
+  .topo .wire.dotted{ stroke:rgba(154,154,164,.4); stroke-dasharray:3 4; stroke-width:.8; }
+  .topo .dot{ fill:var(--accent); filter:drop-shadow(0 0 4px rgba(77,163,255,.8)); }
+  .topo .dot.pulse{ animation:pulse 2.4s ease-in-out infinite; transform-origin:center; transform-box:fill-box; }
+  .topo .dot.dim{ fill:var(--ink-3); filter:none; }
+  .topo .tick{ stroke:var(--ink-3); stroke-width:.6; }
+  @keyframes pulse{ 0%,100%{ opacity:.5; transform:scale(1);} 50%{ opacity:1; transform:scale(1.4);} }
   @keyframes flow{ to { stroke-dashoffset:-200; } }
-  @media(max-width:900px){ .neural{ display:none; } }
+  @media(max-width:900px){ .topo{ display:none; } }
 
   /* glass cards — 다크 위에서 살짝 떠 보이게 */
   .kpi{ backdrop-filter:blur(12px) saturate(120%); box-shadow:inset 0 1px 0 rgba(255,255,255,.04); }
@@ -200,59 +220,75 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="neural" aria-hidden="true">
-    <svg viewBox="0 0 560 380" xmlns="http://www.w3.org/2000/svg">
-      <!-- edges -->
-      <g>
-        <path class="edge" d="M60,180 L120,110"/>
-        <path class="edge" d="M60,180 L130,200"/>
-        <path class="edge" d="M120,110 L180,80"/>
-        <path class="edge live" d="M120,110 L200,160"/>
-        <path class="edge" d="M180,80 L240,60"/>
-        <path class="edge live" d="M180,80 L260,140"/>
-        <path class="edge" d="M240,60 L320,70"/>
-        <path class="edge" d="M240,60 L280,130"/>
-        <path class="edge live" d="M280,130 L360,110"/>
-        <path class="edge" d="M280,130 L260,200"/>
-        <path class="edge" d="M320,70 L400,90"/>
-        <path class="edge" d="M360,110 L440,130"/>
-        <path class="edge live" d="M360,110 L420,200"/>
-        <path class="edge" d="M400,90 L480,70"/>
-        <path class="edge" d="M440,130 L500,180"/>
-        <path class="edge" d="M260,200 L200,260"/>
-        <path class="edge live" d="M260,200 L340,260"/>
-        <path class="edge" d="M200,160 L130,200"/>
-        <path class="edge" d="M200,160 L200,260"/>
-        <path class="edge" d="M130,200 L160,290"/>
-        <path class="edge" d="M200,260 L160,290"/>
-        <path class="edge" d="M340,260 L420,200"/>
-        <path class="edge live" d="M340,260 L380,320"/>
-        <path class="edge" d="M420,200 L500,180"/>
-      </g>
-      <!-- nodes -->
-      <circle class="node" cx="60"  cy="180" r="3"/>
-      <circle class="node pulse" cx="120" cy="110" r="3.5" style="animation-delay:0s"/>
-      <circle class="node" cx="180" cy="80"  r="3"/>
-      <circle class="node" cx="240" cy="60"  r="3"/>
-      <circle class="node pulse green" cx="320" cy="70"  r="4" style="animation-delay:.6s"/>
-      <circle class="node" cx="400" cy="90"  r="3"/>
-      <circle class="node" cx="480" cy="70"  r="3"/>
-      <circle class="node pulse" cx="200" cy="160" r="3.5" style="animation-delay:1.2s"/>
-      <circle class="node" cx="260" cy="140" r="3"/>
-      <circle class="node pulse" cx="280" cy="130" r="3.5" style="animation-delay:.3s"/>
-      <circle class="node" cx="360" cy="110" r="3"/>
-      <circle class="node" cx="440" cy="130" r="3"/>
-      <circle class="node pulse green" cx="500" cy="180" r="4" style="animation-delay:1.8s"/>
-      <circle class="node" cx="130" cy="200" r="3"/>
-      <circle class="node pulse" cx="260" cy="200" r="3.5" style="animation-delay:.9s"/>
-      <circle class="node" cx="340" cy="260" r="3"/>
-      <circle class="node" cx="420" cy="200" r="3"/>
-      <circle class="node" cx="200" cy="260" r="3"/>
-      <circle class="node pulse" cx="160" cy="290" r="3.5" style="animation-delay:2.1s"/>
-      <circle class="node pulse green" cx="380" cy="320" r="4" style="animation-delay:1.5s"/>
+  <div class="topo" aria-hidden="true">
+    <svg viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg">
+      <!-- lane labels -->
+      <text class="lane-lbl"     x="10"  y="48">ON-DEVICE · LIVE</text>
+      <text class="lane-lbl dim" x="420" y="48">CLOUD · VERIFY ONLY</text>
+      <!-- lane tick lines -->
+      <line class="tick" x1="10"  y1="54" x2="140" y2="54"/>
+      <line class="tick" x1="420" y1="54" x2="550" y2="54"/>
+
+      <!-- LEFT: on-device nodes (corner-cut box: path) -->
+      <!-- cron -->
+      <path class="box" d="M10,70 L138,70 L138,106 L10,106 L10,76 L16,70 Z"/>
+      <text class="nodename" x="22" y="89">CRON</text>
+      <text class="nodesub"  x="22" y="101">SCHEDULER</text>
+      <!-- ollama -->
+      <path class="box" d="M10,180 L138,180 L138,216 L10,216 L10,186 L16,180 Z"/>
+      <text class="nodename" x="22" y="199">OLLAMA</text>
+      <text class="nodesub"  x="22" y="211">LLAMA3 · 8B</text>
+      <!-- chromadb -->
+      <path class="box" d="M10,290 L138,290 L138,326 L10,326 L10,296 L16,290 Z"/>
+      <text class="nodename" x="22" y="309">CHROMADB</text>
+      <text class="nodesub"  x="22" y="321">220 ARTICLES</text>
+
+      <!-- CENTER: BLOG AGENT -->
+      <path class="box center" d="M200,160 L380,160 L380,260 L200,260 L200,168 L208,160 Z"/>
+      <text class="center-name" x="290" y="200" text-anchor="middle">BLOG AGENT</text>
+      <text class="center-sub"  x="290" y="220" text-anchor="middle">v13 · ORCHESTRATOR</text>
+      <text class="center-sub"  x="290" y="240" text-anchor="middle" style="fill:rgba(77,163,255,.7);">● RUNNING</text>
+
+      <!-- RIGHT: cloud nodes (dashed) -->
+      <path class="box cloud" d="M420,70 L548,70 L548,106 L420,106 L420,76 L426,70 Z"/>
+      <text class="nodename dim" x="432" y="89">GPT-4o-mini</text>
+      <text class="nodesub"      x="432" y="101">CROSS-VERIFY</text>
+      <path class="box cloud" d="M420,180 L548,180 L548,216 L420,216 L420,186 L426,180 Z"/>
+      <text class="nodename dim" x="432" y="199">CLAUDE 3.5</text>
+      <text class="nodesub"      x="432" y="211">CROSS-VERIFY</text>
+      <path class="box cloud" d="M420,290 L548,290 L548,326 L420,326 L420,296 L426,290 Z"/>
+      <text class="nodename dim" x="432" y="309">GEMINI 1.5</text>
+      <text class="nodesub"      x="432" y="321">CROSS-VERIFY</text>
+
+      <!-- LEFT → CENTER wires (live) -->
+      <path class="wire live" d="M138,88  C 170,88  180,180 200,200"/>
+      <path class="wire live" d="M138,198 L 200,210"/>
+      <path class="wire live" d="M138,308 C 170,308 180,240 200,225"/>
+      <!-- pulse dots at center entry -->
+      <circle class="dot pulse" cx="200" cy="200" r="3" style="animation-delay:0s"/>
+      <circle class="dot pulse" cx="200" cy="210" r="3" style="animation-delay:.7s"/>
+      <circle class="dot pulse" cx="200" cy="225" r="3" style="animation-delay:1.4s"/>
+
+      <!-- CENTER → RIGHT wires (dotted, verify-only) -->
+      <path class="wire dotted" d="M380,200 C 400,200 405,90  420,88"/>
+      <path class="wire dotted" d="M380,210 L 420,198"/>
+      <path class="wire dotted" d="M380,225 C 400,225 405,308 420,308"/>
+      <!-- right-side dim dots -->
+      <circle class="dot dim" cx="420" cy="88"  r="2.5"/>
+      <circle class="dot dim" cx="420" cy="198" r="2.5"/>
+      <circle class="dot dim" cx="420" cy="308" r="2.5"/>
+
+      <!-- center top index (cyber pixel num) -->
+      <text class="lane-lbl" x="200" y="148">01 ORCHESTRATION</text>
     </svg>
   </div>
   <div class="wrap">
+    <div class="meta-top">
+      <div class="m"><div class="k">Role</div>            <div class="v">개인 프로젝트 · 설계·구현 전부</div></div>
+      <div class="m"><div class="k">Period</div>          <div class="v">2026 · v1 → v13</div></div>
+      <div class="m"><div class="k">Stack</div>           <div class="v">cron · Ollama · ChromaDB · 3-LLM</div></div>
+    </div>
+
     <p class="eyebrow">블로그 자동화 · 로컬 LLM</p>
     <h1 class="title">Blog Agent</h1>
     <p class="lead">개인 데이터를 밖으로 보내지 않고, <span class="accent-word">검증 가능한</span> 블로그 자동화를 만들 수 있는가.</p>
@@ -261,13 +297,6 @@
     <div class="thi">
       <div class="c"><div class="k">핵심 기술 01</div><h3>RAG로 글 품질 향상</h3><p>사실·수치는 API·정규식이 담당하고, RAG는 따로 — 내가 예전에 발행한 양질의 글 220개에서 비슷한 글을 꺼내 참고해, 새 글의 톤·구성을 그 수준으로 맞춘다.</p></div>
       <div class="c"><div class="k">핵심 기술 02</div><h3>GPT·Claude·Gemini 교차 검증</h3><p>로컬 모델이 쓴 초안을 세 클라우드 모델로 교차 검증해 환각·잘못된 수치를 걸러낸다. 심각하면 업로드를 멈추는, 결정론적 게이트.</p></div>
-    </div>
-
-    <div class="pmeta">
-      <div class="m"><div class="k">역할</div><div class="v">개인 프로젝트 · 설계·구현 전부</div></div>
-      <div class="m"><div class="k">기간</div><div class="v">2026 · 개인 개발 (v1→v13)</div></div>
-      <div class="m"><div class="k">스택</div><div class="v">cron · Ollama · ChromaDB · GPT·Claude·Gemini</div></div>
-      <div class="m"><div class="k">도구</div><div class="v">Obsidian 로컬 AI · 블로그 자동화</div></div>
     </div>
   </div>
 </section>
