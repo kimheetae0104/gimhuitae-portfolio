@@ -44,7 +44,7 @@
   .hero-photo{ position:relative; margin-top:26px; border-radius:28px; overflow:hidden; box-shadow:var(--shadow); }
   .hero-photo img.bg{ width:100%; height:clamp(380px,52vw,620px); object-fit:cover; display:block; }
   .hero-photo::after{ content:""; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(10,18,35,.55) 0%, rgba(10,18,35,.35) 45%, rgba(10,18,35,.85) 100%); pointer-events:none; }
-  .hero-photo .hero-text-overlay{ position:absolute; left:clamp(24px,4vw,48px); top:clamp(28px,4vw,48px); right:clamp(24px,4vw,48px); z-index:1; }
+  .hero-photo .hero-text-overlay{ position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:0 clamp(24px,4vw,48px); z-index:1; }
   .hero-photo .hero-text-overlay .kicker{ color:#9fd0f3; }
   .hero-photo .hero-text-overlay .htitle{ color:#fff; }
   .hero-photo .namepill{ position:absolute; right:20px; bottom:20px; background:rgba(143,200,227,.92); color:var(--navy);
