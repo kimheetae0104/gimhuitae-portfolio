@@ -298,49 +298,6 @@ hr {
   margin: var(--s-6) 0;
 }
 
-/* ===============================================================
-   모바일 공통 안전망 — 케이스 페이지 텍스트 짤림 / overflow 방지
-   (각 페이지 자체 CSS를 덮어쓰지 않고 보조적으로만 작동)
-   =============================================================== */
-html, body { overflow-x: hidden; }
-
-@media (max-width: 560px) {
-  /* 한글이 영문/숫자 사이에서 줄바꿈 안 되어 overflow 나는 케이스 보정 */
-  body, p, li, td, th, div, span, h1, h2, h3, h4 {
-    word-break: keep-all;
-    overflow-wrap: anywhere;
-  }
-  /* 큰 stat 숫자 옆 한글이 한 줄에 안 들어가는 경우 가운데 정렬·줄바꿈 허용 */
-  .stat, .stat-card, .num-card, .pmeta .v, .thi p, .pcard p {
-    word-break: keep-all !important;
-    overflow-wrap: anywhere !important;
-  }
-  /* code/pre 가로 스크롤로 */
-  pre, code, .code {
-    max-width: 100% !important;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
-  }
-  /* image/svg/iframe 절대 폭 초과 방지 */
-  img, svg, video, iframe, table {
-    max-width: 100% !important;
-    height: auto;
-  }
-  /* nav links가 화면 너비 넘어가면 폴드 — 케이스 페이지에서 nav 안 짤리게 */
-  nav .links, .nav .links {
-    flex-wrap: wrap;
-  }
-}
-
-/* iPad / 중간 화면 */
-@media (max-width: 900px) {
-  /* 너무 큰 hero 타이틀이 화면 폭 초과하지 않게 캡 */
-  h1[class*="title"], h1.title {
-    max-width: 100%;
-    overflow-wrap: anywhere;
-  }
-}
-
 /* ── 접근성: 모션 최소화 선호 사용자 ──
    tokens.css는 모든 페이지가 로드 → 전 페이지 애니메이션·전환·부드러운 스크롤 무력화 */
 @media (prefers-reduced-motion: reduce) {
