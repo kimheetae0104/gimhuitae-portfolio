@@ -121,7 +121,8 @@
   .feature h2{ font-size:clamp(22px,3.2vw,34px); font-weight:800; margin:12px 0 0; }
   .feature .flead{ font-size:17px; line-height:1.75; color:rgba(255,255,255,.9); max-width:64ch; margin:16px 0 0; }
   .feature .flead strong{ color:#fff; }
-  .feature .code{ display:inline-block; font-family:var(--font-mono); font-size:15px; background:rgba(0,0,0,.3); border-radius:10px; padding:10px 16px; margin-top:18px; }
+  .feature .code{ display:inline-block; font-family:var(--font-mono); font-size:15px; background:rgba(0,0,0,.3); border-radius:10px; padding:10px 16px; margin-top:8px; }
+  .feature .formula-cap{ display:block; margin-top:18px; font-size:13px; font-weight:600; letter-spacing:.04em; color:rgba(255,255,255,.7); text-transform:uppercase; }
   .gcards{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:30px; }
   .gcard{ background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:18px; padding:24px 26px; backdrop-filter:blur(6px); }
   .gcard .gt{ font-size:12px; font-weight:800; background:rgba(255,255,255,.2); border-radius:999px; padding:6px 12px; display:inline-block; margin-bottom:12px; }
@@ -267,12 +268,13 @@
     <p class="fk">04 — 핵심 난관 · 데이터 누수</p>
     <h2>R² 0.99는 모델 성능이 아니라 데이터 누수</h2>
     <p class="flead">O₂ 센서를 입력으로 넣자 R²가 0.99까지 뛰었다. CEMS는 NOx 라벨을 O₂로 보정해서 만든다. 즉 O₂는 이미 라벨에 들어 있는 정보였고, 그걸 입력에 다시 넣으면 모델은 <strong>정답의 일부를 입력으로 받게 된다</strong>. 0.99는 모델 성능이 아니라 누수의 결과였다.</p>
+    <span class="formula-cap">CEMS O₂ 보정식 — 측정 NOx를 기준 O₂(ref=15%)로 환산</span>
     <span class="code">NOx = NOx_raw × (21 − ref) / (21 − O₂)</span>
     <div class="gcards">
       <div class="gcard">
         <span class="gt">모델 1 처리</span>
         <h4>현재 O₂ 제외 → 과거 O₂만</h4>
-        <p>제어값을 바꾸면 O₂도 따라 움직인다. 현재 O₂는 빼고, 과거 값과 물리식 변환으로 대체.</p>
+        <p>모델 1은 제어값을 가상으로 바꿔 NOx를 시뮬레이션한다. 제어값이 바뀌면 O₂도 함께 변하므로, 현재 O₂는 사실상 미래 정보. 현재 O₂는 빼고 과거 O₂ 값과 물리식 변환으로 대체했다.</p>
         <div class="delta"><span class="was">≈0.99</span><span>→ 누수 제거</span><span class="now">≈0.71</span></div>
       </div>
       <div class="gcard">
