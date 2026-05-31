@@ -346,7 +346,7 @@
     <div class="col">
       <p class="eyebrow">왜 로컬을 선택했나</p>
       <h2 class="h2">비용 · 의존성 · 보안 제약</h2>
-      <p class="prose sec-foot">클라우드 LLM 운영에서 누적된 세 가지 제약(비용·의존성·보안)을 로컬 LLM이 동시에 해소할 수 있는지를 실제 도구 2종으로 검증했다.</p>
+      <p class="prose sec-foot">클라우드 LLM 운영 시 세 가지 제약이 있었다.<br/><br/>① 호출량 비례 <strong>토큰 과금</strong> 누적<br/>② 외부 API 장애·정책 변경 시 <strong>파이프라인 중단</strong><br/>③ 개인 노트·투자 메모의 <strong>외부 서버 전송</strong><br/><br/>로컬 LLM이 이 셋을 동시에 해소할 수 있는지를 실제 도구 2종으로 검증했다.</p>
     </div>
     <div class="thi cols3" style="margin-top:clamp(36px,5vh,56px);">
       <div class="c"><div class="k">01 · 비용</div><h3>종량 과금 제거</h3><p>호출량에 비례하는 토큰 단위 과금이 누적되는 구조 회피. 로컬 모델은 초기 다운로드 외 추가 비용 없음.</p></div>
@@ -410,6 +410,7 @@
         <figcaption>Obsidian 노트 → AntiGravity → Ollama Gemma 4 → 노트에 답 직접 삽입</figcaption>
       </figure>
     </div>
+    <div class="shot"><img src="localai/img/connect-ai-lab.webp" alt="로컬 AI 작업 환경 — Obsidian·Ollama 연결"/></div>
   </div>
 </section>
 
@@ -532,6 +533,9 @@
         </tbody>
       </table>
     </div>
+
+    <div class="shot" style="margin-top:clamp(36px,5vh,56px);"><img src="localai/img/sheets-result.webp" alt="실제 자동 업로드 결과 — Google Sheets에 기록된 생성 글 목록"/></div>
+    <p class="shotcap">실제 자동 업로드 결과 — 검증 점수·종목명·버전이 Google Sheets에 자동 기록.</p>
 
   </div>
 </section>
