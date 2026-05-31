@@ -174,6 +174,9 @@
   .lcard .lt{ font-size:12px; font-weight:600; letter-spacing:.02em; color:var(--ink-3); }
   .lcard h3{ font-size:19px; font-weight:600; margin:10px 0; letter-spacing:-.02em; text-wrap:balance; }
   .lcard p{ font-size:14.5px; color:var(--ink-2); line-height:1.7; margin:0; }
+  .lcard ul{ list-style:none; padding:0; margin:0; display:grid; gap:8px; font-size:14px; color:var(--ink-2); line-height:1.55; }
+  .lcard ul li{ position:relative; padding-left:14px; }
+  .lcard ul li::before{ content:"·"; position:absolute; left:2px; top:-2px; color:var(--accent); font-size:18px; font-weight:800; }
   @media(max-width:860px){ .learn{ grid-template-columns:1fr; } }
 
   /* demo — dark scene */
@@ -396,23 +399,32 @@
     <div class="sec-head">
       <p class="eyebrow">배운 것 · 한계</p>
       <h2 class="h2">"맛있어 보인다"보다 <span class="grad">왜 어울리는지 설명된다</span>가 더 중요했다.</h2>
-      <p class="sec-lead">연구 개념이던 분자 미식학을 실제 추천 경험으로 옮기면서, 설명 가능한 추천이 훨씬 설득력 있다는 걸 확인했다. SwiftUI–CoreML 연결부터 오프라인 DB, 3단계 폴백까지 앱으로 끝까지 만들었다.</p>
+      <p class="sec-lead">Nature 논문의 추상 개념을 실제 사용자 경험으로 옮긴 회고.</p>
     </div>
     <div class="learn sec-foot">
       <div class="lcard learned">
-        <div class="lt">배운 것 · CoreML 통합</div>
-        <h3>Python → CoreML → SwiftUI 연결</h3>
-        <p>YOLOv8n을 Python으로 학습한 뒤 CoreML로 변환해 온디바이스 추론을 붙였다. 학습 시간은 161분에서 17분으로 줄었고 box_loss도 30% 개선됐다.</p>
+        <div class="lt">배운 것 · UX</div>
+        <h3>이유 없는 추천은 의심받는다</h3>
+        <ul>
+          <li>"왜 어울리는지" 함께 보여주면 추천 신뢰도 상승</li>
+          <li>인기순 추천보다 분자 단위 근거가 설득력 강함</li>
+        </ul>
       </div>
       <div class="lcard warn">
         <div class="lt">한계 · 데이터 품질</div>
-        <h3>한국 식재료 편향, 용기 속 인식</h3>
-        <p>원본 향미 DB가 서양 식재료 중심이라 한국 재료 매핑이 아직 얕다. 용기에 담긴 재료를 카메라로 잡는 것도 한계가 있었다.</p>
+        <h3>한국 재료 매핑 얕음</h3>
+        <ul>
+          <li>원본 향미 DB가 서양 중심, 한국 재료 매핑 부족</li>
+          <li>용기에 담긴 재료 인식 한계</li>
+        </ul>
       </div>
       <div class="lcard next">
         <div class="lt">다음 · 확장 계획</div>
-        <h3>한국 식재료 데이터셋 + 라벨 OCR</h3>
-        <p>한국 음식–화합물 매핑을 추가 학습하고, 용기 라벨 OCR과 맥락 분석을 붙여 인식 범위를 넓힐 계획이다.</p>
+        <h3>한국 식재료 + OCR</h3>
+        <ul>
+          <li>한국 음식–화합물 매핑 추가 학습</li>
+          <li>용기 라벨 OCR + 맥락 분석</li>
+        </ul>
       </div>
     </div>
   </div>
