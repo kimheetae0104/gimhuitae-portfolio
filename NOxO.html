@@ -121,9 +121,21 @@
   .feature h2{ font-size:clamp(22px,3.2vw,34px); font-weight:800; margin:12px 0 0; }
   .feature .flead{ font-size:17px; line-height:1.75; color:rgba(255,255,255,.9); max-width:64ch; margin:16px 0 0; }
   .feature .flead strong{ color:#fff; }
-  .feature .code{ display:inline-block; font-family:var(--font-mono); font-size:15px; background:rgba(0,0,0,.3); border-radius:10px; padding:10px 16px; }
-  .feature .formula-cap{ display:block; font-size:13px; font-weight:600; letter-spacing:.04em; color:rgba(255,255,255,.7); text-transform:uppercase; margin-bottom:10px; }
-  .feature .formula-box{ margin-top:22px; padding:18px 22px; border:1px solid rgba(255,255,255,.18); border-radius:14px; background:rgba(0,0,0,.12); }
+  .feature .formula-box{
+    margin-top:24px; padding:20px 24px;
+    background:#fff; border-radius:14px;
+    box-shadow:0 8px 24px rgba(0,0,0,.18);
+  }
+  .feature .formula-box .formula-cap{
+    display:block; font-size:12px; font-weight:700; letter-spacing:.1em;
+    color:#6b7058; text-transform:uppercase; margin-bottom:12px;
+  }
+  .feature .formula-box .code{
+    display:block; font-family:var(--font-mono); font-size:16px;
+    background:#f5f5f0; color:#1a1a1a;
+    border-radius:8px; padding:14px 18px; margin:0;
+    overflow-x:auto; white-space:nowrap;
+  }
   .gcards{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:30px; }
   .gcard{ background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:18px; padding:24px 26px; backdrop-filter:blur(6px); }
   .gcard .gt{ font-size:12px; font-weight:800; background:rgba(255,255,255,.2); border-radius:999px; padding:6px 12px; display:inline-block; margin-bottom:12px; }
