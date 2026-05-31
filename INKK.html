@@ -352,23 +352,23 @@
     <div class="thi">
       <div class="c">
         <div class="k">Tech 01</div>
-        <h3>LLM 4-way 프로바이더 추상화</h3>
-        <p>Claude · Groq · Ollama · Mock 4단 자동 전환. 키 부재 시 Vercel/prod는 <code>mock</code>으로 자동 fallback해 비용 사고를 차단.</p>
+        <h3>LLM 프로바이더 4단 추상화</h3>
+        <p>Claude · Groq · Ollama · Mock을 키 존재 여부로 자동 선택. prod에서 키 부재 시 mock으로 폴백해 비용 사고 차단.</p>
       </div>
       <div class="c">
         <div class="k">Tech 02</div>
-        <h3>품질 4층 방어 — 프롬프트→점수→sanitize→레이아웃</h3>
-        <p>역할 분리 프롬프트 + 100점 감점 휴리스틱(<code>QUALITY_PASS_SCORE=74</code>) + 하드 트렁케이트 + 폰트·슬롯 자동 정규화.</p>
+        <h3>품질 4층 방어</h3>
+        <p>장별 역할 프롬프트 → 100점 감점 점수화 → sanitize 트렁케이트 → 레이아웃 자동 정규화.</p>
       </div>
       <div class="c">
         <div class="k">Tech 03</div>
-        <h3>크레딧 동시성 · Stripe 멱등성</h3>
-        <p>잔액 차감을 <code>SELECT FOR UPDATE</code> RPC로 원자화, webhook은 <code>claim_stripe_event</code> 3-state 머신 + 90s stale 복구.</p>
+        <h3>크레딧 동시성 · 결제 멱등성</h3>
+        <p>잔액은 DB 트랜잭션으로 원자 차감, Stripe webhook은 3-state 머신으로 한 번만 처리.</p>
       </div>
       <div class="c">
         <div class="k">Tech 04</div>
-        <h3>보안 4종 + Rate Limit 3-tier</h3>
-        <p>CSRF Origin/Referer · SSRF(DNS rebinding) · CSP/HSTS · RLS. Upstash → Supabase RPC → in-memory 3단 폴백.</p>
+        <h3>보안 + Rate Limit 다층 폴백</h3>
+        <p>CSRF · SSRF · CSP · RLS 동시 적용. 속도 제한은 Redis → DB → 메모리 순으로 폴백.</p>
       </div>
     </div>
 
@@ -532,23 +532,12 @@
         <div class="ln">DB</div>
         <div>
           <h3>크레딧 차감을 RPC로 원자화</h3>
-          <p class="lead-row"><code>deduct_credit()</code>가 <code>SELECT FOR UPDATE</code>로 행을 잠근 뒤 잔액을 확인·차감한다. 동시 요청에도 잔액이 음수로 깨지지 않는다.</p>
-          <div class="code"><span class="kw">create or replace function</span> deduct_credit() <span class="kw">returns boolean</span>
-<span class="kw">language</span> plpgsql security definer
-<span class="kw">as</span> $$
-<span class="kw">declare</span> v_balance integer;
-<span class="kw">begin</span>
-  <span class="kw">select</span> balance <span class="kw">into</span> v_balance
-    <span class="kw">from</span> credits
-    <span class="kw">where</span> user_id = auth.uid()
-    <span class="kw">for update</span>;                       <span class="cm">-- 행 잠금</span>
-  <span class="kw">if</span> v_balance <span class="kw">is null or</span> v_balance <= 0 <span class="kw">then</span>
-    <span class="kw">return false</span>;
-  <span class="kw">end if</span>;
-  <span class="kw">update</span> credits <span class="kw">set</span> balance = balance - 1
-    <span class="kw">where</span> user_id = auth.uid();
-  <span class="kw">return true</span>;
-<span class="kw">end</span>; $$;</div>
+          <p class="lead-row">잔액이 곧 현금이라, 동시 요청이 들어와도 음수가 되지 않도록 차감을 <strong>DB 트랜잭션 안에서</strong> 처리.</p>
+          <ul class="spec">
+            <li><b>행 잠금</b> · <code>SELECT FOR UPDATE</code>로 잔액 row를 잠근 뒤 확인·차감</li>
+            <li><b>SECURITY DEFINER 함수</b> · 클라이언트는 RPC 한 번만 호출, 잔액 직접 update 불가</li>
+            <li><b>실패 시 자동 환불</b> · LLM 호출 실패하면 <code>refund_credit()</code>가 balance만 +1 (총 구매 수치는 보존)</li>
+          </ul>
         </div>
       </div>
 
