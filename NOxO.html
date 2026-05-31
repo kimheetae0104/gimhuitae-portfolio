@@ -93,6 +93,11 @@
   .chip.on .v{ color:#fff; }
   .chip .l{ font-size:12px; color:var(--muted); margin-top:8px; font-weight:600; }
   .chip.on .l{ color:rgba(255,255,255,.85); }
+  /* 보조 메트릭 — journey 같은 강조 카드 옆 small pill */
+  .chips.sm{ margin-top:16px; gap:10px; }
+  .chips.sm .chip{ padding:11px 16px; min-width:auto; border-radius:99px; display:inline-flex; align-items:baseline; gap:8px; }
+  .chips.sm .chip .v{ font-size:17px; }
+  .chips.sm .chip .l{ font-size:12px; margin-top:0; }
 
   figure.fig{ margin:30px 0 0; }
   .fcap{ display:inline-block; font-size:13px; font-weight:700; color:var(--blue-deep); background:var(--sky-soft); border-radius:999px; padding:8px 16px; margin-bottom:14px; }
@@ -250,7 +255,7 @@
     <div class="jstep"><div class="n">0.625</div><div class="l">피처 엔지니어링 · O₂ 없이</div></div>
     <div class="jstep on"><div class="n">0.68</div><div class="l">O₂ 재포함 · 누수 아님 확인</div></div>
   </div>
-  <div class="chips">
+  <div class="chips sm">
     <div class="chip"><div class="v">27.7ms</div><div class="l">추론 (예산 50ms)</div></div>
     <div class="chip"><div class="v">213</div><div class="l">피처 수</div></div>
   </div>
