@@ -226,7 +226,7 @@
 
   <div class="thi">
     <div class="c"><div class="k">핵심 기술 01</div><h3>데이터 누수 발견</h3><p>R²가 0.99로 너무 잘 나와 의심했다. CEMS 라벨식이 O₂로 NOx를 보정하는 걸 찾아내, 그 누수 입력을 빼고 과거값·물리 변환으로 재설계했다.</p></div>
-    <div class="c"><div class="k">핵심 기술 02</div><h3>누수 없는 시계열 검증 설계</h3><p>무작위 분할 대신 확장 윈도우 교차검증을 적용하고, 학습·검증 구간 사이에 300초 갭을 두어 미래 정보가 과거로 새지 않게 했다. 절대 점수가 아니라 기준선 대비 개선폭으로 평가했다.</p></div>
+    <div class="c"><div class="k">핵심 기술 02</div><h3>누수 없는 시계열 검증 설계</h3><p>무작위 분할 대신 확장 윈도우 교차검증을 적용하고, 학습 구간과 검증 구간 사이에 300초의 간격을 두어 미래 시점이 학습 구간에 포함되지 않도록 했다. 절대 점수가 아니라 기준선 대비 개선폭으로 평가했다.</p></div>
   </div>
 </section>
 
@@ -313,9 +313,9 @@
   <h2 class="h2">데이터 누수 없는 검증부터 설계</h2>
   <div class="vlist">
     <div class="vitem"><div class="vk">최종 홀드아웃</div><div class="vb">앞 <strong>14일치</strong>는 훈련셋으로 활용하고, 마지막 하루는 테스트셋으로 사용했다.<br>모델 선택·튜닝 어디에도 쓰지 않아 새 데이터에서의 진짜 성능을 확인했다.</div></div>
-    <div class="vitem"><div class="vk">시계열 교차검증</div><div class="vb">무작위로 나누면 미래 정보가 과거 학습 구간으로 새어 들어간다.<br>과거부터 학습 구간을 점점 넓혀가는 <strong>확장 윈도우</strong> 방식으로 시간 순서를 지켰다.</div></div>
-    <div class="vitem"><div class="vk">학습·검증 간격</div><div class="vb">학습 구간 끝과 검증 구간 시작 사이에 <strong>300초</strong>의 간격을 두었다.<br>직전 값을 그대로 베껴 점수가 부풀려지는 것을 막기 위해서다.</div></div>
-    <div class="vitem"><div class="vk">타겟 생성 분리</div><div class="vb">5분 후 정답값은 각 구간 안의 데이터로만 만들었다.<br>검증 구간의 미래 값이 학습 구간으로 흘러 들어가지 않게 했다.</div></div>
+    <div class="vitem"><div class="vk">시계열 교차검증</div><div class="vb">시계열 데이터를 무작위로 나누면 학습 구간에 미래 시점이 포함된다.<br>과거부터 학습 구간을 점점 넓혀가는 <strong>확장 윈도우</strong> 방식으로 시간 순서를 유지했다.</div></div>
+    <div class="vitem"><div class="vk">학습·검증 간격</div><div class="vb">학습 구간 끝과 검증 구간 시작 사이에 <strong>300초</strong>의 간격을 두었다.<br>직전 값을 그대로 예측값으로 사용해 점수가 실제보다 높게 측정되는 것을 막기 위해서다.</div></div>
+    <div class="vitem"><div class="vk">타겟 생성 분리</div><div class="vb">5분 후 정답값은 각 구간 안의 데이터로만 만들었다.<br>검증 구간의 미래 값이 학습 구간에 포함되지 않도록 했다.</div></div>
   </div>
   <div class="two" style="margin-top:30px;">
     <div class="mcard tint">
