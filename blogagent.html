@@ -161,6 +161,26 @@
   .two{ display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
   @media(max-width:840px){ .two{ grid-template-columns:1fr; gap:32px; } }
 
+  /* ── Tech Stack 표 ──────────────────────────── */
+  .techstack{ margin-top:clamp(36px,5vh,56px); border:1px solid var(--line-soft); border-radius:var(--rad); overflow:hidden; background:rgba(15,15,19,.55); }
+  .techstack-head{ padding:18px 24px; border-bottom:1px solid var(--line-soft); display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; }
+  .techstack-head .t{ font-family:var(--mono); font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); }
+  .techstack-head .d{ font-family:var(--mono); font-size:11px; color:var(--ink-3); letter-spacing:.08em; }
+  .techstack table{ width:100%; border-collapse:collapse; }
+  .techstack th{ text-align:left; padding:12px 22px; font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); font-weight:500; border-bottom:1px solid var(--line-soft); background:rgba(22,22,28,.4); }
+  .techstack td{ padding:14px 22px; border-bottom:1px solid var(--line-soft); vertical-align:top; line-height:1.55; }
+  .techstack td:nth-child(1){ font-family:var(--mono); font-size:12px; color:var(--accent); font-weight:600; letter-spacing:.04em; width:120px; white-space:nowrap; }
+  .techstack td:nth-child(2){ font-family:var(--mono); font-size:12.5px; color:var(--ink); width:230px; }
+  .techstack td:nth-child(3){ color:var(--ink-2); font-size:13.5px; width:200px; }
+  .techstack td:nth-child(4){ color:var(--ink-3); font-size:13px; }
+  .techstack tr:last-child td{ border-bottom:none; }
+  @media(max-width:840px){
+    .techstack th{ display:none; }
+    .techstack td{ display:block; padding:4px 22px; border:none; font-size:13px !important; width:auto !important; }
+    .techstack td:nth-child(1){ padding-top:16px; font-size:11px !important; }
+    .techstack tr{ display:block; border-bottom:1px solid var(--line-soft); padding-bottom:14px; }
+  }
+
   .ministats{ display:flex; gap:10px; flex-wrap:wrap; margin-top:22px; }
   .ms{ font-family:var(--mono); font-size:13px; color:var(--ink-2); background:var(--bg-2); border:1px solid var(--line-soft); border-radius:999px; padding:8px 14px; }
   .ms b{ color:var(--ink); }
@@ -254,7 +274,7 @@
       <text class="nodesub"  x="22" y="101">SCHEDULER</text>
       <path class="box" d="M10,180 L138,180 L138,216 L10,216 L10,186 L16,180 Z"/>
       <text class="nodename" x="22" y="199">OLLAMA</text>
-      <text class="nodesub"  x="22" y="211">LLAMA3 · 8B</text>
+      <text class="nodesub"  x="22" y="211">EXAONE3.5 · 7.8B</text>
       <path class="box" d="M10,290 L138,290 L138,326 L10,326 L10,296 L16,290 Z"/>
       <text class="nodename" x="22" y="309">CHROMADB</text>
       <text class="nodesub"  x="22" y="321">220 ARTICLES</text>
@@ -265,14 +285,14 @@
       <text class="center-sub"  x="290" y="240" text-anchor="middle" style="fill:rgba(77,163,255,.7);">● RUNNING</text>
 
       <path class="box cloud" d="M420,70 L548,70 L548,106 L420,106 L420,76 L426,70 Z"/>
-      <text class="nodename dim" x="432" y="89">GPT-4o-mini</text>
-      <text class="nodesub"      x="432" y="101">CROSS-VERIFY</text>
+      <text class="nodename dim" x="432" y="89">GEMINI FLASH-LITE</text>
+      <text class="nodesub"      x="432" y="101">VERIFY · 5기준</text>
       <path class="box cloud" d="M420,180 L548,180 L548,216 L420,216 L420,186 L426,180 Z"/>
-      <text class="nodename dim" x="432" y="199">CLAUDE 3.5</text>
-      <text class="nodesub"      x="432" y="211">CROSS-VERIFY</text>
+      <text class="nodename dim" x="432" y="199">GEMINI 4단 POOL</text>
+      <text class="nodesub"      x="432" y="211">429 폴백</text>
       <path class="box cloud" d="M420,290 L548,290 L548,326 L420,326 L420,296 L426,290 Z"/>
-      <text class="nodename dim" x="432" y="309">GEMINI 1.5</text>
-      <text class="nodesub"      x="432" y="321">CROSS-VERIFY</text>
+      <text class="nodename dim" x="432" y="309">CLAUDE API</text>
+      <text class="nodesub"      x="432" y="321">SECONDARY</text>
 
       <path class="wire live" d="M138,88  C 170,88  180,180 200,200"/>
       <path class="wire live" d="M138,198 L 200,210"/>
@@ -295,7 +315,7 @@
     <p class="eyebrow">블로그 자동화 · 로컬 LLM</p>
     <h1 class="title">Blog Agent</h1>
     <p class="lead">개인 데이터를 밖으로 보내지 않고, <span class="accent-word">검증 가능한</span> 블로그 자동화를 만들 수 있는가.</p>
-    <p class="url">Ollama 기반 블로그 자동화 에이전트 · 로컬 추론 + 3-LLM 교차 검증</p>
+    <p class="url">Ollama exaone3.5 7.8B 로컬 추론 + Gemini·Claude 7단 검증 파이프라인</p>
 
     <div class="thi">
       <div class="c"><div class="k">핵심 기술 01</div><h3>RAG로 글 품질 향상</h3><p>사실·수치는 API·정규식이 담당하고, RAG는 따로 — 내가 예전에 발행한 양질의 글 220개에서 비슷한 글을 꺼내 참고해, 새 글의 톤·구성을 그 수준으로 맞춘다.</p></div>
@@ -305,7 +325,7 @@
     <div class="meta-top">
       <div class="m"><div class="k">Role</div>            <div class="v">개인 프로젝트 · 설계·구현 전부</div></div>
       <div class="m"><div class="k">Period</div>          <div class="v">2026 · v1 → v13</div></div>
-      <div class="m"><div class="k">Stack</div>           <div class="v">cron · Ollama · ChromaDB · 3-LLM</div></div>
+      <div class="m"><div class="k">Stack</div>           <div class="v">cron · Ollama exaone3.5 · ChromaDB · nomic-embed · Gemini·Claude</div></div>
     </div>
   </div>
 </section>
@@ -358,7 +378,7 @@
           <!-- Ollama (center glow) -->
           <path class="box center" d="M10,150 L260,150 L260,220 L10,220 L10,156 L16,150 Z"/>
           <text class="sub"         x="22" y="173" style="fill:#4DA3FF;">PROCESS · OLLAMA</text>
-          <text class="name center" x="135" y="195" text-anchor="middle">GEMMA 4 · LOCAL</text>
+          <text class="name center" x="135" y="195" text-anchor="middle">OLLAMA · LOCAL</text>
           <text class="sub"         x="135" y="212" text-anchor="middle">네트워크 요청 0 · M2 Air</text>
 
           <!-- arrow down -->
@@ -437,7 +457,7 @@
         <path class="box" d="M650,45 L780,45 L780,155 L650,155 L650,51 L656,45 Z"/>
         <text class="sub"  x="662" y="66">04 · LLM</text>
         <text class="name" x="662" y="90">Ollama 초안</text>
-        <text class="sub"  x="662" y="115">Llama3 · 8B</text>
+        <text class="sub"  x="662" y="115">exaone3.5 · 7.8B</text>
         <text class="sub"  x="662" y="130">로컬 생성</text>
 
         <path class="wire solid live" d="M780,100 L810,100"/>
@@ -446,8 +466,8 @@
         <path class="box center" d="M810,45 L940,45 L940,155 L810,155 L810,51 L816,45 Z"/>
         <text class="sub"         x="822" y="66" style="fill:#4DA3FF;">05 · VERIFY</text>
         <text class="name center" x="822" y="90">교차 검증</text>
-        <text class="sub"         x="822" y="115">GPT · Claude</text>
-        <text class="sub"         x="822" y="130">Gemini</text>
+        <text class="sub"         x="822" y="115">Gemini · Claude</text>
+        <text class="sub"         x="822" y="130">5기준 자동</text>
 
         <path class="wire dotted" d="M940,100 L970,100"/>
         <text class="sub" x="945" y="92">gate</text>
@@ -461,7 +481,7 @@
 
         <!-- 하단 그룹 라벨 -->
         <text class="lbl" x="490" y="195" style="fill:#46D39A;">RAG = QUALITY ONLY</text>
-        <text class="lbl" x="810" y="195" style="fill:#4DA3FF;">3-LLM CROSS-VERIFY</text>
+        <text class="lbl" x="810" y="195" style="fill:#4DA3FF;">GEMINI · CLAUDE 5기준 검증</text>
       </svg>
       <figcaption>매일 cron이 깨우는 고정 파이프라인 · <span class="mt">RAG는 품질 참고</span>, <span class="cy">검증 게이트</span> 통과한 글만 배포</figcaption>
     </figure>
@@ -470,6 +490,111 @@
       <span class="ms"><b>6개 소스</b> API 크롤링 — DART·Naver</span>
       <span class="ms"><b>4~6분</b> (수동 2시간 대비)</span>
     </div>
+
+    <div class="techstack">
+      <div class="techstack-head">
+        <span class="t">TECH STACK · 결정 근거</span>
+        <span class="d">Production · v13</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th>컴포넌트</th><th>도구·버전</th><th>역할</th><th>선택 이유</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>스케줄러</td>
+            <td>cron</td>
+            <td>매일 정시 트리거</td>
+            <td>외부 의존 0 · 결정론적 — "스스로 판단" 대신 정해진 순서 반복</td>
+          </tr>
+          <tr>
+            <td>로컬 LLM</td>
+            <td>Ollama · exaone3.5 7.8B</td>
+            <td>블로그 초안 생성</td>
+            <td>한국어 강함 · API 비용 0 · 데이터 외부 전송 없음 (AI_MODE=local 기본)</td>
+          </tr>
+          <tr>
+            <td>임베딩</td>
+            <td>nomic-embed-text · 768d</td>
+            <td>과거 220개 글 벡터화</td>
+            <td>Ollama 재활용 — <code>ollama pull</code> 한 줄로 활성화 · 한국어 OK · Google-genai 폴백 병행</td>
+          </tr>
+          <tr>
+            <td>벡터 DB</td>
+            <td>ChromaDB · 영속 모드</td>
+            <td>RAG 코퍼스 · 유사 검색 top_k=2</td>
+            <td>로컬 설치 · 섹터 메타 필터 2단계 (같은 섹터 우선 → 전체 폴백)</td>
+          </tr>
+          <tr>
+            <td>크롤링</td>
+            <td>DART API · Naver 금융 · Google News RSS</td>
+            <td>종목·재무·뉴스 6소스 병렬</td>
+            <td>18개 언론사 화이트리스트로 본문 노이즈 차단 · 6자리 종목코드 파라미터로 동명이종 차단</td>
+          </tr>
+          <tr>
+            <td>이슈 점수</td>
+            <td>거래량 30% + 뉴스 40% + 검색량 30%</td>
+            <td>generic 콘텐츠 자동 스킵</td>
+            <td>IssueScore ≥ 30 AND 직접 뉴스 ≥ 1건만 통과 · 최대 3개 선정</td>
+          </tr>
+          <tr>
+            <td>형식 검증</td>
+            <td>_validate_blog_quality</td>
+            <td>헤딩·분량·태그·종목명</td>
+            <td>## 헤딩 4개 · 한글 800자+ (목표 1500자) · 해시태그 10개+ · 플레이스홀더 감지</td>
+          </tr>
+          <tr>
+            <td>팩트체크</td>
+            <td>DART 수치 대조</td>
+            <td>매출/영업이익/순이익 검증</td>
+            <td>글 수치 vs 원본 <b>50%+ 차이 → 환각</b> 판정 → 재시도 (MAX_RETRIES=2)</td>
+          </tr>
+          <tr>
+            <td>구조 모순 룰</td>
+            <td>13+ 규칙</td>
+            <td>밸류·재무·공시 모순 자동 감지</td>
+            <td>PBR 5+ ↔ "저평가" / PER 100+ ↔ "저평가" / EPS 음수 ↔ "PER 저평가" / 부채 100%+ ↔ "안정적" / 유상증자 ↔ "재무 안정성" / 등</td>
+          </tr>
+          <tr>
+            <td>자동 교정</td>
+            <td>_auto_fix_contradictions</td>
+            <td>재시도 한도 후 강제 보정</td>
+            <td>"+15.3% 상한가" → "+15.3% 급등" 같은 표현 코드 레벨 치환</td>
+          </tr>
+          <tr>
+            <td>최종 검증</td>
+            <td>Gemini 2.5 flash-lite</td>
+            <td>5기준 자동 평가 → score 0~100</td>
+            <td>① 종목 혼동 ② 수치 환각 30%+ ③ 종목코드 ④ 사실 창작 ⑤ 밸류에이션 모순 · critical=배포 차단 + Telegram 긴급 알림</td>
+          </tr>
+          <tr>
+            <td>폴백 큐</td>
+            <td>4단 Gemini pool</td>
+            <td>429 쿼터 시 자동 전환</td>
+            <td>gemini-2.5-flash-lite → 3.1-flash-lite → flash-lite-latest → 2.5-flash (무료 한도 15 RPM · 1M tok/day, 모델별 독립)</td>
+          </tr>
+          <tr>
+            <td>보조 검증</td>
+            <td>Claude API</td>
+            <td>secondary verify</td>
+            <td>Gemini 4단 모두 소진 시 보조 — 입력에 사실이 충분하면 모델 교체로 환각이 줄지 않음을 검증 후 추가</td>
+          </tr>
+          <tr>
+            <td>발행</td>
+            <td>네이버 블로그 (Selenium) · Google Sheets · Obsidian</td>
+            <td>다채널 자동 업로드</td>
+            <td>undetected-chromedriver 자동 로그인 · gspread 서비스 계정 · 마크다운+프론트매터 백업</td>
+          </tr>
+          <tr>
+            <td>알림</td>
+            <td>Telegram Bot</td>
+            <td>완료·오류·critical 차단 알림</td>
+            <td>score 포함 — 사람이 마지막 판단을 빠르게</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     <div class="shot" style="margin-top:clamp(36px,5vh,56px);"><img src="localai/img/sheets-result.webp" alt="실제 자동 업로드 결과 — Google Sheets에 기록된 생성 글 목록"/></div>
     <p class="shotcap">실제 자동 업로드 결과 — 검증 점수·종목명·버전이 Google Sheets에 자동 기록돼, 사람이 마지막 판단을 빠르게 한다.</p>
   </div>
@@ -502,8 +627,8 @@
           <path class="wire solid live" d="M200,61 L240,61"/>
 
           <path class="box" d="M240,32 L430,32 L430,90 L240,90 L240,38 L246,32 Z"/>
-          <text class="name" x="252" y="58">CHUNK · EMBED</text>
-          <text class="sub"  x="252" y="74">512 TOK · BGE-M3</text>
+          <text class="name" x="252" y="58">EMBED</text>
+          <text class="sub"  x="252" y="74">nomic-embed · 768d</text>
 
           <path class="wire solid live" d="M430,61 L470,61"/>
 
@@ -546,15 +671,15 @@
           <!-- OLLAMA (center, glow) -->
           <path class="box center" d="M510,210 L680,210 L680,290 L510,290 L510,216 L516,210 Z"/>
           <text class="name center" x="595" y="240" text-anchor="middle">OLLAMA LLM</text>
-          <text class="sub" x="595" y="258" text-anchor="middle">LLAMA3 · 8B · MERGE</text>
+          <text class="sub" x="595" y="258" text-anchor="middle">exaone3.5 · 7.8B · MERGE</text>
           <text class="sub" x="595" y="276" text-anchor="middle" style="fill:rgba(77,163,255,.75);">● RUNNING</text>
 
           <!-- OLLAMA → VERIFY (dotted cloud) -->
           <path class="wire dotted" d="M680,232 C 695,232 705,182 730,182"/>
 
           <path class="box cloud" d="M730,150 L900,150 L900,210 L730,210 L730,156 L736,150 Z"/>
-          <text class="name dim" x="742" y="176">3-LLM VERIFY</text>
-          <text class="sub"      x="742" y="194">GPT · CLAUDE · GEMINI</text>
+          <text class="name dim" x="742" y="176">7단 VERIFY</text>
+          <text class="sub"      x="742" y="194">Gemini · Claude · 5기준</text>
 
           <!-- OLLAMA → PUBLISH (solid live) -->
           <path class="wire solid live" d="M680,268 C 695,268 705,318 730,318"/>
