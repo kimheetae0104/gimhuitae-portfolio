@@ -14,12 +14,13 @@
      영감: NYT / Stripe Sigma / Pitchfork
   ────────────────────────────────────────── */
   :root{
-    --paper:#FDFCF9;          /* warm cream */
-    --paper-2:#F5F1EA;         /* sand */
-    --paper-3:#FFFFFF;          /* card surface */
-    --ink:#14110D;              /* warm black */
-    --ink-2:#5A5247;            /* warm grey body */
-    --ink-3:#9B9387;            /* muted */
+    /* Apple Clean (JANN과 한 패밀리) */
+    --paper:#FFFFFF;
+    --paper-2:#F5F5F7;
+    --paper-3:#FBFBFD;
+    --ink:#1D1D1F;
+    --ink-2:#515154;
+    --ink-3:#86868B;
     /* inkk.online 톤 통일 — 인디고/시안/마젠타 그라데이션 SaaS */
     --accent:#7C5CFF;           /* inkk indigo (primary) */
     --accent-soft:#EEEAFF;
@@ -147,6 +148,37 @@
   .pill.beta{ background:var(--paper-3); color:var(--ink); border-color:var(--ink); }
   .hero .url{ font-family:var(--font-mono); font-size:14px; margin:24px 0 0; color:var(--ink-3); letter-spacing:.02em; }
   .hero .url a{ color:var(--accent); border-bottom:1px solid var(--accent); padding-bottom:1px; }
+  /* ──── INKK 시그니처 — 카드뉴스 mockup deck (JANN .devices 패턴) ──── */
+  .cards{ display:flex; justify-content:center; align-items:center; gap:14px; padding:30px 0 20px; perspective:1200px; }
+  .icard{
+    width:160px; flex:none; aspect-ratio:4/5; border-radius:20px; overflow:hidden;
+    position:relative; box-shadow:0 24px 60px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.04);
+    background:#0F1115; color:#fff; display:flex; flex-direction:column; padding:18px 16px;
+    transform:rotate(-8deg) translateY(8px); transition:transform .35s cubic-bezier(.16,.84,.32,1), box-shadow .35s;
+  }
+  .icard.lg{ width:230px; transform:rotate(0deg) scale(1); z-index:3;
+    box-shadow:0 40px 90px rgba(0,0,0,.28), 0 0 0 1px rgba(0,0,0,.04); }
+  .icard:nth-child(3){ transform:rotate(8deg) translateY(8px); }
+  .icard:hover{ transform:rotate(0deg) translateY(-4px) scale(1.02); z-index:4; }
+  .icard.editorial{ background:linear-gradient(160deg,#2A1F3D 0%, #1A1230 100%); }
+  .icard.shock{ background:linear-gradient(160deg,#0F1115 0%, #1F1A2C 60%, #2D1A3D 100%); }
+  .icard.proof{ background:linear-gradient(160deg,#1B2233 0%, #0E1421 100%); }
+  .icard .ilabel{ font-family:var(--font-mono); font-size:10px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; padding:5px 10px; border-radius:999px;
+    background:rgba(255,255,255,.10); color:rgba(255,255,255,.78); align-self:flex-start; backdrop-filter:blur(8px); }
+  .icard .ihead{ margin-top:auto; font-family:var(--font-sans); font-weight:700; letter-spacing:-.02em; line-height:1.28;
+    font-size:16px; color:#fff; word-break:keep-all; }
+  .icard.lg .ihead{ font-size:22px; }
+  .icard .ihead em{ font-style:normal; background:var(--inkk-grad-text); -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent; font-weight:800; }
+  .icard .imark{ position:absolute; bottom:14px; right:16px; font-family:var(--font-mono); font-size:9px; letter-spacing:.18em; color:rgba(255,255,255,.36); }
+  .icard .ipage{ position:absolute; top:14px; right:16px; font-family:var(--font-mono); font-size:9px; letter-spacing:.12em; color:rgba(255,255,255,.5); }
+  @media(max-width:560px){
+    .cards{ gap:8px; padding:20px 0 12px; }
+    .icard{ width:108px; padding:14px 12px; }
+    .icard.lg{ width:148px; }
+    .icard .ihead{ font-size:12px; }
+    .icard.lg .ihead{ font-size:16px; }
+  }
+
   /* Hero / 결과 이미지 — Clay 입체 컨테이너 */
   .shot{
     position:relative; border-radius:var(--rad-xl); overflow:hidden;
@@ -354,7 +386,26 @@
         <p class="lead">긴 글을 1분 만에, <span class="red">인스타 카드뉴스</span>로.</p>
         <p class="url">Live · <a href="https://inkk.online" target="_blank" rel="noopener">inkk.online</a></p>
       </div>
-      <div class="shot"><img src="inkk/thumb.webp" alt="INKK 서비스 화면" loading="lazy"/></div>
+      <div class="cards" aria-label="INKK 카드뉴스 결과 예시">
+        <div class="icard editorial">
+          <span class="ilabel">Editorial</span>
+          <span class="ipage">1 / 5</span>
+          <p class="ihead">감성 큐레이션처럼 보이는 <em>정보 카드</em></p>
+          <span class="imark">INKK</span>
+        </div>
+        <div class="icard lg shock">
+          <span class="ilabel">Shock</span>
+          <span class="ipage">1 / 5</span>
+          <p class="ihead">원장이 <em>숨기는</em> 1가지</p>
+          <span class="imark">INKK</span>
+        </div>
+        <div class="icard proof">
+          <span class="ilabel">Proof</span>
+          <span class="ipage">1 / 5</span>
+          <p class="ihead">통계·리뷰·전문가 인용 <em>강조</em></p>
+          <span class="imark">INKK</span>
+        </div>
+      </div>
     </div>
 
     <div class="thi">
@@ -605,7 +656,7 @@
 (function(){
   if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if(!('IntersectionObserver' in window)) return;
-  var els=[].slice.call(document.querySelectorAll('.col,.thi .c,.three .pcard,.thesis,.decisions .dec,.layers .layer,.shot,.gal .gcell,.pmeta,.chips,.llist .li'));
+  var els=[].slice.call(document.querySelectorAll('.col,.thi .c,.three .pcard,.thesis,.decisions .dec,.layers .layer,.cards,.icard,.pmeta,.chips,.llist .li'));
   els.forEach(function(el){ el.style.opacity=0; el.style.transform='translateY(20px)'; el.style.transition='opacity .7s cubic-bezier(.16,.84,.32,1), transform .7s cubic-bezier(.16,.84,.32,1)'; });
   var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.style.opacity=1; e.target.style.transform='none'; io.unobserve(e.target);} }); },{threshold:.08, rootMargin:'0px 0px -6% 0px'});
   els.forEach(function(el){ io.observe(el); });
