@@ -432,7 +432,7 @@
       <a href="#problem">왜</a>
       <a href="#how">어떻게</a>
       <a href="#quality">품질</a>
-      <a href="#learning">운영</a>
+      <a href="#learning">준비</a>
       <a class="cta" href="index.html">← 포트폴리오</a>
     </div>
   </div>
@@ -573,18 +573,18 @@
 <section class="tint" id="learning">
   <div class="wrap">
     <div class="col">
-      <div class="eyebrow-row"><p class="eyebrow">운영에서 배운 것</p><div class="swipe-dots" aria-label="섹션 4/4"><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot on"></span></div></div>
-      <h2 class="h2">추측보다 <span class="red">데이터를 먼저 본다.</span></h2>
-      <p class="prose sec-foot">베타 시작과 함께 <strong>가입 → 생성 시도 → 카드 다운로드</strong>까지 퍼널 단계별 이탈, API 응답 시간, 결제 전환을 모두 기록하기 시작했다. 어디서 막히는지가 숫자로 보여야 다음 작업이 정해진다.</p>
+      <div class="eyebrow-row"><p class="eyebrow">베타 준비 · 결정</p><div class="swipe-dots" aria-label="섹션 4/4"><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot on"></span></div></div>
+      <h2 class="h2">데이터가 쌓이기 전에 <span class="red">측정부터 준비해 둔다.</span></h2>
+      <p class="prose sec-foot">베타 초기라 사용자 데이터는 아직 많지 않다. 그래서 본격적인 트래픽이 들어오기 전에 <strong>가입 → 생성 시도 → 카드 다운로드</strong> 단계별 이벤트 로깅과 관리자 대시보드를 먼저 깔아 뒀다. 다음에 무엇을 만들지가 감이 아니라 데이터에서 나오도록.</p>
     </div>
     <div class="llist">
       <div class="li">
         <div class="lh">병목은 의심 말고 측정</div>
-        <p>"느리다"는 피드백을 받고 처음엔 DB를 의심했다. 측정해 보니 원인은 <b>서버리스 함수의 지역 설정</b>이었고, 한 줄 변경으로 응답이 <b>수 배 빨라졌다</b>. 비싼 마이그레이션 전에 가설을 데이터로 먼저 확인한 사례.</p>
+        <p>API 응답이 느린 게 처음엔 DB 문제로 보였다. 측정해 보니 원인은 <b>서버리스 함수의 지역 설정</b>이었고, 한 줄 변경으로 응답이 <b>수 배 빨라졌다</b>. 비싼 마이그레이션 전에 가설을 먼저 데이터로 확인한 사례.</p>
       </div>
       <div class="li">
         <div class="lh">만들지 않기로 한 결정</div>
-        <p>'카드 1장만 다시 만들기' 기능은 비용이 새 덱 생성과 비슷했고, 수동 편집만으로도 사용자가 충분히 해결할 수 있었다. <b>안 만들기로 결정</b>했다. 진짜 병목은 코드가 아니라 유입이라는 판단.</p>
+        <p>'카드 1장만 다시 만들기' 기능은 비용이 새 덱 생성과 거의 비슷했고, 수동 편집만으로도 같은 결과를 낼 수 있었다. <b>만들지 않기로 결정</b>했다. 지금 단계의 진짜 병목은 코드가 아니라 유입이라는 판단.</p>
       </div>
     </div>
   </div>
