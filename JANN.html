@@ -309,7 +309,6 @@
     <div class="sec-head">
       <p class="eyebrow">파이프라인 설계</p>
       <h2 class="h2">네트워크가 끊겨도 향미 분석은 계속</h2>
-      <p class="sec-lead">클라우드 의존 없이 단독 동작하는 추천 파이프라인.<br>인식·분석·생성·결과까지 4단계로 묶었다.</p>
     </div>
     <div class="stats sec-foot">
       <div class="stat"><div class="n">18<span class="u">MB</span></div><div class="l">온디바이스 YOLO CoreML 모델 크기</div></div>
@@ -323,7 +322,6 @@
         <ul>
           <li>YOLOv8n(CoreML) + GPT-4o Vision 병렬 실행</li>
           <li>실패 시 Apple Vision으로 자동 폴백</li>
-          <li>네트워크 없이 단독 동작</li>
         </ul>
         <div class="tags"><span class="tag">CoreML</span><span class="tag">YOLOv8n</span><span class="tag">3-폴백</span></div>
       </div>
@@ -331,7 +329,7 @@
         <div class="ps">02 · 분석</div>
         <h3>향미 네트워크 DB</h3>
         <ul>
-          <li>SQLite 내장 DB, 완전 오프라인</li>
+          <li>SQLite 내장 DB로 추론 핵심 경로 보호</li>
           <li>자카드 유사도로 향미 호환성 계산</li>
           <li>한국 재료 한-영 매핑 추가</li>
         </ul>
