@@ -137,6 +137,10 @@
     border-radius:8px; padding:14px 18px; margin:0;
     overflow-x:auto; white-space:nowrap;
   }
+  .feature .formula-box .formula-foot{
+    display:block; margin-top:10px;
+    font-size:11.5px; line-height:1.6; color:#6b7058;
+  }
   .gcards{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:30px; }
   .gcard{ background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:18px; padding:24px 26px; backdrop-filter:blur(6px); }
   .gcard .gt{ font-size:12px; font-weight:800; background:rgba(255,255,255,.2); border-radius:999px; padding:6px 12px; display:inline-block; margin-bottom:12px; }
@@ -281,10 +285,11 @@
   <div class="feature">
     <p class="fk">04 — 핵심 난관 · 데이터 누수</p>
     <h2>R² 0.99는 모델 성능이 아니라 데이터 누수</h2>
-    <p class="flead">O₂ 센서를 넣자 R² 값이 0.99로 측정됐다.<br>CEMS는 측정 NOx를 O₂ 농도로 보정해서 라벨을 만드는데, 그 O₂를 다시 입력에 쓴다는 것을 알게 되었다.<br>모델이 잘 푼 게 아니라 <strong>답을 일부 미리 보고 푼 셈</strong>이었다.</p>
+    <p class="flead">O₂ 센서를 넣자 R² 값이 0.99로 측정됐다.<br><strong>CEMS</strong>는 발전소·소각장 굴뚝에 의무 설치되는 환경 규제용 측정 장비로, 측정 NOx를 O₂ 농도로 보정해서 라벨을 만드는데, 그 O₂를 다시 입력에 쓴다는 것을 알게 되었다.<br>모델이 잘 푼 게 아니라 <strong>답을 일부 미리 보고 푼 셈</strong>이었다.</p>
     <div class="formula-box">
-      <span class="formula-cap">CEMS O₂ 보정식 — 측정 NOx를 기준 O₂(ref=15%)로 환산</span>
+      <span class="formula-cap">CEMS O₂ 보정식 — 환경 규제용 표준 환산식</span>
       <span class="code">NOx = NOx_raw × (21 − ref) / (21 − O₂)</span>
+      <span class="formula-foot">21: 대기 O₂(%) · ref: 시설별 기준 O₂(가스터빈 15%) · 환경부 「대기환경보전법」 / 미국 EPA 40 CFR Part 60 동일 공식</span>
     </div>
     <div class="gcards">
       <div class="gcard">
