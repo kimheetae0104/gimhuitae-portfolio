@@ -54,7 +54,7 @@
   .sec-lead{ font-size:clamp(19px,2.2vw,24px); font-weight:500; line-height:1.75; letter-spacing:-.012em;
     color:var(--ink-2); margin:24px auto 0; max-width:46ch; text-wrap:pretty; }
   section.dark .sec-lead{ color:#A1A1A6; }
-  .sec-foot{ margin-top:clamp(30px,4vh,50px); }
+  .sec-foot{ margin-top:clamp(48px,6vh,80px); }
 
   /* ──── Mermaid 다이어그램 래퍼 (GitHub README와 동일) ──── */
   .mer-wrap{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px 24px 16px; margin-bottom:14px; overflow-x:auto; }
@@ -233,8 +233,8 @@
   @media(max-width:740px){ .thi{ grid-template-columns:1fr; } }
 
   /* centered stack helpers — one center axis per scene */
-  .narrow{ max-width:600px; margin:26px auto 0; text-align:left; }
-  .narrow.center{ text-align:center; }
+  .narrow{ max-width:720px; margin:26px auto 0; text-align:left; }
+  .narrow.center{ text-align:center; max-width:780px; }
 
   /* figure card — centered, contained */
   .fig{ background:#fff; border:1px solid var(--line); border-radius:var(--rad); padding:24px; box-shadow:var(--shadow);
@@ -431,7 +431,7 @@
       <h2 class="h2">ChatGPT로도 카드뉴스는 나온다.<br><span class="grad">발행 가능한 톤</span>까지는 나오지 않을 뿐.</h2>
     </div>
     <div class="narrow center sec-foot">
-      <p class="prose">글은 그럴듯하게 나온다.<br>그런데 5장 흐름·폰트·강조 위치가 매번 달라서,<br>그대로 인스타에 올리면 어색하다.<br>캔바를 열어 손으로 다듬어야 하지만, 일반 사용자는 그 단계에서 막힌다.</p>
+      <p class="prose">글은 그럴듯하게 나온다. 그런데 5장 흐름·폰트·강조 위치가 매번 달라서, 그대로 인스타에 올리면 어색하다.<br><br>캔바를 열어 손으로 다듬어야 하지만, 일반 사용자는 그 단계에서 막힌다.</p>
     </div>
   </div>
 </section>
