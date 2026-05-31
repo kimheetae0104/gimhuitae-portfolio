@@ -97,11 +97,13 @@
   h2.h2{ font-size:clamp(24px,3.6vw,40px); font-weight:800; letter-spacing:-.02em; line-height:1.14; color:var(--ink); margin:0; }
   .lead{ font-size:17px; line-height:1.8; color:#46506A; max-width:66ch; margin:20px 0 0; }
   .sub-h{ font-size:clamp(20px,2.4vw,26px); font-weight:800; letter-spacing:-.015em; color:var(--ink); margin:32px 0 14px; }
-  .q-list{ list-style:none; padding:0; margin:20px 0 0; display:grid; gap:12px; }
-  .q-list li{ background:var(--sky-soft); border-left:4px solid var(--blue); padding:16px 20px; border-radius:0 12px 12px 0; font-size:16px; line-height:1.6; color:var(--ink); display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:baseline; }
-  .q-list li .num{ color:var(--blue); font-weight:800; font-size:18px; }
-  .q-list li .label{ color:var(--blue-deep); font-weight:700; font-size:14px; white-space:nowrap; }
-  @media(max-width:760px){ .q-list li{ grid-template-columns:auto 1fr; } .q-list li .label{ grid-column:2; margin-top:2px; } }
+  .q-list{ list-style:none; padding:0; margin:24px 0 0; display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .q-list li{ background:var(--sky-soft); border:1px solid rgba(31,87,141,.12); padding:22px 24px; border-radius:18px; display:flex; flex-direction:column; gap:12px; }
+  .q-list li .top{ display:flex; align-items:center; gap:10px; }
+  .q-list li .num{ width:30px; height:30px; border-radius:50%; background:var(--blue); color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; }
+  .q-list li .label{ font-size:13px; font-weight:800; color:var(--blue-deep); letter-spacing:.06em; text-transform:uppercase; }
+  .q-list li .q-text{ font-size:17px; font-weight:600; color:var(--ink); line-height:1.5; margin:0; }
+  @media(max-width:760px){ .q-list{ grid-template-columns:1fr; } }
   .lead strong{ color:var(--ink); font-weight:700; }
   .lead+.lead{ margin-top:14px; }
 
@@ -246,8 +248,14 @@
   <p class="sec-kicker">01 — 문제 정의</p>
   <h2 class="h2">발전 효율 ↑ + NOx 배출 ↓, 두 가지 모델이 필요</h2>
   <ul class="q-list">
-    <li><span class="num">①</span><span>제어값을 바꾸면 NOx가 어떻게 변할까?</span><span class="label">운전 시뮬레이션</span></li>
-    <li><span class="num">②</span><span>지금처럼 두면 5분 뒤 NOx는 얼마가 될까?</span><span class="label">실시간 예측</span></li>
+    <li>
+      <div class="top"><span class="num">1</span><span class="label">운전 시뮬레이션</span></div>
+      <p class="q-text">제어값을 바꾸면 NOx가 어떻게 변할까?</p>
+    </li>
+    <li>
+      <div class="top"><span class="num">2</span><span class="label">실시간 예측</span></div>
+      <p class="q-text">지금처럼 두면 5분 뒤 NOx는 얼마가 될까?</p>
+    </li>
   </ul>
   <div class="two">
     <div class="mcard">
