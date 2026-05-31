@@ -47,6 +47,21 @@
     border-radius:18px; padding:16px 24px; font-weight:700; line-height:1.4; max-width:58%; backdrop-filter:blur(2px); display:flex; align-items:center; gap:14px; }
   .hero-photo .namepill .dot{ width:34px; height:34px; border:2px solid var(--navy); border-radius:50%; flex-shrink:0; }
   .hero-photo .turbine-float{ position:absolute; left:18px; bottom:10px; width:clamp(170px,24vw,310px); filter:drop-shadow(0 20px 30px rgba(10,25,60,.45)); }
+
+  /* hero 섹션 배경 이미지 모드 */
+  .panel.hero-bg{ position:relative; overflow:hidden; isolation:isolate; color:#fff; }
+  .panel.hero-bg::before{ content:""; position:absolute; inset:0; background:url('noxo/plant-hero.webp') center/cover no-repeat; z-index:-2; }
+  .panel.hero-bg::after{ content:""; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(10,18,35,.55) 0%, rgba(10,18,35,.85) 70%, rgba(10,18,35,.94) 100%); z-index:-1; }
+  .panel.hero-bg .nav .left{ color:#fff; }
+  .panel.hero-bg .nav .dot{ border-color:#9fd0f3; }
+  .panel.hero-bg .nav .links a{ color:rgba(255,255,255,.75); }
+  .panel.hero-bg .nav .links a:hover{ color:#fff; }
+  .panel.hero-bg .nav .links a.cta{ color:#9fd0f3; }
+  .panel.hero-bg .kicker{ color:#9fd0f3; }
+  .panel.hero-bg .htitle{ color:#fff; }
+  .panel.hero-bg .pmeta{ background:#fff; border-radius:16px; padding:0; border:1px solid rgba(255,255,255,.2); overflow:hidden; margin-top:24px; }
+  .panel.hero-bg .pmeta .col{ padding:16px 20px; border-right-color:var(--line); }
+  .panel.hero-bg .thi .c{ background:#fff; }
   @media(max-width:760px){ .hero-photo .turbine-float{ display:none; } .hero-photo .namepill{ max-width:92%; right:12px; bottom:12px; padding:12px 16px; } }
 
   .kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:24px; }
@@ -181,7 +196,7 @@
 </head>
 <body>
 
-<section class="panel" style="margin-top:22px;">
+<section class="panel hero-bg" style="margin-top:22px;">
   <nav class="nav">
     <div class="left"><span class="dot"></span> NOxO · IGCC 배기 NOx</div>
     <div class="links">
@@ -195,11 +210,6 @@
 
   <p class="kicker">IGCC 복합발전 · 제조 AI</p>
   <h1 class="htitle">가스터빈 배기 NOx 시뮬레이션 &amp; 5분 후 예측</h1>
-
-  <div class="hero-photo">
-    <img class="bg" src="noxo/plant-hero.webp" alt="IGCC 천연가스 복합화력 발전소"/>
-    <div class="namepill"><span class="dot"></span><span>NOxO · 가스터빈 배기 NOx 시뮬레이션 &amp; 5분 후 예측 · SeSAC 제조 AI 2026</span></div>
-  </div>
 
   <div class="pmeta">
     <div class="col"><div class="k">역할</div><div class="v">모델링 · 데이터 누수 검증</div></div>
