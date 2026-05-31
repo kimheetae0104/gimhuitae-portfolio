@@ -49,13 +49,8 @@
   .accent-word{ color:var(--accent); }
   code{ font-family:var(--mono); font-size:.86em; background:rgba(255,255,255,.07); color:var(--accent-2); padding:.1em .4em; border-radius:5px; }
 
-  .hero{ padding:clamp(62px,9vh,104px) 0 clamp(48px,7vh,88px); position:relative; overflow:hidden; isolation:isolate; }
-  .hero-bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; opacity:.55; pointer-events:none; }
-  .hero-overlay{ position:absolute; inset:0; z-index:1; pointer-events:none;
-    background:
-      radial-gradient(circle at 28% 38%, rgba(10,10,12,.05) 0%, rgba(10,10,12,.55) 55%, rgba(10,10,12,.85) 100%),
-      linear-gradient(180deg, rgba(10,10,12,.35) 0%, rgba(10,10,12,.5) 45%, var(--bg) 100%); }
-  .hero .wrap{ position:relative; z-index:2; }
+  .hero{ padding:clamp(62px,9vh,104px) 0 clamp(48px,7vh,88px); position:relative; overflow:hidden; }
+  .hero .wrap{ position:relative; }
 
   /* ── meta-top: 상단 메타 그리드 (사이버 대시보드 톤) ─────── */
   .meta-top{ display:grid; grid-template-columns:repeat(3,1fr); gap:0;
@@ -223,10 +218,6 @@
 
 <!-- HERO -->
 <section class="hero">
-  <video class="hero-bg" autoplay loop muted playsinline preload="auto" aria-hidden="true">
-    <source src="assets/hero-bg.mp4" type="video/mp4">
-  </video>
-  <div class="hero-overlay" aria-hidden="true"></div>
   <div class="wrap">
     <div class="meta-top">
       <div class="m"><div class="k">Role</div>            <div class="v">개인 프로젝트 · 설계·구현 전부</div></div>
