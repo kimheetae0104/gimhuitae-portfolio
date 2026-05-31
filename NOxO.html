@@ -87,30 +87,32 @@
   .mrow .v{ color:var(--ink); font-weight:600; text-align:right; }
 
   .chips{ display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; }
-  .chip{ border:1px solid var(--line); border-radius:16px; padding:18px 24px; min-width:140px; background:#fff; }
+  .chip{ border:1px solid var(--line); border-radius:16px; padding:18px 24px; min-width:140px; background:#fff; flex:1 1 0; }
   .chip.on{ background:var(--blue); border-color:var(--blue); color:#fff; }
   .chip .v{ font-size:28px; font-weight:800; letter-spacing:-.02em; color:var(--ink); line-height:1; }
   .chip.on .v{ color:#fff; }
   .chip .l{ font-size:12px; color:var(--muted); margin-top:8px; font-weight:600; }
   .chip.on .l{ color:rgba(255,255,255,.85); }
-  /* 보조 메트릭 — journey 같은 강조 카드 옆 small pill */
-  .chips.sm{ margin-top:16px; gap:10px; }
-  .chips.sm .chip{ padding:11px 16px; min-width:auto; border-radius:99px; display:inline-flex; align-items:baseline; gap:8px; }
-  .chips.sm .chip .v{ font-size:17px; }
-  .chips.sm .chip .l{ font-size:12px; margin-top:0; }
+  /* 운영 메트릭 chip — journey와 같은 폭이되 톤만 미묘하게 (subtle) */
+  .chip.sub{ background:#fafafa; }
+  .chip.sub .v{ color:#46506A; }
 
   figure.fig{ margin:30px 0 0; }
   .fcap{ display:inline-block; font-size:13px; font-weight:700; color:var(--blue-deep); background:var(--sky-soft); border-radius:999px; padding:8px 16px; margin-bottom:14px; }
   figure.fig img, figure.fig video{ width:100%; display:block; border-radius:22px; border:1px solid var(--line); box-shadow:var(--shadow); }
 
-  .journey{ display:flex; gap:14px; margin-top:30px; }
-  .jstep{ flex:1; border:1px solid var(--line); border-radius:18px; padding:22px; background:#fff; }
+  .journey{ display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-top:30px; }
+  .jstep{ border:1px solid var(--line); border-radius:18px; padding:22px; background:#fff; min-width:0; }
   .jstep.on{ background:var(--blue); border-color:var(--blue); color:#fff; }
-  .jstep .n{ font-size:34px; font-weight:800; color:var(--ink); line-height:1; }
+  .jstep .n{ font-size:30px; font-weight:800; color:var(--ink); line-height:1; }
   .jstep.on .n{ color:#fff; }
-  .jstep .l{ font-size:13px; color:var(--muted); margin-top:10px; line-height:1.5; }
+  .jstep .l{ font-size:12.5px; color:var(--muted); margin-top:10px; line-height:1.5; }
   .jstep.on .l{ color:rgba(255,255,255,.85); }
-  @media(max-width:760px){ .journey{ flex-direction:column; } .two{ grid-template-columns:1fr; } }
+  /* 마지막 2 cell은 운영 메트릭 톤 — 차분한 배경 */
+  .jstep.sub{ background:#fafafa; }
+  @media(max-width:1024px){ .journey{ grid-template-columns:repeat(3,1fr); } }
+  @media(max-width:760px){ .journey{ grid-template-columns:1fr 1fr; } .two{ grid-template-columns:1fr; } }
+  @media(max-width:480px){ .journey{ grid-template-columns:1fr; } }
 
   .feature{ position:relative; border-radius:28px; overflow:hidden; margin-top:8px; box-shadow:var(--shadow); padding:48px 44px; color:#fff;
     background:linear-gradient(180deg, rgba(20,45,26,.55), rgba(20,45,26,.82)), url('noxo/refinery-band.webp') center/cover; }
@@ -254,10 +256,8 @@
     <div class="jstep"><div class="n">0.49</div><div class="l">O₂ 완전 제외 · 누수 차단 기준선</div></div>
     <div class="jstep"><div class="n">0.625</div><div class="l">피처 엔지니어링 · O₂ 없이</div></div>
     <div class="jstep on"><div class="n">0.68</div><div class="l">O₂ 재포함 · 누수 아님 확인</div></div>
-  </div>
-  <div class="chips sm">
-    <div class="chip"><div class="v">27.7ms</div><div class="l">추론 (예산 50ms)</div></div>
-    <div class="chip"><div class="v">213</div><div class="l">피처 수</div></div>
+    <div class="jstep sub"><div class="n">27.7ms</div><div class="l">추론 (예산 50ms)</div></div>
+    <div class="jstep sub"><div class="n">213</div><div class="l">피처 수</div></div>
   </div>
   <figure class="fig"><span class="fcap">실제 대시보드 · 실시간 예측 모드</span><video poster="noxo/predict-poster.webp" autoplay muted loop playsinline preload="metadata" aria-label="5분 후 예측 모드 대시보드 데모 영상"><source src="noxo/predict.webm" type="video/webm"/><source src="noxo/predict.mp4" type="video/mp4"/></video></figure>
 </section>
