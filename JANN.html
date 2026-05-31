@@ -146,6 +146,9 @@
   .pcard .ps{ font-size:13px; font-weight:600; color:var(--accent); }
   .pcard h3{ font-size:20px; font-weight:600; letter-spacing:-.02em; margin:0; line-height:1.25; text-wrap:balance; }
   .pcard p{ font-size:14px; color:var(--ink-2); line-height:1.7; margin:0; }
+  .pcard ul{ list-style:none; padding:0; margin:0; display:grid; gap:8px; font-size:14px; color:var(--ink-2); line-height:1.55; }
+  .pcard ul li{ position:relative; padding-left:14px; }
+  .pcard ul li::before{ content:"·"; position:absolute; left:2px; top:-2px; color:var(--accent); font-size:18px; font-weight:800; }
   .pcard .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; padding-top:6px; }
   .pcard .tag{ font-size:11px; color:var(--ink-2); background:var(--alt); border-radius:999px; padding:5px 11px; }
   @media(max-width:980px){ .pipe{ grid-template-columns:1fr 1fr; } }
@@ -317,25 +320,39 @@
       <div class="pcard">
         <div class="ps">01 · 인식</div>
         <h3>YOLOv8n + GPT-4o Vision</h3>
-        <p>커스텀 데이터셋으로 파인튜닝한 YOLOv8n(CoreML)과 GPT-4o Vision을 병렬 실행한다. 못 보면 Apple Vision으로 자동 폴백해, 네트워크 없이도 단독 동작한다.</p>
+        <ul>
+          <li>YOLOv8n(CoreML) + GPT-4o Vision 병렬 실행</li>
+          <li>실패 시 Apple Vision으로 자동 폴백</li>
+          <li>네트워크 없이 단독 동작</li>
+        </ul>
         <div class="tags"><span class="tag">CoreML</span><span class="tag">YOLOv8n</span><span class="tag">3-폴백</span></div>
       </div>
       <div class="pcard">
         <div class="ps">02 · 분석</div>
         <h3>향미 네트워크 DB</h3>
-        <p>SQLite 내장 DB로 완전 오프라인. 자카드 유사도로 두 식재료의 향미 호환성을 계산한다. 서양 중심 원본에 한국 재료 한-영 매핑을 더했다.</p>
+        <ul>
+          <li>SQLite 내장 DB, 완전 오프라인</li>
+          <li>자카드 유사도로 향미 호환성 계산</li>
+          <li>한국 재료 한-영 매핑 추가</li>
+        </ul>
         <div class="tags"><span class="tag">SQLite</span><span class="tag">Jaccard</span><span class="tag">오프라인</span></div>
       </div>
       <div class="pcard">
         <div class="ps">03 · 생성</div>
         <h3>GPT-4o-mini 레시피</h3>
-        <p>인식된 재료와 유사도 결과를 구조화 프롬프트에 넣어, 요리명·재료·조리법·팁·화합물 시너지 해설까지 한 번에 만든다.</p>
+        <ul>
+          <li>인식 결과 + 유사도를 구조화 프롬프트로 입력</li>
+          <li>요리명·재료·조리법·팁·화합물 해설 한 번에 생성</li>
+        </ul>
         <div class="tags"><span class="tag">Structured Prompt</span><span class="tag">Cloud API</span></div>
       </div>
       <div class="pcard">
         <div class="ps">결과</div>
         <h3>레시피 + 분자 해설</h3>
-        <p>Furaneol, Butyric acid 같은 실제 화합물명과 함께 "왜 어울리는지"를 보여준다. 인기순 추천과 다른, 설명 가능한 추천이다.</p>
+        <ul>
+          <li>Furaneol, Butyric acid 등 실제 화합물명 표시</li>
+          <li>인기순이 아닌, 설명 가능한 추천</li>
+        </ul>
         <div class="tags"><span class="tag">설명가능 AI</span><span class="tag">근거 포함</span></div>
       </div>
     </div>
