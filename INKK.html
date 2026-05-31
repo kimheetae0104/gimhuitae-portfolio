@@ -20,10 +20,15 @@
     --ink:#14110D;              /* warm black */
     --ink-2:#5A5247;            /* warm grey body */
     --ink-3:#9B9387;            /* muted */
-    --accent:#B22222;           /* magazine red — chapter accent */
-    --accent-soft:#FBEAE7;
-    --accent-2:#1E3A8A;         /* deep cobalt — secondary accent */
-    --gold:#B58A2A;             /* magazine gold (rare) */
+    /* inkk.online 톤 통일 — 인디고/시안/마젠타 그라데이션 SaaS */
+    --accent:#7C5CFF;           /* inkk indigo (primary) */
+    --accent-soft:#EEEAFF;
+    --accent-2:#42D8FF;         /* inkk cyan */
+    --accent-3:#FF4D94;         /* inkk magenta */
+    --gold:#FF8F5C;             /* inkk orange */
+    --inkk-grad-text: linear-gradient(135deg, #7C5CFF 0%, #FF4D94 55%, #FF8F5C 100%);
+    --inkk-grad-cta: linear-gradient(135deg, #7EFFDF 0%, #42D8FF 50%, #7B61FF 100%);
+    --inkk-grad-soft: linear-gradient(180deg, rgba(124,92,255,.06) 0%, rgba(255,77,148,.04) 100%);
     --line:rgba(20,17,13,.14);
     --line-soft:rgba(20,17,13,.08);
     --rule:1.5px solid var(--ink);
@@ -112,7 +117,11 @@
     font-size:clamp(30px,4.6vw,52px); line-height:1.12; letter-spacing:-.025em;
     margin:0; text-wrap:balance;
   }
-  h2 .red{ color:var(--accent); }
+  h2 .red, .lead .red{
+    background:var(--inkk-grad-text);
+    -webkit-background-clip:text; background-clip:text;
+    color:transparent; -webkit-text-fill-color:transparent;
+  }
   h3{ font-family:var(--font-serif); font-weight:700; font-size:22px; letter-spacing:-.015em; margin:0; line-height:1.3; }
   .kicker{ font-family:var(--font-mono); font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3); }
   .lead{
@@ -121,11 +130,11 @@
     color:var(--ink); margin:24px 0 0; max-width:24ch;
     letter-spacing:-.015em;
   }
-  .lead .red{ color:var(--accent); }
+  /* .lead .red 는 위 그룹 셀렉터에서 처리됨 */
   .prose{ font-size:clamp(16px,1.7vw,18.5px); line-height:1.75; color:var(--ink-2); max-width:64ch; text-wrap:pretty; }
   .prose + .prose{ margin-top:14px; }
   .prose strong{ color:var(--ink); font-weight:700; }
-  code{ font-family:var(--font-mono); font-size:.86em; background:rgba(178,34,34,.08); color:var(--accent); padding:.12em .42em; border-radius:4px; font-weight:500; }
+  code{ font-family:var(--font-mono); font-size:.86em; background:rgba(124,92,255,.08); color:var(--accent); padding:.12em .42em; border-radius:4px; font-weight:500; }
 
   /* ──── HERO ──── */
   .hero{ padding-top:clamp(56px,8vh,96px); padding-bottom:clamp(56px,8vh,96px); }
@@ -207,7 +216,7 @@
   .pcard p{ font-size:15.5px; color:var(--ink-2); line-height:1.65; margin:0; }
   @media(max-width:720px){ .three{ grid-template-columns:1fr; } .pcard{ padding:24px 22px; } }
 
-  .thesis{ margin-top:32px; padding:28px 32px; background:linear-gradient(180deg, #FCE9E5 0%, #FBD9D2 100%); border-left:4px solid var(--accent); border-radius:0 var(--rad-lg) var(--rad-lg) 0; max-width:64ch; box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 14px 30px rgba(178,34,34,.10), 0 32px 60px -10px rgba(178,34,34,.14); }
+  .thesis{ margin-top:32px; padding:28px 32px; background:linear-gradient(180deg, #EEEAFF 0%, #E5E0FF 100%); border-left:4px solid var(--accent); border-radius:0 var(--rad-lg) var(--rad-lg) 0; max-width:64ch; box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 14px 30px rgba(124,92,255,.10), 0 32px 60px -10px rgba(124,92,255,.16); }
   .thesis .tl{ font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); font-weight:700; }
   .thesis p{ margin:10px 0 0; font-size:17.5px; line-height:1.65; color:var(--ink); font-family:var(--font-serif); font-weight:500; }
   .thesis p strong{ color:var(--accent); font-weight:700; }
