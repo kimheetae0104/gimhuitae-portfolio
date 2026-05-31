@@ -229,8 +229,8 @@
       <div class="iphone raise"><div class="screen"><img src="jann/img/recipe.jpg" alt="JANN 레시피 화면"/></div></div>
     </div>
     <div class="thi">
-      <div class="c"><div class="k">핵심 기술 01</div><h3>느린 학습, GPU 탓이 아님</h3><p>에폭당 161분의 원인은 PyTorch MPS의 NMS 버그와 RAM 스왑 과부하였다. 파라미터·메모리를 다듬어 17분으로 줄였다(약 90%↓).</p></div>
-      <div class="c"><div class="k">핵심 기술 02</div><h3>모델보다 데이터가 우선</h3><p>독립 식재료 사진으로 학습한 모델은 냉장고 안 치즈를 24%밖에 못 잡았다. Roboflow 실제 냉장고 1,920장으로 교체하자 실사용 수준이 됐다.</p></div>
+      <div class="c"><div class="k">핵심 기술 01</div><h3>분자 단위 추천 알고리즘</h3><p>두 재료의 향미 호환성을 공유 화합물 수와 합집합 비율(자카드 유사도)로 계산했다. 1,107개 향미 화합물 데이터를 t-SNE로 차원 축소해 비슷한 맛끼리 군집을 만든 뒤, 그 안에서 재료를 추천한다.</p></div>
+      <div class="c"><div class="k">핵심 기술 02</div><h3>온디바이스 추론</h3><p>Python으로 학습한 추천 모델을 CoreML로 변환해 SwiftUI 앱에 내장했다. 추론이 기기 안에서 끝나므로 네트워크 호출과 서버 비용이 없고, 입력 데이터도 밖으로 나가지 않는다.</p></div>
     </div>
 
     <div class="pmeta">
