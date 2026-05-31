@@ -407,10 +407,9 @@
   <div class="in">
     <a class="left" href="index.html">INKK<span class="dot">.</span></a>
     <div class="links">
-      <a href="#problem">문제</a>
-      <a href="#how">제품</a>
-      <a href="#quality">품질 엔진</a>
-      <a href="#arch">아키텍처</a>
+      <a href="#problem">왜</a>
+      <a href="#how">어떻게</a>
+      <a href="#quality">품질</a>
       <a href="#learning">운영</a>
       <a class="cta" href="index.html">← 포트폴리오</a>
     </div>
@@ -422,14 +421,10 @@
   <div class="wrap">
     <div class="hero-grid">
       <div>
-        <div class="pill-row">
-          <span class="pill live">Live</span>
-          <span class="pill beta">Beta</span>
-          <span class="pill">AI 카드뉴스 SaaS</span>
-        </div>
+        <p class="eyebrow">AI 카드뉴스 서비스 · 베타 운영 중</p>
         <h1 class="title">INKK</h1>
-        <p class="lead">긴 글을 1분 만에, <span class="red">인스타 카드뉴스</span>로.</p>
-        <p class="url">Live · <a href="https://inkk.online" target="_blank" rel="noopener">inkk.online</a></p>
+        <p class="lead">긴 글을 1분 만에, <span class="red">인스타 캐러셀</span>로.</p>
+        <p class="url">inkk.online · <a href="https://inkk.online" target="_blank" rel="noopener">바로 가기</a></p>
       </div>
       <div class="cards" aria-label="INKK 카드뉴스 캐러셀 흐름 — 커버 · 본문 · 마무리">
         <div class="icard overlay" aria-label="커버">
@@ -451,31 +446,20 @@
         </div>
       </div>
       <div class="hero-cue-row">
-        <div class="swipe-dots" aria-label="캐러셀 5장 중 1번 활성"><span class="swipe-dot on"></span><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot"></span></div>
-        <div class="swipe-cue">Swipe <span class="arr">→</span></div>
+        <div class="swipe-dots" aria-label="캐러셀 5장"><span class="swipe-dot on"></span><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot"></span></div>
       </div>
     </div>
 
     <div class="thi">
       <div class="c">
-        <div class="k">Tech 01</div>
-        <h3>LLM 다중 프로바이더 추상화</h3>
-        <p>Claude / Groq / 로컬 모델을 상황에 맞게 자동 선택. 운영 환경에서 키 부재 시 자동으로 안전 모드로 전환해 비용 사고를 차단한다.</p>
+        <div class="k">핵심 기술 01</div>
+        <h3>품질을 운에 맡기지 않는다</h3>
+        <p>LLM 출력은 들쭉날쭉하다. 프롬프트 한 방에 맡기지 않고 장별 역할 분리 · 휴리스틱 점수 평가 · 후처리 정제 · 레이아웃 자동 매핑까지 여러 층으로 강제해 항상 발행 가능한 결과만 사용자에게 나가도록 만들었다.</p>
       </div>
       <div class="c">
-        <div class="k">Tech 02</div>
-        <h3>품질 다층 방어</h3>
-        <p>장별 역할 프롬프트 → 휴리스틱 품질 점수 → 후처리 정제 → 레이아웃 자동 매핑. 한 층이 놓쳐도 다음 층에서 거른다.</p>
-      </div>
-      <div class="c">
-        <div class="k">Tech 03</div>
-        <h3>잔액 동시성 · 결제 멱등성</h3>
-        <p>잔액 차감은 DB 트랜잭션 안에서 원자 처리, 결제 웹훅은 같은 이벤트가 여러 번 와도 한 번만 적립되도록 강제한다.</p>
-      </div>
-      <div class="c">
-        <div class="k">Tech 04</div>
-        <h3>보안 다층 + 속도 제한 폴백</h3>
-        <p>변경 API 출처 검증 · 이미지 프록시 가드 · DB 행 단위 격리. 속도 제한은 다단 폴백으로 외부 장애에도 카운트 정확.</p>
+        <div class="k">핵심 기술 02</div>
+        <h3>크레딧이 곧 현금, 깨지지 않게</h3>
+        <p>잔액 차감은 DB 트랜잭션 안에서 원자 처리해 동시 요청에도 음수로 깨지지 않고, 결제 웹훅은 같은 이벤트가 여러 번 와도 한 번만 적립되도록 상태 머신으로 강제했다. 돈이 걸린 코드는 DB가 진실의 원천.</p>
       </div>
     </div>
 
@@ -492,7 +476,7 @@
 <section class="tint" id="problem">
   <div class="wrap">
     <div class="col">
-      <div class="eyebrow-row"><p class="eyebrow">01 — 문제 정의</p><div class="swipe-dots" aria-label="섹션 1/5"><span class="swipe-dot on"></span><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot"></span></div></div>
+      <div class="eyebrow-row"><p class="eyebrow">왜 INKK인가</p><div class="swipe-dots" aria-label="섹션 1/4"><span class="swipe-dot on"></span><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot"></span></div></div>
       <h2 class="h2">결과물은 나온다. <span class="red">"내가 원하는 톤"은 안 나온다.</span></h2>
       <p class="prose sec-foot">ChatGPT도 이제 캐러셀 카드뉴스를 만든다. 하지만 폰트·여백·강조·흐름이 일관되게 잡힌 <strong>"발행 가능한 결과"</strong>를 받으려면 결국 디자인 지식이 필요하다.</p>
     </div>
@@ -519,7 +503,7 @@
 <section id="how">
   <div class="wrap">
     <div class="col">
-      <div class="eyebrow-row"><p class="eyebrow">02 — 제품 결정</p><div class="swipe-dots" aria-label="섹션 2/5"><span class="swipe-dot"></span><span class="swipe-dot on"></span><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot"></span></div></div>
+      <div class="eyebrow-row"><p class="eyebrow">어떻게 풀었나</p><div class="swipe-dots" aria-label="섹션 2/4"><span class="swipe-dot"></span><span class="swipe-dot on"></span><span class="swipe-dot"></span><span class="swipe-dot"></span></div></div>
       <h2 class="h2">발행 속도를 판다. <span class="red">고민할 거리부터 제거.</span></h2>
       <p class="prose sec-foot">경쟁 상대는 캔바가 아니라 <strong>"오늘 그냥 안 올리는 선택"</strong>이다. 그래서 예쁜 편집 자유도 대신 발행 속도에 모든 결정을 걸었다.</p>
     </div>
@@ -536,147 +520,54 @@
 <section class="tint" id="quality">
   <div class="wrap">
     <div class="col">
-      <div class="eyebrow-row"><p class="eyebrow">03 — 기술 딥다이브 · 품질 엔진</p><div class="swipe-dots" aria-label="섹션 3/5"><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot on"></span><span class="swipe-dot"></span><span class="swipe-dot"></span></div></div>
+      <div class="eyebrow-row"><p class="eyebrow">품질을 어떻게 강제했나</p><div class="swipe-dots" aria-label="섹션 3/4"><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot on"></span><span class="swipe-dot"></span></div></div>
       <h2 class="h2">품질을 <span class="red">운에 맡기지 않는</span> 4층 방어.</h2>
-      <p class="prose sec-foot">AI 카드뉴스의 흔한 실패는 <strong>'틀린 결과'가 아니라 '맞지만 밋밋한 결과'</strong>다. 문법은 멀쩡한데 아무도 저장하지 않는 카드. 그래서 품질을 4개 층에서 강제했다.</p>
+      <p class="prose sec-foot">AI 카드뉴스의 흔한 실패는 <strong>'틀린 결과'가 아니라 '맞지만 밋밋한 결과'</strong>다. 문법은 멀쩡한데 아무도 저장하지 않는 카드. 그래서 프롬프트 한 방에 맡기지 않고 <strong>여러 층</strong>에서 품질을 강제했다.</p>
     </div>
     <div class="layers">
       <div class="layer">
         <div class="ln">01</div>
         <div>
-          <h3>장별 역할 분리 프롬프트</h3>
-          <p class="lead-row">"카드뉴스 만들어줘"는 평행 슬라이드를 만든다. 장마다 다른 지시를 받게 갈랐다 — <b>커버는 스크롤을 멈추는 훅, 본문은 핵심 사실 1문장 + 수치, 마지막은 저장·공유 유도.</b> 장마다 다른 역할을 받으면 기승전결 흐름이 생긴다.</p>
+          <h3>장별 역할 분리 + 반례로 밋밋함 차단</h3>
+          <p class="lead-row">"카드뉴스 만들어줘"는 평행 슬라이드를 만든다. 장마다 다른 지시를 받게 갈랐다 — <b>커버는 스크롤을 멈추는 훅, 본문은 핵심 사실과 수치, 마지막은 저장·공유 유도</b>. 흔한 밋밋한 표현은 반례로 미리 차단하고, 강한 카피 패턴은 예시로 제시했다.</p>
         </div>
       </div>
       <div class="layer">
         <div class="ln">02</div>
         <div>
-          <h3>GOOD / BAD 반례로 '밋밋함' 차단</h3>
-          <p class="lead-row">LLM은 "좋은 카피를 써라"보다 <b>구체적 반례</b>에 훨씬 잘 반응한다. 흔히 나오는 밋밋한 패턴을 프롬프트에 미리 박아 차단하고, 강한 카피 패턴은 예시로 제시한다.</p>
-        </div>
-      </div>
-      <div class="layer">
-        <div class="ln">03</div>
-        <div>
-          <h3>휴리스틱 품질 점수 — 통과 못 하면 자동 재생성</h3>
-          <p class="lead-row">LLM 출력을 그대로 믿지 않고 <b>점수 기반 평가</b>를 통과해야 사용자에게 나간다. 통과 못 하면 사유와 함께 다시 돌린다.</p>
+          <h3>점수 평가 + 레이아웃 자동 매핑 — LLM 출력을 불신한다</h3>
+          <p class="lead-row">LLM 출력을 그대로 사용자에게 보내지 않는다. <b>휴리스틱 점수</b>로 형식·임팩트를 검증하고 통과 못 하면 자동 재생성, 통과해도 텍스트 길이에 맞는 <b>레이아웃 타입을 자동 매핑</b>해 카드 비율이 항상 균형 잡히게 한다.</p>
           <ul class="spec">
-            <li><b>형식 검증</b> · 헤딩·본문 길이 범위, 추상 키워드 사용 감점</li>
-            <li><b>언어 오염 방어</b> · 일본어·한자 누출 감점 (한국어 LLM 응답 안정성)</li>
-            <li><b>임팩트 검증</b> · 본문에 수치 부재, 마지막 카드 CTA 누락 감점</li>
-          </ul>
-        </div>
-      </div>
-      <div class="layer">
-        <div class="ln">04</div>
-        <div>
-          <h3>레이아웃 엔진 — LLM 출력 길이 편차를 자동 흡수</h3>
-          <p class="lead-row">텍스트 길이를 측정해 <b>폰트 크기·행간·레이아웃 타입을 자동 매핑</b>한다. 글이 짧든 길든 카드 비율이 항상 균형 잡힌다.</p>
-          <ul class="spec">
-            <li><b>레이아웃 자동 선택</b> · 풀블리드 / 상하 2중 / 좌우 2중 / 4중 그리드 / 오버레이 캡션 — 텍스트 비율에 맞춰 자동 결정 (위 deck 참고)</li>
-            <li><b>이미지 슬롯 보정</b> · LLM이 이미지 수를 틀려도 자동으로 채우거나 잘라 정규화</li>
-            <li><b>출력 정제</b> · 길이 초과·과한 강조(느낌표 등)는 후처리에서 일괄 정리</li>
+            <li><b>점수 검증</b> · 헤딩 길이·언어 오염·수치 부재·CTA 누락 등을 감점, 임계값 미만이면 재생성</li>
+            <li><b>레이아웃 자동 선택</b> · 풀블리드 · 상하 2중 · 좌우 2중 · 4중 그리드 등 (위 deck 참고)</li>
           </ul>
         </div>
       </div>
     </div>
     <div class="thesis" style="margin-top:34px;">
       <div class="tl">핵심 철학</div>
-      <p>퀄리티는 "좋은 프롬프트 한 방"이 아니라 <strong>여러 층의 강제 장치가 누적된 결과</strong>다. 프롬프트가 80%를 잡고, 점수·sanitize·레이아웃이 나머지 20%의 들쭉날쭉함을 메운다.</p>
+      <p>품질은 "좋은 프롬프트 한 방"이 아니라 <strong>여러 층의 강제 장치가 누적된 결과</strong>다.</p>
     </div>
   </div>
 </section>
 
-<!-- ARCHITECTURE -->
-<section id="arch">
-  <div class="wrap">
-    <div class="col">
-      <div class="eyebrow-row"><p class="eyebrow">04 — 아키텍처 · 보안</p><div class="swipe-dots" aria-label="섹션 4/5"><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot on"></span><span class="swipe-dot"></span></div></div>
-      <h2 class="h2">돈이 걸린 서비스, <span class="red">동시성·멱등성부터.</span></h2>
-      <p class="prose sec-foot">크레딧이 곧 현금이라, 기능보다 <strong>"동시 요청·재시도에도 잔액이 안 깨지는가"</strong>가 먼저였다. 보안 감사 라운드에서 <strong>권한 회수 결함</strong>까지 찾아 정리했다.</p>
-    </div>
-
-    <div class="layers">
-      <div class="layer">
-        <div class="ln">잔액</div>
-        <div>
-          <h3>크레딧 차감을 DB 안에서 원자 처리</h3>
-          <p class="lead-row">잔액이 곧 현금이라, 동시 요청이 들어와도 음수가 되지 않도록 차감 자체를 <strong>DB 트랜잭션 안에서</strong> 처리한다. 클라이언트는 잔액에 직접 접근하지 않는다.</p>
-          <ul class="spec">
-            <li><b>행 잠금 차감</b> · 잔액을 잠근 뒤 확인·차감, 동시 요청에도 잔액이 음수로 깨지지 않음</li>
-            <li><b>권한 분리</b> · 모든 잔액 변경은 서버 측 함수만 수행, 클라이언트 직접 업데이트 불가</li>
-            <li><b>실패 시 자동 환불</b> · LLM 호출이 실패하면 잔액을 자동 복구 (총 구매 이력은 보존)</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="layer">
-        <div class="ln">결제</div>
-        <div>
-          <h3>Stripe 웹훅 — 같은 이벤트가 여러 번 와도 한 번만</h3>
-          <p class="lead-row">Stripe는 at-least-once 전송이라 같은 결제 이벤트가 여러 번 들어온다. 이벤트 처리 상태를 별도 테이블에 기록해 <strong>한 번만 적립</strong>되도록 강제한다.</p>
-          <ul class="spec">
-            <li><b>중복 처리 방어</b> · 이미 처리된 이벤트는 즉시 무시</li>
-            <li><b>재시도 복구</b> · 처리 도중 크래시가 나도 일정 시간 후 자동 재시도 가능 (영원히 잠긴 row 방지)</li>
-            <li><b>상태 머신</b> · 모든 경로(성공·실패·예외)에서 처리 상태가 명확히 마킹</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="layer">
-        <div class="ln">보안</div>
-        <div>
-          <h3>변경 API · 이미지 프록시 · DB 권한 다층 방어</h3>
-          <p class="lead-row">결제·잔액·LLM 비용이 걸린 서비스라 보안 기본기를 <strong>다층</strong>으로 깔았다. 한 군데 뚫려도 다음 단계에서 막히도록.</p>
-          <ul class="spec">
-            <li><b>변경 API</b> · 출처 검증으로 외부 사이트의 위변조 요청 차단</li>
-            <li><b>이미지 프록시</b> · 허용된 호스트만 통과, 내부망 IP·메타데이터 대역 접근 차단</li>
-            <li><b>DB 권한</b> · 행 단위 격리(RLS) + 민감 함수는 서버 전용으로 권한 회수</li>
-            <li><b>감사 라운드</b> · 출시 전 권한 결함을 자체 감사로 발견·회수 (베타 진입 시 노출 0건)</li>
-          </ul>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="chips">
-      <span class="chip">Next.js 16 · App Router · RSC</span>
-      <span class="chip">React 19</span>
-      <span class="chip">Supabase · Postgres · RLS</span>
-      <span class="chip">Stripe</span>
-      <span class="chip">Claude · Groq</span>
-      <span class="chip">Upstash Ratelimit (3-tier 폴백)</span>
-      <span class="chip">CSRF · SSRF · CSP 가드</span>
-      <span class="chip">Vitest · Playwright</span>
-      <span class="chip">PostHog</span>
-    </div>
-  </div>
-</section>
 
 <!-- LEARNING / OPERATIONS -->
 <section class="tint" id="learning">
   <div class="wrap">
     <div class="col">
-      <div class="eyebrow-row"><p class="eyebrow">05 — 출시 이후 · 운영</p><div class="swipe-dots" aria-label="섹션 5/5"><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot on"></span></div></div>
+      <div class="eyebrow-row"><p class="eyebrow">운영에서 배운 것</p><div class="swipe-dots" aria-label="섹션 4/4"><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot"></span><span class="swipe-dot on"></span></div></div>
       <h2 class="h2">고치기 전에 <span class="red">측정한다.</span></h2>
       <p class="prose sec-foot">제품이 도는 것과 사업이 되는 것은 다르다. 출시 후엔 기능을 더 쌓는 대신 <strong>"왜 안 쓰는지 보이게" 만드는 일</strong>에 집중했다.</p>
     </div>
     <div class="llist">
       <div class="li">
-        <div class="lh">기능보다 측정을 먼저</div>
-        <p>코드를 더 쌓기 전에 <b>퍼널 이벤트 로깅과 관리자 대시보드</b>를 먼저 깔았다. 측정 없는 최적화는 다음 달에 또 감으로 결정하게 만든다.</p>
-      </div>
-      <div class="li">
-        <div class="lh">무료 깔때기 재설계</div>
-        <p>초기 무료 횟수가 가치를 느끼기도 전에 결제 벽에 부딪혔다. 무료 한도를 늘리고, 결제가 막는 지점을 <b>'생성 횟수'가 아니라 '발행 가능 상태'</b>로 옮겼다 — 습관이 먼저, 결제는 그다음.</p>
-      </div>
-      <div class="li">
-        <div class="lh">병목은 코드가 아니라 인프라 위치</div>
-        <p>"느리다"를 감으로 추측하지 않고 측정부터. 원인은 DB가 아니라 <b>서버리스 함수의 지역 설정</b>이었고, 설정 한 줄 변경으로 API 응답이 <b>수 배 빨라졌다</b>. 비싼 마이그레이션 전에 가설을 데이터로 교정한 사례.</p>
+        <div class="lh">감으로 고치기 전에 측정부터</div>
+        <p>"느리다"를 감으로 추측하지 않고 측정부터. 원인은 DB가 아니라 <b>서버리스 함수의 지역 설정</b>이었고, 한 줄 변경으로 응답이 <b>수 배 빨라졌다</b>. 비싼 마이그레이션 전에 가설을 데이터로 교정했다.</p>
       </div>
       <div class="li">
         <div class="lh">안 만들기로 한 결정</div>
-        <p>'카드 1장만 재생성' 기능은 원가가 새 덱과 비슷했고 수동 편집이 이미 그 needs를 커버해 <b>만들지 않기로</b> 했다. 남은 진짜 병목은 코드가 아니라 유입.</p>
+        <p>'카드 1장만 재생성' 기능은 원가가 새 덱과 비슷했고 수동 편집이 이미 그 needs를 커버했다. <b>만들지 않기로</b> 했다. 남은 진짜 병목은 코드가 아니라 유입.</p>
       </div>
     </div>
   </div>
