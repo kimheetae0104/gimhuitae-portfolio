@@ -404,7 +404,7 @@
 
     <div class="mer-wrap sec-foot">
       <div class="mer-cap">시스템 구성 — 카메라부터 레시피까지</div>
-      <pre class="mermaid">
+      <div class="mermaid">
 flowchart LR
   U([👤 사용자]) -->|카메라| CAM[📷 식재료 스캔]
 
@@ -429,12 +429,12 @@ flowchart LR
   PROMPT --> GPTR[["☁️ GPT-4o<br/>레시피 생성"]]
   GPTR --> UI["SwiftUI 레시피 화면<br/>+ 왜 어울리는지 근거"]
   UI --> U
-      </pre>
+</div>
     </div>
 
     <div class="mer-wrap">
       <div class="mer-cap">데이터 · 모델 파이프라인 (학습)</div>
-      <pre class="mermaid">
+      <div class="mermaid">
 flowchart LR
   RF["Roboflow<br/>fooddetection-essdj/fridge-objects v10<br/>증강 포함 2,342장"] --> TRAIN
   PRE["yolov8n.pt<br/>(사전학습 가중치)"] --> TRAIN["YOLOv8n 전이학습<br/>epochs=80 · imgsz=640 · batch=16<br/>HSV/rotate/mosaic/mixup/copy_paste"]
@@ -445,12 +445,12 @@ flowchart LR
   MON["monitor_and_deploy.sh<br/>(PID 폴링)"] -.감지.-> EXPORT
   MLPKG --> DEPLOY["Xcode Resources/<br/>자동 백업·교체"]
   DEPLOY --> SYNC["VisionService.swift<br/>foodModelClasses 동기화"]
-      </pre>
+</div>
     </div>
 
     <div class="mer-wrap">
       <div class="mer-cap">Request Flow — 인식부터 추천까지</div>
-      <pre class="mermaid">
+      <div class="mermaid">
 sequenceDiagram
   participant U as 사용자
   participant V as VisionService
@@ -475,7 +475,7 @@ sequenceDiagram
   R->>L: 구조화 프롬프트
   L-->>R: 레시피 + 근거
   R-->>U: 화면 렌더 (왜 어울리는지 포함)
-      </pre>
+</div>
     </div>
   </div>
 </section>
@@ -619,8 +619,8 @@ sequenceDiagram
   </div>
 </footer>
 
-<script type="module">
-  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
   mermaid.initialize({
     startOnLoad: true,
     theme: "neutral",
@@ -633,7 +633,8 @@ sequenceDiagram
       lineColor: "#86868B",
       secondaryColor: "#F5F5F7",
       tertiaryColor: "#FFFFFF"
-    }
+    },
+    securityLevel: "loose"
   });
 </script>
 <script>

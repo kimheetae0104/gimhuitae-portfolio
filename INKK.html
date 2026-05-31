@@ -484,7 +484,7 @@
 
     <div class="mer-wrap sec-foot">
       <div class="mer-cap">시스템 구성</div>
-      <pre class="mermaid">
+      <div class="mermaid">
 flowchart LR
   U([👤 사용자]) -->|긴 텍스트 입력| FE["Next.js 16 / React 19<br/>Frontend"]
 
@@ -518,12 +518,12 @@ flowchart LR
   IMG --> API
   API --> FE
   FE --> OUT[["🖼 카드뉴스<br/>5~10장"]]
-      </pre>
+</div>
     </div>
 
     <div class="mer-wrap">
       <div class="mer-cap">생성 파이프라인 시퀀스</div>
-      <pre class="mermaid">
+      <div class="mermaid">
 sequenceDiagram
   participant U as 사용자
   participant FE as Next.js Frontend
@@ -546,7 +546,7 @@ sequenceDiagram
   API->>SUP: usage 증가 (RPC)
   API-->>FE: cards + layout
   FE-->>U: 미리보기 · 편집 · 다운로드
-      </pre>
+</div>
     </div>
 
     <details class="mer-fallback">
@@ -759,8 +759,8 @@ sequenceDiagram
   </div>
 </footer>
 
-<script type="module">
-  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
   mermaid.initialize({
     startOnLoad: true,
     theme: "neutral",
@@ -773,7 +773,8 @@ sequenceDiagram
       lineColor: "#86868B",
       secondaryColor: "#F5F5F7",
       tertiaryColor: "#FFFFFF"
-    }
+    },
+    securityLevel: "loose"
   });
 </script>
 <script>
