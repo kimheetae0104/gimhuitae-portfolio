@@ -56,6 +56,15 @@
   section.dark .sec-lead{ color:#A1A1A6; }
   .sec-foot{ margin-top:clamp(30px,4vh,50px); }
 
+  /* ──── Mermaid 다이어그램 래퍼 (GitHub README와 동일) ──── */
+  .mer-wrap{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px 24px 16px; margin-bottom:14px; overflow-x:auto; }
+  .mer-cap{ font-family:"Space Mono",monospace; font-size:11px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); margin-bottom:12px; }
+  .mer-wrap .mermaid{ font-family:var(--font-apple); text-align:center; min-height:80px; }
+  .mer-wrap .mermaid svg{ max-width:100%; height:auto; }
+  .mer-fallback{ margin-top:18px; }
+  .mer-fallback summary{ cursor:pointer; font-family:"Space Mono",monospace; font-size:11px; letter-spacing:.06em; color:var(--ink-3); padding:8px 0; user-select:none; }
+  .mer-fallback summary:hover{ color:var(--ink); }
+
   /* ──── 엔지니어링 미니 시퀀스 다이어그램 ──── */
   .seq{ display:flex; align-items:stretch; gap:0; margin-top:16px; flex-wrap:wrap; }
   .seq .nd{ flex:1 1 0; min-width:90px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:10px 12px; display:flex; flex-direction:column; gap:4px; position:relative; }
@@ -500,16 +509,113 @@
   </div>
 </section>
 
-<!-- ARCHITECTURE — 시스템 구조도 -->
+<!-- ARCHITECTURE — Mermaid 다이어그램 (GitHub repo README와 동일) -->
 <section id="architecture">
   <div class="wide-wrap">
     <div class="sec-head">
       <p class="eyebrow">시스템 아키텍처</p>
       <h2 class="h2">3-레이어 서버리스 구조</h2>
-      <p class="sec-lead">클라이언트 · API 라우트 · 데이터/외부 서비스를 분리해, 각 레이어가 독립적으로 교체·확장 가능하도록 설계했다.</p>
+      <p class="sec-lead">클라이언트 · API 라우트 · 데이터/외부 서비스를 분리해, 각 레이어가 독립적으로 교체·확장 가능하도록 설계했다. GitHub repo README와 동일한 다이어그램.</p>
     </div>
 
-    <div class="arch">
+    <div class="mer-wrap sec-foot">
+      <div class="mer-cap">시스템 구성</div>
+      <pre class="mermaid">
+flowchart LR
+  U([👤 사용자]) -->|긴 텍스트 입력| FE["Next.js 16 / React 19<br/>Frontend"]
+
+  FE --> API["Next.js API Routes"]
+
+  subgraph SUPA["Supabase"]
+    AUTH["Auth"]
+    PG[("Postgres<br/>cards · usage · plans")]
+    MIG["supabase/migrations<br/>usage RPC · 트리거"]
+  end
+
+  API <--> AUTH
+  API <--> PG
+
+  subgraph LLM["LLM Provider"]
+    CL["Anthropic Claude<br/>(prod)"]
+    OL["Groq Llama<br/>(빠름·저렴)"]
+    MK["Mock<br/>(dev/test)"]
+  end
+
+  API -->|카드 카피 생성| LLM
+
+  subgraph IMG["이미지 소스"]
+    UN["Unsplash API"]
+    PX["Pexels API"]
+  end
+
+  API -->|배경 이미지| IMG
+
+  subgraph PAY["Stripe"]
+    PRICE["Standard / Pro Price"]
+    WH["/api/stripe/webhook"]
+  end
+
+  FE --> PRICE
+  PRICE --> WH
+  WH --> PG
+
+  LLM --> API
+  IMG --> API
+  API --> FE
+  FE --> OUT[["🖼 카드뉴스<br/>5~10장"]]
+      </pre>
+    </div>
+
+    <div class="mer-wrap">
+      <div class="mer-cap">생성 파이프라인 시퀀스</div>
+      <pre class="mermaid">
+sequenceDiagram
+  participant U as 사용자
+  participant FE as Next.js Frontend
+  participant API as API Routes
+  participant SUP as Supabase
+  participant LLM as LLM Provider
+  participant IMG as Unsplash · Pexels
+
+  U->>FE: 긴 텍스트 + 생성 요청
+  FE->>API: POST /api/cards/generate
+  API->>SUP: auth.getUser() · usage 체크
+  SUP-->>API: plan = free|standard|pro
+  API->>API: 카드 수 결정 (free=5, paid≤10)
+  API->>LLM: 텍스트 → 카드별 카피
+  LLM-->>API: cards[]
+  par 카드별 배경 이미지
+    API->>IMG: 키워드 검색
+    IMG-->>API: 이미지 URL
+  end
+  API->>SUP: usage 증가 (RPC)
+  API-->>FE: cards + layout
+  FE-->>U: 미리보기 · 편집 · 다운로드
+      </pre>
+    </div>
+
+    <div class="mer-wrap">
+      <div class="mer-cap">결제 · 사용량 흐름</div>
+      <pre class="mermaid">
+sequenceDiagram
+  participant U as 사용자
+  participant FE as Frontend
+  participant ST as Stripe Checkout
+  participant WH as /api/stripe/webhook
+  participant SUP as Supabase
+
+  U->>FE: 플랜 업그레이드 클릭
+  FE->>ST: Checkout Session
+  U->>ST: 결제
+  ST-->>WH: customer.subscription.* 이벤트
+  WH->>SUP: plans 테이블 업데이트
+  Note over WH,SUP: 다음 요청부터 카드 수 한도 확장
+      </pre>
+    </div>
+
+    <details class="mer-fallback">
+      <summary>다이어그램이 보이지 않으면 텍스트 버전 펼치기</summary>
+      <div class="arch" style="margin-top:18px;">
       <div class="arch-layer">
         <div class="lbl">Client · Vercel Edge (icn1)</div>
         <div class="arch-nodes cols-3">
@@ -586,7 +692,8 @@
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -769,6 +876,23 @@
   </div>
 </footer>
 
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: "neutral",
+    themeVariables: {
+      fontFamily: "'Pretendard Variable', 'Apple SD Gothic Neo', system-ui, sans-serif",
+      fontSize: "13px",
+      primaryColor: "#FFFFFF",
+      primaryTextColor: "#1D1D1F",
+      primaryBorderColor: "#1D1D1F",
+      lineColor: "#86868B",
+      secondaryColor: "#F5F5F7",
+      tertiaryColor: "#FFFFFF"
+    }
+  });
+</script>
 <script>
 (function(){
   if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
