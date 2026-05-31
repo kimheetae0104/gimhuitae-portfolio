@@ -58,11 +58,22 @@
   .meta-top .m a{ color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(77,163,255,.3); transition:border-color .15s; }
   .meta-top .m a:hover{ border-bottom-color:var(--accent); }
 
+  /* ── Result shot (실제 운영 결과 강조) ── */
+  .resultshot{ margin:clamp(36px,5vh,56px) auto 0; max-width:760px; border:1px solid var(--line); border-radius:var(--rad); overflow:hidden; background:rgba(15,15,19,.55); }
+  .resultshot-head{ padding:14px 20px; border-bottom:1px solid var(--line-soft); display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; background:rgba(22,22,28,.4); }
+  .resultshot-head .t{ font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); font-weight:700; }
+  .resultshot-head .d{ font-family:var(--mono); font-size:10.5px; color:var(--ink-3); letter-spacing:.08em; }
+  .resultshot .shot{ box-shadow:none; border-radius:0; border:none; margin:0; max-width:none; }
+  .resultshot .shotcap{ padding:0 20px 18px; margin:0; text-align:left; max-width:none; }
+
   /* ── Inspired by ── */
   .inspired{ padding:clamp(28px,4vh,44px) 0; border-top:1px solid var(--line-soft); }
-  .inspired .wrap{ display:flex; gap:20px; flex-wrap:wrap; align-items:baseline; }
+  .inspired .wrap{ display:flex; gap:20px; flex-wrap:wrap; align-items:center; }
+  .inspired .thumb{ width:140px; flex-shrink:0; border-radius:8px; overflow:hidden; border:1px solid var(--line-soft); }
+  .inspired .thumb img{ width:100%; display:block; }
+  .inspired .body{ display:flex; flex-direction:column; gap:6px; flex:1; min-width:240px; }
   .inspired .lbl{ font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3); }
-  .inspired .ref{ font-size:13.5px; color:var(--ink-2); font-family:var(--mono); }
+  .inspired .ref{ font-size:13.5px; color:var(--ink-2); font-family:var(--mono); line-height:1.6; }
   .inspired .ref a{ color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(77,163,255,.3); }
   .inspired .ref a:hover{ border-bottom-color:var(--accent); }
   .meta-top::before{ content:""; position:absolute; left:0; top:-1px; width:60px; height:2px; background:var(--accent); }
@@ -281,12 +292,15 @@
       <path class="box" d="M10,70 L138,70 L138,106 L10,106 L10,76 L16,70 Z"/>
       <text class="nodename" x="22" y="89">CRON</text>
       <text class="nodesub"  x="22" y="101">SCHEDULER</text>
-      <path class="box" d="M10,180 L138,180 L138,216 L10,216 L10,186 L16,180 Z"/>
-      <text class="nodename" x="22" y="199">OLLAMA</text>
-      <text class="nodesub"  x="22" y="211">EXAONE3.5 · 7.8B</text>
-      <path class="box" d="M10,290 L138,290 L138,326 L10,326 L10,296 L16,290 Z"/>
-      <text class="nodename" x="22" y="309">CHROMADB</text>
-      <text class="nodesub"  x="22" y="321">220 ARTICLES</text>
+      <path class="box" d="M10,140 L138,140 L138,176 L10,176 L10,146 L16,140 Z"/>
+      <text class="nodename" x="22" y="159">DATA APIs</text>
+      <text class="nodesub"  x="22" y="171">DART·NAVER·NEWS</text>
+      <path class="box" d="M10,210 L138,210 L138,246 L10,246 L10,216 L16,210 Z"/>
+      <text class="nodename" x="22" y="229">OLLAMA</text>
+      <text class="nodesub"  x="22" y="241">EXAONE3.5 · 7.8B</text>
+      <path class="box" d="M10,280 L138,280 L138,316 L10,316 L10,286 L16,280 Z"/>
+      <text class="nodename" x="22" y="299">CHROMADB</text>
+      <text class="nodesub"  x="22" y="311">nomic-embed 768d</text>
 
       <path class="box center" d="M200,160 L380,160 L380,260 L200,260 L200,168 L208,160 Z"/>
       <text class="center-name" x="290" y="200" text-anchor="middle">BLOG AGENT</text>
@@ -303,12 +317,14 @@
       <text class="nodename dim" x="432" y="309">CLAUDE API</text>
       <text class="nodesub"      x="432" y="321">SECONDARY</text>
 
-      <path class="wire live" d="M138,88  C 170,88  180,180 200,200"/>
-      <path class="wire live" d="M138,198 L 200,210"/>
-      <path class="wire live" d="M138,308 C 170,308 180,240 200,225"/>
-      <circle class="dot pulse" cx="200" cy="200" r="3" style="animation-delay:0s"/>
-      <circle class="dot pulse" cx="200" cy="210" r="3" style="animation-delay:.7s"/>
-      <circle class="dot pulse" cx="200" cy="225" r="3" style="animation-delay:1.4s"/>
+      <path class="wire live" d="M138,88  C 170,88  180,170 200,180"/>
+      <path class="wire live" d="M138,158 C 170,158 180,195 200,200"/>
+      <path class="wire live" d="M138,228 C 170,228 180,225 200,220"/>
+      <path class="wire live" d="M138,298 C 170,298 180,250 200,240"/>
+      <circle class="dot pulse" cx="200" cy="180" r="3" style="animation-delay:0s"/>
+      <circle class="dot pulse" cx="200" cy="200" r="3" style="animation-delay:.5s"/>
+      <circle class="dot pulse" cx="200" cy="220" r="3" style="animation-delay:1s"/>
+      <circle class="dot pulse" cx="200" cy="240" r="3" style="animation-delay:1.5s"/>
 
       <path class="wire dotted" d="M380,200 C 400,200 405,90  420,88"/>
       <path class="wire dotted" d="M380,210 L 420,198"/>
@@ -335,7 +351,7 @@
       <div class="m"><div class="k">Role</div>   <div class="v">개인 프로젝트 · 설계·구현 전부</div></div>
       <div class="m"><div class="k">Period</div> <div class="v">2026 · v1 → v13</div></div>
       <div class="m"><div class="k">Stack</div>  <div class="v">cron · Ollama exaone3.5 · ChromaDB · nomic-embed · Gemini·Claude</div></div>
-      <div class="m"><div class="k">Blog</div>   <div class="v"><a href="https://blog.naver.com/wishsun1411" target="_blank" rel="noopener">코복의 경제블로그 ↗</a><div style="font-family:var(--mono);font-size:11.5px;color:var(--ink-3);margin-top:4px;">blog.naver.com/wishsun1411</div></div></div>
+      <div class="m"><div class="k">Blog</div>   <div class="v"><a href="https://blog.naver.com/wishsun1411" target="_blank" rel="noopener">코복의 경제블로그 ↗</a></div></div>
     </div>
   </div>
 </section>
@@ -533,8 +549,14 @@
       </table>
     </div>
 
-    <div class="shot" style="margin-top:clamp(36px,5vh,56px);"><img src="localai/img/sheets-result.webp" alt="실제 자동 업로드 결과 — Google Sheets에 기록된 생성 글 목록"/></div>
-    <p class="shotcap">실제 자동 업로드 결과 — 검증 점수·종목명·버전이 Google Sheets에 자동 기록.</p>
+    <figure class="resultshot">
+      <div class="resultshot-head">
+        <span class="t">RESULT · 실제 운영 결과</span>
+        <span class="d">Google Sheets · daily auto-log</span>
+      </div>
+      <div class="shot" style="margin-top:0; border-top-left-radius:0; border-top-right-radius:0; border-top:none;"><img src="localai/img/sheets-result.webp" alt="실제 자동 업로드 결과 — Google Sheets에 기록된 생성 글 목록"/></div>
+      <figcaption class="shotcap" style="margin-top:14px;">검증 점수·종목명·버전이 자동 기록 — 사람이 마지막 판단을 빠르게 한다.</figcaption>
+    </figure>
 
   </div>
 </section>
@@ -689,8 +711,13 @@
 <!-- INSPIRED BY -->
 <section class="inspired">
   <div class="wrap">
-    <span class="lbl">Inspired by</span>
-    <span class="ref">YouTube · <a href="https://youtube.com/@connect-ai-lab" target="_blank" rel="noopener">@connect-ai-lab</a> — "두뇌 복제! 무료 AI 직원 육성" (EP.3)</span>
+    <a class="thumb" href="https://youtube.com/@connect-ai-lab" target="_blank" rel="noopener">
+      <img src="localai/img/connect-ai-lab.webp" alt="connect-ai-lab YouTube EP.3 두뇌 복제 무료 AI 직원 육성 썸네일"/>
+    </a>
+    <div class="body">
+      <span class="lbl">Inspired by</span>
+      <span class="ref">YouTube · <a href="https://youtube.com/@connect-ai-lab" target="_blank" rel="noopener">@connect-ai-lab</a> — "두뇌 복제! 무료 AI 직원 육성" (EP.3)</span>
+    </div>
   </div>
 </section>
 
