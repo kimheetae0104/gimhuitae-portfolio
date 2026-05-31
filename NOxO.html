@@ -312,10 +312,10 @@
   <p class="sec-kicker">05 — 검증과 결과</p>
   <h2 class="h2">데이터 누수 없는 검증부터 설계</h2>
   <div class="vlist">
-    <div class="vitem"><div class="vk">최종 홀드아웃</div><div class="vb">마지막 하루는 최종 평가에만, 학습은 앞 <strong>14일치</strong>.<br>모델 선택에 한 번도 노출되지 않음.</div></div>
-    <div class="vitem"><div class="vk">시계열 교차검증</div><div class="vb">무작위 분할은 미래가 과거로 샘.<br>과거부터 구간을 넓히는 <strong>확장 윈도우</strong> 방식.</div></div>
-    <div class="vitem"><div class="vk">학습·검증 간격</div><div class="vb">두 구간 사이에 <strong>300초 갭</strong>.<br>직전 값 베끼기로 점수가 부풀려지는 것을 차단.</div></div>
-    <div class="vitem"><div class="vk">타겟 생성 분리</div><div class="vb">5분 후 정답은 각 구간 안에서만 생성.<br>경계 너머 정보가 새어 들어오는 것 차단.</div></div>
+    <div class="vitem"><div class="vk">최종 홀드아웃</div><div class="vb">앞 <strong>14일치</strong>로만 학습하고, 마지막 하루는 평가에만 사용했다.<br>모델 선택·튜닝 어디에도 쓰지 않아 새 데이터에서의 진짜 성능을 확인했다.</div></div>
+    <div class="vitem"><div class="vk">시계열 교차검증</div><div class="vb">무작위로 나누면 미래 정보가 과거 학습 구간으로 새어 들어간다.<br>과거부터 학습 구간을 점점 넓혀가는 <strong>확장 윈도우</strong> 방식으로 시간 순서를 지켰다.</div></div>
+    <div class="vitem"><div class="vk">학습·검증 간격</div><div class="vb">학습 구간 끝과 검증 구간 시작 사이에 <strong>300초</strong>의 간격을 두었다.<br>직전 값을 그대로 베껴 점수가 부풀려지는 것을 막기 위해서다.</div></div>
+    <div class="vitem"><div class="vk">타겟 생성 분리</div><div class="vb">5분 후 정답값은 각 구간 안의 데이터로만 만들었다.<br>검증 구간의 미래 값이 학습 구간으로 흘러 들어가지 않게 했다.</div></div>
   </div>
   <div class="two" style="margin-top:30px;">
     <div class="mcard tint">
