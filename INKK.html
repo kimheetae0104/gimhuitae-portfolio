@@ -57,19 +57,32 @@
   .sec-foot{ margin-top:clamp(30px,4vh,50px); }
 
   /* ──── ARCHITECTURE 다이어그램 ──── */
-  .arch{ max-width:920px; margin:clamp(36px,5vh,56px) auto 0; display:grid; gap:14px; }
-  .arch-layer{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:18px 20px; position:relative; }
+  .arch{ max-width:980px; margin:clamp(36px,5vh,56px) auto 0; display:grid; gap:0; }
+  .arch-layer{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:20px 24px 22px; position:relative; overflow:hidden; }
   .arch-layer.alt{ background:var(--alt); }
-  .arch-layer .lbl{ font-family:"Space Mono",monospace; font-size:11px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  /* layer별 좌측 컬러 라인 */
+  .arch-layer::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--accent); }
+  .arch-layer.l2::before{ background:#22B8CF; }
+  .arch-layer.l3::before{ background:#F59E0B; }
+  .arch-layer .lbl{ display:flex; align-items:center; gap:10px; font-family:"Space Mono",monospace; font-size:11px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--ink); margin-bottom:14px; }
+  .arch-layer .lbl::before{ content:""; width:10px; height:10px; border-radius:50%; background:var(--accent); flex:none; }
+  .arch-layer.l2 .lbl::before{ background:#22B8CF; }
+  .arch-layer.l3 .lbl::before{ background:#F59E0B; }
   .arch-nodes{ display:grid; gap:10px; }
   .arch-nodes.cols-3{ grid-template-columns:repeat(3,1fr); }
   .arch-nodes.cols-4{ grid-template-columns:repeat(4,1fr); }
-  .arch-node{ background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
+  .arch-node{ background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:14px 16px; transition:border-color .2s, transform .2s; }
   .arch-layer.alt .arch-node{ background:#fff; }
+  .arch-node:hover{ border-color:var(--ink); transform:translateY(-1px); }
   .arch-node .nh{ font-size:14px; font-weight:700; color:var(--ink); letter-spacing:-.02em; }
   .arch-node .nd{ font-size:12px; color:var(--ink-2); margin-top:6px; line-height:1.5; }
-  .arch-node .tg{ display:inline-block; margin-top:8px; font-family:"Space Mono",monospace; font-size:10px; color:var(--ink-3); letter-spacing:.04em; }
-  .arch-arrow{ text-align:center; color:var(--ink-3); font-size:18px; line-height:1; margin:-4px 0; user-select:none; }
+  .arch-node .tg{ display:inline-block; margin-top:8px; font-family:"Space Mono",monospace; font-size:10px; color:var(--ink-3); letter-spacing:.04em; padding:2px 8px; background:var(--alt); border-radius:999px; }
+  .arch-layer.alt .arch-node .tg{ background:var(--bg); }
+  /* 굵은 화살표 줄 (3 layer 잇는 데이터 흐름) */
+  .arch-arrow{ display:flex; justify-content:center; align-items:center; height:38px; }
+  .arch-arrow svg{ width:32px; height:38px; }
+  .arch-arrow .ln{ stroke:var(--ink-3); stroke-width:2; }
+  .arch-arrow .hd{ fill:var(--ink-3); }
   @media(max-width:740px){
     .arch-nodes.cols-3, .arch-nodes.cols-4{ grid-template-columns:1fr; }
   }
@@ -320,11 +333,9 @@
     <div class="links">
       <a href="#why">왜</a>
       <a href="#how">동작</a>
-      <a href="#science">품질</a>
-      <a href="#pipeline">파이프라인</a>
+      <a href="#quality">품질</a>
       <a href="#architecture">아키텍처</a>
-      <a href="#engineering">엔지니어링</a>
-      <a href="#next">다음 단계</a>
+      <a href="#engineering">설계 결정</a>
       <a href="#demo">바로 가기</a>
       <a class="cta" href="index.html">← 포트폴리오</a>
     </div>
@@ -413,26 +424,12 @@
 </section>
 
 <!-- SCIENCE -->
-<section class="alt" id="science">
-  <div class="wrap">
-    <div class="sec-head">
-      <p class="eyebrow">품질을 어떻게 잡나</p>
-      <h2 class="h2">검증을 통과해야 사용자에게 나간다.</h2>
-      <p class="sec-lead">AI 출력 그대로 보내지 않는다. 점수 평가를 통과해야 발행 가능한 결과로 인정한다.</p>
-    </div>
-    <div class="narrow center sec-foot">
-      <p class="prose">LLM에 같은 글을 5번 넣으면 5번 다 다른 결과가 나온다.<br>일관된 품질을 만들려고 <strong>입력부터 결과까지 4단계 검증</strong>을 거치는 파이프라인을 만들었다.</p>
-      <p class="prose">통과 못 한 결과는 사유와 함께 다시 생성한다.<br>한 단계가 놓친 것을 다음 단계가 잡아낸다.</p>
-    </div>
-  </div>
-</section>
-
-<!-- PIPELINE -->
-<section id="pipeline">
+<section class="alt" id="quality">
   <div class="wide-wrap">
     <div class="sec-head">
-      <p class="eyebrow">생성 파이프라인</p>
+      <p class="eyebrow">품질 파이프라인</p>
       <h2 class="h2">긴 글 → 4단계 검증 → 5장 카드뉴스</h2>
+      <p class="sec-lead">LLM에 같은 글을 5번 넣으면 5번 다 다른 결과가 나온다. 입력부터 결과까지 4단계 검증을 거치는 파이프라인으로 일관 품질을 강제한다.</p>
     </div>
     <div class="stats sec-foot">
       <div class="stat"><div class="n">4<span class="u">단계</span></div><div class="l">품질 검증 — 역할 분리 · 반례 · 점수 · 레이아웃</div></div>
@@ -514,9 +511,9 @@
         </div>
       </div>
 
-      <div class="arch-arrow">↓</div>
+      <div class="arch-arrow"><svg viewBox="0 0 32 38" aria-hidden="true"><line class="ln" x1="16" y1="2" x2="16" y2="30"/><polygon class="hd" points="16,38 8,28 24,28"/></svg></div>
 
-      <div class="arch-layer alt">
+      <div class="arch-layer alt l2">
         <div class="lbl">API Routes · 서버리스 함수 (icn1)</div>
         <div class="arch-nodes cols-4">
           <div class="arch-node">
@@ -542,9 +539,9 @@
         </div>
       </div>
 
-      <div class="arch-arrow">↓</div>
+      <div class="arch-arrow"><svg viewBox="0 0 32 38" aria-hidden="true"><line class="ln" x1="16" y1="2" x2="16" y2="30"/><polygon class="hd" points="16,38 8,28 24,28"/></svg></div>
 
-      <div class="arch-layer">
+      <div class="arch-layer l3">
         <div class="lbl">Data · External Services</div>
         <div class="arch-nodes cols-4">
           <div class="arch-node">
