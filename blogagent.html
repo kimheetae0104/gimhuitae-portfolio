@@ -285,15 +285,79 @@
       <h2 class="h2">자율 에이전트가 아닌, 크론으로 도는 오케스트레이션</h2>
       <p class="prose" style="margin-top:20px;">매일 같은 시간, <strong>크론탭</strong>이 파이프라인을 깨운다. API로 데이터를 크롤링하고, 그 자료로 프롬프트를 구성해 <strong>Ollama 로컬 모델이 초안</strong>을 쓰고, <strong>GPT·Claude·Gemini가 교차 검증</strong>해 환각·잘못된 정보를 걸러내고 품질을 끌어올린 뒤 업로드한다. 단계와 검증 게이트가 고정돼 있어 매번 같은 순서로 재현되고, 어디서 멈췄는지 추적할 수 있다 — "스스로 판단하는 에이전트"보다 신뢰 가능한 <strong>결정론적 오케스트레이션</strong>을 택했다.</p>
     </div>
-    <div class="pipe sec-foot">
-      <div class="ps hl"><div class="n">00</div><div class="nm">크론 스케줄</div><div class="dc">정해진 시간 자동 실행</div></div>
-      <div class="ps"><div class="n">01</div><div class="nm">API 크롤링</div><div class="dc">DART 공시·Naver 등 6개 소스</div></div>
-      <div class="ps"><div class="n">02</div><div class="nm">이슈 점수</div><div class="dc">임계 점수로 종목 필터</div></div>
-      <div class="ps hl"><div class="n">03</div><div class="nm">RAG 품질 참고</div><div class="dc">과거 발행 양질 글에서 유사글</div></div>
-      <div class="ps"><div class="n">04</div><div class="nm">Ollama 초안</div><div class="dc">프롬프트 구성 → 로컬 모델 생성</div></div>
-      <div class="ps hl"><div class="n">05</div><div class="nm">교차 검증</div><div class="dc">GPT·Claude·Gemini 환각·오류·품질</div></div>
-      <div class="ps"><div class="n">06</div><div class="nm">업로드</div><div class="dc">통과 글만 배포·기록</div></div>
-    </div>
+    <figure class="rag-flow sec-foot" aria-label="블로그 자동화 파이프라인 다이어그램">
+      <svg viewBox="0 0 1110 230" xmlns="http://www.w3.org/2000/svg">
+        <text class="lbl" x="10" y="18">DAILY · CRON-DRIVEN PIPELINE</text>
+        <line class="tick" x1="10" y1="22" x2="260" y2="22"/>
+
+        <!-- 00 CRON -->
+        <path class="box" d="M10,45 L140,45 L140,155 L10,155 L10,51 L16,45 Z"/>
+        <text class="sub"  x="22" y="66">00 · CRON</text>
+        <text class="name" x="22" y="90">크론 스케줄</text>
+        <text class="sub"  x="22" y="115">정해진 시간</text>
+        <text class="sub"  x="22" y="130">자동 실행</text>
+
+        <path class="wire solid live" d="M140,100 L170,100"/>
+
+        <!-- 01 API -->
+        <path class="box" d="M170,45 L300,45 L300,155 L170,155 L170,51 L176,45 Z"/>
+        <text class="sub"  x="182" y="66">01 · API</text>
+        <text class="name" x="182" y="90">크롤링</text>
+        <text class="sub"  x="182" y="115">DART · Naver</text>
+        <text class="sub"  x="182" y="130">6개 소스</text>
+
+        <path class="wire solid live" d="M300,100 L330,100"/>
+
+        <!-- 02 FILTER -->
+        <path class="box" d="M330,45 L460,45 L460,155 L330,155 L330,51 L336,45 Z"/>
+        <text class="sub"  x="342" y="66">02 · FILTER</text>
+        <text class="name" x="342" y="90">이슈 점수</text>
+        <text class="sub"  x="342" y="115">임계 점수</text>
+        <text class="sub"  x="342" y="130">종목 필터</text>
+
+        <path class="wire solid live" d="M460,100 L490,100"/>
+
+        <!-- 03 RAG (mint highlight) -->
+        <path class="box mint" d="M490,45 L620,45 L620,155 L490,155 L490,51 L496,45 Z"/>
+        <text class="sub"       x="502" y="66" style="fill:#46D39A;">03 · RAG</text>
+        <text class="name mint" x="502" y="90">품질 참고</text>
+        <text class="sub"       x="502" y="115">ChromaDB</text>
+        <text class="sub"       x="502" y="130">220개 글</text>
+
+        <path class="wire mint live" d="M620,100 L650,100"/>
+
+        <!-- 04 OLLAMA -->
+        <path class="box" d="M650,45 L780,45 L780,155 L650,155 L650,51 L656,45 Z"/>
+        <text class="sub"  x="662" y="66">04 · LLM</text>
+        <text class="name" x="662" y="90">Ollama 초안</text>
+        <text class="sub"  x="662" y="115">Llama3 · 8B</text>
+        <text class="sub"  x="662" y="130">로컬 생성</text>
+
+        <path class="wire solid live" d="M780,100 L810,100"/>
+
+        <!-- 05 VERIFY (cyan glow center) -->
+        <path class="box center" d="M810,45 L940,45 L940,155 L810,155 L810,51 L816,45 Z"/>
+        <text class="sub"         x="822" y="66" style="fill:#4DA3FF;">05 · VERIFY</text>
+        <text class="name center" x="822" y="90">교차 검증</text>
+        <text class="sub"         x="822" y="115">GPT · Claude</text>
+        <text class="sub"         x="822" y="130">Gemini</text>
+
+        <path class="wire dotted" d="M940,100 L970,100"/>
+        <text class="sub" x="945" y="92">gate</text>
+
+        <!-- 06 PUBLISH -->
+        <path class="box" d="M970,45 L1100,45 L1100,155 L970,155 L970,51 L976,45 Z"/>
+        <text class="sub"  x="982" y="66">06 · PUBLISH</text>
+        <text class="name" x="982" y="90">업로드</text>
+        <text class="sub"  x="982" y="115">통과 글만</text>
+        <text class="sub"  x="982" y="130">배포·기록</text>
+
+        <!-- 하단 그룹 라벨 -->
+        <text class="lbl" x="490" y="195" style="fill:#46D39A;">RAG = QUALITY ONLY</text>
+        <text class="lbl" x="810" y="195" style="fill:#4DA3FF;">3-LLM CROSS-VERIFY</text>
+      </svg>
+      <figcaption>매일 cron이 깨우는 고정 파이프라인 · <span class="mt">RAG는 품질 참고</span>, <span class="cy">검증 게이트</span> 통과한 글만 배포</figcaption>
+    </figure>
     <div class="ministats">
       <span class="ms"><b>220개 글</b> — 직접 발행한 과거 글(RAG 코퍼스)</span>
       <span class="ms"><b>6개 소스</b> API 크롤링 — DART·Naver</span>
