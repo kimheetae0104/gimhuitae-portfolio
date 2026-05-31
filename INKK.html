@@ -182,16 +182,18 @@
       <div class="shot"><img src="inkk/thumb.webp" alt="INKK 서비스 화면"/></div>
     </div>
 
-    <div class="pmeta">
-      <div class="m"><div class="k">역할</div><div class="v">개인 서비스 · 기획·풀스택·디자인 전부</div></div>
-      <div class="m"><div class="k">기간</div><div class="v">2026.05 — 운영 중 (얼리 액세스)</div></div>
-      <div class="m"><div class="k">스택</div><div class="v">Next.js 16 · Supabase · Stripe · Groq/Claude</div></div>
-      <div class="m"><div class="k">링크</div><div class="v">inkk.online</div></div>
+    <div class="thi">
+      <div class="c"><div class="k">핵심 기술 01</div><h3>품질 강제 4층 엔진</h3><p>장별 역할 분리 프롬프트 + GOOD/BAD 반례 + 구조 제약(길이·강조·줄바꿈) + 후처리 sanitize. 프롬프트 한 방에 맡기지 않고 4단계로 품질을 강제.</p></div>
+      <div class="c"><div class="k">핵심 기술 02</div><h3>레이아웃 자동 조정 엔진</h3><p>텍스트 길이를 측정해 폰트(30자 48px → 120자 22px) · 행간 · 레이아웃 타입을 자동 조정. LLM 출력 길이 편차와 무관하게 카드 비율이 항상 균형.</p></div>
+      <div class="c"><div class="k">핵심 기술 03</div><h3>크레딧 동시성 · 결제 멱등성</h3><p>크레딧 차감을 <code>SELECT FOR UPDATE</code> 트랜잭션으로 원자화 + Stripe webhook을 <code>claim_stripe_event</code> RPC로 멱등 처리. 동시 요청·재시도에 잔액이 깨지지 않음.</p></div>
+      <div class="c"><div class="k">핵심 기술 04</div><h3>LLM 프로바이더 추상화</h3><p>Groq(빠름·저렴)을 기본으로, 고품질이 필요할 땐 Claude로 런타임 전환. 비용·품질 레버를 코드가 아닌 환경 설정에 두어 운영 중 교체 가능.</p></div>
     </div>
 
-    <div class="thi">
-      <div class="c"><div class="k">핵심 기술 01</div><h3>'AI 티'를 지우는 품질 4층 강제</h3><p>카드별 역할 분리 프롬프트 + GOOD/BAD 반례 + 구조 제약 + 레이아웃 엔진·후처리. 디자인 기술 없이도 'AI 지문 없는' 발행 카드를 강제한다.</p></div>
-      <div class="c"><div class="k">핵심 기술 02</div><h3>돈이 걸린 동시성·멱등성</h3><p>크레딧 차감을 <code>SELECT FOR UPDATE</code>로 원자화하고 Stripe webhook을 멱등 처리해, 동시 요청·재시도에도 잔액이 깨지지 않는다.</p></div>
+    <div class="pmeta">
+      <div class="m"><div class="k">역할</div><div class="v">개인 프로젝트</div></div>
+      <div class="m"><div class="k">기간</div><div class="v">2026.05 — 개발 중</div></div>
+      <div class="m"><div class="k">스택</div><div class="v">Next.js 16 · Supabase · Stripe · Groq · Claude</div></div>
+      <div class="m"><div class="k">상태</div><div class="v">베타 운영 (inkk.online)</div></div>
     </div>
   </div>
 </section>
@@ -201,29 +203,24 @@
   <div class="wrap">
     <div class="col">
       <p class="eyebrow">01 — 문제</p>
-      <h2 class="h2">"ChatGPT로 하면 되잖아"가 안 되는 이유.</h2>
-      <p class="prose sec-foot">텍스트 초안은 챗봇으로도 뽑힌다. 그런데 그걸 그대로 올리면 티가 난다. 카드뉴스를 못 만드는 진짜 이유는 디자인 감각이 아니라, 세 군데서 막히기 때문이다.</p>
+      <h2 class="h2">결과물은 나온다. <span class="accent-word">"내가 원하는 톤"은 안 나온다.</span></h2>
+      <p class="prose sec-foot">ChatGPT도 이제 캐러셀 카드뉴스를 만든다. 하지만 폰트·여백·강조·흐름이 일관되게 잡힌 <strong>"발행 가능한 결과"</strong>를 받으려면 결국 디자인 지식이 필요하다.</p>
     </div>
     <div class="three sec-foot">
       <div class="pcard">
         <div class="pn">PROBLEM 01</div>
-        <h3>AI마다 '시각적 지문' 존재</h3>
-        <p>생성 AI는 저마다 디자인 버릇이 있다. 결과물을 보면 어떤 도구로 만들었는지 보일 정도다. 팔로워는 그 지문을 알아채고 "성의 없이 돌렸구나"라고 느낀다.</p>
+        <h3>결과의 일관성이 들쭉날쭉</h3>
+        <p>같은 주제라도 매번 톤·구성이 달라진다. 만족스러운 결과가 나올 때까지 다시 돌리거나, 손으로 다듬어야 한다.</p>
       </div>
       <div class="pcard">
         <div class="pn">PROBLEM 02</div>
-        <h3>지문을 지우려면 결국 디자인 기술</h3>
-        <p>디자인을 아는 사람은 AI 결과를 손으로 다듬어 지문을 지운다. 보통 사람은 거기까지 못 해서, 뱉은 그대로 올릴 수밖에 없다.</p>
-      </div>
-      <div class="pcard">
-        <div class="pn">PROBLEM 03</div>
-        <h3>텍스트가 나와도 '발행물'은 아님</h3>
-        <p>챗봇은 글·이미지 조각까지만 준다. 5~10장 흐름으로 쪼개고 이미지를 붙여 인스타 규격으로 맞추는 일은 여전히 사용자 몫이다.</p>
+        <h3>일관성을 잡으려면 디자인 지식 필요</h3>
+        <p>폰트 크기·강조 키워드·줄바꿈·카드 간 흐름 — 결국 디자인을 아는 사람만 "발행 가능한" 결과까지 끌어올린다.</p>
       </div>
     </div>
     <div class="thesis">
       <div class="tl">INKK의 가설</div>
-      <p>진짜 장벽은 디자인 자체가 아니라 <strong>'AI 티를 지울 디자인 기술이 없는 것'</strong>이다. 그 작업을 서비스 안에 내장하면, 디자인을 몰라도 처음부터 지문 없는 완성 카드를 받는다.</p>
+      <p>일반 사용자가 막히는 지점은 "AI가 못 만들어서"가 아니라 <strong>일관성을 잡는 디자인 기술이 없어서</strong>다. 그 기술을 <strong>서비스 안에 내장</strong>하면, 누가 써도 발행 가능한 결과가 처음부터 나온다.</p>
     </div>
   </div>
 </section>
