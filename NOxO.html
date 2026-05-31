@@ -237,8 +237,8 @@
 <section class="panel" id="models">
   <p class="sec-kicker">02 — 모델 1 · 운전 시뮬레이션</p>
   <h2 class="h2">1초 데이터는 모델이 베끼기 좋은 형태</h2>
-  <p class="lead">자기상관 0.989 — 모델이 1초 전 값을 그대로 베껴도 점수가 잘 나왔다.</p>
-  <p class="lead">1분 평균으로 다시 묶고, 원시 39개 + 파생 10개로 Ridge·LightGBM 앙상블.</p>
+  <p class="lead">1초 간격 데이터의 자기상관이 0.989. 옆 값과 거의 동일해서, 모델이 학습 과정에서 1초 전 값을 그대로 베껴도 점수가 잘 나왔다.</p>
+  <p class="lead">의미 있는 변동만 남기려고 1분 평균으로 다시 묶었다. 원시 변수 39개에 파생 10개를 더해 Ridge·LightGBM을 앙상블했다.</p>
   <p class="lead">DWATT(발전 출력)·TTXM(배기 온도)은 운전 변수에서 직접 따라 나오는 종속 값이라 R² 0.997~0.999. 비선형으로 반응하는 NOx만 R² 0.71에서 멈췄다.</p>
   <div class="chips">
     <div class="chip on"><div class="v">0.71</div><div class="l">NOx R²</div></div>
