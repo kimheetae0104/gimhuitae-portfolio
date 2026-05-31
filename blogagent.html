@@ -86,28 +86,28 @@
   @keyframes flow{ to { stroke-dashoffset:-200; } }
   @media(max-width:900px){ .topo{ display:none; } }
 
-  /* ── RAG flow: 본인 RAG의 역할 분리 다이어그램 ─────────── */
-  .rag-flow{ background:rgba(15,15,19,.55); border:1px solid var(--line-soft); border-radius:var(--rad); padding:28px 28px 22px; margin:clamp(24px,4vh,40px) 0 0; }
+  /* ── 다이어그램 공통 (rag-flow): 깔끔 우선 — 글로우 절제, 정렬, 폰트 위계 ── */
+  .rag-flow{ background:rgba(15,15,19,.4); border:1px solid var(--line-soft); border-radius:var(--rad); padding:32px 32px 24px; margin:clamp(24px,4vh,40px) 0 0; }
   .rag-flow svg{ width:100%; height:auto; display:block; overflow:visible; }
-  .rag-flow .box{ fill:rgba(22,22,28,.7); stroke:rgba(154,154,164,.35); stroke-width:1; }
-  .rag-flow .box.solid{ stroke:var(--accent); stroke-width:1.3; }
-  .rag-flow .box.mint{ stroke:#46D39A; stroke-width:1.2; stroke-dasharray:4 3; }
-  .rag-flow .box.center{ fill:rgba(22,22,28,.92); stroke:var(--accent); stroke-width:1.6; filter:drop-shadow(0 0 12px rgba(77,163,255,.35)); }
-  .rag-flow .box.cloud{ stroke:rgba(154,154,164,.35); stroke-dasharray:3 3; fill:rgba(15,15,19,.5); }
-  .rag-flow .name{ font-family:var(--mono); font-size:11.5px; font-weight:700; fill:var(--ink); letter-spacing:.06em; }
-  .rag-flow .name.center{ font-size:13px; fill:var(--accent); }
+  .rag-flow .box{ fill:rgba(22,22,28,.6); stroke:rgba(154,154,164,.32); stroke-width:1; }
+  .rag-flow .box.solid{ stroke:rgba(77,163,255,.7); stroke-width:1.2; }
+  .rag-flow .box.mint{ stroke:rgba(70,211,154,.7); stroke-width:1.2; stroke-dasharray:5 3; }
+  .rag-flow .box.center{ fill:rgba(22,22,28,.9); stroke:var(--accent); stroke-width:1.4; }
+  .rag-flow .box.cloud{ stroke:rgba(154,154,164,.3); stroke-dasharray:3 3; fill:rgba(15,15,19,.4); }
+  .rag-flow .name{ font-family:var(--mono); font-size:12px; font-weight:700; fill:var(--ink); letter-spacing:.04em; }
+  .rag-flow .name.center{ font-size:13.5px; fill:var(--accent); letter-spacing:.06em; }
   .rag-flow .name.mint{ fill:#46D39A; }
   .rag-flow .name.dim{ fill:var(--ink-2); }
-  .rag-flow .sub{ font-family:var(--mono); font-size:9.5px; letter-spacing:.08em; fill:var(--ink-3); }
-  .rag-flow .lbl{ font-family:var(--mono); font-size:10px; letter-spacing:.18em; text-transform:uppercase; fill:var(--accent); }
-  .rag-flow .lbl.dim{ fill:var(--ink-3); }
-  .rag-flow .wire{ stroke:rgba(154,154,164,.4); stroke-width:1; fill:none; }
-  .rag-flow .wire.solid{ stroke:var(--accent); stroke-width:1.3; }
-  .rag-flow .wire.mint{ stroke:#46D39A; stroke-width:1.3; stroke-dasharray:5 4; }
-  .rag-flow .wire.dotted{ stroke:rgba(154,154,164,.45); stroke-dasharray:3 4; stroke-width:.9; }
-  .rag-flow .wire.live{ stroke-dasharray:3 40; animation:flow 3.4s linear infinite; }
-  .rag-flow .tick{ stroke:rgba(154,154,164,.3); stroke-width:.6; }
-  .rag-flow figcaption{ font-family:var(--mono); font-size:11px; letter-spacing:.08em; color:var(--ink-3); margin-top:14px; text-align:center; }
+  .rag-flow .sub{ font-family:var(--mono); font-size:10px; letter-spacing:.06em; fill:var(--ink-3); }
+  .rag-flow .lbl{ font-family:var(--mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase; fill:var(--ink-3); }
+  .rag-flow .lbl.ac{ fill:var(--accent); }
+  .rag-flow .lbl.mt{ fill:#46D39A; }
+  .rag-flow .wire{ stroke:rgba(154,154,164,.35); stroke-width:.9; fill:none; }
+  .rag-flow .wire.solid{ stroke:rgba(77,163,255,.65); stroke-width:1.1; }
+  .rag-flow .wire.mint{ stroke:rgba(70,211,154,.65); stroke-width:1.1; stroke-dasharray:5 3; }
+  .rag-flow .wire.dotted{ stroke:rgba(154,154,164,.35); stroke-dasharray:3 4; stroke-width:.8; }
+  .rag-flow .tick{ stroke:rgba(154,154,164,.25); stroke-width:.6; }
+  .rag-flow figcaption{ font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--ink-3); margin-top:18px; padding-top:14px; border-top:1px solid var(--line-soft); text-align:center; }
   .rag-flow figcaption .cy{ color:var(--accent); }
   .rag-flow figcaption .mt{ color:#46D39A; }
 
@@ -314,12 +314,12 @@
   <div class="wrap">
     <p class="eyebrow">블로그 자동화 · 로컬 LLM</p>
     <h1 class="title">Blog Agent</h1>
-    <p class="lead">개인 데이터를 밖으로 보내지 않고, <span class="accent-word">검증 가능한</span> 블로그 자동화를 만들 수 있는가.</p>
+    <p class="lead">개인 데이터를 외부로 전송하지 않고, <span class="accent-word">검증 가능한</span> 블로그 자동화 파이프라인을 설계·구현했다.</p>
     <p class="url">Ollama exaone3.5 7.8B 로컬 추론 + Gemini·Claude 7단 검증 파이프라인</p>
 
     <div class="thi">
-      <div class="c"><div class="k">핵심 기술 01</div><h3>RAG로 글 품질 향상</h3><p>사실·수치는 API·정규식이 담당하고, RAG는 따로 — 내가 예전에 발행한 양질의 글 220개에서 비슷한 글을 꺼내 참고해, 새 글의 톤·구성을 그 수준으로 맞춘다.</p></div>
-      <div class="c"><div class="k">핵심 기술 02</div><h3>GPT·Claude·Gemini 교차 검증</h3><p>로컬 모델이 쓴 초안을 세 클라우드 모델로 교차 검증해 환각·잘못된 수치를 걸러낸다. 심각하면 업로드를 멈추는, 결정론적 게이트.</p></div>
+      <div class="c"><div class="k">핵심 기술 01</div><h3>RAG 역할 분리</h3><p>구조화 문서(DART 사업보고서 등)의 사실·수치는 API·정규식으로 추출하고, RAG는 직접 발행한 220개 글의 톤·구성 참고에만 사용했다. 벡터 유사도 검색의 약점이 명확한 영역과 강점이 명확한 영역을 분리한 설계.</p></div>
+      <div class="c"><div class="k">핵심 기술 02</div><h3>Gemini · Claude 다단 검증</h3><p>로컬 LLM(exaone3.5) 초안을 Gemini 2.5 flash-lite로 5기준 자동 평가(종목혼동·수치환각30%+·종목코드·사실창작·밸류에이션모순)하고, 429 시 4단 폴백 큐 + Claude 보조. critical=True면 배포 차단.</p></div>
     </div>
 
     <div class="meta-top">
@@ -334,14 +334,14 @@
 <section id="why">
   <div class="wrap">
     <div class="col">
-      <p class="eyebrow">왜 로컬 AI인가</p>
-      <h2 class="h2">시작은 비용·의존성·보안</h2>
-      <p class="prose sec-foot">클라우드 LLM을 계속 쓰다 보니 세 가지가 걸렸다. 쓸수록 늘어나는 <strong>토큰 비용</strong>, 외부 API가 흔들리면 같이 멈추는 <strong>의존성</strong>, 그리고 개인 노트·투자 메모를 남의 서버로 보내야 하는 <strong>보안</strong>. "로컬 모델은 느리고 약하다"는 말이 많았지만, 직접 돌려보고 이 셋을 동시에 풀 수 있는지 확인하고 싶었다.</p>
+      <p class="eyebrow">왜 로컬을 선택했나</p>
+      <h2 class="h2">비용 · 의존성 · 보안 제약</h2>
+      <p class="prose sec-foot">클라우드 LLM 운영 시 세 가지 제약이 있었다. ① 호출량 비례 <strong>토큰 과금</strong> 누적, ② 외부 API 장애·정책 변경 시 <strong>파이프라인 중단</strong>, ③ 개인 노트·투자 메모의 <strong>외부 서버 전송</strong>. 로컬 LLM이 이 셋을 동시에 해소할 수 있는지를 실제 도구 2종으로 검증했다.</p>
     </div>
     <div class="thi cols3" style="margin-top:clamp(36px,5vh,56px);">
-      <div class="c"><div class="k">비용</div><h3>토큰당 과금에서 벗어나기</h3><p>호출량이 늘수록 비용이 비례해 커진다. 로컬 추론은 한 번 받아두면 추가 API 비용이 없다.</p></div>
-      <div class="c"><div class="k">의존성</div><h3>외부가 멈춰도 돌아가게</h3><p>핵심 추론을 온디바이스로 두면, 외부 API 장애나 정책 변경에 작업 흐름이 통째로 묶이지 않는다.</p></div>
-      <div class="c"><div class="k">보안</div><h3>데이터를 밖으로 안 보내기</h3><p>개인 노트·투자 메모를 외부 서버에 올리지 않고도 AI를 붙일 수 있는지를 직접 검증했다.</p></div>
+      <div class="c"><div class="k">비용</div><h3>종량 과금 제거</h3><p>호출량에 비례하는 토큰 단위 과금이 누적되는 구조 회피. 로컬 모델은 초기 다운로드 외 추가 비용 없음.</p></div>
+      <div class="c"><div class="k">의존성</div><h3>외부 API 격리</h3><p>핵심 추론을 온디바이스로 분리해 외부 API 장애·정책 변경이 파이프라인 전체를 중단시키지 않는 구조.</p></div>
+      <div class="c"><div class="k">보안</div><h3>외부 전송 차단</h3><p>개인 노트·투자 메모 등 민감 데이터를 외부 서버로 전송하지 않고 LLM 응답을 받는 경로를 확보.</p></div>
     </div>
   </div>
 </section>
@@ -352,8 +352,8 @@
     <p class="toolcap"><b>도구 1</b> · Obsidian 로컬 AI 작업 환경</p>
     <div class="two sec-foot">
       <div>
-        <h2 class="h2">모델보다 중요한 건 연결 구조</h2>
-        <p class="prose" style="margin-top:20px;">Obsidian의 현재 노트를 <strong>AntiGravity 플러그인</strong>이 프롬프트에 자동으로 넣고, <strong>Ollama가 Gemma 4</strong>를 로컬에서 돌려 답을 다시 노트에 꽂는다. 따로 복붙하지 않아도 지금 작업 중인 맥락 위에서 바로 답이 나온다. 질문 자체보다 "현재 작업 맥락"을 모델에 어떻게 붙이느냐가 체감 품질을 갈랐다.</p>
+        <h2 class="h2">컨텍스트 주입 경로가 응답 정확도를 좌우</h2>
+        <p class="prose" style="margin-top:20px;">Obsidian의 현재 활성 노트를 <strong>AntiGravity 플러그인</strong>이 프롬프트에 자동 주입하고, <strong>Ollama 로컬 모델</strong>이 응답을 같은 노트에 삽입한다. 별도 복붙 없이 현재 작업 컨텍스트 위에서 응답이 생성된다. 동일 질문이라도 작업 컨텍스트가 함께 주입될 때 응답 정확도가 측정 가능하게 향상됐다.</p>
         <div class="ministats">
           <span class="ms"><b>2.1s</b> 평균 응답 (M2 Air)</span>
           <span class="ms"><b>$0</b> 운용 비용</span>
@@ -409,8 +409,8 @@
   <div class="wrap">
     <p class="toolcap"><b>도구 2</b> · 상한가 분석 블로그 자동화 — 오케스트레이션</p>
     <div class="col sec-foot">
-      <h2 class="h2">자율 에이전트가 아닌, 크론으로 도는 오케스트레이션</h2>
-      <p class="prose" style="margin-top:20px;">매일 같은 시간, <strong>크론탭</strong>이 파이프라인을 깨운다. API로 데이터를 크롤링하고, 그 자료로 프롬프트를 구성해 <strong>Ollama 로컬 모델이 초안</strong>을 쓰고, <strong>GPT·Claude·Gemini가 교차 검증</strong>해 환각·잘못된 정보를 걸러내고 품질을 끌어올린 뒤 업로드한다. 단계와 검증 게이트가 고정돼 있어 매번 같은 순서로 재현되고, 어디서 멈췄는지 추적할 수 있다 — "스스로 판단하는 에이전트"보다 신뢰 가능한 <strong>결정론적 오케스트레이션</strong>을 택했다.</p>
+      <h2 class="h2">자율 에이전트 대신 결정론적 오케스트레이션</h2>
+      <p class="prose" style="margin-top:20px;">매일 정해진 시각에 <strong>cron</strong>이 파이프라인을 트리거한다. 6개 소스(DART·Naver 금융·Google News 등) 병렬 크롤링 → 이슈 점수 산정으로 종목 선정(최대 3개) → RAG로 과거 220개 글 중 섹터 일치 2개 주입 → <strong>Ollama exaone3.5(7.8B)</strong> 초안 → 7단 검증(형식·팩트·구조모순 13룰·자동교정·<strong>Gemini 5기준 평가</strong>·Claude 보조) → 통과 글만 발행. LLM이 다음 단계를 판단하는 비결정적 라우팅 대신, 단계와 게이트가 고정된 결정론적 파이프라인으로 설계해 재현성과 디버깅 가능성을 확보했다.</p>
     </div>
     <figure class="rag-flow sec-foot" aria-label="블로그 자동화 파이프라인 다이어그램">
       <svg viewBox="0 0 1110 230" xmlns="http://www.w3.org/2000/svg">
@@ -612,7 +612,7 @@
     <div class="insight sec-foot">
       <div class="il">발견 · v4~6</div>
       <h3>RAG는 사실이 아니라 '글 품질'에 사용</h3>
-      <p>처음엔 사실 검색까지 벡터로 하려 했다. 그런데 <strong>DART 사업보고서처럼 표·항목 구조가 강한 문서</strong>에선, 의미 유사도로 찾은 청크보다 <strong>정규식·API 기반 구조 추출이 더 정확</strong>했다. 그래서 역할을 갈랐다 — 숫자·항목 같은 <strong>사실은 API·정규식</strong>으로 정확히 뽑고, <strong>RAG는 내가 예전에 발행한 양질의 글 220개를 참고</strong>해 새 글의 톤·구성 품질을 그 수준으로 끌어올리는 데만 썼다. 트렌디해서 RAG를 쓰는 게 아니라, RAG가 잘하는 일(품질 참고)에만 맡긴 것이다.</p>
+      <p>초기에는 사실 검색까지 벡터 유사도로 처리하려 했다. 그러나 <strong>DART 사업보고서처럼 표·항목 구조가 고정된 문서</strong>에서는 정규식·API 기반 구조 추출이 의미 유사도 검색보다 정확도가 높았다. 따라서 역할을 분리했다 — <strong>수치·항목 등 사실은 API·정규식</strong>으로 추출하고, <strong>RAG는 직접 발행한 220개 글의 톤·구성 참고</strong>에만 한정했다. 벡터 검색의 약점이 명확한 영역과 강점이 명확한 영역을 각각 다른 도구에 할당한 설계.</p>
 
       <figure class="rag-flow" aria-label="RAG 역할 분리 다이어그램">
         <svg viewBox="0 0 1000 420" xmlns="http://www.w3.org/2000/svg">
@@ -740,13 +740,13 @@
   <div class="wrap">
     <div class="col">
       <p class="eyebrow">로컬 모델의 한계</p>
-      <h2 class="h2">장점보다 먼저, 한계를 확인했다.</h2>
-      <p class="prose sec-foot">로컬이라서 다 되는 건 아니었다. 어디까지 로컬로 충분하고 어디부터 클라우드가 필요한지 직접 부딪혀 익혔고, 그게 '로컬 초안 + 클라우드 검증'이라는 하이브리드 설계로 이어졌다.</p>
+      <h2 class="h2">로컬 LLM의 한계 — 측정 후 분리</h2>
+      <p class="prose sec-foot">로컬 모델로 모든 작업을 처리할 수는 없었다. 어디까지 로컬로 충분하고 어디부터 클라우드가 필요한지를 측정해, '로컬 초안 + 클라우드 검증' 분리 설계로 수렴했다.</p>
     </div>
     <div class="thi cols3 sec-foot">
-      <div class="c"><div class="k">한계 01</div><h3>긴 컨텍스트에 약하다</h3><p>2,000 토큰이 넘는 입력은 응답 품질이 급격히 떨어졌다. 긴 문서는 결국 청킹·전처리가 필요했다.</p></div>
-      <div class="c"><div class="k">한계 02</div><h3>한국어 품질 격차</h3><p>영어보다 한국어 응답이 눈에 띄게 약했다. 모델 선택 기준에 "내 언어에서 쓸 만한가"를 넣어야 했다.</p></div>
-      <div class="c"><div class="k">그래서</div><h3>하이브리드가 답이었다</h3><p>완벽한 대체가 아니라, 로컬로 충분한 곳(초안·개인 데이터)과 클라우드가 나은 곳(검증·품질)을 나눴다.</p></div>
+      <div class="c"><div class="k">한계 01</div><h3>긴 컨텍스트 처리 저하</h3><p>2,000 토큰을 초과하는 입력에서 응답 품질이 급격히 저하됐다. 긴 문서는 청킹·전처리 단계가 필수.</p></div>
+      <div class="c"><div class="k">한계 02</div><h3>한국어 응답 품질 격차</h3><p>동일 입력에서 영어 대비 한국어 응답 품질이 낮음. 모델 선택 기준에 "사용 언어에서의 출력 품질"을 명시 항목으로 포함.</p></div>
+      <div class="c"><div class="k">결과</div><h3>역할 분리 설계로 수렴</h3><p>로컬: 초안 생성 + 민감 데이터 처리. 클라우드: 검증 + 고난도 평가. 완전 대체가 아닌 영역별 적합 도구 할당.</p></div>
     </div>
   </div>
 </section>
