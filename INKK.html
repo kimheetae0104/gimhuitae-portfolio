@@ -118,8 +118,9 @@
   }
 
   /* readable body block */
-  .prose{ font-size:clamp(17px,1.9vw,20px); line-height:1.72; color:var(--ink-2); max-width:42em; text-wrap:pretty; }
+  .prose{ font-size:clamp(17px,1.9vw,20px); line-height:1.95; color:var(--ink-2); max-width:42em; text-wrap:pretty; letter-spacing:-.012em; }
   .prose + .prose{ margin-top:16px; }
+  .narrow .prose br{ display:block; content:""; margin-top:.4em; }
   .prose strong{ color:var(--ink); font-weight:600; }
   .cite{ font-size:13px; color:var(--ink-3); margin-top:20px; line-height:1.6; }
 
@@ -430,7 +431,7 @@
       <h2 class="h2">ChatGPT로도 카드뉴스는 나온다.<br><span class="grad">발행 가능한 톤</span>까지는 나오지 않을 뿐.</h2>
     </div>
     <div class="narrow center sec-foot">
-      <p class="prose">글은 그럴듯하게 나온다. 그런데 5장 흐름·폰트·강조 위치가 매번 달라서, 그대로 인스타에 올리면 어색하다. 캔바를 열어 손으로 다듬어야 하지만, 일반 사용자는 그 단계에서 막힌다.</p>
+      <p class="prose">글은 그럴듯하게 나온다.<br>그런데 5장 흐름·폰트·강조 위치가 매번 달라서,<br>그대로 인스타에 올리면 어색하다.<br>캔바를 열어 손으로 다듬어야 하지만, 일반 사용자는 그 단계에서 막힌다.</p>
     </div>
   </div>
 </section>
