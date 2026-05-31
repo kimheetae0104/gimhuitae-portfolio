@@ -228,7 +228,7 @@
   .thi .c::before{ content:""; position:absolute; left:0; top:22px; bottom:22px; width:3px; border-radius:0 3px 3px 0; background:var(--accent); }
   .thi .c .k{ font-size:12px; font-weight:600; color:var(--accent); }
   .thi .c h3{ font-size:19px; font-weight:600; letter-spacing:-.02em; margin:10px 0 8px; line-height:1.3; }
-  .thi .c p{ font-size:14.5px; color:var(--ink-2); line-height:1.62; margin:0; }
+  .thi .c p{ font-size:14.5px; color:var(--ink-2); line-height:1.78; margin:0; letter-spacing:-.01em; }
   @media(max-width:740px){ .thi{ grid-template-columns:1fr; } }
 
   /* centered stack helpers — one center axis per scene */
@@ -270,7 +270,7 @@
     display:flex; flex-direction:column; gap:12px; box-shadow:0 14px 34px rgba(0,0,0,.05); }
   .pcard .ps{ font-size:13px; font-weight:600; color:var(--accent); }
   .pcard h3{ font-size:20px; font-weight:600; letter-spacing:-.02em; margin:0; line-height:1.25; text-wrap:balance; }
-  .pcard p{ font-size:14px; color:var(--ink-2); line-height:1.7; margin:0; }
+  .pcard p{ font-size:14px; color:var(--ink-2); line-height:1.8; margin:0; letter-spacing:-.01em; }
   .pcard ul{ list-style:none; padding:0; margin:0; display:grid; gap:8px; font-size:14px; color:var(--ink-2); line-height:1.55; }
   .pcard ul li{ position:relative; padding-left:14px; }
   .pcard ul li::before{ content:"·"; position:absolute; left:2px; top:-2px; color:var(--accent); font-size:18px; font-weight:800; }
@@ -289,10 +289,10 @@
   .enote p strong{ color:var(--ink); font-weight:600; }
   .enote code{ font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:.88em; background:rgba(0,0,0,.05);
     padding:.1em .4em; border-radius:5px; color:var(--ink); }
-  .enote .esum{ font-size:16px; color:var(--ink); font-weight:600; line-height:1.55; margin:0 0 14px; padding:12px 16px;
+  .enote .esum{ line-height:1.75; letter-spacing:-.01em;  font-size:16px; color:var(--ink); font-weight:600; line-height:1.55; margin:0 0 14px; padding:12px 16px;
     background:rgba(0,0,0,.035); border-left:3px solid var(--accent); border-radius:0 8px 8px 0; }
   .enote ul.espec{ list-style:none; padding:0; margin:0; display:grid; gap:10px; }
-  .enote ul.espec li{ position:relative; padding-left:18px; font-size:15.5px; color:var(--ink-2); line-height:1.7; }
+  .enote ul.espec li{ position:relative; padding-left:18px; font-size:15.5px; color:var(--ink-2); line-height:1.78; letter-spacing:-.01em; }
   .enote ul.espec li::before{ content:"▸"; position:absolute; left:0; top:0; color:var(--accent); font-weight:700; }
   .enote ul.espec li b{ color:var(--ink); font-weight:600; }
 
@@ -410,8 +410,8 @@
       </div>
     </div>
     <div class="thi">
-      <div class="c"><div class="k">핵심 기술 01</div><h3>LLM 출력 일관성 보장 파이프라인</h3><p>장별 역할 분리 프롬프트 → 휴리스틱 점수 평가 → 자동 재생성 → 후처리 + 레이아웃 자동 매핑. 4단 파이프라인으로 LLM 출력의 분산을 흡수.</p></div>
-      <div class="c"><div class="k">핵심 기술 02</div><h3>LLM 평가·재생성 자동화 시스템</h3><p>점수 미달이면 사유와 함께 자동 재호출(max retry 캡), 통과 후 후처리·레이아웃 매핑까지 한 흐름. 결정론적 평가로 품질을 사용자에게 보내기 전 한 번 더 거른다.</p></div>
+      <div class="c"><div class="k">핵심 기술 01</div><h3>LLM 출력 일관성 보장 파이프라인</h3><p>LLM 출력을 그대로 사용자에게 보내지 않는다. 장별로 다른 프롬프트를 주고, 결과를 점수로 평가해 부족하면 다시 만들고, 마지막에 레이아웃까지 자동으로 맞춘다.</p></div>
+      <div class="c"><div class="k">핵심 기술 02</div><h3>LLM 평가·재생성 자동화 시스템</h3><p>휴리스틱 점수로 출력 품질을 검증한다. 임계값에 못 미치면 사유와 함께 다시 만들고, 통과한 결과만 후처리와 레이아웃 매핑을 거쳐 사용자에게 나간다.</p></div>
     </div>
 
     <div class="pmeta">
@@ -469,25 +469,25 @@
       <div class="pcard">
         <div class="ps">01 · 역할 분리 프롬프트</div>
         <h3>장마다 다른 지시</h3>
-        <p>커버는 훅 카피, 본문은 사실·수치, 마지막은 저장 유도. 장마다 다른 system prompt.</p>
+        <p>장마다 역할을 따로 지시한다. 커버는 스크롤을 멈추는 훅, 본문은 사실과 수치, 마지막은 저장과 공유 유도.</p>
         <div class="tags"><span class="tag">프롬프트</span><span class="tag">기승전결</span></div>
       </div>
       <div class="pcard">
         <div class="ps">02 · 반례 차단</div>
         <h3>밋밋한 표현은 미리 제외</h3>
-        <p>흔한 추상 표현을 반례로 박고, 강한 카피 패턴은 예시(few-shot)로 제시.</p>
+        <p>"중요하다·필요하다" 같은 추상 표현은 프롬프트 반례로 박아 차단한다. 강한 카피 패턴은 예시로 함께 제시해 학습시킨다.</p>
         <div class="tags"><span class="tag">Few-shot</span><span class="tag">반례 학습</span></div>
       </div>
       <div class="pcard">
         <div class="ps">03 · 점수 평가</div>
         <h3>통과 못 하면 자동 재생성</h3>
-        <p>형식·언어·수치·CTA 항목 점수 합산. 임계값 미만이면 사유와 함께 자동 재호출.</p>
+        <p>헤딩 길이, 언어 오염, 수치 포함, CTA 누락을 점수로 매긴다. 임계값에 못 미치면 어디서 감점됐는지 사유와 함께 재생성한다.</p>
         <div class="tags"><span class="tag">휴리스틱</span><span class="tag">재생성</span></div>
       </div>
       <div class="pcard">
         <div class="ps">04 · 레이아웃 매핑</div>
         <h3>글 길이에 맞춰 자동 선택</h3>
-        <p>풀블리드·상하 2중·좌우 2중·4중 그리드·오버레이 5종 중 글 길이로 자동 선택.</p>
+        <p>풀블리드, 상하 2중, 좌우 2중, 4중 그리드, 오버레이 캡션 5종 중 글 길이에 맞는 레이아웃을 자동으로 고른다.</p>
         <div class="tags"><span class="tag">자동 매핑</span><span class="tag">5종 레이아웃</span></div>
       </div>
     </div>
@@ -651,10 +651,11 @@ sequenceDiagram
 <div class="enote">
         <div class="el">LLM 품질 시스템</div>
         <h3>프롬프트 한 방 의존 제거 → 4단 평가 파이프라인</h3>
-        <p class="esum">LLM 출력의 비결정성을 점수 평가 + 재생성 + 후처리로 흡수.</p>
+        <p class="esum">같은 입력에도 LLM 결과가 매번 달라지는 문제를 점수 평가와 자동 재생성, 결정론적 후처리로 흡수했다.</p>
         <ul class="espec">
-          <li><b>역할 분리 + 휴리스틱 평가</b> · 장별 system prompt + 항목별 점수 → 미달 시 재호출 (max retry)</li>
-          <li><b>결정론적 후처리</b> · sanitize + 길이 기반 레이아웃 매핑으로 출력 편차 흡수</li>
+          <li><b>역할 분리 프롬프트</b> · 장마다 다른 system prompt와 반례로 평행 슬라이드를 차단한다.</li>
+          <li><b>휴리스틱 평가와 재생성</b> · 항목별 점수가 임계값에 못 미치면 사유와 함께 자동 재호출 (max retry 캡).</li>
+          <li><b>결정론적 후처리</b> · sanitize와 길이 기반 레이아웃 매핑으로 LLM 출력의 길이 편차를 흡수한다.</li>
         </ul>
         <div class="seq" aria-label="LLM 품질 시스템 흐름">
           <div class="nd"><span class="s">INPUT</span><span class="h">긴 글</span></div>
@@ -674,10 +675,11 @@ sequenceDiagram
       <div class="enote">
         <div class="el">LLM 비용 · 라우팅</div>
         <h3>모델 추상화 + 안전 모드 폴백으로 비용 사고 차단</h3>
-        <p class="esum">비용·외부 의존성을 환경 설정으로 통제. 운영 중 모델 교체 가능.</p>
+        <p class="esum">LLM 비용과 외부 API 의존성을 코드가 아닌 환경 설정으로 제어해 운영 중에도 모델 교체가 가능하게 만들었다.</p>
         <ul class="espec">
-          <li><b>프로바이더 추상화 + 폴백</b> · Claude/Groq/로컬 단일 인터페이스, 키 부재·한도 초과 시 mock 폴백</li>
-          <li><b>비용 가드</b> · 사용자별 호출 제한 + 응답 timeout으로 단발 폭주 방어</li>
+          <li><b>프로바이더 추상화</b> · Claude, Groq, 로컬 모델을 단일 인터페이스로 래핑해 런타임 교체가 가능하다.</li>
+          <li><b>자동 폴백</b> · 키 부재나 한도 초과 시 안전 모드로 즉시 폴백해 비용 사고를 차단한다.</li>
+          <li><b>비용 가드</b> · 사용자별 호출 제한과 응답 timeout으로 단발 비용 폭주를 막는다.</li>
         </ul>
         <div class="seq" aria-label="LLM 프로바이더 라우팅">
           <div class="nd"><span class="s">REQ</span><span class="h">생성 요청</span></div>
@@ -693,10 +695,11 @@ sequenceDiagram
       <div class="enote">
         <div class="el">보안 · 데이터 격리</div>
         <h3>RLS + SSRF 가드 + 출처 검증 다층 적용</h3>
-        <p class="esum">사용자 데이터를 다루는 만큼 보안 기본기를 다층으로.</p>
+        <p class="esum">사용자 데이터와 외부 호출이 섞이는 구간을 다층 게이트로 묶었다.</p>
         <ul class="espec">
-          <li><b>RLS + CSRF</b> · Supabase 행 단위 격리 + Origin 검증으로 외부 위변조 차단</li>
-          <li><b>SSRF 가드</b> · 이미지 프록시 호스트 화이트리스트 + 내부망 IP 차단</li>
+          <li><b>행 단위 격리</b> · Supabase RLS로 사용자별 데이터 행을 분리한다.</li>
+          <li><b>출처 검증</b> · CSRF 토큰과 Origin 헤더 검증으로 외부 위변조 요청을 차단한다.</li>
+          <li><b>SSRF 가드</b> · 이미지 프록시는 허용 호스트만 통과시키고 내부망 IP를 차단한다.</li>
         </ul>
         <div class="seq" aria-label="보안 다층 게이트">
           <div class="nd"><span class="s">CLIENT</span><span class="h">사용자 요청</span></div>
@@ -724,12 +727,12 @@ sequenceDiagram
       <div class="lcard learned">
         <div class="lt">의심 말고 측정부터</div>
         <h3>병목은 DB가 아니라 함수 지역이었다</h3>
-        <p>API가 느려서 DB를 의심했지만 측정 결과 함수 지역(미국) 문제. <b>서울로 한 줄 변경 → 응답 수 배 단축.</b></p>
+        <p>API 응답이 느려 처음엔 DB 문제로 의심했다. 측정해 보니 서버리스 함수가 미국 지역에 있어 매번 태평양을 왕복하고 있었고, 함수 지역을 서울로 옮기는 한 줄 변경으로 <b>응답이 수 배 빨라졌다</b>.</p>
       </div>
       <div class="lcard warn">
         <div class="lt">만들지 않기로 한 결정</div>
         <h3>'카드 1장만 다시 만들기'는 빼기</h3>
-        <p>한 장 재생성 비용이 새 덱과 거의 같고 수동 편집으로 대체 가능. 우선순위를 코드보다 유입에.</p>
+        <p>"카드 1장만 다시 만들기" 기능을 검토했지만, 한 장 재생성 비용이 새 덱과 거의 같았고 사용자는 수동 편집으로 같은 결과를 만들 수 있었다. <b>만들지 않기로 결정</b>했다.</p>
       </div>
     </div>
   </div>
@@ -748,12 +751,12 @@ sequenceDiagram
       <div class="ncard product">
         <div class="lt">개선 방향 · 제품</div>
         <h3>레이아웃 + 카피 패턴 확장</h3>
-        <p>레이아웃·카피 패턴 라이브러리 확장. 결과 데이터로 패턴 학습. 업종별 프리셋 추가.</p>
+        <p>레이아웃과 카피 패턴 라이브러리를 확장한다. 사용자가 실제로 저장하는 카드 데이터로 어떤 패턴이 잘 통하는지 학습시키고, 업종별 프리셋을 추가한다.</p>
       </div>
       <div class="ncard biz">
         <div class="lt">수익화 · 비즈니스</div>
         <h3>크레딧 충전 모델</h3>
-        <p>크레딧 충전 모델(적용 완료). 팀 플랜 · API 제공으로 확장 예정.</p>
+        <p>크레딧 충전 결제는 이미 적용되어 있다. 다음은 팀 플랜으로 여러 명이 같은 톤·프리셋으로 발행하는 흐름, 그리고 외부 자동화에 연결할 수 있는 API 제공이다.</p>
       </div>
     </div>
   </div>
