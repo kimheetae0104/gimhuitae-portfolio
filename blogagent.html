@@ -363,7 +363,7 @@
     <div class="two sec-foot">
       <div>
         <h2 class="h2">컨텍스트 주입 경로가 응답 정확도를 좌우</h2>
-        <p class="prose" style="margin-top:20px;">Obsidian의 현재 활성 노트를 <strong>AntiGravity 플러그인</strong>이 프롬프트에 자동 주입하고, <strong>Ollama가 Gemma 4</strong>를 로컬에서 실행해 응답을 같은 노트에 삽입한다. 별도 복붙 없이 현재 작업 컨텍스트 위에서 응답이 생성된다. 동일 질문이라도 작업 컨텍스트가 함께 주입될 때 응답 정확도가 측정 가능하게 향상됐다.</p>
+        <p class="prose" style="margin-top:20px;">Obsidian의 현재 활성 노트가 <strong>AntiGravity 플러그인</strong>을 통해 프롬프트에 자동 주입된다. <strong>Ollama가 Gemma 4</strong>를 로컬에서 실행해 응답을 같은 노트에 다시 삽입한다.<br/><br/>별도 복붙 없이 현재 작업 컨텍스트 위에서 응답이 생성되는 구조. 동일 질문이라도 작업 컨텍스트가 함께 주입될 때 <strong>응답 정확도가 측정 가능하게 향상</strong>됐다.</p>
         <div class="ministats">
           <span class="ms"><b>2.1s</b> 평균 응답 (M2 Air)</span>
           <span class="ms"><b>$0</b> 운용 비용</span>
@@ -419,7 +419,7 @@
     <p class="toolcap"><b>도구 2</b> · 상한가 분석 블로그 자동화 — 오케스트레이션</p>
     <div class="col sec-foot">
       <h2 class="h2">자율 에이전트 대신 결정론적 오케스트레이션</h2>
-      <p class="prose" style="margin-top:20px;">매일 정해진 시각에 <strong>cron</strong>이 파이프라인을 트리거한다. 6개 소스(DART·Naver 금융·Google News 등) 병렬 크롤링 → 이슈 점수 산정으로 종목 선정(최대 3개) → RAG로 과거 220개 글 중 섹터 일치 2개 주입 → <strong>Ollama exaone3.5(7.8B)</strong> 초안 → 7단 검증(형식·팩트·구조모순 13룰·자동교정·<strong>Gemini 5기준 평가</strong>·Claude 보조) → 통과 글만 발행. LLM이 다음 단계를 판단하는 비결정적 라우팅 대신, 단계와 게이트가 고정된 결정론적 파이프라인으로 설계해 재현성과 디버깅 가능성을 확보했다.</p>
+      <p class="prose" style="margin-top:20px;">LLM이 다음 단계를 판단하는 <strong>비결정적 라우팅</strong> 대신, 단계와 검증 게이트가 고정된 <strong>결정론적 파이프라인</strong>으로 설계했다.<br/><br/>매번 같은 순서로 재현되고, 어디서 멈췄는지 추적할 수 있다. 전체 흐름은 아래 다이어그램에 정리.</p>
     </div>
     <figure class="rag-flow sec-foot" aria-label="블로그 자동화 파이프라인 다이어그램">
       <svg viewBox="0 0 1110 230" xmlns="http://www.w3.org/2000/svg">
@@ -495,9 +495,8 @@
       <figcaption>매일 cron이 깨우는 고정 파이프라인 · <span class="mt">RAG는 품질 참고</span>, <span class="cy">검증 게이트</span> 통과한 글만 배포</figcaption>
     </figure>
     <div class="ministats">
-      <span class="ms"><b>220개 글</b> — 직접 발행한 과거 글(RAG 코퍼스)</span>
-      <span class="ms"><b>6개 소스</b> API 크롤링 — DART·Naver</span>
-      <span class="ms"><b>4~6분</b> (수동 2시간 대비)</span>
+      <span class="ms"><b>4~6분</b> 자동 실행 (수동 2시간 대비)</span>
+      <span class="ms"><b>MAX_RETRIES=2</b> · critical 차단 시 0건 배포</span>
     </div>
 
     <div class="techstack">
@@ -636,10 +635,6 @@
         </figcaption>
       </figure>
 
-      <div class="versus">
-        <div class="vs win"><div class="vt">사실 · 수치 → API·정규식 ✓</div><p>DART 표·항목처럼 구조가 고정된 곳에서 수치를 정확히 집어낸다.</p></div>
-        <div class="vs win"><div class="vt">톤 · 구성 → RAG ✓</div><p>직접 발행한 220개 글을 참고해 새 글의 톤·구성을 일관되게 유지한다. 각 도구의 강점 영역에 한정.</p></div>
-      </div>
     </div>
 
     <div class="sec-foot">
@@ -654,7 +649,7 @@
       </div>
       <div class="zero">
         <div class="z">5단계</div>
-        <p>고성능 단일 모델을 탐색하는 대신 <b>틀린 글이 통과하지 못하는 구조</b>를 먼저 설계했다. Gemini·Claude 검증이 critical 판정을 내리면 자동 배포가 중단된다. 수치 환각 대부분을 배포 전 단계에서 차단하지만 0%까지는 도달하지 못해, 검증 룰셋은 지속 보강 중이다.</p>
+        <p>고성능 단일 모델 탐색 대신 <b>틀린 글이 통과하지 못하는 구조</b>를 먼저 설계했다. 환각 0%에는 도달하지 못해 검증 룰셋은 지속 보강 중.</p>
       </div>
     </div>
 
