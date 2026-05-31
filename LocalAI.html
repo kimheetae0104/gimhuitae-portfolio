@@ -50,9 +50,29 @@
   code{ font-family:var(--mono); font-size:.86em; background:rgba(255,255,255,.07); color:var(--accent-2); padding:.1em .4em; border-radius:5px; }
 
   .hero{ padding-top:clamp(62px,9vh,104px); position:relative; overflow:hidden; }
-  .hero::before{ content:""; position:absolute; left:50%; top:8%; width:680px; height:420px; transform:translateX(-50%);
-    background:radial-gradient(closest-side, rgba(77,163,255,.16), transparent 72%); filter:blur(10px); pointer-events:none; }
-  .hero .wrap{ position:relative; }
+  .hero::before{ content:""; position:absolute; left:50%; top:6%; width:780px; height:540px; transform:translateX(-50%);
+    background:radial-gradient(closest-side, rgba(77,163,255,.22), rgba(134,194,255,.08) 45%, transparent 72%); filter:blur(14px); pointer-events:none; z-index:0; }
+  .hero::after{ content:""; position:absolute; right:-180px; top:30%; width:520px; height:520px;
+    background:radial-gradient(closest-side, rgba(70,211,154,.10), transparent 70%); filter:blur(20px); pointer-events:none; z-index:0; }
+  .hero .wrap{ position:relative; z-index:1; }
+
+  /* ── neural mesh (제 2의 뇌 컨셉) ───────────────────────── */
+  .neural{ position:absolute; right:-60px; top:80px; width:560px; height:380px; pointer-events:none;
+    z-index:0; opacity:.78; mix-blend-mode:screen; }
+  .neural svg{ width:100%; height:100%; overflow:visible; }
+  .neural .edge{ stroke:rgba(134,194,255,.28); stroke-width:.6; fill:none; }
+  .neural .edge.live{ stroke:rgba(134,194,255,.85); stroke-width:1; stroke-dasharray:4 60; animation:flow 3.4s linear infinite; }
+  .neural .node{ fill:#86C2FF; filter:drop-shadow(0 0 4px rgba(77,163,255,.9)); }
+  .neural .node.pulse{ animation:pulse 2.8s ease-in-out infinite; transform-origin:center; transform-box:fill-box; }
+  .neural .node.green{ fill:#46D39A; filter:drop-shadow(0 0 5px rgba(70,211,154,.85)); }
+  @keyframes pulse{ 0%,100%{ opacity:.55; transform:scale(1);} 50%{ opacity:1; transform:scale(1.45);} }
+  @keyframes flow{ to { stroke-dashoffset:-200; } }
+  @media(max-width:900px){ .neural{ display:none; } }
+
+  /* glass cards — 다크 위에서 살짝 떠 보이게 */
+  .kpi{ backdrop-filter:blur(12px) saturate(120%); box-shadow:inset 0 1px 0 rgba(255,255,255,.04); }
+  .thi .c{ backdrop-filter:blur(14px) saturate(120%); box-shadow:inset 0 1px 0 rgba(255,255,255,.05), 0 1px 2px rgba(0,0,0,.3); }
+  .pmeta .m{ backdrop-filter:blur(10px); box-shadow:inset 0 1px 0 rgba(255,255,255,.03); }
   .hero .url{ font-family:var(--mono); font-size:14px; color:var(--ink-3); margin:16px 0 0; }
   .thi{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:24px; }
   .thi .c{ background:var(--card); border:1px solid var(--line); border-radius:var(--rad); padding:24px 26px; position:relative; }
@@ -180,6 +200,58 @@
 
 <!-- HERO -->
 <section class="hero">
+  <div class="neural" aria-hidden="true">
+    <svg viewBox="0 0 560 380" xmlns="http://www.w3.org/2000/svg">
+      <!-- edges -->
+      <g>
+        <path class="edge" d="M60,180 L120,110"/>
+        <path class="edge" d="M60,180 L130,200"/>
+        <path class="edge" d="M120,110 L180,80"/>
+        <path class="edge live" d="M120,110 L200,160"/>
+        <path class="edge" d="M180,80 L240,60"/>
+        <path class="edge live" d="M180,80 L260,140"/>
+        <path class="edge" d="M240,60 L320,70"/>
+        <path class="edge" d="M240,60 L280,130"/>
+        <path class="edge live" d="M280,130 L360,110"/>
+        <path class="edge" d="M280,130 L260,200"/>
+        <path class="edge" d="M320,70 L400,90"/>
+        <path class="edge" d="M360,110 L440,130"/>
+        <path class="edge live" d="M360,110 L420,200"/>
+        <path class="edge" d="M400,90 L480,70"/>
+        <path class="edge" d="M440,130 L500,180"/>
+        <path class="edge" d="M260,200 L200,260"/>
+        <path class="edge live" d="M260,200 L340,260"/>
+        <path class="edge" d="M200,160 L130,200"/>
+        <path class="edge" d="M200,160 L200,260"/>
+        <path class="edge" d="M130,200 L160,290"/>
+        <path class="edge" d="M200,260 L160,290"/>
+        <path class="edge" d="M340,260 L420,200"/>
+        <path class="edge live" d="M340,260 L380,320"/>
+        <path class="edge" d="M420,200 L500,180"/>
+      </g>
+      <!-- nodes -->
+      <circle class="node" cx="60"  cy="180" r="3"/>
+      <circle class="node pulse" cx="120" cy="110" r="3.5" style="animation-delay:0s"/>
+      <circle class="node" cx="180" cy="80"  r="3"/>
+      <circle class="node" cx="240" cy="60"  r="3"/>
+      <circle class="node pulse green" cx="320" cy="70"  r="4" style="animation-delay:.6s"/>
+      <circle class="node" cx="400" cy="90"  r="3"/>
+      <circle class="node" cx="480" cy="70"  r="3"/>
+      <circle class="node pulse" cx="200" cy="160" r="3.5" style="animation-delay:1.2s"/>
+      <circle class="node" cx="260" cy="140" r="3"/>
+      <circle class="node pulse" cx="280" cy="130" r="3.5" style="animation-delay:.3s"/>
+      <circle class="node" cx="360" cy="110" r="3"/>
+      <circle class="node" cx="440" cy="130" r="3"/>
+      <circle class="node pulse green" cx="500" cy="180" r="4" style="animation-delay:1.8s"/>
+      <circle class="node" cx="130" cy="200" r="3"/>
+      <circle class="node pulse" cx="260" cy="200" r="3.5" style="animation-delay:.9s"/>
+      <circle class="node" cx="340" cy="260" r="3"/>
+      <circle class="node" cx="420" cy="200" r="3"/>
+      <circle class="node" cx="200" cy="260" r="3"/>
+      <circle class="node pulse" cx="160" cy="290" r="3.5" style="animation-delay:2.1s"/>
+      <circle class="node pulse green" cx="380" cy="320" r="4" style="animation-delay:1.5s"/>
+    </svg>
+  </div>
   <div class="wrap">
     <p class="eyebrow">로컬 LLM · 워크플로우 자동화</p>
     <h1 class="title">Local AI</h1>
