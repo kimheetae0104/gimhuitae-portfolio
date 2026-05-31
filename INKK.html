@@ -67,7 +67,7 @@
 
   /* ──── 엔지니어링 미니 시퀀스 다이어그램 ──── */
   .seq{ display:flex; align-items:stretch; gap:0; margin-top:16px; flex-wrap:wrap; }
-  .seq .nd{ flex:1 1 0; min-width:90px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:10px 12px; display:flex; flex-direction:column; gap:4px; position:relative; }
+  .seq .nd{ flex:1 1 0; min-width:90px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:12px 14px; display:flex; flex-direction:column; gap:4px; position:relative; box-shadow:0 1px 2px rgba(0,0,0,.04); }
   .seq .nd.dim{ background:var(--alt); border-style:dashed; color:var(--ink-3); }
   .seq .nd.hl{ background:var(--ink); color:#fff; border-color:var(--ink); }
   .seq .nd.alt{ background:var(--alt); }
@@ -290,8 +290,8 @@
   .enote p strong{ color:var(--ink); font-weight:600; }
   .enote code{ font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:.88em; background:rgba(0,0,0,.05);
     padding:.1em .4em; border-radius:5px; color:var(--ink); }
-  .enote .esum{ line-height:1.75; letter-spacing:-.01em;  font-size:16px; color:var(--ink); font-weight:600; line-height:1.55; margin:0 0 14px; padding:12px 16px;
-    background:rgba(0,0,0,.035); border-left:3px solid var(--accent); border-radius:0 8px 8px 0; }
+  .enote .esum{ font-size:16px; color:var(--ink); font-weight:600; line-height:1.7; letter-spacing:-.01em; margin:0 0 14px; padding:14px 18px;
+    background:#fff; border-left:3px solid var(--ink); border-radius:0 8px 8px 0; box-shadow:0 1px 2px rgba(0,0,0,.04); }
   .enote ul.espec{ list-style:none; padding:0; margin:0; display:grid; gap:10px; }
   .enote ul.espec li{ position:relative; padding-left:18px; font-size:15.5px; color:var(--ink-2); line-height:1.78; letter-spacing:-.01em; }
   .enote ul.espec li::before{ content:"▸"; position:absolute; left:0; top:0; color:var(--accent); font-weight:700; }
