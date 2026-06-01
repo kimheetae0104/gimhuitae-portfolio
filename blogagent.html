@@ -316,7 +316,7 @@
       <text class="nodesub"      x="432" y="211">429 폴백</text>
       <path class="box cloud" d="M420,290 L548,290 L548,326 L420,326 L420,296 L426,290 Z"/>
       <text class="nodename dim" x="432" y="309">CLAUDE API</text>
-      <text class="nodesub"      x="432" y="321">보조 검증</text>
+      <text class="nodesub"      x="432" y="321">최종 작성·업로드</text>
 
       <path class="wire live" d="M138,88  C 170,88  180,170 200,180"/>
       <path class="wire live" d="M138,158 C 170,158 180,195 200,200"/>
@@ -340,17 +340,17 @@
     <p class="eyebrow">블로그 자동화 · 로컬 LLM</p>
     <h1 class="title">Blog Agent</h1>
     <p class="lead">개인 데이터를 외부로 보내지 않고, <span class="accent-word">검증까지 자동으로 도는</span> 블로그 파이프라인을 직접 만들었다.</p>
-    <p class="url">Ollama 위에 exaone3.5 7.8B를 로컬로 돌리고, Gemini와 Claude로 7단 검증.</p>
+    <p class="url">Ollama 위에 exaone3.5 7.8B로 초안을 쓰고, Gemini로 검증한 뒤 Claude가 최종 글을 다듬어 업로드.</p>
 
     <div class="thi">
       <div class="c"><div class="k">핵심 기술 01</div><h3>RAG 역할 분리</h3><p>사실·수치는 <strong>DART API와 정규식</strong>으로 뽑는다. RAG는 직접 발행한 <strong>220개 글에서 톤·구성을 참고하는 용도</strong>로만 쓴다.<br/><br/>벡터 검색이 약한 곳(구조화 문서)과 강한 곳(스타일 매칭)을 각각 다른 도구로 나눠 처리했다.</p></div>
-      <div class="c"><div class="k">핵심 기술 02</div><h3>Gemini · Claude 다단 검증</h3><p>로컬 LLM(exaone3.5)이 쓴 초안을 <strong>Gemini 2.5 flash-lite</strong>가 다섯 가지(종목 혼동, 수치 환각 30%+, 종목코드, 사실 창작, 밸류에이션 모순)로 자동 평가한다.<br/><br/>Gemini 쿼터가 막히면(429) <strong>4단 폴백 큐</strong>로 먼저 돌리고, 그래도 안 되면 Claude가 받는다. critical 판정이 나오면 배포가 자동으로 멈춘다.</p></div>
+      <div class="c"><div class="k">핵심 기술 02</div><h3>Gemini 검증 후 Claude로 최종 작성</h3><p>로컬 LLM(exaone3.5)이 쓴 초안을 <strong>Gemini 2.5 flash-lite</strong>가 다섯 가지(종목 혼동, 수치 환각 30%+, 종목코드, 사실 창작, 밸류에이션 모순)로 자동 평가한다. 쿼터가 막히면(429) 4단 폴백 큐로 우회.<br/><br/>검증을 통과한 초안은 <strong>Claude API</strong>가 최종 글로 다듬어 업로드한다. critical 판정이 나오면 배포가 자동으로 멈춘다.</p></div>
     </div>
 
     <div class="meta-top">
       <div class="m"><div class="k">역할</div>   <div class="v">개인 프로젝트, 설계와 구현 전부</div></div>
       <div class="m"><div class="k">기간</div>   <div class="v">2026 · v1 → v13</div></div>
-      <div class="m"><div class="k">스택</div>   <div class="v">cron, Ollama exaone3.5, ChromaDB, nomic-embed, Gemini, Claude</div></div>
+      <div class="m"><div class="k">스택</div>   <div class="v">cron, Ollama exaone3.5, ChromaDB, nomic-embed, Gemini(검증), Claude(최종 작성)</div></div>
       <div class="m"><div class="k">블로그</div> <div class="v"><a href="https://blog.naver.com/wishsun1411" target="_blank" rel="noopener">코복의 경제블로그 ↗</a></div></div>
     </div>
   </div>
@@ -435,7 +435,7 @@
     <p class="toolcap"><b>도구 2</b> · 상한가 분석 블로그 자동화 · 오케스트레이션</p>
     <div class="col sec-foot">
       <h2 class="h2">자율 에이전트 대신 정해진 순서로 도는 파이프라인</h2>
-      <p class="prose" style="margin-top:20px;">LLM이 다음 할 일을 스스로 정하는 방식 대신, 단계와 검증 게이트를 미리 고정해 뒀다.<br/><br/>매번 같은 순서로 돌고, 어디서 멈췄는지 바로 찾을 수 있다. 전체 흐름은 아래 다이어그램에 풀어 놓았다.</p>
+      <p class="prose" style="margin-top:20px;">LLM이 다음 할 일을 스스로 정하는 방식 대신, 단계와 검증 게이트를 미리 고정해 뒀다. 매번 같은 순서로 돈다.<br/><br/>로컬 LLM(exaone3.5)이 초안을 쓰고, Gemini가 검증한다. 통과한 글은 Claude가 최종 글로 다듬어 업로드한다. 어디서 멈췄는지 단계별로 추적할 수 있다.</p>
     </div>
     <figure class="rag-flow sec-foot" aria-label="블로그 자동화 파이프라인 다이어그램">
       <svg viewBox="0 0 1110 230" xmlns="http://www.w3.org/2000/svg">
@@ -491,7 +491,7 @@
         <path class="box center" d="M810,45 L940,45 L940,155 L810,155 L810,51 L816,45 Z"/>
         <text class="sub"         x="822" y="66" style="fill:#4DA3FF;">05 · VERIFY</text>
         <text class="name center" x="822" y="90">교차 검증</text>
-        <text class="sub"         x="822" y="115">Gemini · Claude</text>
+        <text class="sub"         x="822" y="115">Gemini 검증</text>
         <text class="sub"         x="822" y="130">5기준 자동</text>
 
         <path class="wire dotted" d="M940,100 L970,100"/>
@@ -500,13 +500,13 @@
         <!-- 06 PUBLISH -->
         <path class="box" d="M970,45 L1100,45 L1100,155 L970,155 L970,51 L976,45 Z"/>
         <text class="sub"  x="982" y="66">06 · PUBLISH</text>
-        <text class="name" x="982" y="90">업로드</text>
-        <text class="sub"  x="982" y="115">통과 글만</text>
-        <text class="sub"  x="982" y="130">배포·기록</text>
+        <text class="name" x="982" y="90">Claude 최종 작성</text>
+        <text class="sub"  x="982" y="115">통과 글 다듬어</text>
+        <text class="sub"  x="982" y="130">네이버 블로그 발행</text>
 
         <!-- 하단 그룹 라벨 -->
         <text class="lbl" x="490" y="195" style="fill:#46D39A;">RAG는 톤 참고만</text>
-        <text class="lbl" x="810" y="195" style="fill:#4DA3FF;">Gemini · Claude 5기준 검증</text>
+        <text class="lbl" x="810" y="195" style="fill:#4DA3FF;">Gemini 검증 → Claude 작성</text>
       </svg>
       <figcaption>매일 cron이 깨우는 고정된 흐름. <span class="mt">RAG는 톤 참고</span>로만 쓰고, <span class="cy">검증 게이트</span>를 통과한 글만 발행된다.</figcaption>
     </figure>
@@ -536,14 +536,14 @@
             <td>직접 발행한 220개 글을 벡터로 만들어 ChromaDB에 넣어뒀다. 섹터 필터로 한 번 좁히고 가장 가까운 글 2개만 가져다 쓴다. 뉴스는 18개 언론사만 화이트리스트로 받아 본문 노이즈를 줄였다.</td>
           </tr>
           <tr>
-            <td>7단 검증</td>
-            <td>형식 → 팩트(DART 50%+ 차이) → 구조 모순 13룰 → 자동 교정 → Gemini 5가지 기준 → 4단 폴백 → Claude 보조</td>
+            <td>검증 단계</td>
+            <td>형식 → 팩트(DART 50%+ 차이) → 구조 모순 13룰 → 자동 교정 → Gemini 5가지 기준 → 4단 폴백 큐</td>
             <td>critical 판정이 나오면 배포가 멈춘다. 재시도는 최대 2번. Gemini 무료 한도(분당 15회, 하루 100만 토큰)는 폴백 큐로 우회한다. 모든 단계가 점수와 이슈를 객체로 남긴다.</td>
           </tr>
           <tr>
-            <td>배포와 알림</td>
-            <td>네이버 블로그(Selenium), Google Sheets, Obsidian, Telegram</td>
-            <td>undetected-chromedriver로 자동 로그인하고, gspread 서비스 계정으로 시트에 기록한다. 마크다운과 프론트매터로 백업도 같이 쌓는다. critical 알림에는 검증 점수가 따라온다.</td>
+            <td>최종 작성과 배포</td>
+            <td>Claude API, 네이버 블로그(Selenium), Google Sheets, Obsidian, Telegram</td>
+            <td>검증 통과한 초안을 Claude가 최종 글로 다듬는다. undetected-chromedriver로 네이버 블로그에 자동 로그인해 업로드하고, gspread 서비스 계정으로 시트에도 기록한다. critical 알림에는 검증 점수가 따라온다.</td>
           </tr>
         </tbody>
       </table>
@@ -638,14 +638,14 @@
           <path class="wire dotted" d="M680,232 C 695,232 705,182 730,182"/>
 
           <path class="box cloud" d="M730,150 L900,150 L900,210 L730,210 L730,156 L736,150 Z"/>
-          <text class="name dim" x="742" y="176">7단 검증</text>
-          <text class="sub"      x="742" y="194">Gemini · Claude · 5기준</text>
+          <text class="name dim" x="742" y="176">Gemini 검증</text>
+          <text class="sub"      x="742" y="194">5기준 · 4단 폴백</text>
 
           <!-- OLLAMA → PUBLISH (solid live) -->
           <path class="wire solid live" d="M680,268 C 695,268 705,318 730,318"/>
 
           <path class="box" d="M730,290 L900,290 L900,350 L730,350 L730,296 L736,290 Z"/>
-          <text class="name" x="742" y="316">PUBLISH</text>
+          <text class="name" x="742" y="316">Claude 작성 · 발행</text>
           <text class="sub"  x="742" y="334">네이버 블로그</text>
 
           <!-- VERIFY → PUBLISH (dotted gate) -->
@@ -669,11 +669,11 @@
         <div class="vc"><div class="vn">02</div><div class="vname">팩트</div><div class="vd">생성된 수치를 원본 데이터와 대조해서 안 맞으면 표시한다.</div></div>
         <div class="vc"><div class="vn">03</div><div class="vname">모순</div><div class="vd">"실적 개선"과 "매출 감소"가 같이 나오는 경우 같은 모순을 찾아낸다.</div></div>
         <div class="vc"><div class="vn">04</div><div class="vname">자동 교정</div><div class="vd">LLM 재시도로도 안 되는 부분은 규칙 기반 후처리로 강제로 고친다.</div></div>
-        <div class="vc hl"><div class="vn">05</div><div class="vname">최종 검증</div><div class="vd">Gemini 2.5 flash-lite가 5가지 기준으로 평가하고 Claude가 보조한다. critical 판정이면 배포가 멈춘다.</div></div>
+        <div class="vc hl"><div class="vn">05</div><div class="vname">최종 검증</div><div class="vd">Gemini 2.5 flash-lite가 5가지 기준으로 평가한다. 통과한 글만 Claude가 다듬어 발행하고, critical 판정이면 배포가 멈춘다.</div></div>
       </div>
       <div class="zero">
         <div class="z">5단계</div>
-        <p>좋은 모델 하나를 찾기보다 <b>틀린 글이 통과하지 못하는 구조</b>를 먼저 만들었다. 환각 0%까지는 못 가서 검증 룰은 지금도 계속 다듬는 중이다.</p>
+        <p>좋은 모델 하나를 찾기보다 <b>틀린 글이 통과하지 못하는 구조</b>를 먼저 만들었다. Gemini 검증이 critical을 잡으면 배포가 멈추고, 통과한 글만 Claude가 최종 다듬어 발행된다. 환각 0%까지는 못 가서 검증 룰은 지금도 계속 다듬는 중이다.</p>
       </div>
     </div>
 
@@ -685,7 +685,7 @@
         <div class="it"><div class="v">v4~6</div><div><div class="t">벡터 검색을 써보다 한계 발견</div><div class="d">구조가 고정된 문서에는 정규식이 더 정확했다. RAG가 모든 상황의 답이 아니라는 걸 여기서 확인했다.</div></div></div>
         <div class="it"><div class="v">v7~9</div><div><div class="t">검증 단계 추가</div><div class="d">잘 쓰게 만드는 것보다 틀린 글을 걸러내는 게 더 급했다. 형식, 팩트, 모순 검증을 붙였다.</div></div></div>
         <div class="it"><div class="v">v10~12</div><div><div class="t">반자동화로 전환</div><div class="d">전 과정을 자동으로 두지 않고, 마지막 판단만 내가 직접 하는 구조로 바꿨다. 검수는 자동화에서 빼뒀다.</div></div></div>
-        <div class="it last"><div class="v">v13</div><div><div class="t">RAG와 7단 검증, 다채널 배포</div><div class="d">ChromaDB에 직접 발행한 220개 글을 넣어 톤 참고에 썼다. Gemini와 Claude 다단 검증까지 붙여 수집부터 배포까지 루프가 닫혔다. 수치 환각을 배포 전에 잡을 수 있게 됐다.</div></div></div>
+        <div class="it last"><div class="v">v13</div><div><div class="t">RAG와 검증, Claude 최종 작성</div><div class="d">ChromaDB에 직접 발행한 220개 글을 넣어 톤 참고에 썼다. Gemini로 검증하고 Claude가 최종 글을 다듬어 업로드하는 흐름까지 붙여 수집부터 배포까지 루프가 닫혔다. 수치 환각을 배포 전에 잡을 수 있게 됐다.</div></div></div>
       </div>
     </div>
   </div>
