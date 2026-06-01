@@ -1108,8 +1108,9 @@ footer .row{
       </p>
       <div class="ctas">
         <a class="primary" href="#projects">프로젝트 →</a>
-        <a class="ghost" href="mailto:heetae104@gmail.com">연락</a>
+        <a class="ghost" href="mailto:heetae104@gmail.com" id="cta-contact" data-email="heetae104@gmail.com">연락</a>
       </div>
+      <div id="copy-toast" role="status" aria-live="polite" style="position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:12px 22px;border-radius:999px;font-size:14px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:opacity .2s ease, transform .2s ease;z-index:100;">이메일 주소가 복사됐어요 · heetae104@gmail.com</div>
     </div>
 
     <aside class="hero-photo" aria-label="프로필 사진">
@@ -1908,6 +1909,42 @@ footer .row{
 
   // 노출 API (다른 코드에서도 호출 가능)
   window.MediaModal = { open, close };
+})();
+
+/* ============ CTA "연락" — mailto + 클립보드 폴백 ============ */
+(function(){
+  var btn = document.getElementById('cta-contact');
+  var toast = document.getElementById('copy-toast');
+  if (!btn || !toast) return;
+
+  function showToast(){
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+    setTimeout(function(){
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(-50%) translateY(20px)';
+    }, 2400);
+  }
+
+  btn.addEventListener('click', function(e){
+    var email = btn.getAttribute('data-email');
+    // 클립보드 복사
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(email).then(showToast).catch(function(){
+        // 폴백: textarea
+        var ta = document.createElement('textarea');
+        ta.value = email; document.body.appendChild(ta);
+        ta.select(); try { document.execCommand('copy'); showToast(); } catch(_){}
+        document.body.removeChild(ta);
+      });
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = email; document.body.appendChild(ta);
+      ta.select(); try { document.execCommand('copy'); showToast(); } catch(_){}
+      document.body.removeChild(ta);
+    }
+    // mailto는 그대로 동작 (메일 클라이언트 등록돼 있으면 열림, 없으면 무시)
+  });
 })();
 </script>
 
