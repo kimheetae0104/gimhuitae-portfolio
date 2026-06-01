@@ -343,8 +343,8 @@
     <p class="url">Ollama 위에 exaone3.5 7.8B를 로컬로 돌리고, Gemini와 Claude로 7단 검증.</p>
 
     <div class="thi">
-      <div class="c"><div class="k">핵심 기술 01</div><h3>RAG 역할 분리</h3><p>사실·수치는 <strong>DART API와 정규식</strong>으로 뽑는다. RAG는 직접 발행한 <strong>220개 글의 톤·구성</strong>을 참고할 때만 쓴다.<br/><br/>벡터 검색이 약한 곳(구조화 문서)과 강한 곳(스타일 매칭)을 각각 다른 도구로 처리했다.</p></div>
-      <div class="c"><div class="k">핵심 기술 02</div><h3>Gemini · Claude 다단 검증</h3><p>로컬 LLM(exaone3.5)이 쓴 초안을 <strong>Gemini 2.5 flash-lite</strong>가 5가지 기준(종목 혼동, 수치 환각, 사실 창작 등)으로 자동 평가한다.<br/><br/>쿼터가 막히면(429) <strong>4단 폴백 큐와 Claude</strong>로 돌린다. critical 판정이 나오면 배포가 자동으로 멈춘다.</p></div>
+      <div class="c"><div class="k">핵심 기술 01</div><h3>RAG 역할 분리</h3><p>사실·수치는 <strong>DART API와 정규식</strong>으로 뽑는다. RAG는 직접 발행한 <strong>220개 글에서 톤·구성을 참고하는 용도</strong>로만 쓴다.<br/><br/>벡터 검색이 약한 곳(구조화 문서)과 강한 곳(스타일 매칭)을 각각 다른 도구로 나눠 처리했다.</p></div>
+      <div class="c"><div class="k">핵심 기술 02</div><h3>Gemini · Claude 다단 검증</h3><p>로컬 LLM(exaone3.5)이 쓴 초안을 <strong>Gemini 2.5 flash-lite</strong>가 다섯 가지(종목 혼동, 수치 환각 30%+, 종목코드, 사실 창작, 밸류에이션 모순)로 자동 평가한다.<br/><br/>Gemini 쿼터가 막히면(429) <strong>4단 폴백 큐</strong>로 먼저 돌리고, 그래도 안 되면 Claude가 받는다. critical 판정이 나오면 배포가 자동으로 멈춘다.</p></div>
     </div>
 
     <div class="meta-top">
