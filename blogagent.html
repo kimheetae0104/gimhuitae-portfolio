@@ -53,6 +53,12 @@
   .hero .wrap{ position:relative; z-index:1; }
   .hero .url{ margin-top:20px; }
   .hero .eyebrow{ margin-bottom:20px; }
+  /* 데스크탑: hero 텍스트가 우측 topo 다이어그램과 겹치지 않도록 좌측 컬럼 폭 고정 */
+  @media(min-width:901px){
+    .hero .title,
+    .hero .lead,
+    .hero .url{ max-width:calc(100% - 440px); }
+  }
 
   /* ── meta-top: 상단 메타 그리드 (사이버 대시보드 톤) ─────── */
   .meta-top{ display:grid; grid-template-columns:repeat(4,1fr); gap:0;
@@ -340,13 +346,13 @@
   <div class="wrap">
     <p class="eyebrow">블로그 자동화 · 로컬 LLM</p>
     <h1 class="title">Blog Agent</h1>
-    <p class="lead">개인 데이터를 외부로 보내지 않고, <span class="accent-word">검증까지 자동으로 도는</span> 블로그 파이프라인을 직접 만들었다.</p>
-    <p class="url">Ollama 위에 exaone3.5 7.8B로 초안을 쓰고, Gemini로 검증한 뒤 Claude가 최종 글을 다듬어 업로드.</p>
+    <p class="lead"><span class="accent-word">개인 데이터는 외부로 보내지 않는다.</span><br>초안부터 검증, 발행까지 자동으로 도는 블로그 파이프라인을 직접 만들었다.</p>
+    <p class="url">로컬 exaone3.5가 초안, Gemini가 검증, Claude가 편집·업로드.</p>
 
     <div class="meta-top">
       <div class="m"><div class="k">역할</div>   <div class="v">개인 프로젝트, 설계와 구현 전부</div></div>
       <div class="m"><div class="k">기간</div>   <div class="v">2026 · v1 → v13</div></div>
-      <div class="m"><div class="k">스택</div>   <div class="v">cron, Ollama exaone3.5, ChromaDB, nomic-embed, Gemini(검증), Claude(최종 작성)</div></div>
+      <div class="m"><div class="k">스택</div>   <div class="v">Ollama exaone3.5(초안), Gemini(검증), Claude(편집), ChromaDB + nomic-embed(검색), cron(실행)</div></div>
       <div class="m"><div class="k">블로그</div> <div class="v"><a href="https://blog.naver.com/wishsun1411" target="_blank" rel="noopener">코복의 경제블로그 ↗</a></div></div>
     </div>
   </div>
@@ -444,8 +450,8 @@
   <div class="wrap">
     <p class="toolcap"><b>도구 2</b> · 상한가 분석 블로그 자동화 · 오케스트레이션</p>
     <div class="col sec-foot">
-      <h2 class="h2">LLM이 다음 단계를 정하지 않는 고정 파이프라인</h2>
-      <p class="prose" style="margin-top:20px;">LangChain Agents 같은 자율 에이전트 패턴(LLM이 다음 도구·행동을 스스로 결정)은 디버깅이 어렵고 비결정적이다. 그래서 단계와 검증 게이트를 코드 레벨에서 고정해 뒀다.<br/><br/>로컬 LLM(exaone3.5)이 초안을 쓰고, Gemini가 검증한다. 통과한 글은 Claude가 최종 글로 다듬어 업로드한다. 매번 같은 순서로 돌고, 어디서 멈췄는지 단계별로 추적할 수 있다.</p>
+      <h2 class="h2">역할이 나뉜 LLM 3개를 그래프로 오케스트레이션</h2>
+      <p class="prose" style="margin-top:20px;">초안은 로컬 LLM <b>exaone3.5</b>가 쓰고, <b>Gemini</b>가 사실·인용을 검증한다. 통과한 글은 <b>Claude</b>가 최종으로 다듬어 업로드한다. 세 LLM 모두 자기 역할만 하고, <b>다음 단계는 코드 그래프가 정한다.</b><br/><br/>자율 에이전트는 LLM이 다음 행동을 직접 정해서 <b>결과가 매번 달라진다.</b> 자동화에는 안 맞아서 단계와 검증 게이트를 그래프에 박아 뒀다. <b>어디서 멈췄는지 노드 단위로 추적된다.</b></p>
     </div>
     <figure class="rag-flow sec-foot" aria-label="블로그 자동화 파이프라인 다이어그램">
       <svg viewBox="0 0 1110 230" xmlns="http://www.w3.org/2000/svg">
