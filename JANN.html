@@ -126,6 +126,10 @@
   .fig img{ width:100%; display:block; border-radius:12px; }
   .cap{ font-size:13px; color:var(--ink-3); margin-top:14px; line-height:1.6; text-align:center; }
 
+  /* problem image — flows in, no card chrome; equal vertical breathing room above and below */
+  .problem-img{ display:block; width:100%; max-width:1100px; margin:clamp(20px,2.8vh,32px) auto; border-radius:14px; }
+  #problem .narrow{ margin-top:0; }
+
   /* steps — centered 3-up feature columns */
   .step3{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; max-width:860px; margin:0 auto; }
   .s3{ text-align:center; }
@@ -246,6 +250,7 @@
   <div class="in">
     <div class="left"><span class="dot"></span> JANN</div>
     <div class="links">
+      <a href="#problem">출발점</a>
       <a href="#why">왜</a>
       <a href="#how">동작</a>
       <a href="#science">근거</a>
@@ -283,6 +288,23 @@
   </div>
 </section>
 
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">출발점</p>
+      <h2 class="h2">냉장고 안에 들어간 재료,<br><span class="grad">잊혀진 채 썩기 마련</span></h2>
+    </div>
+    <img class="problem-img" src="jann/img/fridge.jpg" alt="냉장고 야채 칸 안쪽에서 시들어가는 남은 재료들" loading="lazy"/>
+    <div class="narrow center">
+      <p class="prose">야채 칸 뒤편이나 비닐봉지 속의 재료는 문을 닫는 순간 시야에서 사라진다.<br>다시 발견했을 때는 이미 시들어 있어, 그대로 음식물 쓰레기가 됐다.</p>
+      <p class="prose">환경부·한국환경공단 통계에 따르면, 국내 음식물 쓰레기의 약 <strong>70%</strong>가 가정과 소형 음식점에서 발생하며, 처리에만 <strong>연간 6,000억 원 이상</strong>이 투입된다.</p>
+      <p class="prose">남은 재료로 무엇을 만들 수 있는지 먼저 알려주면 버리는 양이 줄어들 거라 보았다.<br>그래서 <strong>남은 재료로 만들 수 있는 레시피를 추천하는 앱</strong>을 만들기로 했다.</p>
+      <p class="cite">출처: 환경부·한국환경공단 「2022년도 쓰레기 종량제 현황」 (2023)</p>
+    </div>
+  </div>
+</section>
+
 <!-- WHY -->
 <section class="alt" id="why">
   <div class="wrap">
@@ -292,7 +314,7 @@
     </div>
     <div class="fig sec-foot">
       <img src="jann/img/flavor-network.png" alt="향미 네트워크 그래프"/>
-      <div class="cap">향미 네트워크 — 노드는 식재료, 엣지는 두 재료가 공유하는 향미 화합물 수.</div>
+      <div class="cap">향미 네트워크. 노드는 식재료, 엣지는 두 재료가 공유하는 향미 화합물 수.</div>
     </div>
     <div class="narrow center">
       <p class="prose">대부분의 레시피 앱은 재료 이름·인기·태그로 추천한다.<br>정작 <strong>왜 이 재료들이 어울리는지</strong>는 설명하지 못한다.<br>그 "이유 없는 추천"이 늘 아쉬웠다.</p>

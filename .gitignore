@@ -17,3 +17,6 @@ DACON_자료/
 
 # 면접 준비 자료 (개인용, public repo에 노출 금지)
 docs/면접준비/
+
+# 별도 git repo로 관리되는 vercel 배포 미러 (메인 작업과 섞이지 않도록)
+gimhuitae-portfolio/
