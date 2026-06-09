@@ -340,7 +340,7 @@
     <div class="step3" style="margin-top:clamp(40px,6vh,64px);">
       <div class="s3"><div class="n">01</div><div class="st">스캔</div><div class="sd">자체 학습 객체 인식 모델(SSDLite)과 GPT-4o Vision을 병렬로 인식</div></div>
       <div class="s3"><div class="n">02</div><div class="st">분석</div><div class="sd">SQLite 향미 DB로 오프라인 유사도 매칭</div></div>
-      <div class="s3"><div class="n">03</div><div class="st">생성</div><div class="sd">화합물 시너지 근거를 담은 레시피 출력</div></div>
+      <div class="s3"><div class="n">03</div><div class="st">생성</div><div class="sd">향미 페어링 근거를 담은 레시피 출력</div></div>
     </div>
   </div>
 </section>
@@ -350,15 +350,15 @@
   <div class="wrap">
     <div class="sec-head">
       <p class="eyebrow">추천의 근거</p>
-      <h2 class="h2">유사도는 자카드로 계산</h2>
-      <p class="sec-lead">인기순이 아니라, 두 재료가 분자 단위에서 얼마나 겹치는지로 본다.</p>
+      <h2 class="h2">유사도는 PMI로 계산</h2>
+      <p class="sec-lead">인기순이 아니라, 두 재료가 실제 레시피에서 얼마나 함께 등장하는지로 본다.</p>
     </div>
     <div class="fig sec-foot">
       <img src="jann/img/tsne-clustering.png" alt="t-SNE 향미 클러스터링"/>
       <div class="cap">t-SNE — 재료 이름이 아니라 향미 프로필로 차원을 줄이면, 비슷한 맛끼리 모인다.</div>
     </div>
     <div class="narrow center">
-      <p class="prose">두 재료의 향미 호환성은 <strong>공유 화합물 수 ÷ 합집합</strong>(자카드 유사도)으로 정했다.<br>분자 단위의 겹침을 보는 것이다.</p>
+      <p class="prose">두 재료의 향미 호환성은 <strong>공동 출현 빈도 ÷ 출현 곱</strong>(PMI Co-occurrence)으로 정했다.<br>레시피 코퍼스 내 공동 출현 패턴을 보는 것이다.</p>
       <p class="prose">원본 DB가 서양 식재료 중심이라, 김치·된장·고추장 같은 한국 재료에<br>한-영 매핑을 직접 더해 로컬라이징했다.</p>
     </div>
   </div>
@@ -431,10 +431,10 @@
           <text x="570" y="263" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" letter-spacing="1" fill="#F24E29">02 · RECOGNITION</text>
           <text x="570" y="285" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1D1D1F">GPT-4o Vision</text>
           <text x="570" y="304" font-family="ui-monospace,SF Mono,monospace" font-size="11" fill="#515154">한국 재료 · 라벨 OCR</text>
-          <text x="570" y="320" font-family="-apple-system,sans-serif" font-size="11" fill="#86868B">YOLO 미인식 보완</text>
+          <text x="570" y="320" font-family="-apple-system,sans-serif" font-size="11" fill="#86868B">온디바이스 모델 미인식 보완</text>
         </g>
 
-        <!-- Parallel indicator between YOLO and GPT -->
+        <!-- Parallel indicator between SSDLite and GPT -->
         <text x="480" y="290" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="600" fill="#F24E29">PARALLEL</text>
         <path d="M240 286 L555 286" stroke="#F24E29" stroke-width="1.2" stroke-dasharray="2 3" fill="none" opacity="0.6"/>
 
@@ -458,7 +458,7 @@
           <text x="120" y="484" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" letter-spacing="1" fill="#F24E29">03 · ANALYSIS</text>
           <text x="120" y="508" font-family="-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1D1D1F">SQLite 향미 페어링 DB</text>
           <text x="120" y="528" font-family="ui-monospace,SF Mono,monospace" font-size="11" fill="#515154">442 ingredients × 4,976 pairings</text>
-          <text x="120" y="546" font-family="-apple-system,sans-serif" font-size="11" fill="#86868B">Jaccard 유사도 · 앱 번들 내장 · 완전 오프라인</text>
+          <text x="120" y="546" font-family="-apple-system,sans-serif" font-size="11" fill="#86868B">PMI Co-occurrence · 앱 번들 내장 · 완전 오프라인</text>
         </g>
         <!-- horizontal arrow ANALYSIS -> GENERATION -->
         <path d="M440 510 L640 510 L640 580" stroke="#F24E29" stroke-width="1.8" stroke-dasharray="5 4" fill="none" marker-end="url(#arrow-accent)"/>
@@ -469,7 +469,7 @@
           <text x="570" y="484" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" letter-spacing="1" fill="#F24E29">04 · GENERATION</text>
           <text x="570" y="508" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1D1D1F">GPT-4o-mini</text>
           <text x="570" y="528" font-family="ui-monospace,SF Mono,monospace" font-size="11" fill="#515154">Structured Prompt</text>
-          <text x="570" y="546" font-family="-apple-system,sans-serif" font-size="11" fill="#86868B">재료 + 화합물 근거 주입</text>
+          <text x="570" y="546" font-family="-apple-system,sans-serif" font-size="11" fill="#86868B">재료 + 페어링 근거 주입</text>
         </g>
 
         <!-- arrows down to output -->
@@ -480,7 +480,7 @@
         <g filter="url(#soft)">
           <rect x="370" y="595" width="220" height="64" rx="14" fill="#F24E29"/>
           <text x="480" y="620" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="12" font-weight="700" letter-spacing="1.5" fill="#FFE5DC">OUTPUT</text>
-          <text x="480" y="641" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" fill="#fff">Recipe · 분자 시너지 해설</text>
+          <text x="480" y="641" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" fill="#fff">Recipe · 향미 페어링 해설</text>
         </g>
       </svg>
     </div>
@@ -545,7 +545,7 @@
     <div class="sec-head">
       <p class="eyebrow">배운 것 · 한계</p>
       <h2 class="h2">추천의 신뢰는 <span class="grad">근거에서 나온다</span></h2>
-      <p class="sec-lead">Nature 논문의 분자 단위 향미 이론을 실제 사용자 경험으로 옮기며 배운 것.</p>
+      <p class="sec-lead">Nature 논문의 향미 페어링 향미 이론을 실제 사용자 경험으로 옮기며 배운 것.</p>
     </div>
     <div class="learn sec-foot">
       <div class="lcard learned">
@@ -553,7 +553,7 @@
         <h3>이유 없는 추천은 의심받는다</h3>
         <ul>
           <li>"왜 어울리는지" 함께 보여주면 추천 신뢰도 상승</li>
-          <li>인기순 추천보다 분자 단위 근거가 설득력 강함</li>
+          <li>인기순 추천보다 향미 페어링 근거가 설득력 강함</li>
         </ul>
       </div>
       <div class="lcard warn">
@@ -582,7 +582,7 @@
         <div class="lt">개선 방향 · 제품</div>
         <h3>한국화 · 인식 보강</h3>
         <ul>
-          <li>한국 식재료–화합물 데이터 수집 · 매핑 확장</li>
+          <li>한국 식재료 페어링 데이터 수집 · 매핑 확장</li>
           <li>한국 음식 도메인 transfer learning 추가 학습</li>
           <li>불투명 용기는 라벨 OCR + 맥락 분석으로 인식 보강</li>
         </ul>
