@@ -76,7 +76,7 @@ SSDLite 온디바이스 비전 모델로 냉장고 속 식재료를 인식하고
 
 ### 자체 향미 페어링 데이터셋
 
-- **출처**: 자체 구축 등재 논문 *"Flavor network and the principles of food pairing"* (Ahn et al.)
+- **출처**: 자체 레시피 코퍼스 (USDA + 식안처 + JANN AI 큐레이션)
 - **규모**: 식재료 **1,530종** × 향미 특성 **1,107개** 매핑
 - **알고리즘**: PMI Co-occurrence (Jaccard Index) = `공유 화합물 수 / 합집합 화합물 수 × 100`
 
