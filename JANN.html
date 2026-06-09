@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8"/>
-<title>JANN — 분자 미식학 기반 iOS 레시피 추천 앱 · 김희태</title>
+<title>JANN — 향미 페어링 기반 iOS 레시피 추천 앱 · 김희태</title>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <link rel="stylesheet" href="shared/tokens.css"/>
 <style>
@@ -266,7 +266,7 @@
 <!-- HERO -->
 <section class="hero">
   <div class="wide-wrap">
-    <p class="eyebrow">분자 미식학 · iOS App</p>
+    <p class="eyebrow">향미 페어링 · iOS App</p>
     <h1 class="title">JANN</h1>
     <p class="hero-sub"><span class="grad">재료가 이야기가 되는 순간</span> · 앱스토어 출시.</p>
     <div class="devices">
@@ -275,14 +275,14 @@
       <div class="iphone raise"><div class="screen"><img src="jann/recommend.png?v=2" alt="JANN 추천 — 재료를 채우면 추천이 시작돼요"/></div></div>
     </div>
     <div class="thi">
-      <div class="c"><div class="k">핵심 기술 01</div><h3>분자 단위 추천 알고리즘</h3><p>두 재료의 향미 호환성을 공유 화합물 수와 합집합 비율(자카드 유사도)로 계산했다. 1,107개 향미 화합물 데이터를 t-SNE로 차원 축소해 비슷한 맛끼리 군집을 만든 뒤, 그 안에서 재료를 추천한다.</p></div>
+      <div class="c"><div class="k">핵심 기술 01</div><h3>향미 페어링 추천 알고리즘</h3><p>두 재료의 향미 호환성을 자체 레시피 코퍼스의 공동 출현 빈도(PMI 기반)로 계산했다. 자체 레시피 4,976개 페어링 데이터를 활용해 비슷한 향미 특성끼리 군집을 만든 뒤, 그 안에서 재료를 추천한다.</p></div>
       <div class="c"><div class="k">핵심 기술 02</div><h3>온디바이스 추론</h3><p>Python으로 학습한 추천 모델을 CoreML로 변환해 SwiftUI 앱에 내장했다.<br>추론이 기기 안에서 끝나므로 네트워크 호출과 서버 비용이 없고, 입력 데이터도 밖으로 나가지 않는다.</p></div>
     </div>
 
     <div class="pmeta">
       <div class="col"><div class="k">상태</div><div class="v">앱스토어 출시 · Jann Plus 곧 출시</div></div>
       <div class="col"><div class="k">기간</div><div class="v">2026.04.01 — 출시</div></div>
-      <div class="col"><div class="k">데이터</div><div class="v">식재료 1,530종 · 향미 1,107개</div></div>
+      <div class="col"><div class="k">데이터</div><div class="v">식재료 442종 · 페어링 4,976쌍</div></div>
       <div class="col"><div class="k">기술</div><div class="v">SwiftUI · CoreML · 카카오 OAuth</div></div>
     </div>
   </div>
@@ -309,28 +309,18 @@
 <section class="alt" id="why">
   <div class="wrap">
     <div class="sec-head">
-      <p class="eyebrow">왜 분자 미식학인가</p>
+      <p class="eyebrow">왜 향미 페어링인가</p>
       <h2 class="h2">재료를 찾는 앱은 많다.<br><span class="grad">맛의 조합</span>을 찾는 앱은 없었다.</h2>
-    </div>
-    <div class="fig sec-foot">
-      <img src="jann/img/flavor-network.png" alt="향미 네트워크 그래프"/>
-      <div class="cap">향미 네트워크. 노드는 식재료, 엣지는 두 재료가 공유하는 향미 화합물 수.</div>
     </div>
     <div class="narrow center">
       <p class="prose">대부분의 레시피 앱은 재료 이름·인기·태그로 추천한다.<br>정작 <strong>왜 이 재료들이 어울리는지</strong>는 설명하지 못한다.<br>그 "이유 없는 추천"이 늘 아쉬웠다.</p>
-      <p class="prose">음식의 향미는 결국 화학 화합물이다.<br>두 재료가 공유하는 향미 분자가 많을수록 사람은 그 조합을 더 자연스럽게 느낀다.<br>그렇다면 추천도 그 근거 위에 세울 수 있다고 봤다.</p>
+      <p class="prose">음식의 향미에는 패턴이 있다.<br>실제 셰프의 레시피에서 자주 함께 등장하는 재료 조합은<br>대체로 더 자연스럽게 어울린다.<br>그렇다면 추천도 그 패턴 위에 세울 수 있다고 봤다.</p>
     </div>
-    <div class="reference" style="margin-top:clamp(40px,6vh,64px); display:flex; gap:clamp(20px,3vw,32px); align-items:flex-start; padding:clamp(20px,3vw,28px); border:1px solid rgba(0,0,0,.08); border-radius:14px; background:rgba(255,255,255,.6); max-width:760px; margin-left:auto; margin-right:auto;">
-      <a href="jann/flavor-network-paper.pdf" target="_blank" rel="noopener" style="flex:0 0 auto;">
-        <img src="jann/flavor-network-paper-cover.png" alt="Ahn et al. 2011 — Flavor network and the principles of food pairing 논문 표지" style="width:140px; height:auto; border-radius:6px; box-shadow:0 6px 20px rgba(0,0,0,.12);">
-      </a>
-      <div style="flex:1; min-width:0;">
-        <div style="font-family:var(--mono); font-size:11px; letter-spacing:.12em; color:var(--accent); text-transform:uppercase; margin-bottom:6px;">참고 자료 · Reference</div>
-        <div style="font-weight:700; font-size:15px; color:var(--ink); line-height:1.4; margin-bottom:6px;">Flavor network and the principles of food pairing</div>
-        <div style="font-size:13px; color:var(--ink-2); line-height:1.55; margin-bottom:8px;">Yong-Yeol Ahn, Sebastian E. Ahnert, James P. Bagrow, Albert-László Barabási · <em>Scientific Reports</em>, Nature Publishing Group · 2011</div>
-        <div style="font-size:12px; color:var(--ink-3); line-height:1.55;">JANN의 자카드 추천 모델은 이 논문의 향미 네트워크 가설(공유 향미 분자가 많은 재료끼리 어울린다)을 기반으로 한다. 1,530 식재료 × 1,107 향미 화합물 데이터셋도 동 논문의 데이터 구조를 차용해 직접 구축했다.</div>
-        <a href="jann/flavor-network-paper.pdf" target="_blank" rel="noopener" style="display:inline-block; margin-top:10px; font-family:var(--mono); font-size:11px; letter-spacing:.08em; color:var(--accent); text-decoration:none; border-bottom:1px solid currentColor;">PDF 보기 →</a>
-      </div>
+    <div class="reference" style="margin-top:clamp(40px,6vh,64px); padding:clamp(20px,3vw,28px); border:1px solid rgba(0,0,0,.08); border-radius:14px; background:rgba(255,255,255,.6); max-width:760px; margin-left:auto; margin-right:auto;">
+      <div style="font-family:var(--mono); font-size:11px; letter-spacing:.12em; color:var(--accent); text-transform:uppercase; margin-bottom:8px;">자체 알고리즘 · PMI Co-occurrence</div>
+      <div style="font-weight:700; font-size:15px; color:var(--ink); line-height:1.4; margin-bottom:8px;">자체 레시피 코퍼스 기반 향미 페어링</div>
+      <div style="font-size:13px; color:var(--ink-2); line-height:1.55; margin-bottom:10px;">USDA MyPlate (Public Domain) · 식품의약품안전처 COOKRCP01 (공공누리 1유형) · JANN AI 큐레이션</div>
+      <div style="font-size:12px; color:var(--ink-3); line-height:1.55;">JANN의 추천 모델은 2,544개 공개 라이선스 레시피 코퍼스에서 재료 공동 출현 패턴을 PMI(Pointwise Mutual Information) 기반으로 분석해 4,976개 향미 페어링 점수를 구축했다. 모든 데이터셋은 상업 사용 가능한 라이선스로 정리되어 있다.</div>
     </div>
   </div>
 </section>
@@ -348,7 +338,7 @@
       <div class="item"><div class="iphone"><div class="screen"><img src="jann/profile.png?v=2" alt="JANN 마이 — 카카오 계정 · Jann Plus"/></div></div><div class="lbl">PROFILE</div></div>
     </div>
     <div class="step3" style="margin-top:clamp(40px,6vh,64px);">
-      <div class="s3"><div class="n">01</div><div class="st">스캔</div><div class="sd">YOLOv8n과 GPT-4o Vision을 병렬로 인식</div></div>
+      <div class="s3"><div class="n">01</div><div class="st">스캔</div><div class="sd">자체 학습 객체 인식 모델(SSDLite)과 GPT-4o Vision을 병렬로 인식</div></div>
       <div class="s3"><div class="n">02</div><div class="st">분석</div><div class="sd">SQLite 향미 DB로 오프라인 유사도 매칭</div></div>
       <div class="s3"><div class="n">03</div><div class="st">생성</div><div class="sd">화합물 시너지 근거를 담은 레시피 출력</div></div>
     </div>
@@ -419,11 +409,11 @@
         <path d="M255 184 L255 215 L640 215 L640 240" stroke="#F24E29" stroke-width="1.8" fill="none" stroke-dasharray="5 4" marker-end="url(#arrow-accent)"/>
 
         <!-- 02 RECOGNITION row -->
-        <!-- YOLOv8n -->
+        <!-- SSDLite (자체 학습, BSD-3-Clause) -->
         <g filter="url(#soft)">
           <rect x="70" y="240" width="170" height="92" rx="14" fill="#fff" stroke="#1D1D1F" stroke-width="1.5"/>
           <text x="85" y="263" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" letter-spacing="1" fill="#F24E29">02 · RECOGNITION</text>
-          <text x="85" y="285" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1D1D1F">YOLOv8n</text>
+          <text x="85" y="285" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1D1D1F">SSDLite</text>
           <text x="85" y="304" font-family="ui-monospace,SF Mono,monospace" font-size="11" fill="#515154">CoreML · 18 MB</text>
           <text x="85" y="320" font-family="-apple-system,sans-serif" font-size="11" fill="#86868B">실시간 온디바이스 추론</text>
         </g>
@@ -462,12 +452,12 @@
         <!-- arrow merge -> analysis -->
         <path d="M480 424 L480 460" stroke="#1D1D1F" stroke-width="1.8" fill="none" marker-end="url(#arrow)"/>
 
-        <!-- 03 ANALYSIS — SQLite Flavor Network DB -->
+        <!-- 03 ANALYSIS — SQLite 향미 페어링 DB -->
         <g filter="url(#soft)">
           <rect x="100" y="460" width="340" height="100" rx="14" fill="#fff" stroke="#1D1D1F" stroke-width="1.5"/>
           <text x="120" y="484" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" letter-spacing="1" fill="#F24E29">03 · ANALYSIS</text>
-          <text x="120" y="508" font-family="-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1D1D1F">SQLite Flavor Network DB</text>
-          <text x="120" y="528" font-family="ui-monospace,SF Mono,monospace" font-size="11" fill="#515154">1,530 ingredients × 1,107 compounds</text>
+          <text x="120" y="508" font-family="-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1D1D1F">SQLite 향미 페어링 DB</text>
+          <text x="120" y="528" font-family="ui-monospace,SF Mono,monospace" font-size="11" fill="#515154">442 ingredients × 4,976 pairings</text>
           <text x="120" y="546" font-family="-apple-system,sans-serif" font-size="11" fill="#86868B">Jaccard 유사도 · 앱 번들 내장 · 완전 오프라인</text>
         </g>
         <!-- horizontal arrow ANALYSIS -> GENERATION -->
@@ -623,7 +613,7 @@
       <div class="tl-row">
         <div class="tl"><div class="t">0:00</div><div class="d">스플래시 → 홈 진입</div></div>
         <div class="tl"><div class="t">0:20</div><div class="d">카메라로 식재료 스캔</div></div>
-        <div class="tl"><div class="t">0:50</div><div class="d">향미 화합물 매칭</div></div>
+        <div class="tl"><div class="t">0:50</div><div class="d">향미 특성 매칭</div></div>
         <div class="tl"><div class="t">1:20</div><div class="d">근거 포함 레시피 추천</div></div>
       </div>
     </div>
